@@ -44,8 +44,26 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+    // L02: TODO 3: Request Load / Save when pressing L/S
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+		app->audio->ChangeVolumeMusic(-10);
+
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+		app->audio->ChangeVolumeMusic(10);
+
+
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
+
+	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) 
+	{
+		app->LoadRequest();	
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		app->SaveRequest();
+	}
 
 	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		app->render->camera.y += 1;

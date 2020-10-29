@@ -62,12 +62,12 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	// TODO 3: Load config from XML
+	// L01: DONE 3: Load config from XML
 	bool ret = LoadConfig();
 
 	if(ret == true)
 	{
-		// TODO 4: Read the title from the config file
+		// L01: DONE 4: Read the title from the config file
 		title.create(configApp.child("title").child_value());
 		win->SetTitle(title.GetString());
 
@@ -76,7 +76,7 @@ bool App::Awake()
 
 		while(item != NULL && ret == true)
 		{
-			// TODO 5: Add a new argument to the Awake method to receive a pointer to an xml node.
+			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
 			// Send nullptr if the node does not exist in config.xml
@@ -131,10 +131,10 @@ bool App::LoadConfig()
 {
 	bool ret = true;
 
-	// TODO 3: Load config.xml file using load_file() method from the xml_document class
+	// L01: DONE 3: Load config.xml file using load_file() method from the xml_document class
 	pugi::xml_parse_result result = configFile.load_file("config.xml");
 
-	// TODO 3: Check result for loading errors
+	// L01: DONE 3: Check result for loading errors
 	if(result == NULL)
 	{
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -149,6 +149,7 @@ bool App::LoadConfig()
 	return ret;
 }
 
+
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
@@ -157,7 +158,19 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// This is a good place to call Load / Save functions
+	// L02: TODO 1: This is a good place to call Load / Save methods
+	if (loadRequest) 
+	{ 
+		LoadStateFile("savegame.xml");
+		LoadStateFile("config.xml");
+	}
+	
+	if (saveRequest) {
+		SaveStateFile("savegame.xml");
+		SaveStateFile("config.xml");
+	}
+
+
 }
 
 // Call modules before each loop iteration
@@ -266,6 +279,93 @@ const char* App::GetTitle() const
 const char* App::GetOrganization() const
 {
 	return organization.GetString();
+}
+
+// L02: TODO 5: Create a method to actually load an xml file
+// then call all the modules to load themselves
+bool App::LoadStateFile(SString filename)
+{
+	bool ret = true;
+
+	//  Load savegame.xml file using load_file() method from the xml_document class
+	pugi::xml_parse_result result = stateFile.load_file(filename.GetString());
+
+	// Check result for loading errors
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		rootStateFile =stateFile.first_child();
+
+		ListItem<Module*>* currentModule= modules.start;
+		ret = true;
+		while (currentModule != NULL && ret)
+		{
+			// Recorremos la lista de modulos, en caso de que falle la carga del nodo perteneciente al modulo correspondiente, ret sera false 
+			ret = currentModule->data->LoadModule(rootStateFile.child(currentModule->data->name.GetString()));
+			currentModule=currentModule->next;
+		}
+		stateFile.reset();
+		(ret == true) ? LOG("Carga de modulos existosa"):LOG("Fallo en la carga del modulo %s", currentModule->prev->data->name.GetString()) ;
+		
+	}
+	loadRequest = false;
+
+	return ret;
+}
+bool App::SaveStateFile(SString filename)
+{
+	bool ret = true;
+
+	//  Load savegame.xml file using load_file() method from the xml_document class
+	pugi::xml_parse_result result = stateFile.load_file(filename.GetString());
+
+	// Check result for loading errors
+	if (result == NULL )
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else 
+	{
+		rootStateFile = stateFile.first_child();
+		ListItem<Module*>* currentModule = modules.start;
+		ret = true;
+		while (currentModule != NULL && ret)
+		{
+			// Recorremos la lista de modulos, en caso de que falle la carga del nodo perteneciente al modulo correspondiente, ret sera false 
+			ret = currentModule->data->SaveModule(rootStateFile.child(currentModule->data->name.GetString()));
+			currentModule = currentModule->next;
+		}
+		stateFile.save_file(filename.GetString());
+		stateFile.reset();
+		(ret == true) ? LOG("Carga de modulos existosa") : LOG("Fallo en la carga del modulo %s", currentModule->prev->data->name.GetString());
+
+	}
+	saveRequest = false;
+
+	return ret;
+}
+
+
+// L02: TODO 7: Implement the xml save method for current state
+
+bool App::SaveSate() 
+{
+	struct xml_string_writer : pugi::xml_writer
+	{
+		std::string result;
+
+		virtual void write(const void* data, size_t size)
+		{
+			result.append(static_cast<const char*>(data), size);
+		}
+	};
+
+	return true;
 }
 
 

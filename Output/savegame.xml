@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
-<save>
+<save_state>
 	<input />
 	<window />
 	<textures />
-	<audio />
+	<audio>
+		<music volume="100" />
+		<fx volume="100" />
+	</audio>
 	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="447" y="293" />
 	</renderer>
-</save>
+</save_state>

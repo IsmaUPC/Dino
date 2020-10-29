@@ -88,10 +88,20 @@ bool Render::CleanUp()
 	return true;
 }
 
-// TODO 6: Create a method to load the state
-// for now it will be camera's x and y
+// L02: TODO 6: Implement a method to load the state
+// for now load camera's x and y
+bool Render::LoadModule(pugi::xml_node& renderNode) {
+	camera.x = renderNode.child("camera").attribute("x").as_int(camera.x);
+	camera.y = renderNode.child("camera").attribute("y").as_int(camera.y);
+	return true;
+}
+bool Render::SaveModule(pugi::xml_node& renderNode) {
+	renderNode.child("camera").attribute("x").set_value(camera.x);
+	renderNode.child("camera").attribute("y").set_value(camera.y);
+	return true;
+}
 
-// TODO 8: Create a method to save the state of the renderer
+// L02: TODO 8: Create a method to save the state of the renderer
 // using append_child and append_attribute
 
 void Render::SetBackgroundColor(SDL_Color color)

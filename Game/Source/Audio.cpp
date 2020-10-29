@@ -10,7 +10,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 
 // NOTE: Library linkage is configured in Linker Options
-#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
+//#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
 
 Audio::Audio() : Module()
 {
@@ -37,10 +37,11 @@ bool Audio::Awake(pugi::xml_node& config)
 	}
 	else
 	{
-		volumeMusic= config.child("music").attribute("volume").as_int(100);
-		volumeFx = config.child("fx").attribute("volume").as_int(100);
-	}
+		volumeMusic = config.child("music").attribute("volume").as_int(50);
+		volumeFx = config.child("fx").attribute("volume").as_int(50);
+		 
 
+	}
 	// Load support for the JPG and PNG image formats
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
@@ -94,7 +95,6 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 	Mix_VolumeMusic(volumeMusic);
-
 	if(!active)
 		return false;
 
@@ -182,4 +182,27 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void Audio::ChangeVolumeMusic(int num) {
+	if (num == 10 && volumeMusic < 100)
+	{
+		volumeMusic += num;
+	}
+
+	if (num == -10 && volumeMusic > 0){
+		volumeMusic += num;
+	}
+	Mix_VolumeMusic(volumeMusic);
+}
+
+
+bool Audio::LoadModule(pugi::xml_node& node) {
+	volumeMusic = node.child("music").attribute("current_volume").as_int(volumeMusic);
+	Mix_VolumeMusic(volumeMusic);
+	return true;
+}
+bool Audio::SaveModule(pugi::xml_node& node) {
+	node.child("music").attribute("current_volume").set_value(volumeMusic);
+	return true;
 }

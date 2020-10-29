@@ -45,6 +45,32 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
+	// Metodo para guardar el xml en una variable
+	bool LoadStateFile(const SString _filename);
+	bool SaveStateFile(const SString _filename);
+
+    // L02: TODO 1: Create methods to request Load / Save
+	void LoadRequest(const SString _filename)
+	{
+		filename = _filename;
+		loadRequest = true;
+	}
+	void SaveRequest(const SString _filename)
+	{
+		filename = _filename;
+		saveRequest = true;
+	}	
+	void LoadRequest()
+	{
+		
+		loadRequest = true;
+	}
+	void SaveRequest()
+	{
+		
+		saveRequest = true;
+	}
+
 private:
 
 	// Load config file
@@ -65,6 +91,8 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
+	bool SaveSate();
+
 public:
 
 	// Modules
@@ -84,15 +112,23 @@ private:
 
 	List<Module *> modules;
 
-	// TODO 2: Create new variables from pugui namespace:
-	// a xml_document to store the config file and
-	// two xml_node to read specific branches of the xml
+	// L01: DONE 2: Create new variables from pugui namespace:
+	// xml_document to store the config file and
+	// xml_node(s) to read specific branches of the xml
 	pugi::xml_document configFile;
 	pugi::xml_node config;
 	pugi::xml_node configApp;
+	SString filename;
 
 	uint frames;
 	float dt;
+
+	// L02: TODO 1: Create required variables to request load / save and 
+	// the filename for save / load
+	pugi::xml_document stateFile;
+	pugi::xml_node rootStateFile;
+	bool loadRequest=false , saveRequest= false;
+
 };
 
 extern App* app;

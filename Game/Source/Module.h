@@ -4,6 +4,7 @@
 #include "SString.h"
 
 #include "PugiXml/src/pugixml.hpp"
+#include "Log.h"
 
 class App;
 
@@ -20,11 +21,12 @@ public:
 	}
 
 	// Called before render is available
-	// TODO 5: Sending config file to all modules
+	// L01: DONE 5: Sending config file to all modules
 	virtual bool Awake(pugi::xml_node&)
 	{
 		return true;
 	}
+
 
 	// Called before the first frame
 	virtual bool Start()
@@ -55,6 +57,19 @@ public:
 	{
 		return true;
 	}
+
+    // L02: TODO 2: Create new virtual methods to Load / Save
+	virtual bool LoadModule(pugi::xml_node&) 
+	{
+		LOG("Load Clase base");
+		return true;
+	}
+	virtual bool SaveModule(pugi::xml_node&)
+	{
+		LOG("save Clase base");
+		return true;
+	}
+
 
 public:
 
