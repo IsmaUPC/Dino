@@ -25,7 +25,7 @@ struct TileSet
 	int	numTilesHeight;
 	int	offsetX;
 	int	offsetY;
-
+	int tilecount;
 	// L04: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
 };
@@ -40,6 +40,26 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
+// L06: TODO 5: Create a generic structure to hold properties
+struct Properties
+{
+	struct Property
+	{
+		SString	name;
+		int value;
+	};
+	
+	~Properties()
+	{
+		//...
+	}
+
+	// L06: TODO 7: Method to ask for the value of a custom property
+	int GetProperty(const char* name, int default_value = 0) const;
+
+	List<Property*> list;
+};
+
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
@@ -47,6 +67,9 @@ struct MapLayer
 	int width;
 	int height;
 	uint* data;
+
+	// L06: DONE 1: Support custom properties
+	Properties properties;
 
 	MapLayer() : data(NULL)
 	{}
@@ -102,7 +125,7 @@ public:
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
-	// L05: TODO 2: Add orthographic world to map coordinates
+	// L05: DONE 2: Add orthographic world to map coordinates
 	iPoint WorldToMap(int x, int y) const;
 
 private:
@@ -112,6 +135,12 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+
+	// L06: TODO 6: Load a group of properties 
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+	// L06: TODO 3: Pick the right Tileset based on a tile id
+	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 

@@ -170,8 +170,8 @@ void App::FinishUpdate()
 bool App::PreUpdate()
 {
 	bool ret = true;
+
 	ListItem<Module*>* item;
-	item = modules.start;
 	Module* pModule = NULL;
 
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
