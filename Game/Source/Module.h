@@ -4,7 +4,6 @@
 #include "SString.h"
 
 #include "PugiXml/src/pugixml.hpp"
-#include "Log.h"
 
 class App;
 
@@ -26,7 +25,6 @@ public:
 	{
 		return true;
 	}
-
 
 	// Called before the first frame
 	virtual bool Start()
@@ -58,18 +56,16 @@ public:
 		return true;
 	}
 
-    // L02: TODO 2: Create new virtual methods to Load / Save
-	virtual bool LoadModule(pugi::xml_node&) 
+    // L02: DONE 2: Create new virtual methods to Load / Save state
+	virtual bool LoadState(pugi::xml_node&)
 	{
-		LOG("Load Clase base");
-		return true;
-	}
-	virtual bool SaveModule(pugi::xml_node&)
-	{
-		LOG("save Clase base");
 		return true;
 	}
 
+	virtual bool SaveState(pugi::xml_node&) const
+	{
+		return true;
+	}
 
 public:
 

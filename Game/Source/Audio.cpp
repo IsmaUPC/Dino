@@ -15,7 +15,7 @@
 Audio::Audio() : Module()
 {
 	music = NULL;
-	name.create("audio");
+	name.Create("audio");
 }
 
 // Destructor
@@ -35,13 +35,7 @@ bool Audio::Awake(pugi::xml_node& config)
 		active = false;
 		ret = true;
 	}
-	else
-	{
-		volumeMusic = config.child("music").attribute("volume").as_int(50);
-		volumeFx = config.child("fx").attribute("volume").as_int(50);
-		 
 
-	}
 	// Load support for the JPG and PNG image formats
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
@@ -94,7 +88,7 @@ bool Audio::CleanUp()
 bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
-	Mix_VolumeMusic(volumeMusic);
+
 	if(!active)
 		return false;
 
@@ -177,32 +171,8 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	if(id > 0 && id <= fx.count())
 	{
-		Mix_VolumeChunk(fx[id - 1], volumeFx);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
 
 	return ret;
-}
-
-void Audio::ChangeVolumeMusic(int num) {
-	if (num == 10 && volumeMusic < 100)
-	{
-		volumeMusic += num;
-	}
-
-	if (num == -10 && volumeMusic > 0){
-		volumeMusic += num;
-	}
-	Mix_VolumeMusic(volumeMusic);
-}
-
-
-bool Audio::LoadModule(pugi::xml_node& node) {
-	volumeMusic = node.child("music").attribute("current_volume").as_int(volumeMusic);
-	Mix_VolumeMusic(volumeMusic);
-	return true;
-}
-bool Audio::SaveModule(pugi::xml_node& node) {
-	node.child("music").attribute("current_volume").set_value(volumeMusic);
-	return true;
 }

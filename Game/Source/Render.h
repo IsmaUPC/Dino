@@ -30,10 +30,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// L02: TODO 6: Declare Load / Save methods
-	bool LoadModule(pugi::xml_node& renderNode);
-
-	bool SaveModule(pugi::xml_node& renderNode);
+	// Load / Save
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
 
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
