@@ -18,8 +18,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	input = new Input();
 	win = new Window();
+	input = new Input();
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
@@ -28,8 +28,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(input);
 	AddModule(win);
+	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
@@ -87,7 +87,7 @@ bool App::Awake()
 		ListItem<Module*>* item;
 		item = modules.start;
 
-		while (item != NULL && ret == true)
+		while ((item != NULL) && (ret == true))
 		{
 			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
