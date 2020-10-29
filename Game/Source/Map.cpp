@@ -68,7 +68,7 @@ void Map::Draw()
 					for (int i = 0; i < data.tilesets.count(); i++)
 					{
 						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0)
-							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &GetTilesetFromTileId(tileId)->GetTileRect(tileId));
+							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 							//app->render->DrawTexture(data.tilesets.At(i)->data->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 					}
 				}
