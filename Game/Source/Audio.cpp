@@ -10,7 +10,7 @@
 #include "SDL_mixer/include/SDL_mixer.h"
 
 // NOTE: Library linkage is configured in Linker Options
-//#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
+#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
 
 Audio::Audio() : Module()
 {
@@ -34,6 +34,11 @@ bool Audio::Awake(pugi::xml_node& config)
 		LOG("SDL_INIT_AUDIO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		active = false;
 		ret = true;
+	}
+	else
+	{
+		volumeMusic= config.child("music").attribute("volume").as_int(100);
+		volumeFx = config.child("fx").attribute("volume").as_int(100);
 	}
 
 	// Load support for the JPG and PNG image formats
@@ -88,6 +93,7 @@ bool Audio::CleanUp()
 bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
+	Mix_VolumeMusic(volumeMusic);
 
 	if(!active)
 		return false;
@@ -171,6 +177,7 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	if(id > 0 && id <= fx.count())
 	{
+		Mix_VolumeChunk(fx[id - 1], volumeFx);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
 
