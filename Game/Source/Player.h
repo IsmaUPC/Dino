@@ -22,6 +22,8 @@ struct PlayerData
 	iPoint position;
 	State state;
 	Animation* currentAnimation;
+	float velocity;
+	bool rightDirection;
 
 	SDL_Texture* texture;
 };

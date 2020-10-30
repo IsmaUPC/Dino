@@ -2,6 +2,8 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Player.h"
+#include "Input.h"
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -30,8 +32,20 @@ bool Player::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Player Parser");
 	bool ret = true;
+	
+	playerData.velocity = 2;
+	playerData.position = { 432,1178 };
+
 	idleAnim.loop = true;
 	idleAnim.speed = 0.025;
+	walkAnim->loop = true;
+	walkAnim->speed = 0.08;
+	damageAnim->loop = true;
+	damageAnim->speed = 0.025;
+	runAnim->loop = true;
+	runAnim->speed = 0.025;
+
+	
 
 	for (int i = 0; i < 4; i++)
 		idleAnim.PushBack({ 78 * i,0, 78, 78 });
@@ -105,7 +119,59 @@ bool Player::Update(float dt) {
 
 
 	playerData.currentAnimation->Update();
+	app->render->camera.x= (WINDOW_W/2) + (playerData.position.x*-1)  ;
+	app->render->camera.y= 	((WINDOW_H/2)+(playerData.position.y*-1))+100;
 
+
+	// Comprobamos si las tecas están pulsadas al mismo tiempo
+	if( !(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
+	{
+		
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				playerData.state = State::WALK_R;
+				playerData.rightDirection = true;
+				playerData.position.x += playerData.velocity;
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				playerData.state = State::WALK_L;
+				playerData.rightDirection = false;
+				playerData.position.x -= playerData.velocity;
+			}
+		}
+		else
+		{
+			playerData.state = State::IDLE;
+
+		}
+
+	}
+	else {
+		playerData.state = State::IDLE;
+	}
+
+
+	switch (playerData.state)
+	{
+	case IDLE:
+		playerData.currentAnimation = &idleAnim;
+		break;
+
+	case WALK_L:
+		playerData.currentAnimation = walkAnim;
+
+		break;
+
+	case WALK_R:
+		playerData.currentAnimation = walkAnim;
+		break;
+
+	default:
+		break;
+	}
 
 	return true;
 }
@@ -114,7 +180,10 @@ bool Player::PostUpdate() {
 
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
+	if (playerData.rightDirection) {
 	app->render->DrawTexture(playerData.texture, playerData.position.x, playerData.position.y, &rectPlayer);
+	}else
+	app->render->DrawTextureFlip(playerData.texture, playerData.position.x, playerData.position.y, &rectPlayer);
 
 	return true;
 }
