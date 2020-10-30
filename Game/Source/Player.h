@@ -14,6 +14,9 @@ enum State {
 	IDLE,
 	WALK_L,
 	WALK_R,
+	WALK_UP,
+	WALK_DOWN,
+	JUMP,
 
 };
 
@@ -22,7 +25,7 @@ struct PlayerData
 	iPoint position;
 	State state;
 	Animation* currentAnimation;
-	float velocity;
+	int velocity;
 	bool rightDirection;
 
 	SDL_Texture* texture;
@@ -45,16 +48,25 @@ public:
 
 	bool Update(float dt);
 
+	void PlayerMoveAnimation();
+
+	void PlayerControls();
+
+	void MovePlayer(State playerState);
+
 	bool PostUpdate();
 
 	bool CleanUp();
 
 	bool Load(const char* path);
 
+	bool CollisionPlayer(iPoint nextPosition);
 
 private:
 
 	bool LoadPlayer();
+
+	void Jump();
 
 public:
 
@@ -69,10 +81,13 @@ private:
 	Animation* damageAnim = new Animation();
 	Animation* runAnim = new Animation( );
 
-
+	float velY=0;
+	//int gravity=1;
 
 	pugi::xml_document playerFile;
 	SString folder;
+	iPoint tmp;
+	int nextY;
 
 
 };

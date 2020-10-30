@@ -2,7 +2,9 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Player.h"
+
 #include "Input.h"
+#include "Map.h"
 
 
 #include "Defs.h"
@@ -34,7 +36,7 @@ bool Player::Awake(pugi::xml_node& config)
 	bool ret = true;
 	
 	playerData.velocity = 2;
-	playerData.position = { 432,1178 };
+	playerData.position = { 432,1170 };
 
 	idleAnim.loop = true;
 	idleAnim.speed = 0.025;
@@ -117,43 +119,18 @@ bool Player::PreUpdate() {
 
 bool Player::Update(float dt) {
 
-
 	playerData.currentAnimation->Update();
 	app->render->camera.x= (WINDOW_W/2) + (playerData.position.x*-1)  ;
 	app->render->camera.y= 	((WINDOW_H/2)+(playerData.position.y*-1))+100;
 
+	// Move player inputs control
+		PlayerControls();
 
-	// Comprobamos si las tecas están pulsadas al mismo tiempo
-	if( !(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
-	{
-		
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				playerData.state = State::WALK_R;
-				playerData.rightDirection = true;
-				playerData.position.x += playerData.velocity;
-			}
+	return true;
+}
 
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				playerData.state = State::WALK_L;
-				playerData.rightDirection = false;
-				playerData.position.x -= playerData.velocity;
-			}
-		}
-		else
-		{
-			playerData.state = State::IDLE;
-
-		}
-
-	}
-	else {
-		playerData.state = State::IDLE;
-	}
-
-
+void Player::PlayerMoveAnimation()
+{
 	switch (playerData.state)
 	{
 	case IDLE:
@@ -172,8 +149,83 @@ bool Player::Update(float dt) {
 	default:
 		break;
 	}
+}
 
-	return true;
+void Player::PlayerControls()
+{
+	MovePlayer(playerData.state);
+	
+		// Comprobamos si las tecas están pulsadas al mismo tiempo
+	if (!(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		&&(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
+	{
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)MovePlayer(State::WALK_R);
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)MovePlayer(State::WALK_L);
+	}
+	else if(playerData.state!= State::JUMP) playerData.state = State::IDLE;
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) Jump();
+
+	if (playerData.state == State::JUMP) MovePlayer(State::JUMP);
+
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)MovePlayer(State::WALK_UP);
+	
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)MovePlayer(State::WALK_DOWN);
+
+	PlayerMoveAnimation();
+
+
+}
+
+void Player::MovePlayer(State playerState)
+{
+	tmp =(iPoint) playerData.position;
+	bool isJumping=(playerData.state==State::JUMP);
+
+
+	switch (playerState)
+	{
+	case IDLE:
+		if(!isJumping)playerData.state = State::IDLE;
+		break;
+	case WALK_L:
+		if(!isJumping)playerData.state = State::WALK_L;
+		playerData.rightDirection = false;
+		playerData.position.x -= playerData.velocity;
+		break;
+	case WALK_R:
+		if(!isJumping)playerData.state = State::WALK_R;
+		playerData.rightDirection = true;
+		playerData.position.x += playerData.velocity;
+		break;
+	case WALK_UP:
+		playerData.state = State::IDLE;
+		playerData.position.y -= playerData.velocity;
+		break;
+	case WALK_DOWN:
+		playerData.state = State::IDLE;
+		playerData.position.y += playerData.velocity;
+		break;
+	case JUMP:
+		if (velY == 0)playerData.state = State::IDLE;
+		break;
+	default:
+		break;
+	}
+	nextY = (playerData.position.y + velY);
+
+	if (!CollisionPlayer({ playerData.position.x+playerData.velocity,  nextY})|| !CollisionPlayer({ playerData.position.x - playerData.velocity,  nextY }))
+	{
+		playerData.position.y += velY;
+		velY += 0.02f;
+	}
+	else {
+		velY = 0;
+	}
+
+	if (CollisionPlayer(playerData.position))playerData.position = tmp;
+	if (CollisionPlayer(tmp))playerData.position = tmp;
+
 }
 
 bool Player::PostUpdate() {
@@ -181,9 +233,9 @@ bool Player::PostUpdate() {
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
 	if (playerData.rightDirection) {
-	app->render->DrawTexture(playerData.texture, playerData.position.x, playerData.position.y, &rectPlayer);
+	app->render->DrawTexture(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	}else
-	app->render->DrawTextureFlip(playerData.texture, playerData.position.x, playerData.position.y, &rectPlayer);
+	app->render->DrawTextureFlip(playerData.texture, (int) playerData.position.x -15, playerData.position.y - (rectPlayer.h-10), &rectPlayer);
 
 	return true;
 }
@@ -193,4 +245,26 @@ bool Player::CleanUp() {
 	app->tex->UnLoad(playerData.texture);
 
 	return true;
+}
+
+void Player::Jump() {
+
+	if (playerData.state != State::JUMP) {
+		velY = -2.5;
+		playerData.state = State::JUMP;
+	}
+
+
+}
+
+bool Player::CollisionPlayer(iPoint nextPosition) {
+
+	iPoint positionMapPlayer;
+	int y = (int)nextPosition.y;
+	positionMapPlayer= app->map->WorldToMap((int)nextPosition.x, y);
+	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0)
+	{
+		return true;
+	}
+	return false;
 }
