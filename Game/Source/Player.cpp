@@ -34,19 +34,19 @@ bool Player::Awake(pugi::xml_node& config)
 	idleAnim.speed = 0.025;
 
 	for (int i = 0; i < 4; i++)
-		idleAnim.PushBack({ 24 * i,0, 24, 24 });
+		idleAnim.PushBack({ 78 * i,0, 78, 78 });
 
 	for (int i = 0; i < 6; i++)
-		walkAnim->PushBack({ 96 + (24 * i),0, 24, 24 });
+		walkAnim->PushBack({ 312 + (78 * i),0, 78, 78 });
 
 	for (int i = 0; i < 3; i++)
-		atakAnim->PushBack({ 240 + (24 * i),0, 24, 24 });
+		atakAnim->PushBack({ 480 + (78 * i),0, 78, 78 });
 
 	for (int i = 0; i < 4; i++)
-		damageAnim->PushBack({ 288 + (24 * i),0, 24, 24 });
+		damageAnim->PushBack({ 576 + (78 * i),0, 78, 78 });
 
 	for (int i = 0; i < 7; i++)
-		runAnim->PushBack({ 384 + (24 * i),0, 24, 24 });
+		runAnim->PushBack({ 768 + (78 * i),0, 78, 78 });
 
 	playerData.currentAnimation = &idleAnim;
 	return ret;
