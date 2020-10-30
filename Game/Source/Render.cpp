@@ -15,7 +15,7 @@ Render::Render() : Module()
 	background.b = 0;
 	background.a = 0;
 }
-
+ 
 // Destructor
 Render::~Render()
 {}

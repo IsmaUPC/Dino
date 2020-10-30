@@ -20,7 +20,7 @@ struct TileSet
 
 	SDL_Texture* texture;
 	int	texWidth;
-	int	texHeight;
+	int	texHeight; 
 	int	numTilesWidth;
 	int	numTilesHeight;
 	int	offsetX;

@@ -7,7 +7,7 @@
 
 #ifdef NULL
 #undef NULL
-#endif
+#endif 
 #define NULL  0
 
 // Deletes a buffer

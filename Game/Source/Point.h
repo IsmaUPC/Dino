@@ -8,6 +8,7 @@
 template<class TYPE>
 class Point
 {
+
 public:
 
 	TYPE x, y;

@@ -9,6 +9,7 @@
 
 class Render : public Module
 {
+
 public:
 
 	Render();

@@ -9,6 +9,7 @@ class App;
 
 class Module
 {
+
 public:
 
 	Module() : active(false)
