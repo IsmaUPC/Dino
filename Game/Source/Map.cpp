@@ -26,7 +26,7 @@ int Properties::GetProperty(const char* value, int defaultValue) const
 		if (strcmp(list.At(i)->data->name.GetString(), value)==0)
 		{
 			if (list.At(i)->data->value != defaultValue) return list.At(i)->data->value;
-			else return defaultValue;//por si tienes más propiedades
+			else return defaultValue;
 		}
 	}
 	
@@ -50,8 +50,6 @@ void Map::Draw()
 	if (mapLoaded == false) return;
 
 	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
-	//MapLayer* layer = data.layers.start->data;
-	//MapLayer* layer;
 
 	// L06: TODO 4: Make sure we draw all the layers and not just the first one
 	for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)
@@ -67,9 +65,8 @@ void Map::Draw()
 					iPoint vec = MapToWorld(x, y);
 					for (int i = 0; i < data.tilesets.count(); i++)
 					{
-						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0)
+						//if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
-							//app->render->DrawTexture(data.tilesets.At(i)->data->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 					}
 				}
 			}
@@ -229,7 +226,7 @@ bool Map::Load(const char* filename)
 
 		data.tilesets.add(set);
 	}
-
+	ret = true;
 	// L04: DONE 4: Iterate all layers and load each of them
 	// Load layer info
 	pugi::xml_node layer;
@@ -254,7 +251,6 @@ bool Map::Load(const char* filename)
 		}
 	}
 
-    
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
@@ -326,9 +322,10 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->tileHeight = tileset_node.attribute("tileheight").as_int(0);
 	set->spacing = tileset_node.attribute("spacing").as_int(0);
 	set->margin = tileset_node.attribute("margin").as_int(0);
-	set->numTilesWidth = tileset_node.attribute("numTilesWidth").as_int(4);
-	set->numTilesHeight = tileset_node.attribute("numTilesHeight").as_int(6);
+	set->numTilesWidth = tileset_node.attribute("numTilesWidth").as_int(1);
+	set->numTilesHeight = tileset_node.attribute("numTilesHeight").as_int(1);
 	set->tilecount= tileset_node.attribute("tilecount").as_int(0);
+
 	return ret;
 }
 
@@ -371,6 +368,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		layer->data[i] = tile.attribute("gid").as_uint(0);
 		tile = tile.next_sibling("tile");
 	}
+
 	return ret;
 }
 
@@ -386,11 +384,9 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 	{
 		Properties::Property *propertyID = new Properties::Property();
 		propertyID->name = propertyNode.attribute("name").as_string("");
-		propertyID->value = propertyNode.attribute("value").as_int(-1);
+		propertyID->value = propertyNode.attribute("value").as_int(0);
 		properties.list.add(propertyID);
 	}
 	
-	
-
 	return ret;
 }

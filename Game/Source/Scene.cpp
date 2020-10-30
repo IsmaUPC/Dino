@@ -33,7 +33,8 @@ bool Scene::Start()
 {
 	// L03: DONE: Load map
 	//app->map->Load("hello2.tmx");
-	app->map->Load("iso_walk.tmx");
+	//app->map->Load("iso_walk.tmx");
+	app->map->Load("Mapa_PixelArt.tmx");
 	
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -58,27 +59,31 @@ bool Scene::Update(float dt)
 		app->SaveGameRequest();
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= 1;
+		app->render->camera.y -= 3;
 
 	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += 1;
+		app->render->camera.y += 3;
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= 1;
+		app->render->camera.x -= 3;
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += 1;
+		app->render->camera.x += 3;
 
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
 	app->map->Draw();
 
+	iPoint vec;
+	vec.x = 0, vec.y = 0;
+	app->input->GetMousePosition(vec.x, vec.y);
 	// L03: DONE 7: Set the window title with map/tileset info
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile: %d, %d",
 				   app->map->data.width, app->map->data.height,
 				   app->map->data.tileWidth, app->map->data.tileHeight,
-				   app->map->data.tilesets.count());
+				   app->map->data.tilesets.count(),
+				   app->map->WorldToMap(vec.x - app->render->camera.x, vec.y - app->render->camera.y));
 
 	app->win->SetTitle(title.GetString());
 
