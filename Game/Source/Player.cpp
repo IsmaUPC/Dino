@@ -35,13 +35,13 @@ bool Player::Awake(pugi::xml_node& config)
 	LOG("Loading Player Parser");
 	bool ret = true;
 	
-	playerData.velocity = 2;
+	playerData.velocity = 1;
 	playerData.position = { 432,1170 };
 
 	idleAnim.loop = true;
 	idleAnim.speed = 0.025;
 	walkAnim->loop = true;
-	walkAnim->speed = 0.08;
+	walkAnim->speed = 0.04;
 	damageAnim->loop = true;
 	damageAnim->speed = 0.025;
 	runAnim->loop = true;
@@ -87,7 +87,7 @@ bool Player::Load(const char* filename)
 		ret = LoadPlayer();
 	}
 
-		return ret;
+	return ret;
 }
 
 bool Player::LoadPlayer() {
@@ -120,8 +120,18 @@ bool Player::PreUpdate() {
 bool Player::Update(float dt) {
 
 	playerData.currentAnimation->Update();
-	app->render->camera.x= (WINDOW_W/2) + (playerData.position.x*-1)  ;
-	app->render->camera.y= 	((WINDOW_H/2)+(playerData.position.y*-1))+100;
+	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
+	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
+
+	if (app->render->camera.x <= 0 && app->render->camera.x >= -1694)
+		app->render->camera.x = followPositionPalyerX;
+	else if (followPositionPalyerX<0 && followPositionPalyerX>-1694)  
+		app->render->camera.x = followPositionPalyerX;
+
+	if (app->render->camera.y <= -50 && app->render->camera.y >= -910)
+		app->render->camera.y = followPositionPalyerY;
+	else if (followPositionPalyerY<-50 && followPositionPalyerY>-910)
+		app->render->camera.y = followPositionPalyerY;
 
 	// Move player inputs control
 		PlayerControls();

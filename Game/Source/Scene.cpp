@@ -39,7 +39,7 @@ bool Scene::Start()
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
-	img = app->tex->Load("Assets/textures/Fondo.png");
+	img = app->tex->Load("Assets/textures/sky.png");
 	SDL_QueryTexture(img, NULL,NULL,&imgW,&imgH);
 
 	app->render->camera.y -= imgH;
