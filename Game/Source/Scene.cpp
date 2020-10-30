@@ -37,9 +37,22 @@ bool Scene::Start()
 	app->map->Load("Mapa_PixelArt.tmx");
 	
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+
+	img = app->tex->Load("Assets/textures/Fondo.png");
+	SDL_QueryTexture(img, NULL,NULL,&imgW,&imgH);
+
+	app->render->camera.y -= imgH;
 
 	return true;
+}
+
+void Scene::SetDebugCollaider(bool value)
+{
+	if (value == NULL)
+		debugCollisions = !debugCollisions;
+	else
+		debugCollisions = value;
 }
 
 // Called each loop iteration
@@ -70,7 +83,12 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 3;
 
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
+	//DEBUG KEYS
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+		SetDebugCollaider();
+
+	//Draw Background
+	//Parallax();
 
 	// Draw map
 	app->map->Draw();
@@ -107,4 +125,25 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void Scene::Parallax()
+{
+	if (app->render->camera.x > 0) {
+		imgX = app->render->camera.x;
+		speedImg = -1;
+
+	}
+	else if ((app->render->camera.x + imgW) < WINDOW_W+20)
+	{
+		imgX = app->render->camera.x - (WINDOW_W - 20);
+		speedImg = -1;
+	}
+	else
+	{
+		imgX = (int)(app->render->camera.x / 2);
+		speedImg = 0.5f;
+	}
+	app->render->DrawTexture(img, imgX,0,0, speedImg);
+
 }

@@ -20,6 +20,8 @@ public:
 	// Called before the first frame
 	bool Start();
 
+	void SetDebugCollaider(bool value=NULL);
+	bool* GetDebugCollaider() { return &debugCollisions; }
 	// Called before all Updates
 	bool PreUpdate();
 
@@ -32,8 +34,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void Parallax();
 private:
+
+	bool debugCollisions = false;
+
 	SDL_Texture* img;
+	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
+	int speedImg=0;
 };
 
 #endif // __SCENE_H__

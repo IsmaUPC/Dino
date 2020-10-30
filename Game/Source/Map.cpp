@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Render.h"
 #include "Textures.h"
+#include "Scene.h"
 #include "Map.h"
 
 #include "Defs.h"
@@ -41,6 +42,8 @@ bool Map::Awake(pugi::xml_node& config)
 
     folder.Create(config.child("folder").child_value());
 
+	drawColl = app->scene->GetDebugCollaider();
+
     return ret;
 }
 
@@ -65,7 +68,7 @@ void Map::Draw()
 					iPoint vec = MapToWorld(x, y);
 					for (int i = 0; i < data.tilesets.count(); i++)
 					{
-						//if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0)
+						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0 || *drawColl)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 					}
 				}

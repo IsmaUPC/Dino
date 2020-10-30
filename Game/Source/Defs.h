@@ -10,6 +10,12 @@
 #endif 
 #define NULL  0
 
+//Size Window
+#define WINDOW_W 640
+#define WINDOW_H 480
+//
+
+
 // Deletes a buffer
 #define RELEASE( x ) \
 	{						\

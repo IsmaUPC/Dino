@@ -152,6 +152,8 @@ private:
     pugi::xml_document mapFile;
     SString folder;
     bool mapLoaded;
+
+	bool* drawColl;
 };
 
 #endif // __MAP_H__
