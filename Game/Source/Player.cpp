@@ -347,9 +347,31 @@ bool Player::CollisionJumping(iPoint nextPosition) {
 
 bool Player::CheckCollision(iPoint positionMapPlayer)
 {
-	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0 
-		|| app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != NULL)
+	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0 )
 	{
+		return true;
+	}
+	return false;
+}
+
+bool Player::CheckVictory(iPoint positionMapPlayer_)
+{
+	iPoint positionMapPlayer;
+	int y = (int)positionMapPlayer_.y;
+
+	positionMapPlayer = app->map->WorldToMap((int)positionMapPlayer_.x + 18, y);
+	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Player::CheckGameOver()
+{
+	if (playerData.position.y>1728)
+	{
+		isDead = true;
 		return true;
 	}
 	return false;

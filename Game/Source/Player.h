@@ -72,10 +72,10 @@ public:
 	bool Load(const char* path);
 
 	bool CollisionPlayer(iPoint nextPosition);
-
-	bool CheckCollision(iPoint positionMapPlayer);
-
 	bool CollisionJumping(iPoint positionMapPlayer);
+	bool CheckCollision(iPoint positionMapPlayer);
+	bool CheckVictory(iPoint positionMapPlayer);
+	bool CheckGameOver();
 
 private:
 
@@ -85,9 +85,8 @@ private:
 
 public:
 
-
 	PlayerData playerData;
-	
+	float velY = 0;
 private:
 
 	Animation idleAnim;
@@ -97,15 +96,13 @@ private:
 	Animation* runAnim = new Animation( );
 	Animation* jumpAnim = new Animation( );
 
-	float velY=0;
 	int velWalk;
-
+	bool isDead = false;
 	pugi::xml_document playerFile;
 	SString folder;
 	iPoint tmp;
 	int nextYDown;
 	int nextYUp;
-
 };
 
 #endif // _PLAYER_H_

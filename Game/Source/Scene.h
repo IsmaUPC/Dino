@@ -51,7 +51,8 @@ public:
 private:
 
 	bool debugCollisions = false;
-
+	bool victory = false;
+	bool lose = false;
 	AnimationFather animationFather;
 	SDL_Texture* img;
 	Animation idleAnim;
