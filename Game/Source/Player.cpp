@@ -23,6 +23,7 @@ Player::~Player()
 bool Player::Start() {
 
 	playerData.texture = app->tex->Load("Assets/textures/Dino_Green.png");
+	playerData.position = { 432,1170 };
 
 	return true;
 }
@@ -33,20 +34,20 @@ bool Player::Awake(pugi::xml_node& config)
 	bool ret = true;
 	
 	playerData.velocity = 1;
-	playerData.position = { 432,1170 };
+	//playerData.position = { 432,1170 };
 	playerData.isJumped = false;
 
 	idleAnim.loop = true;
-	idleAnim.speed = 0.025;
+	idleAnim.speed = 0.025f;
 	walkAnim->loop = true;
-	walkAnim->speed = 0.04;
+	walkAnim->speed = 0.04f;
 	damageAnim->loop = true;
-	damageAnim->speed = 0.025;
+	damageAnim->speed = 0.025f;
 	runAnim->loop = true;
-	runAnim->speed = 0.025;
+	runAnim->speed = 0.025f;
 	
 	jumpAnim->loop = true;
-	jumpAnim->speed = 0.12;
+	jumpAnim->speed = 0.12f;
 
 	
 
@@ -315,7 +316,11 @@ bool Player::PostUpdate() {
 
 bool Player::CleanUp() {
 
+	if (!active)
+		return true;
+
 	app->tex->UnLoad(playerData.texture);
+	active = false;
 
 	return true;
 }
