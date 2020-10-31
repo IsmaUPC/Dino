@@ -104,7 +104,6 @@ private:
 	iPoint tmp;
 	int nextY;
 
-
 };
 
 #endif // _PLAYER_H_

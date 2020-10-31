@@ -23,11 +23,8 @@ Player::~Player()
 bool Player::Start() {
 
 	playerData.texture = app->tex->Load("Assets/textures/Dino_Green.png");
-	
 
-
-		return true;
-
+	return true;
 }
 
 bool Player::Awake(pugi::xml_node& config)
@@ -192,15 +189,14 @@ void Player::PlayerControls()
 	{
 		if (playerData.isJumped && !playerData.isJumpedAgain)
 		{
-			velY = -2.5;
+			velY = -1.6;
 			playerData.isJumpedAgain = true;
 
 		}
 		if (!playerData.isJumped)
 		{
-			velY = -2.5;
+			velY = -1.6;
 			playerData.isJumped = true;
-
 		}
 	
 		playerData.state = State::JUMP;
@@ -291,7 +287,7 @@ void Player::Fallings()
  		velY = (int)0;
 		playerData.state = State::IDLE;
 	}
-	if (CollisionJumping({ playerData.position.x + playerData.velocity,  nextY }))
+	if ( CollisionJumping({ playerData.position.x + playerData.velocity,  nextY }))
 	{
 		playerData.isJumped = false;
 		playerData.isJumpedAgain = false;
@@ -309,6 +305,7 @@ bool Player::PostUpdate() {
 	if (playerData.direction == MoveDirection::WALK_L)
 		app->render->DrawTextureFlip(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	
+
 	return true;
 }
 
@@ -324,13 +321,17 @@ bool Player::CollisionPlayer(iPoint nextPosition) {
 	iPoint positionMapPlayer;
 	int y = (int)nextPosition.y;
 
-	positionMapPlayer= app->map->WorldToMap((int)nextPosition.x, y);
+	positionMapPlayer= app->map->WorldToMap((int)nextPosition.x+1, y);
 	if (CheckCollision(positionMapPlayer)) return true;
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48, y);
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48-1, y);
 	if (CheckCollision(positionMapPlayer)) return true;
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y-54);
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+1, y-54);
 	if (CheckCollision(positionMapPlayer)) return true;
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x + 48, y-54);
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x-1 + 48, y-54);
+	if (CheckCollision(positionMapPlayer)) return true;
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x + 1, y - 47);
+	if (CheckCollision(positionMapPlayer)) return true;
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x - 1 + 48, y - 47);
 	if (CheckCollision(positionMapPlayer)) return true;
 	return false;
 }
@@ -340,7 +341,9 @@ bool Player::CollisionJumping(iPoint nextPosition) {
 	iPoint positionMapPlayer;
 	int y = (int)nextPosition.y;
 
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y);
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+18, y);
+	if (CheckCollision(positionMapPlayer)) return true;
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48-18, y);
 	if (CheckCollision(positionMapPlayer)) return true;
 
 	return false;
