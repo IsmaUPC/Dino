@@ -7,7 +7,6 @@
 #include "SceneIntro.h"
 #include "ModuleFadeToBlack.h"
 
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -90,7 +89,9 @@ bool SceneIntro::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN 
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) 
+	{
 		app->fade->FadeToBlack(this, (Module*)app->scene, 60.f);
 		return true;
 	}
