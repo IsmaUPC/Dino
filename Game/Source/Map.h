@@ -63,9 +63,9 @@ struct Properties
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
-	SString	name;
-	int width;
-	int height;
+	SString	name = "";
+	int width = 0;
+	int height = 0;
 	uint* data;
 
 	// L06: DONE 1: Support custom properties

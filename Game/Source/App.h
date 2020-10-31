@@ -17,6 +17,8 @@ class Textures;
 class Audio;
 class Scene;
 class SceneIntro;
+class SceneWin;
+class SceneLose;
 class Map;
 class Player;
 class ModuleFadeToBlack;
@@ -91,6 +93,8 @@ public:
 	Audio* audio;
 	Scene* scene;
 	SceneIntro* sceneIntro;
+	SceneWin* sceneWin;
+	SceneLose* sceneLose;
 	Map* map;
 	Player* player;
 	ModuleFadeToBlack* fade;

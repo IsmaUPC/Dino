@@ -6,6 +6,8 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "SceneIntro.h"
+#include "SceneWin.h"
+#include "SceneLose.h"
 #include "Map.h"
 #include "Player.h"
 #include "ModuleFadeToBlack.h"
@@ -30,6 +32,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player();
 	scene = new Scene();
 	sceneIntro = new SceneIntro();
+	sceneWin = new SceneWin();
+	sceneLose = new SceneLose();
 	fade = new ModuleFadeToBlack(); 
 
 	// Ordered for awake / Start / Update
@@ -42,10 +46,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(scene);
 	AddModule(sceneIntro);
+	AddModule(sceneWin);
+	AddModule(sceneLose);
 	AddModule(fade);
 
 	//actives
 	scene->active = false;
+	sceneWin->active = false;
+	sceneLose->active = false;
 	player->active = false;
 	map->active = false;
 

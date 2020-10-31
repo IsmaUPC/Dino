@@ -43,6 +43,12 @@
     <ClCompile Include="Source\SceneIntro.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneLose.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneWin.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -106,6 +112,12 @@
       <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneIntro.h">
+      <Filter>Modules\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLose.h">
+      <Filter>Modules\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneWin.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
