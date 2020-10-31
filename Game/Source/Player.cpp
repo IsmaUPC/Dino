@@ -192,15 +192,13 @@ void Player::PlayerControls()
 	{
 		if (playerData.isJumped && !playerData.isJumpedAgain)
 		{
-			velY = -2.5;
+			velY = -1.75;
 			playerData.isJumpedAgain = true;
-
 		}
 		if (!playerData.isJumped)
 		{
 			velY = -2.5;
 			playerData.isJumped = true;
-
 		}
 	
 		playerData.state = State::JUMP;
@@ -239,7 +237,10 @@ void Player::MovePlayer(MoveDirection playerDirection)
 	case IDLE:
 		break;	
 
-	case JUMP:	
+	case JUMP:
+		MoveToDirection(playerData.velocity);
+		break;
+
 	case WALK:
 		MoveToDirection(playerData.velocity);
 		break;
@@ -280,21 +281,23 @@ void Player::Fallings()
 {	
 	tmp = (iPoint)playerData.position;
 
-	nextY = (playerData.position.y + velY);
-
-	if (!CollisionPlayer({ playerData.position.x + playerData.velocity,  nextY }) || !CollisionPlayer({ playerData.position.x - playerData.velocity,  nextY }))
+	nextYDown = (playerData.position.y + velY);
+	nextYUp= (playerData.position.y - velY);
+	// Horizontal Collision
+	if (!CollisionPlayer({ playerData.position.x + playerData.velocity,  nextYDown }) || !CollisionPlayer({ playerData.position.x - playerData.velocity,  nextYDown }))
 	{
 		playerData.position.y += velY;
-		velY += 0.02f;
+		velY += 0.035f;
 	}
 	else {
  		velY = (int)0;
-		playerData.state = State::IDLE;
-	}
-	if (CollisionJumping({ playerData.position.x + playerData.velocity,  nextY }))
+	} // Verctical collision
+	if (CollisionJumping({ playerData.position.x + playerData.velocity,  nextYDown }))
 	{
 		playerData.isJumped = false;
 		playerData.isJumpedAgain = false;
+		playerData.state = State::IDLE;
+
 	}
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 
@@ -323,15 +326,22 @@ bool Player::CollisionPlayer(iPoint nextPosition) {
 
 	iPoint positionMapPlayer;
 	int y = (int)nextPosition.y;
+	int x = (int)nextPosition.x;
 
-	positionMapPlayer= app->map->WorldToMap((int)nextPosition.x, y);
-	if (CheckCollision(positionMapPlayer)) return true;
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48, y);
-	if (CheckCollision(positionMapPlayer)) return true;
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y-54);
-	if (CheckCollision(positionMapPlayer)) return true;
-	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x + 48, y-54);
-	if (CheckCollision(positionMapPlayer)) return true;
+	for (int i = 0; i < playerData.numPoints; i++)
+	{
+		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i][0], y+playerData.pointsCollision[i][1]);
+		if (CheckCollision(positionMapPlayer)) return true;
+	}
+
+	//positionMapPlayer= app->map->WorldToMap((int)nextPosition.x, y);
+	//if (CheckCollision(positionMapPlayer)) return true;
+	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48, y);
+	//if (CheckCollision(positionMapPlayer)) return true;
+	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y-54);
+	//if (CheckCollision(positionMapPlayer)) return true;
+	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x + 48, y-54);
+	//if (CheckCollision(positionMapPlayer)) return true;
 	return false;
 }
 

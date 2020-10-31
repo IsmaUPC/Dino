@@ -34,8 +34,10 @@ struct PlayerData
 	int velocity;
 	bool isJumped;
 	bool isJumpedAgain;
-
+	
 	SDL_Texture* texture;
+	static const int numPoints = 4;
+	int pointsCollision[ numPoints][2] = { { 0,0 },{48 , 0},{ 0,-54 },{48 ,-54 } };
 };
 
 
@@ -102,7 +104,8 @@ private:
 	pugi::xml_document playerFile;
 	SString folder;
 	iPoint tmp;
-	int nextY;
+	int nextYDown;
+	int nextYUp;
 
 
 };
