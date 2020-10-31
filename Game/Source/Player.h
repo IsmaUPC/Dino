@@ -86,8 +86,9 @@ private:
 public:
 
 	PlayerData playerData;
-	float velY = 0;
 private:
+	float velY = 0;
+	float velX = 0;
 
 	Animation idleAnim;
 	Animation* walkAnim = new Animation();

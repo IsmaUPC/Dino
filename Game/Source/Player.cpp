@@ -180,22 +180,29 @@ void Player::PlayerControls()
 	if (!(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		&& (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
 	{
-		if (playerData.state == State::IDLE)playerData.state = State::WALK;
+		if (playerData.state == State::IDLE)
+		{
+			playerData.state = State::WALK;
+			velX = playerData.velocity ;
+
+		}
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_R);
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_L);
-	}
+	}	// Any key is pressed or A and D pressed in same time, set player in IDLE state
 	else if(playerData.state== State::IDLE) playerData.state = State::IDLE;
 
+	// Player Jump
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)Jump();
 
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)playerData.position.y -= playerData.velocity;
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)playerData.position.y += playerData.velocity;
 
 
-
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) 
+	// Player Run
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT&& playerData.state == State::WALK)
 	{
-		if (playerData.state != State::JUMP)playerData.state = State::RUN;
+			playerData.state = State::RUN;
+		velX = playerData.velocity * 2;
 	}
 
 	PlayerMoveAnimation();
@@ -232,15 +239,15 @@ void Player::MovePlayer(MoveDirection playerDirection)
 
 	case JUMP:
 
-		MoveToDirection(playerData.velocity);
+		MoveToDirection(velX);
 		break;
 
 	case WALK:
-		MoveToDirection(playerData.velocity);
+		MoveToDirection(velX);
 		break;
 
 	case RUN:
-		MoveToDirection((playerData.velocity * 2));
+		MoveToDirection(velX);
 		break;
 
 	default:
@@ -260,7 +267,6 @@ void Player::MoveToDirection(int velocity) {
 	case WALK_R:
 		playerData.position.x += velocity;
 		break;
-
 
 	default:
 		break;

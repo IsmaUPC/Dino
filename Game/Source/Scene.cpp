@@ -156,7 +156,7 @@ bool Scene::Update(float dt)
 	animationFather.currentAnimation->Update();
 
 	if (app->player->CheckVictory({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-		app->player->playerData.position.y + (int)app->player->velY }) && victory == false)
+		app->player->playerData.position.y }) && victory == false)
 	{
 		LOG("Congratulations, YOU WIN!");
 		victory = true;
