@@ -21,8 +21,6 @@ enum MoveDirection {
 
 	WALK_L,
 	WALK_R,
-	WALK_UP,
-	WALK_DOWN,
 };
 
 struct PlayerData
@@ -36,8 +34,8 @@ struct PlayerData
 	bool isJumpedAgain;
 	
 	SDL_Texture* texture;
-	static const int numPoints = 4;
-	int pointsCollision[ numPoints][2] = { { 0,0 },{48 , 0},{ 0,-54 },{48 ,-54 } };
+	static const int numPoints = 6;
+	int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
 };
 
 
@@ -61,6 +59,8 @@ public:
 
 	void PlayerControls();
 
+	void Jump();
+
 	void MovePlayer(MoveDirection playerDirection);
 
 	
@@ -82,7 +82,6 @@ private:
 	bool LoadPlayer();
 	void Fallings();
 	void MoveToDirection(int velocity);
-	void Jump();
 
 public:
 

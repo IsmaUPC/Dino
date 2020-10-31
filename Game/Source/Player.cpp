@@ -163,7 +163,7 @@ void Player::PlayerMoveAnimation()
 		break;
 
 	case RUN:
-		playerData.currentAnimation = jumpAnim;
+		playerData.currentAnimation = runAnim;
 		break;
 
 	default:
@@ -179,49 +179,44 @@ void Player::PlayerControls()
 	if (!(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		&& (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
 	{
-		if (playerData.state != State::JUMP)playerData.state = State::WALK;
+		if (playerData.state == State::IDLE)playerData.state = State::WALK;
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_R);
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_L);
 	}
-	else if(playerData.state!= State::JUMP) playerData.state = State::IDLE;
+	else if(playerData.state== State::IDLE) playerData.state = State::IDLE;
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)Jump();
+
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)playerData.position.y -= playerData.velocity;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)playerData.position.y += playerData.velocity;
+
+
+
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) 
 	{
-		if (playerData.isJumped && !playerData.isJumpedAgain)
-		{
-			velY = -1.75;
-			playerData.isJumpedAgain = true;
-		}
-		if (!playerData.isJumped)
-		{
-			velY = -2.5;
-			playerData.isJumped = true;
-		}
-	
-		playerData.state = State::JUMP;
-		MovePlayer(playerData.direction);
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN) playerData.state=State::RUN;
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP) 
-	{
-
 		if (playerData.state != State::JUMP)playerData.state = State::RUN;
-		if (playerData.state == MoveDirection::WALK_R) {
-			playerData.position.x += playerData.velocity;
-		}
-		else
-			playerData.position.x -= playerData.velocity;
 	}
-
-
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_UP);
-	
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_DOWN);
 
 	PlayerMoveAnimation();
 
 
+}
+
+void Player::Jump()
+{
+	if (playerData.isJumped && !playerData.isJumpedAgain)
+	{
+		velY = -1.75;
+		playerData.isJumpedAgain = true;
+	}
+	if (!playerData.isJumped)
+	{
+		velY = -2.5;
+		playerData.isJumped = true;
+	}
+
+	playerData.state = State::JUMP;
+	MovePlayer(playerData.direction);
 }
 
 void Player::MovePlayer(MoveDirection playerDirection)
@@ -235,6 +230,7 @@ void Player::MovePlayer(MoveDirection playerDirection)
 		break;	
 
 	case JUMP:
+
 		MoveToDirection(playerData.velocity);
 		break;
 
@@ -243,7 +239,7 @@ void Player::MovePlayer(MoveDirection playerDirection)
 		break;
 
 	case RUN:
-		MoveToDirection(playerData.velocity * 2);
+		MoveToDirection((playerData.velocity * 2));
 		break;
 
 	default:
@@ -255,7 +251,8 @@ void Player::MovePlayer(MoveDirection playerDirection)
 
 void Player::MoveToDirection(int velocity) {
 	switch (playerData.direction)
-	{
+	{	
+
 	case WALK_L:
 		playerData.position.x -= velocity;
 		break;
@@ -263,12 +260,7 @@ void Player::MoveToDirection(int velocity) {
 		playerData.position.x += velocity;
 		break;
 
-	case WALK_UP:
-		playerData.position.y -= velocity;
-		break;
-	case WALK_DOWN:
-		playerData.position.y += velocity;
-		break;
+
 	default:
 		break;
 	}
@@ -332,15 +324,6 @@ bool Player::CollisionPlayer(iPoint nextPosition) {
 		if (CheckCollision(positionMapPlayer)) return true;
 	}
 
-	//positionMapPlayer= app->map->WorldToMap((int)nextPosition.x, y);
-	//if (CheckCollision(positionMapPlayer)) return true;
-	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48, y);
-	//if (CheckCollision(positionMapPlayer)) return true;
-	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y-54);
-	//if (CheckCollision(positionMapPlayer)) return true;
-	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x + 48, y-54);
-	//if (CheckCollision(positionMapPlayer)) return true;
-
 	return false;
 }
 
@@ -359,7 +342,8 @@ bool Player::CollisionJumping(iPoint nextPosition) {
 
 bool Player::CheckCollision(iPoint positionMapPlayer)
 {
-	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0)
+	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0 
+		|| app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != NULL)
 	{
 		return true;
 	}
