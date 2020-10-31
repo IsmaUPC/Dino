@@ -16,8 +16,10 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class SceneIntro;
 class Map;
 class Player;
+class ModuleFadeToBlack;
 
 class App
 {
@@ -88,8 +90,10 @@ public:
 	Textures* tex;
 	Audio* audio;
 	Scene* scene;
+	SceneIntro* sceneIntro;
 	Map* map;
 	Player* player;
+	ModuleFadeToBlack* fade;
 
 private:
 
@@ -111,6 +115,7 @@ private:
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
+
 };
 
 extern App* app;

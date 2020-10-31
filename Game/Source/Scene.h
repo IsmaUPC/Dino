@@ -3,6 +3,9 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Point.h"
+
+#include "PugiXml\src\pugixml.hpp"
 
 struct SDL_Texture;
 
@@ -27,6 +30,7 @@ public:
 
 	// Called before the first frame
 	bool Start();
+	bool StartModules();
 
 	void SetDebugCollaider(bool value=NULL);
 	bool* GetDebugCollaider() { return &debugCollisions; }
@@ -44,15 +48,15 @@ public:
 
 	void Parallax();
 
-	AnimationFather animationFather;
 private:
 
 	bool debugCollisions = false;
 
+	AnimationFather animationFather;
 	SDL_Texture* img;
 	Animation idleAnim;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
-	int speedImg=0;
+	float speedImg=0;
 };
 
 #endif // __SCENE_H__

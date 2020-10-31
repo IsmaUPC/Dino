@@ -5,7 +5,12 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
+#include "Player.h"
+#include "SceneIntro.h"
 #include "Map.h"
+#include "ModuleFadeToBlack.h"
+
+#include <SDL_mixer\include\SDL_mixer.h>
 
 #include "Defs.h"
 #include "Log.h"
@@ -58,6 +63,34 @@ bool Scene::Start()
 	return true;
 }
 
+bool Scene::StartModules()
+{
+
+	app->player->Init();
+	app->player->Start();
+
+	app->map->active = true;
+
+	app->map->Load("Mapa_PixelArt.tmx");
+	// Load music
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	img = app->tex->Load("Assets/textures/Fondo.png");
+	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
+
+	animationFather.position = { 2352, 495 };
+	idleAnim.loop = true;
+	idleAnim.speed = 0.025;
+
+	for (int i = 0; i < 4; i++)
+		idleAnim.PushBack({ 117 * i,0, 117, 117 });
+
+	animationFather.currentAnimation = &idleAnim;
+
+	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
+
+	app->render->camera.y -= imgH;
+	return true;
+}
 void Scene::SetDebugCollaider(bool value)
 {
 	if (value == NULL)
@@ -98,6 +131,11 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		SetDebugCollaider();
 
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		app->fade->FadeToBlack(this, (Module*)app->sceneIntro);
+		return true;
+	}
+
 	//Draw Background
 	Parallax();
 
@@ -117,6 +155,7 @@ bool Scene::Update(float dt)
 	app->win->SetTitle(title.GetString());
 
 	animationFather.currentAnimation->Update();
+
 	return true;
 }
 
@@ -137,8 +176,18 @@ bool Scene::PostUpdate()
 // Called before quitting
 bool Scene::CleanUp()
 {
-	LOG("Freeing scene");
+	if (!active)
+		return true;
 
+	LOG("Freeing scene");
+	Mix_HaltMusic();
+	app->audio->CleanUp();
+	app->map->CleanUp();
+	app->tex->UnLoad(img);
+	app->tex->UnLoad(animationFather.texture);
+	app->player->CleanUp();
+
+	active = false;
 	return true;
 }
 

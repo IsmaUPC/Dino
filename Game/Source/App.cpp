@@ -5,8 +5,10 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "SceneIntro.h"
 #include "Map.h"
 #include "Player.h"
+#include "ModuleFadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,9 +26,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	scene = new Scene();
 	map = new Map();
 	player = new Player();
+	scene = new Scene();
+	sceneIntro = new SceneIntro();
+	fade = new ModuleFadeToBlack(); 
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -34,10 +38,18 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(scene);
 	AddModule(map);
 	AddModule(player);
+	AddModule(scene);
+	AddModule(sceneIntro);
+	AddModule(fade);
 
+	//actives
+	scene->active = false;
+	player->active = false;
+	map->active = false;
+
+	
 	// Render last to swap buffer
 	AddModule(render);
 }
@@ -113,7 +125,8 @@ bool App::Start()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		if (item->data->active == true)
+			ret = item->data->Start();
 		item = item->next;
 	}
 
@@ -125,7 +138,6 @@ bool App::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
-
 	if(input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
 
@@ -243,7 +255,8 @@ bool App::CleanUp()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp();
+		if (item->data->active == true)
+			ret = item->data->CleanUp();
 		item = item->prev;
 	}
 
