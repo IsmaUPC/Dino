@@ -138,9 +138,9 @@ bool Player::Update(float dt) {
 	else if (followPositionPalyerX<0 && followPositionPalyerX>-1694)  
 		app->render->camera.x = followPositionPalyerX;
 
-	if (app->render->camera.y <= -50 && app->render->camera.y >= -910)
+	if (app->render->camera.y <= -48 && app->render->camera.y >= -910)
 		app->render->camera.y = followPositionPalyerY;
-	else if (followPositionPalyerY<-50 && followPositionPalyerY>-910)
+	else if (followPositionPalyerY<-48 && followPositionPalyerY>-910)
 		app->render->camera.y = followPositionPalyerY;
 
 	// Move player inputs control
@@ -190,21 +190,19 @@ void Player::PlayerControls()
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-			if (playerData.isJumped && !playerData.isJumpedAgain)
+		if (playerData.isJumped && !playerData.isJumpedAgain)
 		{
 			velY = -2.5;
 			playerData.isJumpedAgain = true;
 
 		}
-			if (!playerData.isJumped)
+		if (!playerData.isJumped)
 		{
 			velY = -2.5;
 			playerData.isJumped = true;
 
 		}
 	
-
-
 		playerData.state = State::JUMP;
 		MovePlayer(playerData.direction);
 	}
@@ -238,16 +236,10 @@ void Player::MovePlayer(MoveDirection playerDirection)
 
 	switch (playerData.state)
 	{
-
 	case IDLE:
 		break;	
 
-	case JUMP:			
-					
-		MoveToDirection(playerData.velocity);
-
-		break;	
-
+	case JUMP:	
 	case WALK:
 		MoveToDirection(playerData.velocity);
 		break;
@@ -260,10 +252,7 @@ void Player::MovePlayer(MoveDirection playerDirection)
 		break;
 	}
 
-
-
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
-
 }
 
 void Player::MoveToDirection(int velocity) {
@@ -300,9 +289,12 @@ void Player::Fallings()
 	}
 	else {
  		velY = (int)0;
+		playerData.state = State::IDLE;
+	}
+	if (CollisionJumping({ playerData.position.x + playerData.velocity,  nextY }))
+	{
 		playerData.isJumped = false;
 		playerData.isJumpedAgain = false;
-		playerData.state = State::IDLE;
 	}
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 
@@ -312,10 +304,11 @@ bool Player::PostUpdate() {
 
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
-	if (playerData.direction== MoveDirection::WALK_R)	app->render->DrawTexture(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
-	if (playerData.direction== MoveDirection::WALK_L)	app->render->DrawTextureFlip(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
+	if (playerData.direction == MoveDirection::WALK_R )
+		app->render->DrawTexture(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
+	if (playerData.direction == MoveDirection::WALK_L)
+		app->render->DrawTextureFlip(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	
-
 	return true;
 }
 
@@ -326,13 +319,35 @@ bool Player::CleanUp() {
 	return true;
 }
 
-
-
 bool Player::CollisionPlayer(iPoint nextPosition) {
 
 	iPoint positionMapPlayer;
 	int y = (int)nextPosition.y;
+
 	positionMapPlayer= app->map->WorldToMap((int)nextPosition.x, y);
+	if (CheckCollision(positionMapPlayer)) return true;
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48, y);
+	if (CheckCollision(positionMapPlayer)) return true;
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y-54);
+	if (CheckCollision(positionMapPlayer)) return true;
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x + 48, y-54);
+	if (CheckCollision(positionMapPlayer)) return true;
+	return false;
+}
+
+bool Player::CollisionJumping(iPoint nextPosition) {
+
+	iPoint positionMapPlayer;
+	int y = (int)nextPosition.y;
+
+	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x, y);
+	if (CheckCollision(positionMapPlayer)) return true;
+
+	return false;
+}
+
+bool Player::CheckCollision(iPoint positionMapPlayer)
+{
 	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0)
 	{
 		return true;

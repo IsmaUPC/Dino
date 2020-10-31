@@ -15,7 +15,6 @@ enum State {
 	JUMP,
 	WALK,
 	RUN,
-
 };
 
 enum MoveDirection {
@@ -71,6 +70,10 @@ public:
 	bool Load(const char* path);
 
 	bool CollisionPlayer(iPoint nextPosition);
+
+	bool CheckCollision(iPoint positionMapPlayer);
+
+	bool CollisionJumping(iPoint positionMapPlayer);
 
 private:
 
