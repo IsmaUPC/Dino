@@ -12,21 +12,29 @@
 enum State {
 
 	IDLE,
+	JUMP,
+	WALK,
+	RUN,
+
+};
+
+enum MoveDirection {
+
 	WALK_L,
 	WALK_R,
 	WALK_UP,
 	WALK_DOWN,
-	JUMP,
-
 };
 
 struct PlayerData
 {
 	iPoint position;
 	State state;
+	MoveDirection direction;
 	Animation* currentAnimation;
 	int velocity;
-	bool rightDirection;
+	bool isJumped;
+	bool isJumpedAgain;
 
 	SDL_Texture* texture;
 };
@@ -52,7 +60,9 @@ public:
 
 	void PlayerControls();
 
-	void MovePlayer(State playerState);
+	void MovePlayer(MoveDirection playerDirection);
+
+	
 
 	bool PostUpdate();
 
@@ -65,7 +75,8 @@ public:
 private:
 
 	bool LoadPlayer();
-
+	void Fallings();
+	void MoveToDirection(int velocity);
 	void Jump();
 
 public:
@@ -80,9 +91,10 @@ private:
 	Animation* atakAnim = new Animation();
 	Animation* damageAnim = new Animation();
 	Animation* runAnim = new Animation( );
+	Animation* jumpAnim = new Animation( );
 
 	float velY=0;
-	//int gravity=1;
+	int velWalk;
 
 	pugi::xml_document playerFile;
 	SString folder;
