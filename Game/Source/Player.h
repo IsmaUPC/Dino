@@ -107,7 +107,6 @@ private:
 	int nextYDown;
 	int nextYUp;
 
-
 };
 
 #endif // _PLAYER_H_

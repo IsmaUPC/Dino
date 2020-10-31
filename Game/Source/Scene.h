@@ -2,8 +2,16 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
+
+struct AnimationFather
+{
+	iPoint position;
+	Animation* currentAnimation;
+	SDL_Texture* texture;
+};
 
 class Scene : public Module
 {
@@ -35,11 +43,14 @@ public:
 	bool CleanUp();
 
 	void Parallax();
+
+	AnimationFather animationFather;
 private:
 
 	bool debugCollisions = false;
 
 	SDL_Texture* img;
+	Animation idleAnim;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	int speedImg=0;
 };
