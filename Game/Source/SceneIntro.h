@@ -2,8 +2,16 @@
 #define __SCENEINTRO_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
+
+struct AnimationIntro
+{
+	iPoint position;
+	Animation* currentAnimation;
+	SDL_Texture* texture;
+};
 
 class SceneIntro : public Module
 {
@@ -33,8 +41,11 @@ public:
 	bool CleanUp();
 
 private:
-	
+	AnimationIntro animationIntro;
+	Animation idleAnim;
+
 	SDL_Texture* img;
+	SDL_Texture* bgIntro;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 
 };

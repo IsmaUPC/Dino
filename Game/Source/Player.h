@@ -19,8 +19,8 @@ enum State {
 
 enum MoveDirection {
 
-	WALK_L,
 	WALK_R,
+	WALK_L,
 };
 
 struct PlayerData

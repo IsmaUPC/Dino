@@ -54,8 +54,8 @@ private:
 	bool victory = false;
 	bool lose = false;
 	AnimationFather animationFather;
-	SDL_Texture* img;
 	Animation idleAnim;
+	SDL_Texture* img;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	float speedImg=0;
 };

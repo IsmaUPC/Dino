@@ -65,7 +65,6 @@ bool Scene::Start()
 
 bool Scene::StartModules()
 {
-
 	app->player->Init();
 	app->player->Start();
 

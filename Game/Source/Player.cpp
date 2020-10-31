@@ -131,9 +131,9 @@ bool Player::Update(float dt) {
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
 
-	if (app->render->camera.x <= 0 && app->render->camera.x >= -1694)
+	if (app->render->camera.x <= -1 && app->render->camera.x >= -1694)
 		app->render->camera.x = followPositionPalyerX;
-	else if (followPositionPalyerX<0 && followPositionPalyerX>-1694)  
+	else if (followPositionPalyerX<-1 && followPositionPalyerX>-1694)  
 		app->render->camera.x = followPositionPalyerX;
 
 	if (app->render->camera.y <= -48 && app->render->camera.y >= -910)
