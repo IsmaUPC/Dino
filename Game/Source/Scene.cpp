@@ -178,7 +178,18 @@ bool Scene::PostUpdate()
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-
+	if (victory == true)
+	{
+		victory = false;
+		app->fade->FadeToBlack(this, (Module*)app->sceneWin, 60.f);
+		return true;
+	}
+	if (lose == true)
+	{
+		lose = false;
+		app->fade->FadeToBlack(this, (Module*)app->sceneLose, 60.f);
+		return true;
+	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
 	return ret;
 }

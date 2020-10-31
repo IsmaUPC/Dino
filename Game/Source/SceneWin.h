@@ -2,8 +2,16 @@
 #define __SCENEWIN_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
+
+struct AnimationWin
+{
+	iPoint position;
+	Animation* currentAnimation;
+	SDL_Texture* texture;
+};
 
 class SceneWin :public Module
 {
@@ -33,6 +41,10 @@ public:
 	bool CleanUp();
 
 private:
+	AnimationWin animationSon;
+	Animation idleAnimSon;
+	AnimationWin animationFather;
+	Animation idleAnimFather;
 
 	SDL_Texture* img;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;

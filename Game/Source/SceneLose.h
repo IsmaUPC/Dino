@@ -2,8 +2,16 @@
 #define __SCENELOSE_H__
 
 #include "Module.h"
+#include "Animation.h"
 
 struct SDL_Texture;
+
+struct AnimationEnd
+{
+	iPoint position;
+	Animation* currentAnimation;
+	SDL_Texture* texture;
+};
 
 class SceneLose : public Module
 {
@@ -33,6 +41,8 @@ public:
 	bool CleanUp();
 
 private:
+	AnimationEnd animationEnd;
+	Animation idleAnim;
 
 	SDL_Texture* img;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
