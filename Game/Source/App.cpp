@@ -185,8 +185,11 @@ void App::PrepareUpdate()
 void App::FinishUpdate()
 {
 	// L02: DONE 1: This is a good place to call Load / Save methods
-	if (loadGameRequested == true) LoadGame();
-	if (saveGameRequested == true) SaveGame();
+	if (loadGameRequested == true) LoadGame(filenameGame.GetString());
+	if (saveGameRequested == true) SaveGame(filenameGame.GetString());
+
+	if (loadConfigRequested == true) LoadGame(filenameConfig.GetString());
+	if (saveConfigRequested == true) SaveGame(filenameConfig.GetString());
 }
 
 // Call modules before each loop iteration
@@ -315,24 +318,73 @@ void App::SaveGameRequest() const
 // ---------------------------------------
 // L02: TODO 5: Create a method to actually load an xml file
 // then call all the modules to load themselves
-bool App::LoadGame()
+bool App::LoadGame(SString filename)
 {
 	bool ret = false;
+	//  Load savegame.xml file using load_file() method from the xml_document class
+	pugi::xml_parse_result result = stateFile.load_file(filename.GetString());
 
-	//...
+	// Check result for loading errors
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		rootStateFile = stateFile.first_child();
 
+		ListItem<Module*>* currentModule = modules.start;
+		ret = true;
+		while (currentModule != NULL && ret)
+		{
+			// Recorremos la lista de modulos, en caso de que falle la carga del nodo perteneciente al modulo correspondiente, ret sera false 
+			ret = currentModule->data->LoadState(rootStateFile.child(currentModule->data->name.GetString()));
+			currentModule = currentModule->next;
+		}
+		stateFile.reset();
+		(ret == true) ? LOG("Carga de modulos existosa") : LOG("Fallo en la carga del modulo %s", currentModule->prev->data->name.GetString());
+
+	}
 	loadGameRequested = false;
 
 	return ret;
 }
 
 // L02: TODO 7: Implement the xml save method for current state
-bool App::SaveGame() const
+bool App::SaveGame(SString filename) const
 {
 	bool ret = true;
 
-	//...
+	pugi::xml_document saveFile;
+	pugi::xml_node rootSaveFile;
 
+
+	//  Load savegame.xml file using load_file() method from the xml_document class
+	pugi::xml_parse_result result = saveFile.load_file(filename.GetString());
+
+	// Check result for loading errors
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		rootSaveFile = stateFile.first_child();
+		ListItem<Module*>* currentModule = modules.start;
+		ret = true;
+		while (currentModule != NULL && ret)
+		{
+			// Recorremos la lista de modulos, en caso de que falle la carga del nodo perteneciente al modulo correspondiente, ret sera false 
+			ret = currentModule->data->SaveState(rootStateFile.child(currentModule->data->name.GetString()));
+			currentModule = currentModule->next;
+		}
+		saveFile.save_file(filename.GetString());
+		saveFile.reset();
+		(ret == true) ? LOG("Guardado de modulos existoso") : LOG("Fallo en el guardado del modulo %s", currentModule->prev->data->name.GetString());
+
+	}
 	saveGameRequested = false;
 
 	return ret;

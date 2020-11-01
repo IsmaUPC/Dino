@@ -80,8 +80,8 @@ private:
 	bool PostUpdate();
 
 	// Load / Save
-	bool LoadGame();
-	bool SaveGame() const;
+	bool LoadGame(const SString _filename);
+	bool SaveGame(const SString _filename) const;
 
 public:
 
@@ -119,6 +119,15 @@ private:
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
+
+	pugi::xml_document stateFile;
+	pugi::xml_node rootStateFile;
+
+	mutable bool saveConfigRequested;
+	bool loadConfigRequested;
+	SString filenameGame = "savegame.xml";
+	SString filenameConfig = "config.xml";
+
 
 };
 

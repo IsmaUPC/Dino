@@ -10,5 +10,13 @@
 	<scene />
 	<renderer>
 		<camera x="447" y="293" />
+		<camera x="-303" y="-735" />
+		<camera x="-886" y="-783" />
+		<camera x="-886" y="-783" />
+		<camera x="-1374" y="-783" />
+		<camera x="-1374" y="-783" />
+		<camera x="-1374" y="-783" />
+		<camera x="-1374" y="-783" />
+		<camera x="-1374" y="-783" />
 	</renderer>
 </save_state>

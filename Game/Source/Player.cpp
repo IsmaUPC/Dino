@@ -75,16 +75,16 @@ bool Player::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-bool Player::Load(const char* filename)
+bool Player::Load(const char* filenameGame)
 {
 	bool ret = true;
-	SString tmp("%s%s", folder.GetString(), filename);
+	SString tmp("%s%s", folder.GetString(), filenameGame);
 
 	pugi::xml_parse_result result = playerFile.load_file(tmp.GetString());
 
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file %s. pugi error: %s", filename, result.description());
+		LOG("Could not load map xml file %s. pugi error: %s", filenameGame, result.description());
 		ret = false;
 	}
 

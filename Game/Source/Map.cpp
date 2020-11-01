@@ -200,16 +200,16 @@ bool Map::CleanUp()
 }
 
 // Load new map
-bool Map::Load(const char* filename)
+bool Map::Load(const char* filenameGame)
 {
     bool ret = true;
-    SString tmp("%s%s", folder.GetString(), filename);
+    SString tmp("%s%s", folder.GetString(), filenameGame);
 
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
     if(result == NULL)
     {
-        LOG("Could not load map xml file %s. pugi error: %s", filename, result.description());
+        LOG("Could not load map xml file %s. pugi error: %s", filenameGame, result.description());
         ret = false;
     }
 
@@ -261,7 +261,7 @@ bool Map::Load(const char* filename)
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
-		LOG("Successfully parsed map XML file: %s", filename);
+		LOG("Successfully parsed map XML file: %s", filenameGame);
 		LOG("Width: %d	Hight: %d", data.width, data.height);
 		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
 		for (int i = 0; i < data.tilesets.count(); i++)
