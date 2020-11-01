@@ -127,12 +127,24 @@ bool Scene::Update(float dt)
 		app->render->camera.x += 3;
 
 	//DEBUG KEYS
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		SetDebugCollaider();
-
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		app->fade->FadeToBlack(this, (Module*)app->sceneIntro);
 		return true;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		app->fade->FadeToBlack(this, (Module*)app->scene);
+		return true;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		app->player->playerData.position = app->player->positionInitial;
+		app->player->playerData.direction = WALK_R;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+		SetDebugCollaider();
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (app->player->godMode == false)app->player->godMode = true;
+		else app->player->godMode = false;
 	}
 
 	//Draw Background
@@ -161,7 +173,7 @@ bool Scene::Update(float dt)
 		LOG("Congratulations, YOU WIN!");
 		victory = true;
 	}
-	if (app->player->CheckGameOver() && lose==false)
+	if (app->player->CheckGameOver() && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
 		lose = true;
@@ -201,7 +213,6 @@ bool Scene::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
-	Mix_HaltMusic();
 	app->audio->CleanUp();
 	app->map->CleanUp();
 	app->tex->UnLoad(img);
@@ -214,21 +225,12 @@ bool Scene::CleanUp()
 
 void Scene::Parallax()
 {
-	if (app->render->camera.x > 0) {
-		imgX = app->render->camera.x;
-		speedImg = -1;
+	speedImg = 0.2f;
+	imgX = (int)(app->render->camera.x / 6) - 10;
+	imgX *= speedImg;
 
-	}
-	else if ((app->render->camera.x + imgW) < WINDOW_W+20)
-	{
-		imgX = app->render->camera.x - (WINDOW_W - 20);
-		speedImg = -1;
-	}
-	else
-	{
-		imgX = (int)(app->render->camera.x / 2);
-		speedImg = 0.5f;
-	}
-	app->render->DrawTexture(img, imgX,0,0, speedImg);
+	imgY = (int)(app->render->camera.y / 6) + 1250;
+	imgY *= speedImg;
 
+	app->render->DrawTexture(img, imgX, imgY);
 }

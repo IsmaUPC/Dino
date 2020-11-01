@@ -85,13 +85,13 @@ bool ModuleFadeToBlack::PostUpdate()
 bool ModuleFadeToBlack::CleanUp()
 {
 
-	return false;
+	return true;
 }
 
 bool ModuleFadeToBlack::FadeToBlack(Module* toDisable, Module* toEnable, float frames)
 {
 
-	bool ret = false;
+	bool ret = true;
 	moduleToDisable = toDisable;
 	moduleToEnable = toEnable;
 

@@ -49,6 +49,9 @@
     <ClCompile Include="Source\SceneWin.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneLogo.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -118,6 +121,9 @@
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneWin.h">
+      <Filter>Modules\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLogo.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>

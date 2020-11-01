@@ -33,7 +33,7 @@ bool SceneLose::Start()
 	animationEnd.texture = app->tex->Load("Assets/textures/DinoSpritesaDead.png");
 	animationEnd.position = { 400 , 345 };
 	idleAnim.loop = true;
-	idleAnim.speed = 0.01;
+	idleAnim.speed = 0.008;
 
 	for (int i = 0; i < 9; i++)
 		idleAnim.PushBack({ 336 * i,0, 336, 336 });
@@ -51,7 +51,7 @@ bool SceneLose::StartModules()
 	animationEnd.texture = app->tex->Load("Assets/textures/DinoSpritesaDead.png");
 	animationEnd.position = { WINDOW_W/2-(336/2) , 345 };
 	idleAnim.loop = true;
-	idleAnim.speed = 0.01;
+	idleAnim.speed = 0.008;
 
 	for (int i = 0; i < 9; i++)
 		idleAnim.PushBack({ 336 * i,0, 336, 336 });
