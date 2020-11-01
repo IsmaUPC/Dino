@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<save_state>
+	<input />
+	<window />
+	<textures />
+	<audio>
+		<music volume="100" />
+		<fx volume="100" />
+	</audio>
+	<scene />
+	<renderer>
+		<camera x="0" y="-687" />
+	</renderer>
+	<player>
+		<position x="239" y="1247" />
+	</player>
+</save_state>

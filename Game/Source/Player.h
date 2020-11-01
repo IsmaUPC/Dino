@@ -80,7 +80,8 @@ public:
 
 private:
 
-	bool LoadPlayer();
+	bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data)const;
 	void Fallings();
 	void MoveToDirection(int velocity);
 

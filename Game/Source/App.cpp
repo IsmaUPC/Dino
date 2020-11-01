@@ -189,8 +189,8 @@ void App::PrepareUpdate()
 void App::FinishUpdate()
 {
 	// L02: DONE 1: This is a good place to call Load / Save methods
-	if (loadGameRequested == true) LoadGame(filenameGame.GetString());
 	if (saveGameRequested == true) SaveGame(filenameGame.GetString());
+	if (loadGameRequested == true) LoadGame(filenameGame.GetString());
 
 	if (loadConfigRequested == true) LoadGame(filenameConfig.GetString());
 	if (saveConfigRequested == true) SaveGame(filenameConfig.GetString());
@@ -368,20 +368,20 @@ bool App::SaveGame(SString filename) const
 	pugi::xml_parse_result result = saveFile.load_file(filename.GetString());
 
 	// Check result for loading errors
-	if (result == NULL)
+	if (result == NULL )
 	{
 		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
 		ret = false;
 	}
 	else
 	{
-		rootSaveFile = stateFile.first_child();
+		rootSaveFile = saveFile.first_child();
 		ListItem<Module*>* currentModule = modules.start;
 		ret = true;
 		while (currentModule != NULL && ret)
 		{
 			// Recorremos la lista de modulos, en caso de que falle la carga del nodo perteneciente al modulo correspondiente, ret sera false 
-			ret = currentModule->data->SaveState(rootStateFile.child(currentModule->data->name.GetString()));
+			ret = currentModule->data->SaveState(rootSaveFile.child(currentModule->data->name.GetString()));
 			currentModule = currentModule->next;
 		}
 		saveFile.save_file(filename.GetString());

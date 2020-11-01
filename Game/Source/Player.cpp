@@ -42,7 +42,7 @@ bool Player::Awake(pugi::xml_node& config)
 	damageAnim->loop = true;
 	damageAnim->speed = 0.025f;
 	runAnim->loop = true;
-	runAnim->speed = 0.04f;
+	runAnim->speed = 0.08f;
 	
 	jumpAnim->loop = true;
 	jumpAnim->speed = 0.12f;
@@ -69,46 +69,23 @@ bool Player::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-bool Player::Load(const char* filenameGame)
+
+bool Player::LoadState(pugi::xml_node& player) 
 {
-	bool ret = true;
-	SString tmp("%s%s", folder.GetString(), filenameGame);
-
-	pugi::xml_parse_result result = playerFile.load_file(tmp.GetString());
-
-	if (result == NULL)
-	{
-		LOG("Could not load map xml file %s. pugi error: %s", filenameGame, result.description());
-		ret = false;
-	}
-
-	// Load general info
-	if (ret == true)
-	{
-		ret = LoadPlayer();
-	}
-
+	bool ret=true;
+		playerData.position.x = player.child("position").attribute("x").as_int(0);
+		playerData.position.y = player.child("position").attribute("y").as_int(0);
 	return ret;
 }
+bool Player::SaveState(pugi::xml_node& player) const
+{
+	pugi::xml_node positionPlayer = player.child("position");
 
-bool Player::LoadPlayer() {
 
-	bool ret = true;
-	pugi::xml_node player ;
-	//pugi::xml_node player = playerData.child("player");
+	positionPlayer.attribute("x").set_value(playerData.position.x) ;
+	positionPlayer.attribute("y").set_value( playerData.position.y) ;
 
-	if (player == NULL)
-	{
-		LOG("Error parsing map xml file: Cannot find 'map' tag.");
-		ret = false;
-	}
-	else
-	{
-		playerData.position.x = player.attribute("x").as_int(0);
-		playerData.position.y = player.attribute("y").as_int(0);
-	}
-
-	return ret;
+	return true;
 }
 
 
@@ -141,9 +118,9 @@ bool Player::Update(float dt) {
 	else if (followPositionPalyerX<-1 && followPositionPalyerX>-((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
 
-	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (19* app->map->data.tileHeight)))
+	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H+(4* app->map->data.tileHeight))))
 			app->render->camera.y = followPositionPalyerY;
-		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(19 * app->map->data.tileHeight)))
+		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(WINDOW_H+(4 * app->map->data.tileHeight))))
 			app->render->camera.y = followPositionPalyerY;
 
 

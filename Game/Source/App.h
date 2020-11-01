@@ -127,7 +127,7 @@ private:
 
 	mutable bool saveConfigRequested;
 	bool loadConfigRequested;
-	SString filenameGame = "savegame.xml";
+	SString filenameGame = "save_game.xml";
 	SString filenameConfig = "config.xml";
 
 
