@@ -51,7 +51,14 @@ struct Properties
 	
 	~Properties()
 	{
-		//...
+		ListItem<Property*>* listD;
+		listD = list.start;
+		while (listD != nullptr)
+		{
+			RELEASE(listD->data);
+			listD = listD->next;
+		}
+		list.clear();
 	}
 
 	// L06: TODO 7: Method to ask for the value of a custom property
