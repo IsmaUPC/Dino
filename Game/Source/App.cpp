@@ -258,6 +258,8 @@ bool App::PostUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		app->fade->FadeToBlack(lastScene,(Module*)app->scene,0.f);
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		app->fade->FadeToBlack(lastScene, (Module*)app->sceneLevel2, 0.f);
 
 	return ret;
 }

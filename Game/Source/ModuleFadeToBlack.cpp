@@ -2,6 +2,7 @@
 
 #include "App.h"
 #include "Scene.h"
+#include "SceneLevel2.h"
 #include "Render.h"
 
 #include "SDL/include/SDL_render.h"
@@ -10,6 +11,8 @@
 ModuleFadeToBlack::ModuleFadeToBlack()
 {
 	name.Create("fade");
+
+
 
 }
 
@@ -83,12 +86,30 @@ bool ModuleFadeToBlack::PostUpdate()
 
 bool ModuleFadeToBlack::CleanUp()
 {
+	moduleToDisable = nullptr;
+	moduleToEnable = nullptr;
+	lastLevel = nullptr;
 
 	return true;
 }
 
 bool ModuleFadeToBlack::FadeToBlack(Module* toDisable, Module* toEnable, float frames)
 {
+
+	if (toDisable != (Module*)app->sceneWin && toDisable != (Module*)app->sceneLose && toDisable != (Module*)app->sceneIntro)
+	{
+		lastLevel = toDisable;
+	}
+
+	if (lastLevel == (Module*)app->sceneLevel2 && toDisable == (Module*)app->sceneLose )
+	{
+		toEnable = lastLevel;
+	}
+
+	if (lastLevel == (Module*)app->sceneLevel2 && toDisable == (Module*)app->sceneWin)
+	{
+		toEnable = (Module*)app->sceneIntro;
+	}
 
 	bool ret = true;
 	moduleToDisable = toDisable;
