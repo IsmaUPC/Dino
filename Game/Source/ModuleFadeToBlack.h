@@ -30,12 +30,12 @@ public:
 
 private:
 
-	enum Fade_Step
+	enum FadeStep
 	{
 		NONE,
 		TO_BLACK,
 		FROM_BLACK
-	} currentStep = Fade_Step::NONE;
+	} currentStep = FadeStep::NONE;
 
 	int frameCount = 0;
 	int maxFadeFrames = 0;

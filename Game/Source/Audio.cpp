@@ -184,3 +184,24 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+void Audio::ChangeVolumeMusic(int num) {
+	if (num == 10 && volumeMusic < 100)
+	{
+		volumeMusic += num;
+	}
+
+	if (num == -10 && volumeMusic > 0) {
+		volumeMusic += num;
+	}
+	Mix_VolumeMusic(volumeMusic);
+}
+
+bool Audio::LoadState(pugi::xml_node& node) {
+	volumeMusic = node.child("music").attribute("volume").as_int(volumeMusic);
+	Mix_VolumeMusic(volumeMusic);
+	return true;
+}
+bool Audio::SaveState(pugi::xml_node& node) const {
+	node.child("music").attribute("volume").set_value(volumeMusic);
+	return true;
+}

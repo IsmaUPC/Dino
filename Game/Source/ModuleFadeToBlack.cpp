@@ -37,15 +37,15 @@ bool ModuleFadeToBlack::Update(float dt)
 {
 	
 	// Exit this function if we are not performing a fade
-	if (currentStep == Fade_Step::NONE) return true;
+	if (currentStep == FadeStep::NONE) return true;
 
-	if (currentStep == Fade_Step::TO_BLACK)
+	if (currentStep == FadeStep::TO_BLACK)
 	{
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
 			// TODO 1: Enable / disable the modules received when FadeToBlacks() gets called
-			currentStep = Fade_Step::FROM_BLACK;
+			currentStep = FadeStep::FROM_BLACK;
 			if (moduleToDisable->active == true){
 				moduleToDisable->CleanUp();
 			}
@@ -60,7 +60,7 @@ bool ModuleFadeToBlack::Update(float dt)
 		--frameCount;
 		if (frameCount <= 0)
 		{
-			currentStep = Fade_Step::NONE;
+			currentStep = FadeStep::NONE;
 		}
 	}
 	
@@ -70,7 +70,7 @@ bool ModuleFadeToBlack::Update(float dt)
 bool ModuleFadeToBlack::PostUpdate()
 {
 	// Exit this function if we are not performing a fade
-	if (currentStep == Fade_Step::NONE) return true;
+	if (currentStep == FadeStep::NONE) return true;
 
 	float fadeRatio = (float)frameCount / (float)maxFadeFrames;
 
@@ -105,9 +105,9 @@ bool ModuleFadeToBlack::FadeToBlack(Module* toDisable, Module* toEnable, float f
 	}*/
 
 	frameCount = 0;
-	if (currentStep == Fade_Step::NONE) {
+	if (currentStep == FadeStep::NONE) {
 
-		currentStep = Fade_Step::TO_BLACK;
+		currentStep = FadeStep::TO_BLACK;
 		maxFadeFrames = frames;	
 		ret = true;
 	}

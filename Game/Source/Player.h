@@ -67,11 +67,6 @@ public:
 
 	bool CleanUp();
 
-	bool Load(const char* path);
-
-	/*bool LoadState(pugi::xml_node& data);
-	bool SaveState(pugi::xml_node& data) const;*/
-
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
 	bool CheckCollision(iPoint positionMapPlayer);
@@ -94,7 +89,7 @@ private:
 	float velY = 0;
 	float velX = 0;
 
-	Animation idleAnim;
+	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
 	Animation* atakAnim = new Animation();
 	Animation* damageAnim = new Animation();

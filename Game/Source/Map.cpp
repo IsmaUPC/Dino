@@ -117,10 +117,10 @@ iPoint Map::WorldToMap(int x, int y) const
 	else if (data.type == MAPTYPE_ISOMETRIC)
 	{
 
-		float half_width = data.tileWidth * 0.5f;
-		float half_height = data.tileHeight * 0.5f;
-		ret.x = int((x / half_width + y / half_height) / 2);
-		ret.y = int((y / half_height - (x / half_width)) / 2);
+		float halfWidth = data.tileWidth * 0.5f;
+		float halfHeight = data.tileHeight * 0.5f;
+		ret.x = int((x / halfWidth + y / halfHeight) / 2);
+		ret.y = int((y / halfHeight - (x / halfWidth)) / 2);
 	}
 	else
 	{

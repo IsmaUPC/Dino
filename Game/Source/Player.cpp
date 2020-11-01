@@ -35,8 +35,8 @@ bool Player::Awake(pugi::xml_node& config)
 	//playerData.position = { 432,1170 };
 	playerData.isJumped = false;
 
-	idleAnim.loop = true;
-	idleAnim.speed = 0.025f;
+	idleAnim->loop = true;
+	idleAnim->speed = 0.025f;
 	walkAnim->loop = true;
 	walkAnim->speed = 0.04f;
 	damageAnim->loop = true;
@@ -48,7 +48,7 @@ bool Player::Awake(pugi::xml_node& config)
 	jumpAnim->speed = 0.12f;
 
 	for (int i = 0; i < 4; i++)
-		idleAnim.PushBack({ 78 * i,0, 78, 78 });
+		idleAnim->PushBack({ 78 * i,0, 78, 78 });
 
 	for (int i = 0; i < 6; i++)
 		jumpAnim->PushBack({ 312 + (78 * i),0, 78, 78 });
@@ -65,7 +65,7 @@ bool Player::Awake(pugi::xml_node& config)
 	for (int i = 0; i < 4; i++)
 		runAnim->PushBack({ 1319 + (78 * i),0, 78, 78 });
 
-	playerData.currentAnimation = &idleAnim;
+	playerData.currentAnimation = idleAnim;
 	return ret;
 }
 
@@ -73,8 +73,8 @@ bool Player::Awake(pugi::xml_node& config)
 bool Player::LoadState(pugi::xml_node& player) 
 {
 	bool ret=true;
-		playerData.position.x = player.child("position").attribute("x").as_int(0);
-		playerData.position.y = player.child("position").attribute("y").as_int(0);
+		playerData.position.x = player.child("position").attribute("x").as_int(playerData.position.x);
+		playerData.position.y = player.child("position").attribute("y").as_int(playerData.position.y);
 	return ret;
 }
 bool Player::SaveState(pugi::xml_node& player) const
@@ -99,19 +99,10 @@ bool Player::Update(float dt) {
 	if(godMode==false)Fallings();
 
 	if (godMode == false)playerData.currentAnimation->Update();
-	else playerData.currentAnimation = &idleAnim;
+	else playerData.currentAnimation = idleAnim;
 
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
-
-	//if (app->render->camera.x <= -1 && app->render->camera.x >= -1694)
-	//	app->render->camera.x = followPositionPalyerX;
-	//else if (followPositionPalyerX<-1 && followPositionPalyerX>-1694)  
-	//	app->render->camera.x = followPositionPalyerX;
-	//if (app->render->camera.y <= -48 && app->render->camera.y >= -910)
-	//	app->render->camera.y = followPositionPalyerY;
-	//else if (followPositionPalyerY<-48 && followPositionPalyerY>-910)
-	//	app->render->camera.y = followPositionPalyerY;
 
 	if (app->render->camera.x <= -1 && app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth)- WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
@@ -135,7 +126,7 @@ void Player::PlayerMoveAnimation()
 	switch (playerData.state)
 	{
 	case IDLE:
-		playerData.currentAnimation = &idleAnim;
+		playerData.currentAnimation = idleAnim;
 		break;
 
 	case WALK:

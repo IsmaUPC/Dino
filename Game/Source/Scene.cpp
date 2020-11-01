@@ -82,19 +82,13 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-    // L02: DONE 3: Request Load / Save when pressing L/S
 
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= 3;
 
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += 3;
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+		app->audio->ChangeVolumeMusic(-10);
 
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= 3;
-
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += 3;
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+		app->audio->ChangeVolumeMusic(10);
 
 	//DEBUG KEYS
 	DebugKeys();
@@ -177,11 +171,11 @@ bool Scene::CleanUp()
 
 void Scene::Parallax()
 {
-	speedImg = 0.9f;
+	speedImg = -0.9f;
 	imgX = (int)(app->render->camera.x / 6) - 10;
 	imgX *= speedImg;
 
-	imgY = (int)((app->render->camera.y / 6) + 1250) * 0.2f ;
+	imgY = (int)((app->render->camera.y / 6) + 1250) * 0.2f;
 
 	app->render->DrawTexture(img, imgX, imgY);
 }
@@ -194,6 +188,12 @@ void Scene::DebugKeys()
 		app->player->playerData.direction = WALK_R;
 		Mix_RewindMusic();
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		app->SaveConfigRequested();
+
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		app->LoadConfigRequested();
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();

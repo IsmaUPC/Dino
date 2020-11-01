@@ -319,6 +319,19 @@ void App::SaveGameRequest() const
 	saveGameRequested = true;
 }
 
+void App::LoadConfigRequested()
+{
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
+	loadConfigRequested = true;
+}
+
+// ---------------------------------------
+void App::SaveConfigRequested() const
+{
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
+	saveConfigRequested = true;
+}
+
 // ---------------------------------------
 // L02: TODO 5: Create a method to actually load an xml file
 // then call all the modules to load themselves
@@ -351,6 +364,7 @@ bool App::LoadGame(SString filename)
 
 	}
 	loadGameRequested = false;
+	loadConfigRequested = false;
 
 	return ret;
 }
@@ -390,6 +404,7 @@ bool App::SaveGame(SString filename) const
 
 	}
 	saveGameRequested = false;
+	saveConfigRequested = false;
 
 	return ret;
 }
