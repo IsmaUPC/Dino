@@ -30,6 +30,8 @@ bool SceneWin::Awake()
 
 bool SceneWin::Start()
 {
+	app->SetLastScene((Module*)this);
+
 	app->audio->PlayMusic("Assets/audio/music/MusicVictory_1.ogg");
 	img = app->tex->Load("Assets/textures/SceneWin.png");
 	animationSon.texture = app->tex->Load("Assets/textures/DinoSprites.png");

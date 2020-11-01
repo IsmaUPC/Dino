@@ -30,6 +30,8 @@ bool SceneIntro::Awake()
 
 bool SceneIntro::Start()
 {
+	app->SetLastScene((Module*)this);
+
 	app->audio->PlayMusic("Assets/audio/music/MusicIntro.ogg");
 	bgIntro = app->tex->Load("Assets/textures/TitleScreen.png");
 	animationIntro.texture = app->tex->Load("Assets/textures/DinoSprites.png");

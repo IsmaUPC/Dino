@@ -27,6 +27,7 @@ bool SceneLogo::Awake()
 
 bool SceneLogo::Start()
 {
+	app->SetLastScene((Module*)this);
 
 	img = app->tex->Load("Assets/textures/SceneLogo.png");
 
