@@ -90,7 +90,7 @@ bool SceneWin::PreUpdate()
 
 bool SceneWin::Update(float dt)
 {
-	SString title("Scene IntroLose");
+	SString title("Scene Win");
 	app->win->SetTitle(title.GetString());
 	animationSon.currentAnimation->Update();
 	animationFather.currentAnimation->Update();

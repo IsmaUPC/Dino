@@ -213,7 +213,6 @@ bool Scene::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
-	Mix_HaltMusic();
 	app->audio->CleanUp();
 	app->map->CleanUp();
 	app->tex->UnLoad(img);
@@ -226,20 +225,12 @@ bool Scene::CleanUp()
 
 void Scene::Parallax()
 {
-	if (app->render->camera.x > 0) {
-		imgX = app->render->camera.x;
-		speedImg = -1;
+	speedImg = 0.2f;
+	imgX = (int)(app->render->camera.x / 6) - 10;
+	imgX *= speedImg;
 
-	}
-	else if ((app->render->camera.x + imgW) < WINDOW_W+20)
-	{
-		imgX = app->render->camera.x - (WINDOW_W - 20);
-		speedImg = -1;
-	}
-	else
-	{
-		imgX = (int)(app->render->camera.x / 2);
-		speedImg = 0.5f;
-	}
-	app->render->DrawTexture(img, imgX,0,0, speedImg);
+	imgY = (int)(app->render->camera.y / 6) + 1250;
+	imgY *= speedImg;
+
+	app->render->DrawTexture(img, imgX, imgY);
 }
