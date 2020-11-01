@@ -37,7 +37,7 @@ bool Player::Awake(pugi::xml_node& config)
 	idleAnim->loop = true;
 	idleAnim->speed = 0.025f;
 	walkAnim->loop = true;
-	walkAnim->speed = 0.04f;
+	walkAnim->speed = 0.035f;
 	damageAnim->loop = true;
 	damageAnim->speed = 0.025f;
 	runAnim->loop = true;
