@@ -177,12 +177,11 @@ bool Scene::CleanUp()
 
 void Scene::Parallax()
 {
-	speedImg = 0.2f;
+	speedImg = 0.9f;
 	imgX = (int)(app->render->camera.x / 6) - 10;
 	imgX *= speedImg;
 
-	imgY = (int)(app->render->camera.y / 6) + 1250;
-	imgY *= speedImg;
+	imgY = (int)((app->render->camera.y / 6) + 1250) * 0.2f ;
 
 	app->render->DrawTexture(img, imgX, imgY);
 }
