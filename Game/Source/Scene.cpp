@@ -39,14 +39,14 @@ bool Scene::Start()
 	// Load map
 	app->SetLastScene((Module*)this);
 
+	app->player->positionInitial = { 432,1170 };
 	app->player->Init();
 	app->player->Start();
-	app->player->positionInitial = { 432,1170 };
 	app->map->active = true;
 
-	app->map->Load("Dino_Map_2.tmx");
+	app->map->Load("Mapa_PixelArt.tmx");
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
+	app->audio->PlayMusic("Assets/audio/music/HADES_8bits.ogg");
 	img = app->tex->Load("Assets/textures/sky.png");
 	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
 	
