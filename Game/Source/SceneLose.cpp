@@ -56,8 +56,6 @@ bool SceneLose::PreUpdate()
 
 bool SceneLose::Update(float dt)
 {
-	SString title("Scene Lose");
-	app->win->SetTitle(title.GetString());
 	animationEnd.currentAnimation->Update();
 	return true;
 }

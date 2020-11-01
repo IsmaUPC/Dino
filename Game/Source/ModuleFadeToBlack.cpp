@@ -35,7 +35,6 @@ bool ModuleFadeToBlack::PreUpdate()
 
 bool ModuleFadeToBlack::Update(float dt)
 {
-	
 	// Exit this function if we are not performing a fade
 	if (currentStep == FadeStep::NONE) return true;
 
@@ -44,7 +43,6 @@ bool ModuleFadeToBlack::Update(float dt)
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
-			// TODO 1: Enable / disable the modules received when FadeToBlacks() gets called
 			currentStep = FadeStep::FROM_BLACK;
 			if (moduleToDisable->active == true){
 				moduleToDisable->CleanUp();

@@ -44,9 +44,6 @@ bool SceneLogo::PreUpdate()
 
 bool SceneLogo::Update(float dt)
 {
-	SString title("Scene Intro");
-	app->win->SetTitle(title.GetString());
-
 	return true;
 }
 

@@ -56,8 +56,7 @@ bool SceneIntro::PreUpdate()
 
 bool SceneIntro::Update(float dt)
 {
-	SString title("Scene Intro");
-	app->win->SetTitle(title.GetString());
+
 	animationIntro.currentAnimation->Update();
 	return true;
 }

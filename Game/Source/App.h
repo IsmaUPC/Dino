@@ -55,7 +55,7 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-    // L02: DONE 1: Create methods to request Load / Save
+    // Methods to request Load / Save
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 	void LoadConfigRequested();
@@ -66,7 +66,6 @@ public:
 private:
 
 	// Load config file
-	// NOTE: It receives config document
 	pugi::xml_node LoadConfig(pugi::xml_document&) const;
 
 	// Call modules before each loop iteration
@@ -113,12 +112,6 @@ private:
 	SString organization;
 
 	List<Module *> modules;
-
-	// L01: DONE 2: Create new variables from pugui namespace
-	// NOTE: Redesigned LoadConfig() to avoid storing this variables
-	//pugi::xml_document configFile;
-	//pugi::xml_node config;
-	//pugi::xml_node configApp;
 
 	uint frames;
 	float dt;

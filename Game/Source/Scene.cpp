@@ -36,7 +36,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	// L03: DONE: Load map
+	// Load map
 	app->SetLastScene((Module*)this);
 
 	app->player->Init();
@@ -95,14 +95,6 @@ bool Scene::Update(float dt)
 	iPoint vec;
 	vec.x = 0, vec.y = 0;
 	app->input->GetMousePosition(vec.x, vec.y);
-	// L03: DONE 7: Set the window title with map/tileset info
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile: %d, %d",
-				   app->map->data.width, app->map->data.height,
-				   app->map->data.tileWidth, app->map->data.tileHeight,
-				   app->map->data.tilesets.count(),
-				   app->map->WorldToMap(vec.x - app->render->camera.x, vec.y - app->render->camera.y));
-
-	app->win->SetTitle(title.GetString());
 
 	animationFather.currentAnimation->Update();
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
 	<app>
-		<title>Game Development Testbed</title>
+		<title>DINO</title>
 		<organization>UPC</organization>
 	</app>
 	<renderer>
