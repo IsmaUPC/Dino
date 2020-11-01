@@ -7,6 +7,8 @@
 #include "SceneIntro.h"
 #include "ModuleFadeToBlack.h"
 
+#include <SDL_mixer\include\SDL_mixer.h>
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -28,47 +30,25 @@ bool SceneIntro::Awake()
 
 bool SceneIntro::Start()
 {
-	//img = app->tex->Load("Assets/textures/A.png");
+	app->audio->PlayMusic("Assets/audio/music/MusicIntro.ogg");
 	bgIntro = app->tex->Load("Assets/textures/TitleScreen.png");
 	animationIntro.texture = app->tex->Load("Assets/textures/DinoSprites.png");
 	animationIntro.position = { 400 , 345 };
 	idleAnim.loop = true;
-	idleAnim.speed = 0.005;
+	idleAnim.speed = 0.005f;
 
 	for (int i = 0; i < 4; i++)
 		idleAnim.PushBack({ 336 * i,0, 336, 336 });
 
 	animationIntro.currentAnimation = &idleAnim;
 
-	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
+	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
 	return true;
 }
-
-bool SceneIntro::StartModules()
-{
-	//img = app->tex->Load("Assets/textures/A.png");
-	bgIntro = app->tex->Load("Assets/textures/TitleScreen.png");
-	animationIntro.texture = app->tex->Load("Assets/textures/DinoSprites.png");
-	animationIntro.position = { 400 , 345 };
-	idleAnim.loop = true;
-	idleAnim.speed = 0.005;
-
-	for (int i = 0; i < 4; i++)
-		idleAnim.PushBack({ 336 * i,0, 336, 336 });
-
-	animationIntro.currentAnimation = &idleAnim;
-
-	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
-	app->render->camera.x = app->render->camera.y = 0;
-	return true;
-}
-
-
 
 bool SceneIntro::PreUpdate()
 {
-
 	return true;
 }
 
@@ -107,10 +87,9 @@ bool SceneIntro::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
-	//app->tex->UnLoad(img);
+	Mix_HaltMusic();
 	app->tex->UnLoad(bgIntro);
 	app->tex->UnLoad(animationIntro.texture);
-	img = nullptr;
 	bgIntro = nullptr;
 	active = false;
 	return true;

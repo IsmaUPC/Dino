@@ -30,7 +30,6 @@ public:
 
 	// Called before the first frame
 	bool Start();
-	bool StartModules();
 
 	void SetDebugCollaider(bool value=NULL);
 	bool* GetDebugCollaider() { return &debugCollisions; }
@@ -46,9 +45,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void Parallax();
 
 private:
+
+	void Parallax();
+	void DebugKeys();
 
 	bool debugCollisions = false;
 	bool victory = false;

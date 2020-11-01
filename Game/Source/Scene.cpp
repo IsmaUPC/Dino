@@ -37,14 +37,16 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
-	//app->map->Load("hello2.tmx");
-	//app->map->Load("iso_walk.tmx");
-	app->map->Load("Mapa_PixelArt.tmx");
-	
-	// Load music
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
-	img = app->tex->Load("Assets/textures/Fondo.png");
+	app->player->Init();
+	app->player->Start();
+
+	app->map->active = true;
+
+	app->map->Load("Mapa_PixelArt.tmx");
+	// Load music
+	app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
+	img = app->tex->Load("Assets/textures/sky.png");
 	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
 	
 	animationFather.position = { 2352, 495 };
@@ -63,33 +65,6 @@ bool Scene::Start()
 	return true;
 }
 
-bool Scene::StartModules()
-{
-	app->player->Init();
-	app->player->Start();
-
-	app->map->active = true;
-
-	app->map->Load("Mapa_PixelArt.tmx");
-	// Load music
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-	img = app->tex->Load("Assets/textures/Fondo.png");
-	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
-
-	animationFather.position = { 2352, 495 };
-	idleAnim.loop = true;
-	idleAnim.speed = 0.025;
-
-	for (int i = 0; i < 4; i++)
-		idleAnim.PushBack({ 117 * i,0, 117, 117 });
-
-	animationFather.currentAnimation = &idleAnim;
-
-	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
-
-	app->render->camera.y -= imgH;
-	return true;
-}
 void Scene::SetDebugCollaider(bool value)
 {
 	if (value == NULL)
@@ -108,11 +83,6 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
-
-	if(app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		app->SaveGameRequest();
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 3;
@@ -127,25 +97,7 @@ bool Scene::Update(float dt)
 		app->render->camera.x += 3;
 
 	//DEBUG KEYS
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, (Module*)app->sceneIntro);
-		return true;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		app->fade->FadeToBlack(this, (Module*)app->scene);
-		return true;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-		app->player->playerData.position = app->player->positionInitial;
-		app->player->playerData.direction = WALK_R;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
-		SetDebugCollaider();
-	}
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		if (app->player->godMode == false)app->player->godMode = true;
-		else app->player->godMode = false;
-	}
+	DebugKeys();
 
 	//Draw Background
 	Parallax();
@@ -193,13 +145,13 @@ bool Scene::PostUpdate()
 	if (victory == true)
 	{
 		victory = false;
-		app->fade->FadeToBlack(this, (Module*)app->sceneWin, 60.f);
+		app->fade->FadeToBlack(this, (Module*)app->sceneWin, 0);
 		return true;
 	}
 	if (lose == true)
 	{
 		lose = false;
-		app->fade->FadeToBlack(this, (Module*)app->sceneLose, 60.f);
+		app->fade->FadeToBlack(this, (Module*)app->sceneLose, 0);
 		return true;
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
@@ -213,7 +165,7 @@ bool Scene::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
-	app->audio->CleanUp();
+	Mix_HaltMusic();
 	app->map->CleanUp();
 	app->tex->UnLoad(img);
 	app->tex->UnLoad(animationFather.texture);
@@ -233,4 +185,29 @@ void Scene::Parallax()
 	imgY *= speedImg;
 
 	app->render->DrawTexture(img, imgX, imgY);
+}
+
+void Scene::DebugKeys()
+{
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		app->render->camera.x = 0;
+		app->player->playerData.position = app->player->positionInitial;
+		app->player->playerData.direction = WALK_R;
+		Mix_RewindMusic();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		app->SaveGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		app->LoadGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+		SetDebugCollaider();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (app->player->godMode == false)app->player->godMode = true;
+		else app->player->godMode = false;
+	}
 }
