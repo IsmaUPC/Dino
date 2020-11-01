@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Audio.h"
+#include "Input.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -87,6 +88,23 @@ bool Audio::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	////
 	//active = false;
+	return true;
+}
+
+bool Audio::Update(float dt)
+{
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+		app->audio->ChangeVolumeMusic(-10);
+
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+		app->audio->ChangeVolumeMusic(10);
+
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		app->SaveConfigRequested();
+
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		app->LoadConfigRequested();
+
 	return true;
 }
 
@@ -184,6 +202,7 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
 void Audio::ChangeVolumeMusic(int num) {
 	if (num == 10 && volumeMusic < 100)
 	{
@@ -205,3 +224,13 @@ bool Audio::SaveState(pugi::xml_node& node) const {
 	node.child("music").attribute("volume").set_value(volumeMusic);
 	return true;
 }
+
+
+/*
+
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		app->SaveConfigRequested();
+
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		app->LoadConfigRequested();
+*/

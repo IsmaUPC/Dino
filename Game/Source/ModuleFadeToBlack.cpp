@@ -96,14 +96,6 @@ bool ModuleFadeToBlack::FadeToBlack(Module* toDisable, Module* toEnable, float f
 	moduleToDisable = toDisable;
 	moduleToEnable = toEnable;
 
-	/*if (moduleToDisable->active == true) {
-		moduleToDisable->CleanUp();
-	}
-	if (moduleToEnable->active == false) {
-		toEnable->Init();
- 		moduleToEnable->Start();
-	}*/
-
 	frameCount = 0;
 	if (currentStep == FadeStep::NONE) {
 

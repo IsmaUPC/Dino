@@ -30,6 +30,8 @@ bool SceneLose::Awake()
 
 bool SceneLose::Start()
 {
+	app->SetLastScene((Module*)this);
+
 	app->audio->PlayMusic("Assets/audio/music/MusicLost.ogg");
 	img = app->tex->Load("Assets/textures/EndScreen.png");
 	animationEnd.texture = app->tex->Load("Assets/textures/DinoSpritesaDead.png");

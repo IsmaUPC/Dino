@@ -61,6 +61,8 @@ public:
 	void LoadConfigRequested();
 	void SaveConfigRequested() const;
 
+	void SetLastScene(Module* scene) { lastScene = scene; }
+
 private:
 
 	// Load config file
@@ -132,7 +134,7 @@ private:
 	SString filenameGame = "save_game.xml";
 	SString filenameConfig = "config.xml";
 
-
+	Module* lastScene;
 };
 
 extern App* app;

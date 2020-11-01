@@ -37,6 +37,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// L03: DONE: Load map
+	app->SetLastScene((Module*)this);
 
 	app->player->Init();
 	app->player->Start();
@@ -82,14 +83,6 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-
-
-	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-		app->audio->ChangeVolumeMusic(-10);
-
-	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
-		app->audio->ChangeVolumeMusic(10);
-
 	//DEBUG KEYS
 	DebugKeys();
 
