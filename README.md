@@ -14,9 +14,10 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 
 - Logo screen with fade-in fade-out
 - Title screen (press ENTER to start)
+- Win/Lose Scenes
 - Player walk/jump/die animations
 - Ending screen (on dying)
-- Second level (one level is mandatory)
+- Music in all scenes 
 - Background with parallax
 - DEBUG keys 
 
@@ -25,17 +26,24 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - WASD for movement
 - Shift for run
 - SPACE for jump
+- ENTER for pass Scene
+
+- +/- modify volume
+
 - F1 Start from the first level
 - F3 Start from the beginning of the current level
 - F5 Save the current game state
 - F6 Load the previous state
+- F7 Save the current config
+- F8 Load the previous config
 - F9 View colliders / logic
 - F10 God Mode (fly around, cannot be killed)
+
 
 ## Developers
 
  - Ismael Tejada - Programmer / Physics
- - Mario Hernández - Programmer / Parallax
+ - Mario Hernández - Lead Programmer
  - Alejandro Moreno - Programmer / Level Designer
 
 ## License
@@ -43,4 +51,4 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
 AdditionalLicenses:
-https://craftpix.net/file-licenses/
+- Tileset: https://craftpix.net/file-licenses/
