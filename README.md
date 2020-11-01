@@ -42,7 +42,7 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 
 ## Developers
 
- - Ismael Tejada - Programmer / Physics
+ - Ismael Tejada - Programmer / Game Designer
  - Mario Hernández - Lead Programmer
  - Alejandro Moreno - Programmer / Level Designer
 
