@@ -364,12 +364,24 @@ bool Player::CheckVictory(iPoint positionMapPlayer_)
 	return false;
 }
 
-bool Player::CheckGameOver()
+bool Player::CheckGameOver(int level)
 {
-	if (playerData.position.y>1720)
+	if (level == 1)
 	{
-		isDead = true;
-		return true;
+		if (playerData.position.y > 1720)
+		{
+			isDead = true;
+			return true;
+		}
 	}
+	if (level == 2)
+	{
+		if (playerData.position.y > 1968)
+		{
+			isDead = true;
+			return true;
+		}
+	}
+	
 	return false;
 }

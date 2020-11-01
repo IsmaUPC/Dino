@@ -1,10 +1,10 @@
+#include "SceneLevel2.h"
 #include "App.h"
 #include "Input.h"
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "Scene.h"
 #include "Player.h"
 #include "SceneIntro.h"
 #include "Map.h"
@@ -15,17 +15,17 @@
 #include "Defs.h"
 #include "Log.h"
 
-Scene::Scene() : Module()
+SceneLevel2::SceneLevel2() : Module()
 {
-	name.Create("scene");
+	name.Create("sceneLevel2");
 }
 
 // Destructor
-Scene::~Scene()
+SceneLevel2::~SceneLevel2()
 {}
 
 // Called before render is available
-bool Scene::Awake()
+bool SceneLevel2::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
@@ -34,23 +34,23 @@ bool Scene::Awake()
 }
 
 // Called before the first frame
-bool Scene::Start()
+bool SceneLevel2::Start()
 {
 	// Load map
 	app->SetLastScene((Module*)this);
 
 	app->player->Init();
 	app->player->Start();
-	app->player->positionInitial = { 432,1170 };
+	app->player->positionInitial = {576,1728};
 	app->map->active = true;
 
 	app->map->Load("Dino_Map_2.tmx");
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
 	img = app->tex->Load("Assets/textures/sky.png");
 	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
-	
-	animationFather.position = { 2352, 495 };
+
+	animationFather.position = { 10512, 816 };
 	idleAnim.loop = true;
 	idleAnim.speed = 0.025;
 
@@ -59,14 +59,14 @@ bool Scene::Start()
 
 	animationFather.currentAnimation = &idleAnim;
 
-	SDL_QueryTexture(img, NULL,NULL,&imgW,&imgH);
+	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 
 	app->render->camera.y -= imgH;
 
 	return true;
 }
 
-void Scene::SetDebugCollaider(bool value)
+void SceneLevel2::SetDebugCollaider(bool value)
 {
 	if (value == NULL)
 		debugCollisions = !debugCollisions;
@@ -75,13 +75,13 @@ void Scene::SetDebugCollaider(bool value)
 }
 
 // Called each loop iteration
-bool Scene::PreUpdate()
+bool SceneLevel2::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool Scene::Update(float dt)
+bool SceneLevel2::Update(float dt)
 {
 	//DEBUG KEYS
 	DebugKeys();
@@ -104,7 +104,7 @@ bool Scene::Update(float dt)
 		LOG("Congratulations, YOU WIN!");
 		victory = true;
 	}
-	if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
+	if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
 		lose = true;
@@ -113,13 +113,13 @@ bool Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool Scene::PostUpdate()
+bool SceneLevel2::PostUpdate()
 {
 	bool ret = true;
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 	if (victory == true)
 	{
@@ -138,7 +138,7 @@ bool Scene::PostUpdate()
 }
 
 // Called before quitting
-bool Scene::CleanUp()
+bool SceneLevel2::CleanUp()
 {
 	if (!active)
 		return true;
@@ -154,7 +154,7 @@ bool Scene::CleanUp()
 	return true;
 }
 
-void Scene::Parallax()
+void SceneLevel2::Parallax()
 {
 	speedImg = -0.9f;
 	imgX = (int)(app->render->camera.x / 6) - 10;
@@ -165,7 +165,7 @@ void Scene::Parallax()
 	app->render->DrawTexture(img, imgX, imgY);
 }
 
-void Scene::DebugKeys()
+void SceneLevel2::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
@@ -195,3 +195,4 @@ void Scene::DebugKeys()
 		else app->player->godMode = false;
 	}
 }
+

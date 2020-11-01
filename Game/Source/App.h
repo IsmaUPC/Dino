@@ -20,6 +20,7 @@ class Scene;
 class SceneIntro;
 class SceneWin;
 class SceneLose;
+class SceneLevel2;
 class Map;
 class Player;
 class ModuleFadeToBlack;
@@ -100,6 +101,7 @@ public:
 	SceneIntro* sceneIntro;
 	SceneWin* sceneWin;
 	SceneLose* sceneLose;
+	SceneLevel2* sceneLevel2;
 	Map* map;
 	Player* player;
 	ModuleFadeToBlack* fade;

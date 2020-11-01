@@ -99,11 +99,13 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\SceneIntro.cpp" />
+    <ClCompile Include="Source\SceneLevel2.cpp" />
     <ClCompile Include="Source\SceneLogo.cpp" />
     <ClCompile Include="Source\SceneLose.cpp" />
     <ClCompile Include="Source\SceneWin.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Window.cpp" />
+    <ClInclude Include="SceneLevel2.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\ModuleFadeToBlack.h" />
@@ -115,6 +117,7 @@
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Render.h" />
     <ClInclude Include="Source\SceneIntro.h" />
+    <ClInclude Include="Source\SceneLevel2.h" />
     <ClInclude Include="Source\SceneLogo.h" />
     <ClInclude Include="Source\SceneLose.h" />
     <ClInclude Include="Source\SceneWin.h" />

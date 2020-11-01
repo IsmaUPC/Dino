@@ -85,7 +85,7 @@ bool SceneWin::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) 
 	{
-		app->fade->FadeToBlack(this, (Module*)app->sceneIntro, 60.f);
+		app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 60.f);
 		return true;
 	}
 

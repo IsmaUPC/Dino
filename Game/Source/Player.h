@@ -71,7 +71,7 @@ public:
 	bool CollisionJumping(iPoint positionMapPlayer);
 	bool CheckCollision(iPoint positionMapPlayer);
 	bool CheckVictory(iPoint positionMapPlayer);
-	bool CheckGameOver();
+	bool CheckGameOver(int level);
 
 private:
 	// Load state game
@@ -86,7 +86,7 @@ public:
 
 	PlayerData playerData;
 	bool godMode = false;
-	iPoint positionInitial = {432,1170};
+	iPoint positionInitial;
 private:
 	float velY = 0;
 	float velX = 0;

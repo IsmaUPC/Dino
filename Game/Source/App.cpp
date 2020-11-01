@@ -9,6 +9,7 @@
 #include "SceneIntro.h"
 #include "SceneWin.h"
 #include "SceneLose.h"
+#include "SceneLevel2.h"
 #include "Map.h"
 #include "Player.h"
 #include "ModuleFadeToBlack.h"
@@ -36,6 +37,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	sceneIntro = new SceneIntro();
 	sceneWin = new SceneWin();
 	sceneLose = new SceneLose();
+	sceneLevel2 = new SceneLevel2();
 	fade = new ModuleFadeToBlack(); 
 
 	// Ordered for awake / Start / Update
@@ -51,6 +53,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneIntro);
 	AddModule(sceneWin);
 	AddModule(sceneLose);
+	AddModule(sceneLevel2);
 	AddModule(fade);
 
 	//actives
@@ -58,6 +61,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene->active = false;
 	sceneWin->active = false;
 	sceneLose->active = false;
+	sceneLevel2->active = false;
 	player->active = false;
 	map->active = false;
 
