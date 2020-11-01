@@ -101,6 +101,7 @@ private:
 
 	int velWalk;
 	bool isDead = false;
+
 	pugi::xml_document playerFile;
 	SString folder;
 	iPoint tmp;

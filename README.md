@@ -23,6 +23,7 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 ## Controls
 
 - WASD for movement
+- Shift for run
 - SPACE for jump
 - F1 Start from the first level
 - F3 Start from the beginning of the current level

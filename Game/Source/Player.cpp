@@ -42,7 +42,7 @@ bool Player::Awake(pugi::xml_node& config)
 	damageAnim->loop = true;
 	damageAnim->speed = 0.025f;
 	runAnim->loop = true;
-	runAnim->speed = 0.025f;
+	runAnim->speed = 0.04f;
 	
 	jumpAnim->loop = true;
 	jumpAnim->speed = 0.12f;
@@ -127,15 +127,24 @@ bool Player::Update(float dt) {
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
 
-	if (app->render->camera.x <= -1 && app->render->camera.x >= -1694)
-		app->render->camera.x = followPositionPalyerX;
-	else if (followPositionPalyerX<-1 && followPositionPalyerX>-1694)  
-		app->render->camera.x = followPositionPalyerX;
+	//if (app->render->camera.x <= -1 && app->render->camera.x >= -1694)
+	//	app->render->camera.x = followPositionPalyerX;
+	//else if (followPositionPalyerX<-1 && followPositionPalyerX>-1694)  
+	//	app->render->camera.x = followPositionPalyerX;
+	//if (app->render->camera.y <= -48 && app->render->camera.y >= -910)
+	//	app->render->camera.y = followPositionPalyerY;
+	//else if (followPositionPalyerY<-48 && followPositionPalyerY>-910)
+	//	app->render->camera.y = followPositionPalyerY;
 
-	if (app->render->camera.y <= -48 && app->render->camera.y >= -910)
-		app->render->camera.y = followPositionPalyerY;
-	else if (followPositionPalyerY<-48 && followPositionPalyerY>-910)
-		app->render->camera.y = followPositionPalyerY;
+	if (app->render->camera.x <= -1 && app->render->camera.x >= -(app->map->data.width * app->map->data.tileWidth))
+		app->render->camera.x = followPositionPalyerX;
+	else if (followPositionPalyerX<-1 && followPositionPalyerX>-(app->map->data.width * app->map->data.tileWidth))
+		app->render->camera.x = followPositionPalyerX;
+	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (19* app->map->data.tileHeight)))
+			app->render->camera.y = followPositionPalyerY;
+		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(19 * app->map->data.tileHeight)))
+			app->render->camera.y = followPositionPalyerY;
+
 
 	// Move player inputs control
 		PlayerControls();
