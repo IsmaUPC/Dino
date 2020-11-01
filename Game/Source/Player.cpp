@@ -6,14 +6,12 @@
 #include "Input.h"
 #include "Map.h"
 
-
 #include "Defs.h"
 #include "Log.h"
 
 Player::Player() : Module()
 {
     name.Create("player");
-
 
 }
 
@@ -23,7 +21,7 @@ Player::~Player()
 bool Player::Start() {
 
 	playerData.texture = app->tex->Load("Assets/textures/Dino_Green.png");
-	playerData.position = { 432,1170 };
+	playerData.position = positionInitial;
 
 	return true;
 }
@@ -49,8 +47,6 @@ bool Player::Awake(pugi::xml_node& config)
 	jumpAnim->loop = true;
 	jumpAnim->speed = 0.12f;
 
-	
-
 	for (int i = 0; i < 4; i++)
 		idleAnim.PushBack({ 78 * i,0, 78, 78 });
 
@@ -68,8 +64,6 @@ bool Player::Awake(pugi::xml_node& config)
 	
 	for (int i = 0; i < 4; i++)
 		runAnim->PushBack({ 1319 + (78 * i),0, 78, 78 });
-
-	
 
 	playerData.currentAnimation = &idleAnim;
 	return ret;
@@ -115,7 +109,6 @@ bool Player::LoadPlayer() {
 	}
 
 	return ret;
-
 }
 
 
@@ -125,9 +118,12 @@ bool Player::PreUpdate() {
 }
 
 bool Player::Update(float dt) {
-	Fallings();
 
-	playerData.currentAnimation->Update();
+	if(godMode==false)Fallings();
+
+	if (godMode == false)playerData.currentAnimation->Update();
+	else playerData.currentAnimation = &idleAnim;
+
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
 
@@ -194,9 +190,11 @@ void Player::PlayerControls()
 	// Player Jump
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)Jump();
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)playerData.position.y -= playerData.velocity;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)playerData.position.y += playerData.velocity;
-
+	if (godMode == true)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)playerData.position.y -= playerData.velocity;
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)playerData.position.y += playerData.velocity;
+	}
 
 	// Player Run
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT&& playerData.state == State::WALK)
@@ -206,8 +204,6 @@ void Player::PlayerControls()
 	}
 
 	PlayerMoveAnimation();
-
-
 }
 
 void Player::Jump()
@@ -296,7 +292,6 @@ void Player::Fallings()
 
 	}
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
-
 }
 
 bool Player::PostUpdate() {
@@ -308,7 +303,6 @@ bool Player::PostUpdate() {
 	if (playerData.direction == MoveDirection::WALK_L)
 		app->render->DrawTextureFlip(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	
-
 	return true;
 }
 
@@ -353,10 +347,14 @@ bool Player::CollisionJumping(iPoint nextPosition) {
 
 bool Player::CheckCollision(iPoint positionMapPlayer)
 {
-	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0 )
+	if (godMode == false)
 	{
-		return true;
+		if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0)
+		{
+			return true;
+		}
 	}
+
 	return false;
 }
 

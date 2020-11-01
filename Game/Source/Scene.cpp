@@ -127,12 +127,24 @@ bool Scene::Update(float dt)
 		app->render->camera.x += 3;
 
 	//DEBUG KEYS
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-		SetDebugCollaider();
-
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
 		app->fade->FadeToBlack(this, (Module*)app->sceneIntro);
 		return true;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		app->fade->FadeToBlack(this, (Module*)app->scene);
+		return true;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+		app->player->playerData.position = app->player->positionInitial;
+		app->player->playerData.direction = WALK_R;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+		SetDebugCollaider();
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		if (app->player->godMode == false)app->player->godMode = true;
+		else app->player->godMode = false;
 	}
 
 	//Draw Background
@@ -161,7 +173,7 @@ bool Scene::Update(float dt)
 		LOG("Congratulations, YOU WIN!");
 		victory = true;
 	}
-	if (app->player->CheckGameOver() && lose==false)
+	if (app->player->CheckGameOver() && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
 		lose = true;
@@ -230,5 +242,4 @@ void Scene::Parallax()
 		speedImg = 0.5f;
 	}
 	app->render->DrawTexture(img, imgX,0,0, speedImg);
-
 }

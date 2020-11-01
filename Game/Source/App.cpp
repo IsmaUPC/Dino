@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "SceneLogo.h"
 #include "Scene.h"
 #include "SceneIntro.h"
 #include "SceneWin.h"
@@ -30,6 +31,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	map = new Map();
 	player = new Player();
+	sceneLogo = new SceneLogo();
 	scene = new Scene();
 	sceneIntro = new SceneIntro();
 	sceneWin = new SceneWin();
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(player);
+	AddModule(sceneLogo);
 	AddModule(scene);
 	AddModule(sceneIntro);
 	AddModule(sceneWin);
@@ -51,6 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade);
 
 	//actives
+	sceneIntro->active = false;
 	scene->active = false;
 	sceneWin->active = false;
 	sceneLose->active = false;

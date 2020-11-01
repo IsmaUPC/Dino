@@ -86,6 +86,8 @@ private:
 public:
 
 	PlayerData playerData;
+	bool godMode = false;
+	iPoint positionInitial = {432,1170};
 private:
 	float velY = 0;
 	float velX = 0;
