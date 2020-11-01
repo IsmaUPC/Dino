@@ -47,7 +47,7 @@ bool SceneLevel2::Start()
 	app->map->Load("Dino_Map_2.tmx");
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
-	img = app->tex->Load("Assets/textures/sky.png");
+	img = app->tex->Load("Assets/textures/sky_3.png");
 	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
 
 	animationFather.position = { 10500, 639 };
@@ -157,10 +157,10 @@ bool SceneLevel2::CleanUp()
 void SceneLevel2::Parallax()
 {
 	speedImg = -0.9f;
-	imgX = (int)(app->render->camera.x / 6) - 10;
+	imgX = (int)(app->render->camera.x / 6);
 	imgX *= speedImg;
 
-	imgY = (int)((app->render->camera.y / 6) + 1250) * 0.2f;
+	imgY = (int)((app->render->camera.y / 6)) * 0.2f;
 
 	app->render->DrawTexture(img, imgX, imgY);
 }
