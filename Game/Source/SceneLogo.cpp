@@ -27,15 +27,7 @@ bool SceneLogo::Awake()
 
 bool SceneLogo::Start()
 {
-	img = app->tex->Load("Assets/textures/SceneLogo.png");
 
-	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
-	app->render->camera.x = app->render->camera.y = 0;
-	return true;
-}
-
-bool SceneLogo::StartModules()
-{
 	img = app->tex->Load("Assets/textures/SceneLogo.png");
 
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);

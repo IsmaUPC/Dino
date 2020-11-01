@@ -63,13 +63,14 @@ public:
 
 	void MovePlayer(MoveDirection playerDirection);
 
-	
-
 	bool PostUpdate();
 
 	bool CleanUp();
 
 	bool Load(const char* path);
+
+	/*bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data) const;*/
 
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);

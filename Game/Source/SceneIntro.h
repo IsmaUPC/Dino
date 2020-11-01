@@ -27,7 +27,6 @@ public:
 
 	// Called before the first frame
 	bool Start();
-	bool StartModules();
 	// Called before all Updates
 	bool PreUpdate();
 

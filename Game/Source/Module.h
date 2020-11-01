@@ -33,12 +33,6 @@ public:
 		return true;
 	}
 
-	virtual bool StartModules() 
-	{
-		return true;
-	}
-
-
 	// Called each loop iteration
 	virtual bool PreUpdate()
 	{

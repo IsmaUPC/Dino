@@ -55,34 +55,6 @@ bool SceneWin::Start()
 	return true;
 }
 
-bool SceneWin::StartModules()
-{
-	img = app->tex->Load("Assets/textures/SceneWin.png");
-	animationSon.texture = app->tex->Load("Assets/textures/DinoSprites.png");
-	animationSon.position = { 340 , 372 };
-	idleAnimSon.loop = true;
-	idleAnimSon.speed = 0.01;
-
-	for (int i = 0; i < 4; i++)
-		idleAnimSon.PushBack({ 336 * i,0, 336, 336 });
-
-	animationSon.currentAnimation = &idleAnimSon;
-
-	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange_Big.png");
-	animationFather.position = { 540 , 180 };
-	idleAnimFather.loop = true;
-	idleAnimFather.speed = 0.01;
-
-	for (int i = 0; i < 4; i++)
-		idleAnimFather.PushBack({ 558 * i,0, 558, 558 });
-
-	animationFather.currentAnimation = &idleAnimFather;
-
-	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
-	app->render->camera.x = app->render->camera.y = 0;
-	return true;
-}
-
 bool SceneWin::PreUpdate()
 {
 	return true;

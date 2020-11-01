@@ -100,7 +100,7 @@ bool ModuleFadeToBlack::FadeToBlack(Module* toDisable, Module* toEnable, float f
 	}
 	if (moduleToEnable->active == false) {
 		toEnable->Init();
- 		moduleToEnable->StartModules();
+ 		moduleToEnable->Start();
 	}
 
 	/*frameCount = 0;
