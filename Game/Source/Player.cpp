@@ -32,7 +32,6 @@ bool Player::Awake(pugi::xml_node& config)
 	bool ret = true;
 	
 	playerData.velocity = 1;
-	//playerData.position = { 432,1170 };
 	playerData.isJumped = false;
 
 	idleAnim->loop = true;
@@ -104,11 +103,14 @@ bool Player::Update(float dt) {
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
 
+
+	// Camera delimitation x
 	if (app->render->camera.x <= -1 && app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth)- WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
 	else if (followPositionPalyerX<-1 && followPositionPalyerX>-((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
 
+	// Camera delimitation x
 	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H+(4* app->map->data.tileHeight))))
 			app->render->camera.y = followPositionPalyerY;
 		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(WINDOW_H+(4 * app->map->data.tileHeight))))
@@ -188,11 +190,13 @@ void Player::Jump()
 {
 	if (playerData.isJumped && !playerData.isJumpedAgain)
 	{
+		// Generate second impulse
 		velY = -1.75;
 		playerData.isJumpedAgain = true;
 	}
 	if (!playerData.isJumped)
 	{
+		// Generate first impulse
 		velY = -2.5;
 		playerData.isJumped = true;
 	}
@@ -206,22 +210,29 @@ void Player::MovePlayer(MoveDirection playerDirection)
 	tmp =(iPoint) playerData.position;
 	playerData.direction = playerDirection;
 
+
 	switch (playerData.state)
 	{
 	case IDLE:
+		// Future conditions in state IDLE...
 		break;	
 
 	case JUMP:
-
+		// Move in state JUMP 
 		MoveToDirection(velX);
+		// Future conditions in state JUMP...
 		break;
 
 	case WALK:
+		// Move in state WALK 
 		MoveToDirection(velX);
+		// Future conditions in state WALK...
 		break;
 
 	case RUN:
+		// Move in state RUN 
 		MoveToDirection(velX);
+		// Future conditions in state RUN...
 		break;
 
 	default:
@@ -234,7 +245,7 @@ void Player::MovePlayer(MoveDirection playerDirection)
 void Player::MoveToDirection(int velocity) {
 	switch (playerData.direction)
 	{	
-
+	// Move in to correct direction
 	case WALK_L:
 		playerData.position.x -= velocity;
 		break;
@@ -247,6 +258,7 @@ void Player::MoveToDirection(int velocity) {
 	}
 }
 
+// Implements to gravity fall down
 void Player::Fallings()
 {	
 	tmp = (iPoint)playerData.position;
@@ -276,6 +288,7 @@ bool Player::PostUpdate() {
 
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
+	// Draw player in correct direction
 	if (playerData.direction == MoveDirection::WALK_R )
 		app->render->DrawTexture(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	if (playerData.direction == MoveDirection::WALK_L)
@@ -302,7 +315,8 @@ bool Player::CollisionPlayer(iPoint nextPosition) {
 	int x = (int)nextPosition.x;
 
 	for (int i = 0; i < playerData.numPoints; i++)
-	{
+	{	
+		// Concvert position player WorldToMap 
 		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i][0], y+playerData.pointsCollision[i][1]);
 		if (CheckCollision(positionMapPlayer)) return true;
 	}
@@ -323,6 +337,7 @@ bool Player::CollisionJumping(iPoint nextPosition) {
 	return false;
 }
 
+// Comprove position player in array of tiles in mapLayer collision
 bool Player::CheckCollision(iPoint positionMapPlayer)
 {
 	if (godMode == false)
