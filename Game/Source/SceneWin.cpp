@@ -7,13 +7,14 @@
 #include "SceneWin.h"
 #include "ModuleFadeToBlack.h"
 
+#include <SDL_mixer\include\SDL_mixer.h>
+
 #include "Defs.h"
 #include "Log.h"
 
 SceneWin::SceneWin()
 {
 	name.Create("sceneWin");
-
 }
 
 SceneWin::~SceneWin()
@@ -29,6 +30,7 @@ bool SceneWin::Awake()
 
 bool SceneWin::Start()
 {
+	app->audio->PlayMusic("Assets/audio/music/MusicVictory_1.ogg");
 	img = app->tex->Load("Assets/textures/SceneWin.png");
 	animationSon.texture = app->tex->Load("Assets/textures/DinoSprites.png");
 	animationSon.position = { 340 , 372 };
@@ -100,6 +102,7 @@ bool SceneWin::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
+	Mix_HaltMusic();
 	app->tex->UnLoad(img);
 	app->tex->UnLoad(animationSon.texture);
 	app->tex->UnLoad(animationFather.texture);

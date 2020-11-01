@@ -43,7 +43,6 @@ private:
 	AnimationIntro animationIntro;
 	Animation idleAnim;
 
-	SDL_Texture* img;
 	SDL_Texture* bgIntro;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 

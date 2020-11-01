@@ -45,7 +45,7 @@ bool Scene::Start()
 
 	app->map->Load("Mapa_PixelArt.tmx");
 	// Load music
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
 	img = app->tex->Load("Assets/textures/sky.png");
 	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
 	
@@ -165,7 +165,7 @@ bool Scene::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
-	app->audio->CleanUp();
+	Mix_HaltMusic();
 	app->map->CleanUp();
 	app->tex->UnLoad(img);
 	app->tex->UnLoad(animationFather.texture);
@@ -193,6 +193,7 @@ void Scene::DebugKeys()
 		app->render->camera.x = 0;
 		app->player->playerData.position = app->player->positionInitial;
 		app->player->playerData.direction = WALK_R;
+		Mix_RewindMusic();
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -209,5 +210,4 @@ void Scene::DebugKeys()
 		if (app->player->godMode == false)app->player->godMode = true;
 		else app->player->godMode = false;
 	}
-
 }
