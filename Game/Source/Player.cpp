@@ -136,10 +136,11 @@ bool Player::Update(float dt) {
 	//else if (followPositionPalyerY<-48 && followPositionPalyerY>-910)
 	//	app->render->camera.y = followPositionPalyerY;
 
-	if (app->render->camera.x <= -1 && app->render->camera.x >= -(app->map->data.width * app->map->data.tileWidth))
+	if (app->render->camera.x <= -1 && app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth)- WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
-	else if (followPositionPalyerX<-1 && followPositionPalyerX>-(app->map->data.width * app->map->data.tileWidth))
+	else if (followPositionPalyerX<-1 && followPositionPalyerX>-((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
+
 	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (19* app->map->data.tileHeight)))
 			app->render->camera.y = followPositionPalyerY;
 		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(19 * app->map->data.tileHeight)))
