@@ -342,7 +342,7 @@ bool Player::CheckCollision(iPoint positionMapPlayer)
 {
 	if (godMode == false)
 	{
-		if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) != 0)
+		if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid+1)
 		{
 			return true;
 		}
@@ -356,7 +356,7 @@ bool Player::CheckVictory(iPoint positionMapPlayer_)
 	iPoint positionMapPlayer;
 	int y = (int)positionMapPlayer_.y;
 
-	positionMapPlayer = app->map->WorldToMap((int)positionMapPlayer_.x + 18, y);
+	positionMapPlayer = app->map->WorldToMap((int)positionMapPlayer_.x, y);
 	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid)
 	{
 		return true;
