@@ -46,9 +46,9 @@ bool Scene::Start()
 
 	app->map->Load("Mapa_PixelArt.tmx");
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/HADES_8bits.ogg");
-	img = app->tex->Load("Assets/textures/sky.png");
-	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
+	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
+	img = app->tex->Load("Assets/Textures/sky.png");
+	animationFather.texture = app->tex->Load("Assets/Textures/Dino_Orange.png");
 	
 	animationFather.position = { 2352, 495 };
 	idleAnim.loop = true;

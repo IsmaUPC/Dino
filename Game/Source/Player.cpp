@@ -341,12 +341,7 @@ bool Player::CollisionJumping(iPoint nextPosition) {
 bool Player::CheckCollision(iPoint positionMapPlayer)
 {
 	if (godMode == false)
-	{
-		if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid+1)
-		{
-			return true;
-		}
-	}
+		if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid+1)return true;
 
 	return false;
 }
