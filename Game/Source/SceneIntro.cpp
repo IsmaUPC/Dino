@@ -58,6 +58,7 @@ bool SceneIntro::Update(float dt)
 {
 
 	animationIntro.currentAnimation->Update();
+	
 	return true;
 }
 

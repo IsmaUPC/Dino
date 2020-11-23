@@ -107,6 +107,7 @@
     <ClCompile Include="Source\SceneWin.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Window.cpp" />
+    <ClInclude Include="PQueue.h" />
     <ClInclude Include="SceneLevel2.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Map.h" />

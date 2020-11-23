@@ -19,10 +19,163 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
+
+void Map::ResetPath(iPoint start)
+{
+	frontier.Clear();
+	visited.Clear();
+	breadcrumbs.Clear();
+
+	frontier.Push(start, 0);
+	visited.Add(start);
+	breadcrumbs.Add(start);
+
+	memset(costSoFar, 0, sizeof(uint) * COST_MAP_SIZE * COST_MAP_SIZE);
+}
+
+void Map::DrawPath()
+{
+	iPoint pointV;
+	iPoint pointF;
+	iPoint pointPath;
+
+	// Draw visited
+	ListItem<iPoint>* itemVisited = visited.start;
+	PQueueItem<iPoint>* itemFrontier = frontier.start;
+
+
+	while (itemVisited)
+	{
+		pointV = itemVisited->data;
+		
+		TileSet* tileset = GetTilesetFromTileId(260);
+
+		SDL_Rect rec = tileset->GetTileRect(260);
+		iPoint pos = MapToWorld(pointV.x, pointV.y);
+
+		app->render->DrawTexture(tileset->texture, pos.x, pos.y, &rec);
+		itemVisited = itemVisited->next;
+		
+	}
+	while (itemFrontier)
+	{
+		TileSet* tileset = GetTilesetFromTileId(259);
+
+		SDL_Rect rec = tileset->GetTileRect(259);
+
+		pointF = itemFrontier->data;
+		tileset = GetTilesetFromTileId(259);
+		iPoint pos = MapToWorld(pointF.x, pointF.y);
+		app->render->DrawTexture(tileset->texture, pos.x, pos.y, &rec);
+		itemFrontier = itemFrontier->next;
+	}
+	int pathSize = path.Count();
+	for (size_t i = 0; i < pathSize; i++)
+	{
+		TileSet* tileset = GetTilesetFromTileId(259);
+
+		SDL_Rect rec = tileset->GetTileRect(259);
+
+		pointPath = { path.At(i)->x,path.At(i)->y };
+		tileset = GetTilesetFromTileId(259);
+		iPoint pos = MapToWorld(pointPath.x, pointPath.y);
+		app->render->DrawTexture(tileset->texture, pos.x, pos.y, &rec);
+	
+	}
+}
+
+int Map::MovementCost(int x, int y) const
+{
+	int ret = -1;
+
+	if ((x >= 0) && (x < data.width) && (y >= 0) && (y < data.height))
+	{
+		// Coje el layer de las colisiones que en nuestro caso es el tercero
+		int id = data.layers.start->next->next->data->Get(x, y);
+
+		if (id == 0) ret = 3;
+		else ret = 0;
+	}
+
+	return ret;
+}
+void Map::ComputePath(int x, int y)
+{
+	path.Clear();
+	iPoint goal = { x, y };
+	int size = breadcrumbs.Count()-1;
+	path.PushBack(goal);
+
+	// L11: TODO 2: Follow the breadcrumps to goal back to the origin
+	// add each step into "path" dyn array (it will then draw automatically)
+
+	//for (ListItem<iPoint>* crumbs = breadcrumbs.end; crumbs ; crumbs=crumbs->prev)
+	//{
+	//	path.PushBack(crumbs->data);
+	//}
+	
+		//path.Insert = crumbs;
+		//path.Flip();
+
+	ListItem<iPoint>* iterator= visited.end;
+	ListItem<iPoint>* tmp = breadcrumbs.At(size);
+
+	for (iterator; iterator; iterator=iterator->prev)
+	{
+		size--;
+		if (iterator->data == tmp->data) 
+		{
+			path.PushBack(iterator->data);
+			tmp=breadcrumbs.At(size);
+		}
+		
+	}
+	
+	
+
+}
+void Map::PropagateDijkstra()
+{
+	// L11: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
+	// use the 2 dimensional array "costSoFar" to track the accumulated costs
+	// on each cell (is already reset to 0 automatically)
+	iPoint curr;
+	curr = frontier.GetLast()->data;
+	if (frontier.Pop(curr) && curr != tileDestiny)
+	{
+		iPoint neighbors[4];
+		neighbors[0].Create(curr.x + 1, curr.y + 0);
+		neighbors[1].Create(curr.x + 0, curr.y + 1);
+		neighbors[2].Create(curr.x - 1, curr.y + 0);
+		neighbors[3].Create(curr.x + 0, curr.y - 1);
+
+		for (uint i = 0; i < 4; ++i)
+		{
+			if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
+			{
+				if (visited.Find(neighbors[i]) == -1)
+				{
+					//frontier.Push(neighbors[i], MovementCost(neighbors[i].x, neighbors[i].y));
+					frontier.Push(neighbors[i], 0);
+					visited.Add(neighbors[i]);
+					costSoFar[i][0] = MovementCost(neighbors[i].x, neighbors[i].y);
+					breadcrumbs.Add(curr);
+				}
+			}
+		}
+	}
+	else 
+	{
+		breadcrumbs.Add(curr);
+		ComputePath(tileDestiny.x, tileDestiny.y);
+		app->map->ResetPath(app->map->tileDestiny);
+	}
+}
+
 // Ask for the value of a custom property
 int Properties::GetProperty(const char* value, int defaultValue) const
 {
-	for (int i = 0; i < list.count(); i++)
+	for (int i = 0; i < list.Count(); i++)
 	{
 		if (strcmp(list.At(i)->data->name.GetString(), value)==0)
 		{
@@ -63,7 +216,7 @@ void Map::Draw()
 				if (tileId > 0)
 				{    
 					iPoint vec = MapToWorld(x, y);
-					for (int i = 0; i < data.tilesets.count(); i++)
+					for (int i = 0; i < data.tilesets.Count(); i++)
 					{
 						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0 || *drawColl)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
@@ -72,7 +225,7 @@ void Map::Draw()
 			}
 		}
 	}
-	
+	if(*drawColl)app->map->DrawPath();
 }
 
 // Translates x,y coordinates from map positions to world positions
@@ -170,7 +323,7 @@ bool Map::CleanUp()
 		RELEASE(item->data);
 		item = item->next;
 	}
-	data.tilesets.clear();
+	data.tilesets.Clear();
 
 	ListItem<MapLayer*>* item2;
 	item2 = data.layers.start;
@@ -181,7 +334,7 @@ bool Map::CleanUp()
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
-	data.layers.clear();
+	data.layers.Clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -219,7 +372,7 @@ bool Map::Load(const char* filenameGame)
 
 		if (ret == true) ret = LoadTilesetImage(tileset, set);
 
-		data.tilesets.add(set);
+		data.tilesets.Add(set);
 	}
 	ret = true;
 
@@ -232,7 +385,7 @@ bool Map::Load(const char* filenameGame)
 		ret = LoadLayer(layer, lay);
 
 		if (ret == true)
-			data.layers.add(lay);
+			data.layers.Add(lay);
 
 		pugi::xml_node propertiesNode;
 		for (propertiesNode = layer.child("properties"); propertiesNode && ret; propertiesNode = propertiesNode.next_sibling("properties"))
@@ -250,7 +403,7 @@ bool Map::Load(const char* filenameGame)
 		LOG("Successfully parsed map XML file: %s", filenameGame);
 		LOG("Width: %d	Hight: %d", data.width, data.height);
 		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
-		for (int i = 0; i < data.tilesets.count(); i++)
+		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
 			LOG("TileSet ----");
 			LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
@@ -262,7 +415,7 @@ bool Map::Load(const char* filenameGame)
 			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
 		}
 
-		for (int i = 0; i < data.layers.count(); i++)
+		for (int i = 0; i < data.layers.Count(); i++)
 		{
 			LOG("Layer ----");
 			LOG("Name: %s", data.layers.At(i)->data->name.GetString());
@@ -373,7 +526,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 		Properties::Property *propertyID = new Properties::Property();
 		propertyID->name = propertyNode.attribute("name").as_string("");
 		propertyID->value = propertyNode.attribute("value").as_int(0);
-		properties.list.add(propertyID);
+		properties.list.Add(propertyID);
 	}
 	
 	return ret;

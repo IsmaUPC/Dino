@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" enpointF = itemFrontier->data;coding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="225" height="45" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="1">
   <tileset firstgid="1" name="Nature_environment_02" tilewidth="48" tileheight="48" tilecount="154" columns="22"  numTilesWidth="22" numTilesHeight="7">
     <image source="Nature_environment_02.png" width="1056" height="336"/>

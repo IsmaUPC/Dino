@@ -38,13 +38,13 @@ bool Scene::Start()
 {
 	// Load map
 	app->SetLastScene((Module*)this);
+	app->map->Load("Mapa_PixelArt.tmx");
 
 	app->player->positionInitial = { 432,1170 };
 	app->player->Init();
 	app->player->Start();
 	app->map->active = true;
 
-	app->map->Load("Mapa_PixelArt.tmx");
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
@@ -83,6 +83,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
 	//DEBUG KEYS
 	DebugKeys();
 
@@ -91,6 +92,13 @@ bool Scene::Update(float dt)
 
 	// Draw map
 	app->map->Draw();
+	if (app->input->GetKey(SDL_SCANCODE_M)==KEY_UP)
+	{
+		app->input->GetMousePosition(app->map->tileDestiny.x, app->map->tileDestiny.y);
+		app->map->tileDestiny = app->map->WorldToMap( (app->render->camera.x+app->map->tileDestiny.x), (app->render->camera.y-app->map->tileDestiny.y)*-1);
+		//app->map->tileDestiny = { 19, 25 };
+		//app->map->ResetPath(app->map->tileDestiny);
+	}
 
 	iPoint vec;
 	vec.x = 0, vec.y = 0;

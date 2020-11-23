@@ -12,16 +12,18 @@
 Player::Player() : Module()
 {
     name.Create("player");
-
 }
 
 Player::~Player()
 {}
 
-bool Player::Start() {
-
+bool Player::Start() 
+{
+	iPoint pathInit =  app->map->WorldToMap(positionInitial.x ,positionInitial.y) ;
+	app->map->ResetPath(pathInit);
 	playerData.texture = app->tex->Load("Assets/textures/Dino_Green.png");
 	playerData.position = positionInitial;
+
 
 	return true;
 }
@@ -88,12 +90,14 @@ bool Player::SaveState(pugi::xml_node& player) const
 }
 
 
-bool Player::PreUpdate() {
+bool Player::PreUpdate() 
+{
 
 	return true;
 }
 
-bool Player::Update(float dt) {
+bool Player::Update(float dt) 
+{
 
 	if(godMode==false)Fallings();
 
@@ -117,8 +121,13 @@ bool Player::Update(float dt) {
 			app->render->camera.y = followPositionPalyerY;
 
 
+
 	// Move player inputs control
 		PlayerControls();
+		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		{
+			app->map->PropagateDijkstra();
+		}
 
 	return true;
 }
@@ -242,7 +251,8 @@ void Player::MovePlayer(MoveDirection playerDirection)
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 }
 
-void Player::MoveToDirection(int velocity) {
+void Player::MoveToDirection(int velocity)
+{
 	switch (playerData.direction)
 	{	
 	// Move in to correct direction
@@ -271,20 +281,21 @@ void Player::Fallings()
 		playerData.position.y += velY;
 		velY += 0.035f;
 	}
-	else {
- 		velY = (int)0;
+	else
+	{
+ 		velY = 0.0f;
 	} // Verctical collision
-	if (CollisionJumping({ playerData.position.x + playerData.velocity,  nextYDown }))
+	if (CollisionJumping({ playerData.position.x + playerData.velocity, nextYDown }))
 	{
 		playerData.isJumped = false;
 		playerData.isJumpedAgain = false;
 		playerData.state = State::IDLE;
-
 	}
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 }
 
-bool Player::PostUpdate() {
+bool Player::PostUpdate() 
+{
 
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
@@ -297,7 +308,8 @@ bool Player::PostUpdate() {
 	return true;
 }
 
-bool Player::CleanUp() {
+bool Player::CleanUp() 
+{
 
 	if (!active)
 		return true;
@@ -308,7 +320,8 @@ bool Player::CleanUp() {
 	return true;
 }
 
-bool Player::CollisionPlayer(iPoint nextPosition) {
+bool Player::CollisionPlayer(iPoint nextPosition) 
+{
 
 	iPoint positionMapPlayer;
 	int y = (int)nextPosition.y;
@@ -324,7 +337,8 @@ bool Player::CollisionPlayer(iPoint nextPosition) {
 	return false;
 }
 
-bool Player::CollisionJumping(iPoint nextPosition) {
+bool Player::CollisionJumping(iPoint nextPosition)
+{
 
 	iPoint positionMapPlayer;
 	int y = (int)nextPosition.y;

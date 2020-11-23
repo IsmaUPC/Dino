@@ -4,8 +4,14 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "PQueue.h"
+#include "DynArray.h"
+
 
 #include "PugiXml\src\pugixml.hpp"
+
+#define COST_MAP_SIZE	100
+
 
 struct TileSet
 {
@@ -54,7 +60,7 @@ struct Properties
 			RELEASE(listD->data);
 			listD = listD->next;
 		}
-		list.clear();
+		list.Clear();
 	}
 
 	// Method to ask for the value of a custom property
@@ -127,6 +133,19 @@ public:
 	// Translates x,y coordinates from  world positions to map positions 
 	iPoint WorldToMap(int x, int y) const;
 
+
+	// L10: BFS Pathfinding methods
+	void ResetPath(iPoint start);
+	void DrawPath();
+
+	// L11: More pathfinding methods
+	int MovementCost(int x, int y) const;
+	void ComputePath(int x, int y);
+
+	// Propagation methods
+	void PropagateDijkstra();
+
+
 private:
 
 	// L03: Methods to load all required map data
@@ -144,7 +163,7 @@ private:
 public:
 
 	MapData data;
-
+	iPoint tileDestiny;
 private:
 
     pugi::xml_document mapFile;
@@ -152,6 +171,18 @@ private:
     bool mapLoaded;
 
 	bool* drawColl;
+	// L10: BFS Pathfinding variables
+	PQueue<iPoint> frontier;
+	List<iPoint> visited;
+
+	// L11: Additional variables
+	List<iPoint> breadcrumbs;
+	uint costSoFar[COST_MAP_SIZE][COST_MAP_SIZE];
+	DynArray<iPoint> path;
+
+	
+
+	SDL_Texture* tileX = nullptr;
 };
 
 #endif // __MAP_H__

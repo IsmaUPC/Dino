@@ -8,7 +8,6 @@
 template<class TYPE>
 class Point
 {
-
 public:
 
 	TYPE x, y;
@@ -28,7 +27,7 @@ public:
 		this->y = y;
 	}
 
-	Point& create(const TYPE& x, const TYPE& y)
+	Point& Create(const TYPE& x, const TYPE& y)
 	{
 		this->x = x;
 		this->y = y;
@@ -37,7 +36,7 @@ public:
 	}
 
 	// Math ------------------------------------------------
-	Point operator -(const Point &v) const
+	Point operator -(const Point& v) const
 	{
 		p2Vector2 r;
 
@@ -47,7 +46,7 @@ public:
 		return(r);
 	}
 
-	Point operator + (const Point &v) const
+	Point operator + (const Point& v) const
 	{
 		p2Vector2 r;
 
@@ -57,7 +56,7 @@ public:
 		return(r);
 	}
 
-	const Point& operator -=(const Point &v)
+	const Point& operator -=(const Point& v)
 	{
 		x -= v.x;
 		y -= v.y;
@@ -65,7 +64,7 @@ public:
 		return(*this);
 	}
 
-	const Point& operator +=(const Point &v)
+	const Point& operator +=(const Point& v)
 	{
 		x += v.x;
 		y += v.y;
@@ -109,7 +108,7 @@ public:
 		TYPE fx = x - v.x;
 		TYPE fy = y - v.y;
 
-		return sqrtf((fx*fx) + (fy*fy));
+		return sqrtf((fx * fx) + (fy * fy));
 	}
 
 	TYPE DistanceNoSqrt(const Point& v) const
@@ -117,7 +116,7 @@ public:
 		TYPE fx = x - v.x;
 		TYPE fy = y - v.y;
 
-		return (fx*fx) + (fy*fy);
+		return (fx * fx) + (fy * fy);
 	}
 
 	TYPE DistanceManhattan(const Point& v) const
