@@ -95,7 +95,8 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_M)==KEY_UP)
 	{
 		app->input->GetMousePosition(app->map->tileDestiny.x, app->map->tileDestiny.y);
-		app->map->tileDestiny = app->map->WorldToMap( (app->render->camera.x+app->map->tileDestiny.x), (app->render->camera.y-app->map->tileDestiny.y)*-1);
+		app->map->tileDestiny = app->map->WorldToMap( (app->render->camera.x*-1+  app->map->tileDestiny.x),
+			(app->render->camera.y -app->map->tileDestiny.y)*-1);
 		//app->map->tileDestiny = { 19, 25 };
 		//app->map->ResetPath(app->map->tileDestiny);
 	}

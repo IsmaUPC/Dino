@@ -127,6 +127,7 @@ bool Player::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 		{
 			app->map->PropagateDijkstra();
+			//app->map->PropagateAStar(1);
 		}
 
 	return true;

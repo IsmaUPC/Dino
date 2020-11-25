@@ -145,6 +145,14 @@ public:
 	// Propagation methods
 	void PropagateDijkstra();
 
+	// L12a: AStar pathfinding
+	void ComputePathAStar(int x, int y);
+	// L12a: AStar propagation
+	void PropagateAStar(int heuristic);
+
+	int CalculateDistanceToDestiny(iPoint node);
+	int CalculateDistanceToStart(iPoint node);
+
 
 private:
 
@@ -156,6 +164,8 @@ private:
 
 	// Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+
 
 	// Pick the right Tileset based on a tile id
 	TileSet* GetTilesetFromTileId(int id) const;
@@ -180,7 +190,10 @@ private:
 	uint costSoFar[COST_MAP_SIZE][COST_MAP_SIZE];
 	DynArray<iPoint> path;
 
-	
+
+	// L12: AStar (A*) variables
+	iPoint goalAStar;			// Store goal target tile
+	bool finishAStar = false;	// Detect when reached goal
 
 	SDL_Texture* tileX = nullptr;
 };

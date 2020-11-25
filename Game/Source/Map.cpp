@@ -90,11 +90,19 @@ int Map::MovementCost(int x, int y) const
 
 	if ((x >= 0) && (x < data.width) && (y >= 0) && (y < data.height))
 	{
-		// Coje el layer de las colisiones que en nuestro caso es el tercero
+// Coje el layer de las colisiones que en nuestro caso es el tercero
 		int id = data.layers.start->next->next->data->Get(x, y);
 
-		if (id == 0) ret = 3;
-		else ret = 0;
+		if (id != 0)
+		{
+			int fisrtGid = GetTilesetFromTileId(id)->firstgid;
+
+			if (id == fisrtGid) ret = 1;
+			else if (id == fisrtGid + 1) ret =0;
+			else if (id == fisrtGid + 2) ret = 3;
+			//else ret = 1;
+		}
+		else ret = 1;
 	}
 
 	return ret;
@@ -109,14 +117,6 @@ void Map::ComputePath(int x, int y)
 	// L11: TODO 2: Follow the breadcrumps to goal back to the origin
 	// add each step into "path" dyn array (it will then draw automatically)
 
-	//for (ListItem<iPoint>* crumbs = breadcrumbs.end; crumbs ; crumbs=crumbs->prev)
-	//{
-	//	path.PushBack(crumbs->data);
-	//}
-	
-		//path.Insert = crumbs;
-		//path.Flip();
-
 	ListItem<iPoint>* iterator= visited.end;
 	ListItem<iPoint>* tmp = breadcrumbs.At(size);
 
@@ -128,10 +128,7 @@ void Map::ComputePath(int x, int y)
 			path.PushBack(iterator->data);
 			tmp=breadcrumbs.At(size);
 		}
-		
 	}
-	
-	
 
 }
 void Map::PropagateDijkstra()
@@ -155,7 +152,6 @@ void Map::PropagateDijkstra()
 			{
 				if (visited.Find(neighbors[i]) == -1)
 				{
-					//frontier.Push(neighbors[i], MovementCost(neighbors[i].x, neighbors[i].y));
 					frontier.Push(neighbors[i], 0);
 					visited.Add(neighbors[i]);
 					costSoFar[i][0] = MovementCost(neighbors[i].x, neighbors[i].y);
@@ -171,6 +167,67 @@ void Map::PropagateDijkstra()
 		app->map->ResetPath(app->map->tileDestiny);
 	}
 }
+
+void Map::PropagateAStar(int heuristic)
+{
+	// L12a: TODO 2: Implement AStar algorythm
+	// Consider the different heuristics
+	iPoint curr;
+	curr = frontier.GetLast()->data;
+	if (frontier.Pop(curr) && curr != tileDestiny)
+	{
+		if (true)
+		{
+			iPoint neighbors[4];
+			neighbors[0].Create(curr.x + 1, curr.y + 0);
+			neighbors[1].Create(curr.x + 0, curr.y + 1);
+			neighbors[2].Create(curr.x - 1, curr.y + 0);
+			neighbors[3].Create(curr.x + 0, curr.y - 1);
+
+			for (uint i = 0; i < 4; ++i)
+			{
+				if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
+				{
+					if (visited.Find(neighbors[i]) == -1)
+					{
+						frontier.Push(neighbors[i], CalculateDistanceToDestiny(neighbors[i])+ CalculateDistanceToStart(neighbors[i]));
+						visited.Add(neighbors[i]);
+						costSoFar[i][0] = MovementCost(neighbors[i].x, neighbors[i].y);
+						breadcrumbs.Add(curr);
+					}
+				}
+			}
+		}
+
+	}
+	else
+	{
+		breadcrumbs.Add(curr);
+		ComputePath(tileDestiny.x, tileDestiny.y);
+		app->map->ResetPath(app->map->tileDestiny);
+	}
+}
+
+void Map::ComputePathAStar(int x, int y)
+{
+	// L12a: Compute AStart pathfinding
+}
+
+int Map::CalculateDistanceToDestiny(iPoint node)
+{
+	iPoint distance= tileDestiny-node ;
+	return distance.x + distance.y;
+}
+
+int Map::CalculateDistanceToStart(iPoint node)
+{
+	iPoint distance;
+	distance =  node -visited.start->data ;
+	return distance.x + distance.y;
+
+}
+
+
 
 // Ask for the value of a custom property
 int Properties::GetProperty(const char* value, int defaultValue) const
