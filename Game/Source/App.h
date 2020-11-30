@@ -114,11 +114,24 @@ private:
 	char** args;
 	SString title;
 	SString organization;
-
+	int framerate;
 	List<Module *> modules;
 
 	uint frames;
-	float dt;
+	PerfTimer ptimer;
+	uint64 frameCount = 0;
+
+	Timer startupTime;
+	Timer frameTime;
+	Timer lastSecFrameTime;
+	uint32 lastSecFrameCount = 0;
+	uint32 prevLastSecFrameCount = 0;
+	uint32 framesOnLastSecond = 0;
+	uint32 lastFrameMs = 0;
+	float dt = 0.0f;
+	float perfTime;
+	float oldLastFrame = 0.0f;
+	int	cappedMs = -1;
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;

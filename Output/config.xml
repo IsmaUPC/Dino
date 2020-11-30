@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-	<app>
+	<app framerate_cap="30">
 		<title>DINO</title>
 		<organization>UPC</organization>
 	</app>

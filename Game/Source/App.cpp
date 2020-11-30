@@ -109,6 +109,7 @@ bool App::Awake()
 
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
+		framerate = configApp.attribute("framerate_cap").as_int(0);
 	}
 
 	if (ret == true)
@@ -130,6 +131,10 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
+	startupTime.Start();
+	lastSecFrameTime.Start();
+	frameTime.Start();
+
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.start;
@@ -182,6 +187,11 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
+	frameCount++;
+	lastSecFrameCount++;
+
+	// L08: TODO 4: Calculate the dt: differential time since last frame
+	dt = (oldLastFrame - lastFrameMs) / 1000;
 }
 
 // ---------------------------------------------
@@ -192,6 +202,35 @@ void App::FinishUpdate()
 
 	if (loadConfigRequested == true) LoadGame(filenameConfig.GetString());
 	if (saveConfigRequested == true) SaveGame(filenameConfig.GetString());
+
+	float secondsSinceStartup = startupTime.ReadSec();
+	float averageFps = frameCount / secondsSinceStartup;
+
+	if (frameTime.ReadSec() > 1.0f)
+	{
+		framesOnLastSecond = lastSecFrameCount;
+		lastSecFrameCount = 0;
+		frameTime.Start();
+	}
+	oldLastFrame = lastFrameMs;
+	lastFrameMs = lastSecFrameTime.Read();
+	lastSecFrameTime.Start();
+	int delay = (1000 * (1.0f / framerate));
+	if (lastFrameMs < 1000 * (1.0f / framerate))
+	{
+		ptimer.Start();
+		SDL_Delay(delay);
+		perfTime = ptimer.ReadMs();
+		LOG("We waited for %d milliseconds and got back in %f milliseconds", delay, perfTime);
+	}
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+		averageFps, lastFrameMs, framesOnLastSecond, dt, secondsSinceStartup, frameCount);
+
+	app->win->SetTitle(title);
+	//Use SDL_Delay to make sure you get your capped framerate
+    //Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
 }
 
 // Call modules before each loop iteration
