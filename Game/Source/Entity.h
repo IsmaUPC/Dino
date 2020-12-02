@@ -1,10 +1,25 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-#include "SString.h"
 #include "Module.h"
+#include "Point.h"
 #include "Animation.h"
-#include "PugiXml/src/pugixml.hpp"
+#include "App.h"
+#include "Render.h"
+#include "Textures.h"
+#include "Input.h"
+#include "Map.h"
+#include "Defs.h"
+#include "Log.h"
+
+
+enum TypeEntity {
+
+	PLAYER,
+	GROUND_ENTITIY,
+	AIR_ENTITY,
+	UNKNOWN,
+};
 
 
 enum State {
@@ -26,7 +41,16 @@ enum TypeCollision {
 	COLLISION,
 	CHECK_POINT,
 };
+struct EntityData
+{
+	fPoint position;
+	State state;
+	MoveDirection direction;
+	Animation* currentAnimation;
+	float velocity;
 
+	SDL_Texture* texture;
+};
 class Entity : public Module
 {
 
@@ -56,8 +80,10 @@ public:
 	 bool SaveState(pugi::xml_node&) const;
 public:
 
-	bool isAlive= false;
 
+	bool isAlive= false;
+	bool pendingToDelete = false;
+	EntityData entityData;
 
 };
 
