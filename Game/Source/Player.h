@@ -1,11 +1,9 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
-#include "Point.h"
 #include "Entity.h"
 
 
-#include "PugiXml\src\pugixml.hpp"
 
 //
 //enum State {

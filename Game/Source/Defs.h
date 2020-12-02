@@ -13,6 +13,9 @@
 //Size Window
 #define WINDOW_W 1280
 #define WINDOW_H 720
+#define SCREEN_SIZE 1
+#define SPAWN_MARGIN 50
+
 
 //
 

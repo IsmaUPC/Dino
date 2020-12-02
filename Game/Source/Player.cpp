@@ -1,13 +1,5 @@
-#include "App.h"
-#include "Render.h"
-#include "Textures.h"
 #include "Player.h"
 
-#include "Input.h"
-#include "Map.h"
-
-#include "Defs.h"
-#include "Log.h"
 
 Player::Player() : Entity()
 {

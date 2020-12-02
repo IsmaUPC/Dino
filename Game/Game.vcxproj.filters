@@ -81,6 +81,11 @@
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collisions.cpp" />
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Modules\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -177,6 +182,11 @@
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collisions.h" />
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Modules\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -199,6 +209,9 @@
     </Filter>
     <Filter Include="Modules\Application">
       <UniqueIdentifier>{e47d1144-38b4-4e3f-9d56-e49e82b990c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Managers">
+      <UniqueIdentifier>{0ec4ad08-2606-4c2e-881b-6300a21d9e49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
