@@ -9,7 +9,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-Player::Player() : Module()
+Player::Player() : Entity()
 {
     name.Create("player");
 }
@@ -310,7 +310,6 @@ void Player::Fallings(float dt)
 
 bool Player::PostUpdate() 
 {
-
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
 	// Draw player in correct direction
@@ -324,7 +323,6 @@ bool Player::PostUpdate()
 
 bool Player::CleanUp() 
 {
-
 	if (!active)
 		return true;
 
@@ -336,7 +334,6 @@ bool Player::CleanUp()
 
 bool Player::CollisionPlayer(iPoint nextPosition) 
 {
-
 	iPoint positionMapPlayer;
 	int y = nextPosition.y;
 	int x = nextPosition.x;
@@ -347,7 +344,6 @@ bool Player::CollisionPlayer(iPoint nextPosition)
 		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i][0], y+playerData.pointsCollision[i][1]);
 		if (CheckCollision(positionMapPlayer)== COLLISION) return true;
 	}
-
 	return false;
 }
 

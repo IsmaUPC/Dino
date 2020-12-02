@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Entity.h"
 #include "ModuleFadeToBlack.h"
 
 #include "Defs.h"
