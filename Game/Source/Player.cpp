@@ -32,6 +32,7 @@ bool Player::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Player Parser");
 	bool ret = true;
+	win = false;
 	
 	playerData.velocity = 1;
 	playerData.isJumped = false;
@@ -99,7 +100,11 @@ bool Player::PreUpdate()
 bool Player::Update(float dt) 
 {
 
-	if(godMode==false)Fallings();
+
+	playerData.velocity = floor(100.0f * dt);
+	LOG("Delta %f  <--------", dt);
+
+	if(godMode==false)Fallings(dt);
 
 	if (godMode == false)playerData.currentAnimation->Update();
 	else playerData.currentAnimation = idleAnim;
@@ -201,13 +206,13 @@ void Player::Jump()
 	if (playerData.isJumped && !playerData.isJumpedAgain)
 	{
 		// Generate second impulse
-		velY = -1.75;
+		velY =-45 /gravity;
 		playerData.isJumpedAgain = true;
 	}
 	if (!playerData.isJumped)
 	{
 		// Generate first impulse
-		velY = -2.5;
+		velY = -60/gravity;
 		playerData.isJumped = true;
 	}
 
@@ -217,7 +222,7 @@ void Player::Jump()
 
 void Player::MovePlayer(MoveDirection playerDirection)
 {
-	tmp =(iPoint) playerData.position;
+	tmp = playerData.position;
 	playerData.direction = playerDirection;
 
 
@@ -249,7 +254,7 @@ void Player::MovePlayer(MoveDirection playerDirection)
 		break;
 	}
 
-	if (CollisionPlayer(playerData.position))playerData.position = tmp;
+	if (CollisionPlayer(TransformFPoint(playerData.position)))playerData.position = tmp;
 }
 
 void Player::MoveToDirection(int velocity)
@@ -268,31 +273,44 @@ void Player::MoveToDirection(int velocity)
 		break;
 	}
 }
+iPoint Player::TransformFPoint(fPoint fpoint)
+{
+	iPoint transformation;
+
+	transformation.x = fpoint.x;
+	transformation.y = fpoint.y;
+	
+	return transformation;
+}
+
 
 // Implements to gravity fall down
-void Player::Fallings()
+void Player::Fallings(float dt)
 {	
-	tmp = (iPoint)playerData.position;
+	tmp = playerData.position;
+	int playerX= playerData.position.x;
+	int playerY=playerData.position.y;
 
-	nextYDown = (playerData.position.y + velY);
-	nextYUp= (playerData.position.y - velY);
+
 	// Horizontal Collision
-	if (!CollisionPlayer({ playerData.position.x + playerData.velocity,  nextYDown }) || !CollisionPlayer({ playerData.position.x - playerData.velocity,  nextYDown }))
+	if (!CollisionPlayer(TransformFPoint({ playerX + velX, playerY+ velY })) 
+		|| !CollisionPlayer(TransformFPoint({ playerX -  velX,  playerY +velY })))
 	{
 		playerData.position.y += velY;
-		velY += 0.035f;
+		velY += gravity*dt;
 	}
 	else
 	{
  		velY = 0.0f;
 	} // Verctical collision
-	if (CollisionJumping({ playerData.position.x + playerData.velocity, nextYDown }))
+	if (CollisionJumping(TransformFPoint({ playerX + velX, playerY + velY }))
+		 || CollisionJumping(TransformFPoint({ playerX + velX, playerY - velY })) && velY==0)
 	{
 		playerData.isJumped = false;
 		playerData.isJumpedAgain = false;
 		playerData.state = State::IDLE;
 	}
-	if (CollisionPlayer(playerData.position))playerData.position = tmp;
+	if (CollisionPlayer(TransformFPoint(playerData.position)))playerData.position = tmp;
 }
 
 bool Player::PostUpdate() 
@@ -325,14 +343,14 @@ bool Player::CollisionPlayer(iPoint nextPosition)
 {
 
 	iPoint positionMapPlayer;
-	int y = (int)nextPosition.y;
-	int x = (int)nextPosition.x;
+	int y = nextPosition.y;
+	int x = nextPosition.x;
 
 	for (int i = 0; i < playerData.numPoints; i++)
 	{	
 		// Concvert position player WorldToMap 
 		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i][0], y+playerData.pointsCollision[i][1]);
-		if (CheckCollision(positionMapPlayer)) return true;
+		if (CheckCollision(positionMapPlayer)== COLLISION) return true;
 	}
 
 	return false;
@@ -342,37 +360,64 @@ bool Player::CollisionJumping(iPoint nextPosition)
 {
 
 	iPoint positionMapPlayer;
-	int y = (int)nextPosition.y;
+	int y = nextPosition.y;
 
 	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+18, y);
-	if (CheckCollision(positionMapPlayer)) return true;
+	if (CheckCollision(positionMapPlayer)== COLLISION) return true;
 	positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+48-18, y);
-	if (CheckCollision(positionMapPlayer)) return true;
+	if (CheckCollision(positionMapPlayer)== COLLISION) return true;
 
 	return false;
 }
 
 // Comprove position player in array of tiles in mapLayer collision
-bool Player::CheckCollision(iPoint positionMapPlayer)
+int Player::CheckCollision(iPoint positionMapPlayer)
 {
-	if (godMode == false)
-		if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid+1)return true;
+	uint typeTilePlayer = app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) ;
+	uint firstgidLayerCollisions = app->map->data.tilesets.At(2)->data->firstgid;
+	typeTilePlayer -= firstgidLayerCollisions;
 
-	return false;
-}
+	if (godMode == false) {
+		switch (typeTilePlayer)
+		{
+		case VICTORY:
+			//victory
+			win = true;
+			return 0;
+			break;
 
-bool Player::CheckVictory(iPoint positionMapPlayer_)
-{
-	iPoint positionMapPlayer;
-	int y = (int)positionMapPlayer_.y;
+		case COLLISION:
+			//collision
+			return 1;
+			break;
 
-	positionMapPlayer = app->map->WorldToMap((int)positionMapPlayer_.x, y);
-	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid)
-	{
-		return true;
+		case CHECK_POINT:
+			//checkpoint
+			app->SaveGameRequest();
+			return 2;
+			break;
+
+		default:
+			return -1;
+			break;
+		}
 	}
+
 	return false;
 }
+
+//bool Player::CheckVictory(iPoint positionMapPlayer_)
+//{
+//	iPoint positionMapPlayer;
+//	int y = (int)positionMapPlayer_.y;
+//
+//	positionMapPlayer = app->map->WorldToMap((int)positionMapPlayer_.x, y);
+//	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid)
+//	{
+//		return true;
+//	}
+//	return false;
+//}
 
 bool Player::CheckGameOver(int level)
 {

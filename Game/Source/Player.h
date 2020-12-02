@@ -22,14 +22,20 @@ enum MoveDirection {
 	WALK_R,
 	WALK_L,
 };
+enum TypeCollision{
+
+	VICTORY,
+	COLLISION,
+	CHECK_POINT,
+};
 
 struct PlayerData
 {
-	iPoint position;
+	fPoint position;
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation;
-	int velocity;
+	float velocity;
 	bool isJumped;
 	bool isJumpedAgain;
 	
@@ -69,9 +75,11 @@ public:
 
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
-	bool CheckCollision(iPoint positionMapPlayer);
+	int CheckCollision(iPoint positionMapPlayer);
 	bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
+
+	iPoint TransformFPoint(fPoint fpoint);
 
 private:
 	// Load state game
@@ -79,15 +87,19 @@ private:
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 
-	void Fallings();
+	void Fallings(float dt);
 	void MoveToDirection(int velocity);
 
 public:
 
 	PlayerData playerData;
 	bool godMode = false;
-	iPoint positionInitial;
+	fPoint positionInitial;	
+	bool win= false;
+
 private:
+	
+	float gravity = 9;
 	float velY = 0;
 	float velX = 0;
 
@@ -103,9 +115,8 @@ private:
 
 	pugi::xml_document playerFile;
 	SString folder;
-	iPoint tmp;
-	int nextYDown;
-	int nextYUp;
+	fPoint tmp;
+
 
 };
 

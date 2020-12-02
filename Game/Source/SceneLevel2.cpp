@@ -38,6 +38,7 @@ bool SceneLevel2::Start()
 {
 	// Load map
 	app->SetLastScene((Module*)this);
+	app->player->win = false;
 
 	app->player->positionInitial = {576,1534};
 	app->player->Init();
@@ -97,13 +98,15 @@ bool SceneLevel2::Update(float dt)
 	app->input->GetMousePosition(vec.x, vec.y);
 
 	animationFather.currentAnimation->Update();
+	
+	if (app->player->win)victory = true;
 
-	if (app->player->CheckVictory({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-		app->player->playerData.position.y }) && victory == false)
-	{
-		LOG("Congratulations, YOU WIN!");
-		victory = true;
-	}
+	//if (app->player->CheckVictory(app->player->TransformFPoint({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
+	//	 app->player->playerData.position.y })) && victory == false)
+	//{
+	//	LOG("Congratulations, YOU WIN!");
+	//	victory = true;
+	//}
 	if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");

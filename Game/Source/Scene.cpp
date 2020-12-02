@@ -36,6 +36,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	victory=false;
+	app->player->win = false;
 	// Load map
 	app->SetLastScene((Module*)this);
 	app->map->Load("Mapa_PixelArt.tmx");
@@ -107,12 +109,13 @@ bool Scene::Update(float dt)
 
 	animationFather.currentAnimation->Update();
 
-	if (app->player->CheckVictory({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-		app->player->playerData.position.y }) && victory == false)
-	{
-		LOG("Congratulations, YOU WIN!");
-		victory = true;
-	}
+	if(app->player->win)victory = true;
+	//if (app->player->CheckCollision(app->player->TransformFPoint({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
+	//	app->player->playerData.position.y }))==0 && victory == false)
+	//{
+	//	LOG("Congratulations, YOU WIN!");
+	//	victory = true;
+	//}
 	if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
