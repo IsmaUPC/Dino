@@ -109,7 +109,12 @@ bool App::Awake()
 
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
+		
+		// Obtenemos el Frame Rate
 		framerate = configApp.attribute("framerate_cap").as_int(0);
+		//if (framerate > 0)	cappedMs = framerate *0.001 ;
+		if (framerate > 0)	cappedMs = 1000/framerate  ;
+		
 	}
 
 	if (ret == true)
@@ -191,7 +196,9 @@ void App::PrepareUpdate()
 	lastSecFrameCount++;
 
 	// L08: TODO 4: Calculate the dt: differential time since last frame
-	dt = (oldLastFrame - lastFrameMs) / 1000;
+	//dt = (oldLastFrame - lastFrameMs) / 1000;
+	dt = frameTime.ReadSec();
+	frameTime.Start();
 }
 
 // ---------------------------------------------
@@ -206,22 +213,28 @@ void App::FinishUpdate()
 	float secondsSinceStartup = startupTime.ReadSec();
 	float averageFps = frameCount / secondsSinceStartup;
 
-	if (frameTime.ReadSec() > 1.0f)
+	timeFramesSecond += dt;
+	if (timeFramesSecond > 1.0f)
 	{
 		framesOnLastSecond = lastSecFrameCount;
 		lastSecFrameCount = 0;
-		frameTime.Start();
+		timeFramesSecond = 0;
+		//frameTime.Start();
 	}
+
 	oldLastFrame = lastFrameMs;
 	lastFrameMs = lastSecFrameTime.Read();
 	lastSecFrameTime.Start();
-	int delay = (1000 * (1.0f / framerate));
-	if (lastFrameMs < 1000 * (1.0f / framerate))
+	
+	if ((cappedMs > 0.000f) && (lastFrameMs < cappedMs))
 	{
-		ptimer.Start();
-		SDL_Delay(delay);
-		perfTime = ptimer.ReadMs();
-		LOG("We waited for %d milliseconds and got back in %f milliseconds", delay, perfTime);
+		//ptimer.Start();
+		// Delay delimitation
+		SDL_Delay(cappedMs);
+
+		//perfTime = ptimer.ReadMs();
+		//LOG("We waited for %f milliseconds and got back in %f milliseconds", cappedMs, perfTime);
+
 	}
 
 	static char title[256];
@@ -230,8 +243,9 @@ void App::FinishUpdate()
 
 	app->win->SetTitle(title);
 	//Use SDL_Delay to make sure you get your capped framerate
-    //Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+
 }
+
 
 // Call modules before each loop iteration
 bool App::PreUpdate()
@@ -450,3 +464,6 @@ bool App::SaveGame(SString filename) const
 
 
 
+float App::GetCapMs() {
+	return cappedMs;
+}

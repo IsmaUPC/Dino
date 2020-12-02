@@ -65,7 +65,7 @@ public:
 	void SaveConfigRequested() const;
 
 	void SetLastScene(Module* scene) { lastScene = scene; }
-
+	float GetCapMs();
 private:
 
 	// Load config file
@@ -89,6 +89,7 @@ private:
 	// Load / Save
 	bool LoadGame(const SString _filename);
 	bool SaveGame(const SString _filename) const;
+
 
 public:
 
@@ -131,7 +132,8 @@ private:
 	float dt = 0.0f;
 	float perfTime;
 	float oldLastFrame = 0.0f;
-	int	cappedMs = -1;
+	float timeFramesSecond = 0.0f;
+	float	cappedMs = -1;
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
