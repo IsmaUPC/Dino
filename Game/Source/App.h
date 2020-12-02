@@ -26,6 +26,7 @@ class SceneLevel2;
 class Map;
 class Player;
 class Enemy;
+class Coins;
 class Entity;
 class ModuleFadeToBlack;
 
@@ -110,6 +111,7 @@ public:
 	Map* map;
 	Player* player;
 	Enemy* enemy;
+	Coins* coins;
 	Entity* entity;
 	ModuleFadeToBlack* fade;
 

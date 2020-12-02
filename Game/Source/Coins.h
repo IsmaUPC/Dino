@@ -1,5 +1,5 @@
-#ifndef __ENEMY_H__
-#define __ENEMY_H__
+#ifndef __COINS_H__
+#define __COINS_H__
 
 #include "Point.h"
 #include "Entity.h"
@@ -7,24 +7,22 @@
 
 #include "PugiXml\src\pugixml.hpp"
 
-struct EnemyData
+struct CoinsData
 {
 	iPoint position;
-	MoveDirection direction;
 	Animation* currentAnimation;
-	int velocity;
 
 	SDL_Texture* texture;
 	//static const int numPoints = 6;
 	//int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
 };
 
-class Enemy : public Entity
+class Coins : public Entity
 {
 public:
-	Enemy();
+	Coins();
 
-	virtual ~Enemy();
+	virtual ~Coins();
 
 	bool Awake(pugi::xml_node&);
 
@@ -41,8 +39,9 @@ public:
 
 public:
 	iPoint positionInitial;
-	EnemyData enemyData;
+	CoinsData coinsData;
 private:
-	Animation* walkAnim = new Animation();
+	Animation* idleAnim = new Animation();
 };
-#endif // _ENEMY_H_
+#endif // _COINS_H_
+

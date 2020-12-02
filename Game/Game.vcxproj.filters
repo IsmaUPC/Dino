@@ -77,6 +77,10 @@
     <ClCompile Include="Source\Entity.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Coins.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collisions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -169,6 +173,10 @@
     <ClInclude Include="Source\Entity.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Coins.h">
+      <Filter>Modules\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collisions.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Coins.h"
 #include "Entity.h"
 #include "ModuleFadeToBlack.h"
 
@@ -35,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	player = new Player();
 	enemy = new Enemy();
+	coins = new Coins();
 	sceneLogo = new SceneLogo();
 	scene = new Scene();
 	sceneIntro = new SceneIntro();
@@ -52,6 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(player);
 	AddModule(enemy);
+	AddModule(coins);
 	AddModule(sceneLogo);
 	AddModule(scene);
 	AddModule(sceneIntro);
