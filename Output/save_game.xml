@@ -3,12 +3,12 @@
 	<input />
 	<window />
 	<textures />
-	<audio/>
+	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-1273" y="-47" />
 	</renderer>
 	<player>
-		<position x="0" y="0" />
+		<position x="1917" y="479.946289" />
 	</player>
 </save_state>

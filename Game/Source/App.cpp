@@ -12,6 +12,7 @@
 #include "SceneLevel2.h"
 #include "Map.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "ModuleFadeToBlack.h"
 
 #include "Defs.h"
@@ -32,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	map = new Map();
 	player = new Player();
+	enemy = new Enemy();
 	sceneLogo = new SceneLogo();
 	scene = new Scene();
 	sceneIntro = new SceneIntro();
@@ -48,6 +50,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(player);
+	AddModule(enemy);
 	AddModule(sceneLogo);
 	AddModule(scene);
 	AddModule(sceneIntro);
@@ -63,6 +66,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	sceneLose->active = false;
 	sceneLevel2->active = false;
 	player->active = false;
+	enemy->active = false;
 	map->active = false;
 
 	

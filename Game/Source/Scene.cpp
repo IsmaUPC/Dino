@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "SceneIntro.h"
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
@@ -43,8 +44,11 @@ bool Scene::Start()
 	app->map->Load("Mapa_PixelArt.tmx");
 
 	app->player->positionInitial = { 432,1170 };
+	app->enemy->positionInitial = {468, 1170};
 	app->player->Init();
 	app->player->Start();
+	app->enemy->Init();
+	app->enemy->Start();
 	app->map->active = true;
 
 	// Load music
