@@ -69,6 +69,9 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Modules\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

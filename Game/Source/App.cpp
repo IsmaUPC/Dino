@@ -12,6 +12,7 @@
 #include "SceneLevel2.h"
 #include "Map.h"
 #include "Player.h"
+#include "Entity.h"
 #include "ModuleFadeToBlack.h"
 
 #include "Defs.h"

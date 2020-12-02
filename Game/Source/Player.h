@@ -2,32 +2,31 @@
 #define __PLAYER_H__
 
 #include "Point.h"
-#include "Module.h"
-#include "Animation.h"
+#include "Entity.h"
 
 
 #include "PugiXml\src\pugixml.hpp"
 
-
-enum State {
-
-	IDLE,
-	JUMP,
-	WALK,
-	RUN,
-};
-
-enum MoveDirection {
-
-	WALK_R,
-	WALK_L,
-};
-enum TypeCollision{
-
-	VICTORY,
-	COLLISION,
-	CHECK_POINT,
-};
+//
+//enum State {
+//
+//	IDLE,
+//	JUMP,
+//	WALK,
+//	RUN,
+//};
+//
+//enum MoveDirection {
+//
+//	WALK_R,
+//	WALK_L,
+//};
+//enum TypeCollision{
+//
+//	VICTORY,
+//	COLLISION,
+//	CHECK_POINT,
+//};
 
 struct PlayerData
 {
@@ -45,7 +44,7 @@ struct PlayerData
 };
 
 
-class Player : public Module
+class Player : public Entity
 {
 public:
 
