@@ -42,7 +42,10 @@ bool Scene::Start()
 	app->player->win = false;
 	// Load map
 	app->SetLastScene((Module*)this);
-	app->map->Load("Mapa_PixelArt.tmx");
+
+	//app->map->Load("Mapa_PixelArt.tmx");
+	app->map->Load("Mapa_PixelArt_CP.tmx");
+
 	//Positions Initials
 	app->player->positionInitial = { 432,1170 };
 	app->enemy->positionInitial = {1100, 1335};
@@ -128,7 +131,7 @@ bool Scene::Update(float dt)
 	if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
-		lose = true;
+		//lose = true;
 	}
 	return true;
 }

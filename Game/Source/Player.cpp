@@ -16,7 +16,8 @@ bool Player::Start()
 	playerData.texture = app->tex->Load("Assets/textures/Dino_Green.png");
 	playerData.position = positionInitial;
 
-
+	checkpointMove = false;
+	endUpdate = true;
 	return true;
 }
 
@@ -94,7 +95,7 @@ bool Player::Update(float dt)
 
 
 	playerData.velocity = floor(100.0f * dt);
-	LOG("Delta %f  <--------", dt);
+	//LOG("Delta %f  <--------", dt);
 
 	if(godMode==false)Fallings(dt);
 
@@ -120,10 +121,38 @@ bool Player::Update(float dt)
 
 
 	// Move player inputs control
-	PlayerControls();
+	if (!checkpointMove)
+	{
+		PlayerControls();
+	}
+	else // Move Between CheckPoints
+	{
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+			if ((lastCP + 1) >= checkPoints.Count()) lastCP = 0;
+			else lastCP++;
+			playerData.position = TransformIPointMapToFPointWorld(checkPoints.At(lastCP)->data);
+			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
+			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+			if (lastCP == 0) lastCP = checkPoints.Count() - 1;
+			else lastCP--;
+			playerData.position = TransformIPointMapToFPointWorld(checkPoints.At(lastCP)->data);
+			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
+			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
+		}
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		app->map->PropagateDijkstra();
+		//app->map->PropagateAStar(1);
+	}
 
 	return true;
 }
+
+
 
 void Player::PlayerMoveAnimation()
 {
@@ -269,7 +298,14 @@ iPoint Player::TransformFPoint(fPoint fpoint)
 	
 	return transformation;
 }
-
+fPoint Player::TransformIPointMapToFPointWorld(iPoint ipoint)
+{
+	iPoint CPos = app->map->MapToWorld(ipoint.x, ipoint.y);
+	fPoint CPosF;
+	CPosF.x = CPos.x;
+	CPosF.y = CPos.y;
+	return CPosF;
+}
 
 // Implements to gravity fall down
 void Player::Fallings(float dt)
@@ -310,6 +346,7 @@ bool Player::PostUpdate()
 	if (playerData.direction == MoveDirection::WALK_L)
 		app->render->DrawTextureFlip(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	
+	endUpdate = true;
 	return true;
 }
 
@@ -377,6 +414,7 @@ int Player::CheckCollision(iPoint positionMapPlayer)
 		case CHECK_POINT:
 			//checkpoint
 			app->SaveGameRequest();
+			activeCheckpoint(positionMapPlayer);
 			return 2;
 			break;
 
@@ -408,7 +446,10 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1720)
 		{
-			isDead = true;
+			//isDead = true;
+			playerData.position = TransformIPointMapToFPointWorld(checkPoints.end->data);
+			app->render->camera.x = cameraPosCP.end->data.x;
+			app->render->camera.y = cameraPosCP.end->data.y;
 			return true;
 		}
 	}
@@ -422,4 +463,30 @@ bool Player::CheckGameOver(int level)
 	}
 	
 	return false;
+}
+
+void Player::activeCheckpoint(iPoint positionMapPlayer)
+{
+	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid + 2)
+	{
+
+		for (int i = 0; i < checkPoints.Count(); i++)
+		{
+			if (checkPoints.At(i)->data == positionMapPlayer) {
+
+				lastCP = i;
+				if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
+					endUpdate = false;
+					checkpointMove = !checkpointMove;
+				}
+				return;
+			}
+		}
+		app->SaveGameRequest();
+		checkPoints.Add(positionMapPlayer);
+		iPoint cam(app->render->camera.x, app->render->camera.y);
+		cameraPosCP.Add(cam);
+		LOG("CHECKPOINT pos:%d,%d", positionMapPlayer.x, positionMapPlayer.y);
+
+	}
 }
