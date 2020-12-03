@@ -114,8 +114,8 @@ bool Scene::Update(float dt)
 	animationFather.currentAnimation->Update();
 
 	if(app->player->win)victory = true;
-	//if (app->player->CheckCollision(app->player->TransformFPoint({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-	//	app->player->playerData.position.y }))==0 && victory == false)
+	//if (app->player->CheckCollision(app->player->TransformFPoint({ app->player->playerData->position.x + app->player->playerData->velocity + 48,
+	//	app->player->playerData->position.y }))==0 && victory == false)
 	//{
 	//	LOG("Congratulations, YOU WIN!");
 	//	victory = true;
@@ -185,8 +185,8 @@ void Scene::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
-		app->player->playerData.position = app->player->positionInitial;
-		app->player->playerData.direction = WALK_R;
+		app->player->playerData->position = app->player->positionInitial;
+		app->player->playerData->direction = WALK_R;
 		Mix_RewindMusic();
 	}
 

@@ -13,11 +13,12 @@
 #include "Log.h"
 
 
+
 enum TypeEntity {
 
 	PLAYER,
-	GROUND_ENTITIY,
-	AIR_ENTITY,
+	GROUND_ENEMY,
+	AIR_ENEMY,
 	UNKNOWN,
 };
 
@@ -41,21 +42,31 @@ enum TypeCollision {
 	COLLISION,
 	CHECK_POINT,
 };
+
 struct EntityData
 {
 	fPoint position;
 	State state;
 	MoveDirection direction;
-	Animation* currentAnimation;
+	Animation* currentAnimation = nullptr;
+	TypeEntity typeEntity;
 	float velocity;
 
 	SDL_Texture* texture;
+public:
+	EntityData(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture) :
+		position(pPosition), state(IDLE), direction(WALK_L), velocity(pVelocity),
+		texture(pTexture), typeEntity(pTypeEntity)
+	{}
+	EntityData::EntityData() {}
 };
+
 class Entity : public Module
 {
-
 public:
 
+
+	Entity(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	Entity();
 	~Entity();
 
@@ -78,12 +89,13 @@ public:
 	 bool LoadState(pugi::xml_node&);
 	// Virtual methods to Save state
 	 bool SaveState(pugi::xml_node&) const;
+	
 public:
 
 
 	bool isAlive= false;
 	bool pendingToDelete = false;
-	EntityData entityData;
+	EntityData* entityData;
 
 };
 

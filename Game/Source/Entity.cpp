@@ -7,12 +7,24 @@
 
 #define VSYNC true
 
-Entity::Entity() : Module()
+Entity::Entity(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture) : Module()
 {
 	name.Create("Entity");
 	isAlive = true;
+	EntityData(pTypeEntity, pPosition, pVelocity, pTexture);
+
 	
 }
+
+Entity::Entity() : Module()
+{
+	EntityData();
+	name.Create("Entity");
+	isAlive = true;
+
+	
+}
+
 
 // Destructor
 Entity::~Entity()

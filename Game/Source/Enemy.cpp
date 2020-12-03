@@ -46,6 +46,8 @@ bool Enemy::Awake(pugi::xml_node& config)
 bool Enemy::Update(float dt)
 {
 	enemyData.currentAnimation->Update();
+
+	
 	return true;
 }
 bool Enemy::PostUpdate()

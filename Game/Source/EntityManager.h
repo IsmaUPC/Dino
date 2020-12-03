@@ -4,13 +4,15 @@
 
 #include "Module.h"
 #include "Entity.h"
+#include "Player.h"
 
 
 
 struct EntitySpawnPoint
 {
+	EntitySpawnPoint(TypeEntity pType, float pX, float pY) : type(pType), x(pX), y(pY) {}
 	TypeEntity type = TypeEntity::UNKNOWN;
-	int x, y;
+	float x, y;
 };
 
 class EntityManager : public Module
@@ -40,9 +42,10 @@ public:
 	bool LoadState(pugi::xml_node&);
 	// Virtual methods to Save state
 	bool SaveState(pugi::xml_node&) const;
-	bool AddEntity(int type, int x, int y);
+	bool AddEntity(TypeEntity pType, float pX, float pY);
 	void HandleEntitiesSpawn();
 	void HandleEntitiesDespawn();
+	void EntityManager::SpawnEnemy(const EntitySpawnPoint& info);
 
 public:
 	

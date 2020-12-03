@@ -114,8 +114,7 @@ void Map::ComputePath(int x, int y)
 	int size = breadcrumbs.Count()-1;
 	path.PushBack(goal);
 
-	// L11: TODO 2: Follow the breadcrumps to goal back to the origin
-	// add each step into "path" dyn array (it will then draw automatically)
+
 
 	ListItem<iPoint>* iterator= visited.end;
 	ListItem<iPoint>* tmp = breadcrumbs.At(size);
@@ -133,9 +132,7 @@ void Map::ComputePath(int x, int y)
 }
 void Map::PropagateDijkstra()
 {
-	// L11: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
-	// use the 2 dimensional array "costSoFar" to track the accumulated costs
-	// on each cell (is already reset to 0 automatically)
+
 	iPoint curr;
 	curr = frontier.GetLast()->data;
 	if (frontier.Pop(curr) && curr != tileDestiny)
@@ -170,7 +167,6 @@ void Map::PropagateDijkstra()
 
 void Map::PropagateAStar(int heuristic)
 {
-	// L12a: TODO 2: Implement AStar algorythm
 	// Consider the different heuristics
 	iPoint curr;
 	curr = frontier.GetLast()->data;
@@ -210,7 +206,6 @@ void Map::PropagateAStar(int heuristic)
 
 void Map::ComputePathAStar(int x, int y)
 {
-	// L12a: Compute AStart pathfinding
 }
 
 int Map::CalculateDistanceToDestiny(iPoint node)

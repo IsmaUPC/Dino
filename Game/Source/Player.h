@@ -32,7 +32,7 @@ struct PlayerData
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation;
-	float velocity;
+	float velocity ;
 	bool isJumped;
 	bool isJumpedAgain;
 	
@@ -47,7 +47,7 @@ class Player : public Entity
 public:
 
 	Player();
-
+	Player(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	virtual ~Player();
 
 	bool Awake(pugi::xml_node&);
@@ -89,7 +89,7 @@ private:
 
 public:
 
-	PlayerData playerData;
+	PlayerData* playerData = new PlayerData();
 	bool godMode = false;
 	fPoint positionInitial;	
 	bool win= false;
@@ -107,7 +107,6 @@ private:
 	Animation* runAnim = new Animation( );
 	Animation* jumpAnim = new Animation( );
 
-	int velWalk;
 	bool isDead = false;
 
 	pugi::xml_document playerFile;
