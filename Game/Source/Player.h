@@ -76,7 +76,10 @@ public:
 	bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 
+	void activeCheckpoint(iPoint positionMapPlayer);
+
 	iPoint TransformFPoint(fPoint fpoint);
+	fPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
 	// Load state game
@@ -113,7 +116,12 @@ private:
 	SString folder;
 	fPoint tmp;
 
-
+	//CheckPoint's vars
+	List<iPoint> checkPoints;
+	List<iPoint> cameraPosCP;
+	int lastCP;
+	bool checkpointMove;
+	bool endUpdate;
 };
 
 #endif // _PLAYER_H_

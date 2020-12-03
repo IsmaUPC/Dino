@@ -91,6 +91,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Coins.cpp" />
+    <ClCompile Include="Source\Collisions.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
@@ -114,6 +116,8 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="PQueue.h" />
     <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Coins.h" />
+    <ClInclude Include="Source\Collisions.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />

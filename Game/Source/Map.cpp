@@ -466,7 +466,23 @@ bool Map::Load(const char* filenameGame)
 			LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
 			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
 		}
-
+		//CheckPoint count
+		int checkpointCount = 0;
+		for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)
+		{
+			for (int y = 0; y < data.height; ++y)
+			{
+				for (int x = 0; x < data.width; ++x)
+				{
+					int tileId = layer->data->Get(x, y);
+					if (tileId == data.tilesets.At(2)->data->firstgid + 2)
+					{
+						checkpointCount++;
+					}
+				}
+			}
+		}
+		LOG("\nCheckPoint count: %d\n", checkpointCount);
 		for (int i = 0; i < data.layers.Count(); i++)
 		{
 			LOG("Layer ----");
