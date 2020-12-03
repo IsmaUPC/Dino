@@ -16,7 +16,7 @@ struct EnemyData
 
 	SDL_Texture* texture;
 	static const int numPoints = 4;
-	iPoint pointsCollision[numPoints] = {{ 0,0 },{57 , 0},{ 57,60 },{0 ,60 }};
+	iPoint pointsCollision[numPoints] = {{ 0,0 },{48 , 0},{ 48,-48 },{0 ,-48 }};
 };
 
 class Enemy : public Entity
@@ -45,7 +45,9 @@ public:
 	iPoint positionInitial;
 	EnemyData enemyData;
 private:
+	Animation* idleAnim = new Animation();
 	Animation* walkAnim = new Animation();
-	int range = 100;
+	Animation* deadAnim = new Animation();
+	int range = 500;
 };
 #endif // _ENEMY_H_

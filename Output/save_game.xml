@@ -6,9 +6,9 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="-1697" y="-735" />
+		<camera x="0" y="-687" />
 	</renderer>
 	<player>
-		<position x="2349" y="1295.94006" />
+		<position x="624" y="1247.94885" />
 	</player>
 </save_state>

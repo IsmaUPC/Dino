@@ -22,8 +22,8 @@ public:
 	bool DoIntersect(iPoint p1, iPoint q1, iPoint p2, iPoint q2);
 	// Returns true if the point p lies inside the polygon[] with n vertices 
 	//Devuelve true si el punto p está dentro del polygono
-	bool IsInside(iPoint polygon[], iPoint p);
-	bool IsInsidePolygons(iPoint polygon[], iPoint polygon2[]);
+	bool IsInside(iPoint polygon[], int n, iPoint p);
+	bool IsInsidePolygons(iPoint polygon[], int n, iPoint polygon2[], int n2);
 };
 
 #endif // __COLLISIONS_H__

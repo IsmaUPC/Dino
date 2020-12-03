@@ -57,10 +57,8 @@ bool Collisions::DoIntersect(iPoint p1, iPoint q1, iPoint p2, iPoint q2)
 }
 
 // Returns true if the point p lies inside the polygon[] with n vertices 
-bool Collisions::IsInside(iPoint polygon[], iPoint p)
+bool Collisions::IsInside(iPoint polygon[], int n, iPoint p)
 {
-	//Calculate the size of polygon
-	int n = sizeof(polygon) / sizeof(polygon[0]);
 	// There must be at least 3 vertices in polygon[] 
 	if (n < 3)  return false;
 
@@ -92,12 +90,8 @@ bool Collisions::IsInside(iPoint polygon[], iPoint p)
 	return count & 1;  // Same as (count%2 == 1) 
 }
 // Returns true if the polygon1 is inside the polygon2 
-bool Collisions::IsInsidePolygons(iPoint polygon[], iPoint polygon2[])
+bool Collisions::IsInsidePolygons(iPoint polygon[],int n, iPoint polygon2[], int n2)
 {
-	//Calculate the size of polygon1
-	int n = sizeof(polygon) / sizeof(polygon[0]);
-	//Calculate the size of polygon1
-	int n2 = sizeof(polygon2) / sizeof(polygon2[0]);
 	// There must be at least 3 vertices in polygon[] 
 	if (n < 3 || n2 < 3)  return false;
 	iPoint p;
@@ -128,8 +122,9 @@ bool Collisions::IsInsidePolygons(iPoint polygon[], iPoint polygon2[])
 			}
 			i = next;
 		} while (i != 0);
-	
+		if (count % 2 == 1)return true;
+		else count = 0;
 	}
 	// Return true if count is odd, false otherwise 
-	return count % 2 == 1;  // Same as (count%2 == 1) 
+	return false;  // Same as (count%2 == 1) 
 }

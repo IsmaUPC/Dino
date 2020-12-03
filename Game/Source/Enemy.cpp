@@ -21,7 +21,7 @@ bool Enemy::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
-	enemyData.texture = app->tex->Load("Assets/textures/EnemigoTerrestrePeque.png");
+	enemyData.texture = app->tex->Load("Assets/textures/Enemy_Walk.png");
 	enemyData.position = positionInitial;
 
 	return true;
@@ -34,13 +34,26 @@ bool Enemy::Awake(pugi::xml_node& config)
 
 	enemyData.velocity = 1;
 
+	idleAnim->loop = true;
+	idleAnim->speed = 0.04f;
+
+	for (int i = 0; i < 8; i++)
+		idleAnim->PushBack({ (48 * i),0, 48, 48 });
+
 	walkAnim->loop = true;
 	walkAnim->speed = 0.04f;
 
-	for (int i = 0; i < 3; i++)
-		walkAnim->PushBack({(57 * i),0, 57, 60 });
+	for (int i = 0; i < 4; i++)
+		walkAnim->PushBack({(48 * i),48, 48, 48 });
 
-	enemyData.currentAnimation = walkAnim;
+	deadAnim->loop = true;
+	deadAnim->speed = 0.04f;
+
+	for (int i = 0; i < 2; i++)
+		deadAnim->PushBack({ 192+(67 * i),48, 67, 48 });
+
+
+	enemyData.currentAnimation = idleAnim;
 	return ret;
 }
 bool Enemy::Radar(iPoint distance)
@@ -54,34 +67,35 @@ bool Enemy::PreUpdate()
 	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData->position);
 	if (Radar(currentPositionPlayer))
 	{
+		enemyData.currentAnimation = walkAnim; 
+		//state=::WALK;
 		//Pathfinding
-		static const int countEnemy = sizeof(enemyData.pointsCollision);
-		iPoint auxPositionEnemey[countEnemy];
-		for (int i = 0; i < sizeof(enemyData.pointsCollision); i++)
+		iPoint auxPositionEnemey[4];
+		for (int i = 0; i < 4; i++)
 		{
 			auxPositionEnemey[i] = { enemyData.position.x + enemyData.pointsCollision[i].x,
 				enemyData.position.y + enemyData.pointsCollision[i].y };
 		}
-		static const int countPlayer = sizeof(app->player->playerData->pointsCollision);
-		iPoint auxPositionPlayer[countPlayer];
-		for (int i = 0; i < countPlayer; i++)
+		iPoint auxPositionPlayer[6];
+		for (int i = 0; i < 6; i++)
 		{
-			auxPositionPlayer[i] = { currentPositionPlayer.x + app->player->playerData->pointsCollision[i].x,
-				currentPositionPlayer.y + app->player->playerData->pointsCollision[i].y };
+			auxPositionPlayer[i] = { 15+currentPositionPlayer.x + app->player->playerData->pointsCollision[i].x,
+				14+currentPositionPlayer.y + app->player->playerData->pointsCollision[i].y };
 		}
-		if (collision.IsInsidePolygons(auxPositionEnemey, auxPositionPlayer))
+		if (collision.IsInsidePolygons(auxPositionEnemey,enemyData.numPoints, auxPositionPlayer, app->player->playerData->numPoints))
 		{
+			enemyData.currentAnimation = deadAnim;
 			pendingToDelete = true;
 			app->player->SetHit();
 		}
 	}
+	//else state::IDLE;
 	return true;
 }
 bool Enemy::Update(float dt)
 {
 	enemyData.currentAnimation->Update();
 
-	
 	return true;
 }
 bool Enemy::PostUpdate()
