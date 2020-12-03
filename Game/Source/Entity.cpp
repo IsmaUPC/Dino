@@ -12,8 +12,6 @@ Entity::Entity(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Te
 	name.Create("Entity");
 	isAlive = true;
 	EntityData(pTypeEntity, pPosition, pVelocity, pTexture);
-
-	
 }
 
 Entity::Entity() : Module()
@@ -21,10 +19,7 @@ Entity::Entity() : Module()
 	EntityData();
 	name.Create("Entity");
 	isAlive = true;
-
-	
 }
-
 
 // Destructor
 Entity::~Entity()
@@ -34,7 +29,6 @@ Entity::~Entity()
 bool Entity::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
-
 
 	return ret;
 }
@@ -72,22 +66,17 @@ bool Entity::CleanUp()
 	return true;
 }
 
-
 // Load Game State
 bool Entity::LoadState(pugi::xml_node& data)
 {
 
-
 	return true;
 }
-
 
 // Save Game State
 bool Entity::SaveState(pugi::xml_node& data) const
 {
 	pugi::xml_node cam = data.child(" ");
-
-
 
 	return true;
 }

@@ -51,7 +51,7 @@ bool Enemy::Radar(iPoint distance)
 }
 bool Enemy::PreUpdate()
 {
-	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData.position);
+	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData->position);
 	if (Radar(currentPositionPlayer))
 	{
 		//Pathfinding
@@ -62,12 +62,12 @@ bool Enemy::PreUpdate()
 			auxPositionEnemey[i] = { enemyData.position.x + enemyData.pointsCollision[i].x,
 				enemyData.position.y + enemyData.pointsCollision[i].y };
 		}
-		static const int countPlayer = sizeof(app->player->playerData.pointsCollision);
+		static const int countPlayer = sizeof(app->player->playerData->pointsCollision);
 		iPoint auxPositionPlayer[countPlayer];
 		for (int i = 0; i < countPlayer; i++)
 		{
-			auxPositionPlayer[i] = { currentPositionPlayer.x + app->player->playerData.pointsCollision[i].x,
-				currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
+			auxPositionPlayer[i] = { currentPositionPlayer.x + app->player->playerData->pointsCollision[i].x,
+				currentPositionPlayer.y + app->player->playerData->pointsCollision[i].y };
 		}
 		if (collision.IsInsidePolygons(auxPositionEnemey, auxPositionPlayer))
 		{
