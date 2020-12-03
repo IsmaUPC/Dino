@@ -9,6 +9,8 @@
 #include "Textures.h"
 #include "Input.h"
 #include "Map.h"
+#include "Collisions.h"
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -16,8 +18,8 @@
 enum TypeEntity {
 
 	PLAYER,
-	GROUND_ENTITIY,
-	AIR_ENTITY,
+	GROUND_ENENMY,
+	AIR_ENEMY,
 	UNKNOWN,
 };
 
@@ -48,7 +50,7 @@ struct EntityData
 	MoveDirection direction;
 	Animation* currentAnimation;
 	float velocity;
-
+	TypeEntity type;
 	SDL_Texture* texture;
 };
 class Entity : public Module
@@ -75,15 +77,18 @@ public:
 	virtual bool CleanUp();
 
 	// Virtual methods to Load state
-	 bool LoadState(pugi::xml_node&);
+	bool LoadState(pugi::xml_node&);
 	// Virtual methods to Save state
-	 bool SaveState(pugi::xml_node&) const;
+	bool SaveState(pugi::xml_node&) const;
+	//Transform fPoint to iPoint
+	iPoint TransformFPoint(fPoint fpoint);
 public:
 
 
 	bool isAlive= false;
 	bool pendingToDelete = false;
-	EntityData entityData;
+	List<EntityData>* entityData;
+	Collisions collision;
 
 };
 

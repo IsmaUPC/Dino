@@ -3,9 +3,6 @@
 
 #include "Entity.h"
 
-
-
-//
 //enum State {
 //
 //	IDLE,
@@ -38,7 +35,7 @@ struct PlayerData
 	
 	SDL_Texture* texture;
 	static const int numPoints = 6;
-	int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
+	iPoint pointsCollision[numPoints] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
 };
 
 
@@ -76,7 +73,8 @@ public:
 	bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 
-	iPoint TransformFPoint(fPoint fpoint);
+	void SetHit();
+
 
 private:
 	// Load state game
@@ -99,6 +97,7 @@ private:
 	float gravity = 9;
 	float velY = 0;
 	float velX = 0;
+	uint lives = 3;
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
@@ -106,9 +105,6 @@ private:
 	Animation* damageAnim = new Animation();
 	Animation* runAnim = new Animation( );
 	Animation* jumpAnim = new Animation( );
-
-	int velWalk;
-	bool isDead = false;
 
 	pugi::xml_document playerFile;
 	SString folder;

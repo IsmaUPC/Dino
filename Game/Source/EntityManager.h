@@ -47,7 +47,7 @@ public:
 public:
 	
 	List<EntitySpawnPoint*> spawnQueue;
-	List<Entity*> entities ;
+	List<Entity*> entities;
 
 
 	bool isAlive = false;

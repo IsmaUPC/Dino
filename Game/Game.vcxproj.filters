@@ -80,9 +80,9 @@
     <ClCompile Include="Source\Coins.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collisions.cpp" />
+    <ClCompile Include="Source\Collisions.cpp">
       <Filter>Modules</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Modules\Managers</Filter>
     </ClCompile>
@@ -181,7 +181,7 @@
     <ClInclude Include="Source\Coins.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collisions.h" />
+    <ClInclude Include="Source\Collisions.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\EntityManager.h">

@@ -260,15 +260,6 @@ void Player::MoveToDirection(int velocity)
 		break;
 	}
 }
-iPoint Player::TransformFPoint(fPoint fpoint)
-{
-	iPoint transformation;
-
-	transformation.x = fpoint.x;
-	transformation.y = fpoint.y;
-	
-	return transformation;
-}
 
 
 // Implements to gravity fall down
@@ -333,7 +324,7 @@ bool Player::CollisionPlayer(iPoint nextPosition)
 	for (int i = 0; i < playerData.numPoints; i++)
 	{	
 		// Concvert position player WorldToMap 
-		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i][0], y+playerData.pointsCollision[i][1]);
+		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i].x, y+playerData.pointsCollision[i].y);
 		if (CheckCollision(positionMapPlayer)== COLLISION) return true;
 	}
 	return false;
@@ -408,7 +399,6 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1720)
 		{
-			isDead = true;
 			return true;
 		}
 	}
@@ -416,10 +406,16 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1968)
 		{
-			isDead = true;
 			return true;
 		}
 	}
-	
+	if (lives <= 0)
+	{
+		return true;
+	}
 	return false;
+}
+void Player::SetHit()
+{
+	lives--;
 }

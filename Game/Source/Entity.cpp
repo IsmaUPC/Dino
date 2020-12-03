@@ -79,6 +79,14 @@ bool Entity::SaveState(pugi::xml_node& data) const
 
 	return true;
 }
+iPoint Entity::TransformFPoint(fPoint fpoint)
+{
+	iPoint transformation;
 
+	transformation.x = fpoint.x;
+	transformation.y = fpoint.y;
+
+	return transformation;
+}
 
 

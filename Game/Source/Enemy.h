@@ -15,8 +15,8 @@ struct EnemyData
 	int velocity;
 
 	SDL_Texture* texture;
-	//static const int numPoints = 6;
-	//int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
+	static const int numPoints = 4;
+	iPoint pointsCollision[numPoints] = {{ 0,0 },{57 , 0},{ 57,60 },{0 ,60 }};
 };
 
 class Enemy : public Entity
@@ -30,7 +30,9 @@ public:
 
 	bool Start();
 
-	//bool PreUpdate();
+	bool Radar(iPoint distance);
+
+	bool PreUpdate();
 
 	bool Update(float dt);
 
@@ -44,5 +46,6 @@ public:
 	EnemyData enemyData;
 private:
 	Animation* walkAnim = new Animation();
+	int range = 100;
 };
 #endif // _ENEMY_H_

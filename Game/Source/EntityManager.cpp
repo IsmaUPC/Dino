@@ -132,7 +132,7 @@ void EntityManager::HandleEntitiesSpawn()
 }
 void EntityManager::HandleEntitiesDespawn()
 {
-	fPoint positionEntity;
+	/*fPoint positionEntity;
 	int cameraX= app->render->camera.x;
 	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
 	{
@@ -143,5 +143,5 @@ void EntityManager::HandleEntitiesDespawn()
 			LOG("DeSpawning enemy at %d", positionEntity.x * SCREEN_SIZE);
 			entities.Del(entiti);
 		}
-	}
+	}*/
 }

@@ -2,7 +2,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Enemy.h"
-
+#include "Player.h"
 #include "Input.h"
 #include "Map.h"
 
@@ -42,6 +42,40 @@ bool Enemy::Awake(pugi::xml_node& config)
 
 	enemyData.currentAnimation = walkAnim;
 	return ret;
+}
+bool Enemy::Radar(iPoint distance)
+{
+	if (enemyData.position.DistanceManhattan(distance) < range) return true;
+
+	return false;
+}
+bool Enemy::PreUpdate()
+{
+	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData.position);
+	if (Radar(currentPositionPlayer))
+	{
+		//Pathfinding
+		static const int countEnemy = sizeof(enemyData.pointsCollision);
+		iPoint auxPositionEnemey[countEnemy];
+		for (int i = 0; i < sizeof(enemyData.pointsCollision); i++)
+		{
+			auxPositionEnemey[i] = { enemyData.position.x + enemyData.pointsCollision[i].x,
+				enemyData.position.y + enemyData.pointsCollision[i].y };
+		}
+		static const int countPlayer = sizeof(app->player->playerData.pointsCollision);
+		iPoint auxPositionPlayer[countPlayer];
+		for (int i = 0; i < countPlayer; i++)
+		{
+			auxPositionPlayer[i] = { currentPositionPlayer.x + app->player->playerData.pointsCollision[i].x,
+				currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
+		}
+		if (collision.IsInsidePolygons(auxPositionEnemey, auxPositionPlayer))
+		{
+			pendingToDelete = true;
+			app->player->SetHit();
+		}
+	}
+	return true;
 }
 bool Enemy::Update(float dt)
 {
