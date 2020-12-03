@@ -101,8 +101,8 @@ bool SceneLevel2::Update(float dt)
 	
 	if (app->player->win)victory = true;
 
-	//if (app->player->CheckVictory(app->player->TransformFPoint({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-	//	 app->player->playerData.position.y })) && victory == false)
+	//if (app->player->CheckVictory(app->player->TransformFPoint({ app->player->playerData->position.x + app->player->playerData->velocity + 48,
+	//	 app->player->playerData->position.y })) && victory == false)
 	//{
 	//	LOG("Congratulations, YOU WIN!");
 	//	victory = true;
@@ -172,8 +172,8 @@ void SceneLevel2::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
-		app->player->playerData.position = app->player->positionInitial;
-		app->player->playerData.direction = WALK_R;
+		app->player->playerData->position = app->player->positionInitial;
+		app->player->playerData->direction = WALK_R;
 		Mix_RewindMusic();
 	}
 

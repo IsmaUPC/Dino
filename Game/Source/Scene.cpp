@@ -42,7 +42,10 @@ bool Scene::Start()
 	app->player->win = false;
 	// Load map
 	app->SetLastScene((Module*)this);
-	app->map->Load("Mapa_PixelArt.tmx");
+
+	//app->map->Load("Mapa_PixelArt.tmx");
+	app->map->Load("Mapa_PixelArt_CP.tmx");
+
 	//Positions Initials
 	app->player->positionInitial = { 432,1170 };
 	app->enemy->positionInitial = {1100, 1335};
@@ -119,8 +122,8 @@ bool Scene::Update(float dt)
 	animationFather.currentAnimation->Update();
 
 	if(app->player->win)victory = true;
-	//if (app->player->CheckCollision(app->player->TransformFPoint({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-	//	app->player->playerData.position.y }))==0 && victory == false)
+	//if (app->player->CheckCollision(app->player->TransformFPoint({ app->player->playerData->position.x + app->player->playerData->velocity + 48,
+	//	app->player->playerData->position.y }))==0 && victory == false)
 	//{
 	//	LOG("Congratulations, YOU WIN!");
 	//	victory = true;
@@ -128,7 +131,7 @@ bool Scene::Update(float dt)
 	if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
-		lose = true;
+		//lose = true;
 	}
 	return true;
 }
@@ -190,8 +193,8 @@ void Scene::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
-		app->player->playerData.position = app->player->positionInitial;
-		app->player->playerData.direction = WALK_R;
+		app->player->playerData->position = app->player->positionInitial;
+		app->player->playerData->direction = WALK_R;
 		Mix_RewindMusic();
 	}
 

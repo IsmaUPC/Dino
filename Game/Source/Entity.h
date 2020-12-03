@@ -15,12 +15,13 @@
 #include "Log.h"
 
 
+
 enum TypeEntity {
 
-	PLAYER,
-	GROUND_ENENMY,
-	AIR_ENEMY,
 	UNKNOWN,
+	PLAYER,
+	GROUND_ENEMY,
+	AIR_ENEMY,
 };
 
 
@@ -43,21 +44,31 @@ enum TypeCollision {
 	COLLISION,
 	CHECK_POINT,
 };
+
 struct EntityData
 {
 	fPoint position;
 	State state;
 	MoveDirection direction;
-	Animation* currentAnimation;
+	Animation* currentAnimation = nullptr;
+	TypeEntity typeEntity;
 	float velocity;
 	TypeEntity type;
 	SDL_Texture* texture;
+public:
+	EntityData(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture) :
+		position(pPosition), state(IDLE), direction(WALK_L), velocity(pVelocity),
+		texture(pTexture), typeEntity(pTypeEntity)
+	{}
+	EntityData::EntityData() {}
 };
+
 class Entity : public Module
 {
-
 public:
 
+
+	Entity(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	Entity();
 	~Entity();
 
@@ -82,14 +93,14 @@ public:
 	bool SaveState(pugi::xml_node&) const;
 	//Transform fPoint to iPoint
 	iPoint TransformFPoint(fPoint fpoint);
+	
 public:
-
 
 	bool isAlive= false;
 	bool pendingToDelete = false;
+
 	List<EntityData>* entityData;
 	Collisions collision;
-
 };
 
 #endif // __MODULE_H__

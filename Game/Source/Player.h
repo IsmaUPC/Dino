@@ -3,33 +3,13 @@
 
 #include "Entity.h"
 
-//enum State {
-//
-//	IDLE,
-//	JUMP,
-//	WALK,
-//	RUN,
-//};
-//
-//enum MoveDirection {
-//
-//	WALK_R,
-//	WALK_L,
-//};
-//enum TypeCollision{
-//
-//	VICTORY,
-//	COLLISION,
-//	CHECK_POINT,
-//};
-
 struct PlayerData
 {
 	fPoint position;
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation;
-	float velocity;
+	float velocity ;
 	bool isJumped;
 	bool isJumpedAgain;
 	
@@ -44,7 +24,7 @@ class Player : public Entity
 public:
 
 	Player();
-
+	Player(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	virtual ~Player();
 
 	bool Awake(pugi::xml_node&);
@@ -75,6 +55,10 @@ public:
 
 	void SetHit();
 
+	void activeCheckpoint(iPoint positionMapPlayer);
+
+	iPoint TransformFPoint(fPoint fpoint);
+	fPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
 	// Load state game
@@ -87,7 +71,7 @@ private:
 
 public:
 
-	PlayerData playerData;
+	PlayerData* playerData = new PlayerData();
 	bool godMode = false;
 	fPoint positionInitial;	
 	bool win= false;
@@ -110,7 +94,12 @@ private:
 	SString folder;
 	fPoint tmp;
 
-
+	//CheckPoint's vars
+	List<iPoint> checkPoints;
+	List<iPoint> cameraPosCP;
+	int lastCP;
+	bool checkpointMove;
+	bool endUpdate;
 };
 
 #endif // _PLAYER_H_

@@ -80,6 +80,8 @@ bool Enemy::PreUpdate()
 bool Enemy::Update(float dt)
 {
 	enemyData.currentAnimation->Update();
+
+	
 	return true;
 }
 bool Enemy::PostUpdate()
