@@ -1,10 +1,6 @@
-#include "App.h"
-#include "Render.h"
-#include "Textures.h"
 #include "Enemy.h"
 #include "Player.h"
-#include "Input.h"
-#include "Map.h"
+#include "Pathfinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -13,6 +9,12 @@ Enemy::Enemy() : Entity()
 {
 	name.Create("Enemy");
 }
+Enemy::Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
+	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
+{
+	name.Create("Enemy");
+}
+
 
 Enemy::~Enemy()
 {}
@@ -21,18 +23,9 @@ bool Enemy::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
-	enemyData.texture = app->tex->Load("Assets/textures/Enemy_Walk.png");
-	enemyData.position = positionInitial;
+	entityData->texture = app->tex->Load("Assets/textures/Enemy_Walk.png");
 
-	return true;
-}
-
-bool Enemy::Awake(pugi::xml_node& config)
-{
-	LOG("Loading Enemy Parser");
-	bool ret = true;
-
-	enemyData.velocity = 1;
+	entityData->velocity = 1;
 
 	idleAnim->loop = true;
 	idleAnim->speed = 0.04f;
@@ -44,37 +37,63 @@ bool Enemy::Awake(pugi::xml_node& config)
 	walkAnim->speed = 0.04f;
 
 	for (int i = 0; i < 4; i++)
-		walkAnim->PushBack({(48 * i),48, 48, 48 });
+		walkAnim->PushBack({ (48 * i),48, 48, 48 });
 
-	deadAnim->loop = true;
-	deadAnim->speed = 0.04f;
+	deadAnim->loop = false;
+	deadAnim->speed = 0.08f;
 
-	for (int i = 0; i < 2; i++)
-		deadAnim->PushBack({ 192+(67 * i),48, 67, 48 });
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = 0; i < 2; i++)
+			deadAnim->PushBack({ 192 + (67 * i),48, 67, 48 });
+	}
+	
 
 
-	enemyData.currentAnimation = idleAnim;
+	entityData->currentAnimation = idleAnim;
+
+	if (entityData->type == GROUND_ENEMY)
+	{
+		entityData->numPoints = 4;
+		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+	}
+	if (entityData->type == AIR_ENEMY)
+	{
+		entityData->numPoints = 4;
+		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+	}
+
+	return true;
+}
+
+bool Enemy::Awake(pugi::xml_node& config)
+{
+	LOG("Loading Enemy Parser");
+	bool ret = true;
+	
 	return ret;
 }
 bool Enemy::Radar(iPoint distance)
 {
-	if (enemyData.position.DistanceManhattan(distance) < range) return true;
+	if (entityData->position.DistanceManhattan(distance) < range) return true;
 
 	return false;
 }
 bool Enemy::PreUpdate()
 {
+	//app->pathfinding->ComputePathAStar();
 	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData->position);
-	if (Radar(currentPositionPlayer))
+	if (Radar(currentPositionPlayer) && entityData->state != DEADING)
 	{
-		enemyData.currentAnimation = walkAnim; 
-		//state=::WALK;
+		entityData->currentAnimation = walkAnim;
 		//Pathfinding
+		entityData->state = IDLE;
+
 		iPoint auxPositionEnemey[4];
 		for (int i = 0; i < 4; i++)
 		{
-			auxPositionEnemey[i] = { enemyData.position.x + enemyData.pointsCollision[i].x,
-				enemyData.position.y + enemyData.pointsCollision[i].y };
+			auxPositionEnemey[i] = { entityData->position.x + entityData->pointsCollision[i].x,
+				entityData->position.y + entityData->pointsCollision[i].y };
 		}
 		iPoint auxPositionPlayer[6];
 		for (int i = 0; i < 6; i++)
@@ -82,19 +101,20 @@ bool Enemy::PreUpdate()
 			auxPositionPlayer[i] = { 15+currentPositionPlayer.x + app->player->playerData->pointsCollision[i].x,
 				14+currentPositionPlayer.y + app->player->playerData->pointsCollision[i].y };
 		}
-		if (collision.IsInsidePolygons(auxPositionEnemey,enemyData.numPoints, auxPositionPlayer, app->player->playerData->numPoints))
+		if (collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData->numPoints))
 		{
-			enemyData.currentAnimation = deadAnim;
-			pendingToDelete = true;
+			entityData->state = DEADING;
+			entityData->currentAnimation = deadAnim;
 			app->player->SetHit();
 		}
 	}
-	//else state::IDLE;
+	else if(entityData->state != DEADING)entityData->state=IDLE;
+	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())pendingToDelete = true, entityData->state = DEAD;
 	return true;
 }
 bool Enemy::Update(float dt)
 {
-	enemyData.currentAnimation->Update();
+	entityData->currentAnimation->Update();
 
 	return true;
 }
@@ -102,12 +122,12 @@ bool Enemy::PostUpdate()
 {
 
 	SDL_Rect rectEnemy;
-	rectEnemy = enemyData.currentAnimation->GetCurrentFrame();
+	rectEnemy = entityData->currentAnimation->GetCurrentFrame();
 	// Draw player in correct direction
-	if (enemyData.direction == MoveDirection::WALK_R)
-		app->render->DrawTexture(enemyData.texture, enemyData.position.x - 15, enemyData.position.y - (rectEnemy.h - 10), &rectEnemy);
-	if (enemyData.direction == MoveDirection::WALK_L)
-		app->render->DrawTextureFlip(enemyData.texture, enemyData.position.x - 15, enemyData.position.y - (rectEnemy.h - 10), &rectEnemy);
+	if (entityData->direction == MoveDirection::WALK_R)
+		app->render->DrawTexture(entityData->texture, entityData->position.x, entityData->position.y - (rectEnemy.h - 10), &rectEnemy);
+	if (entityData->direction == MoveDirection::WALK_L)
+		app->render->DrawTextureFlip(entityData->texture, entityData->position.x - (rectEnemy.w - idleAnim->frames->w), entityData->position.y - (rectEnemy.h - 10), &rectEnemy);
 
 	return true;
 }
@@ -118,7 +138,7 @@ bool Enemy::CleanUp()
 	if (!active)
 		return true;
 
-	app->tex->UnLoad(enemyData.texture);
+	app->tex->UnLoad(entityData->texture);
 	active = false;
 
 	return true;

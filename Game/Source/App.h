@@ -25,10 +25,12 @@ class SceneLose;
 class SceneLevel2;
 class Map;
 class Player;
-class Enemy;
-class Coins;
+//class Enemy;
+class EntityManager;
+//class Coins;
 class Entity;
 class ModuleFadeToBlack;
+class PathFinding;
 
 class App
 {
@@ -110,10 +112,12 @@ public:
 	SceneLevel2* sceneLevel2;
 	Map* map;
 	Player* player;
-	Enemy* enemy;
-	Coins* coins;
+	//Enemy* enemy;
+	EntityManager* entityManager;
+	//Coins* coins;
 	Entity* entity;
 	ModuleFadeToBlack* fade;
+	PathFinding* pathfinding;
 
 private:
 

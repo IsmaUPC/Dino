@@ -1,17 +1,17 @@
 #include "Player.h"
-#include "Entity.h"
+
 
 Player::Player() : Entity()
 {
     name.Create("player");
 }
 
-Player::Player(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture) 
+Player::Player(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) 
 	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
 {
 	
 	playerData->state = IDLE;
-    name.Create("player");
+	name.Create("player");
 }
 
 Player::~Player()
@@ -294,15 +294,6 @@ void Player::MoveToDirection(int velocity)
 	}
 }
 
-iPoint Player::TransformFPoint(fPoint fpoint)
-{
-	iPoint transformation;
-
-	transformation.x = fpoint.x;
-	transformation.y = fpoint.y;
-	
-	return transformation;
-}
 fPoint Player::TransformIPointMapToFPointWorld(iPoint ipoint)
 {
 	iPoint CPos = app->map->MapToWorld(ipoint.x, ipoint.y);

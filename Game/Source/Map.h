@@ -153,6 +153,8 @@ public:
 	int CalculateDistanceToDestiny(iPoint node);
 	int CalculateDistanceToStart(iPoint node);
 
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
 
 private:
 

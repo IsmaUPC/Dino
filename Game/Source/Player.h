@@ -24,7 +24,7 @@ class Player : public Entity
 public:
 
 	Player();
-	Player(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
+	Player(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	virtual ~Player();
 
 	bool Awake(pugi::xml_node&);
@@ -57,7 +57,7 @@ public:
 
 	void activeCheckpoint(iPoint positionMapPlayer);
 
-	iPoint TransformFPoint(fPoint fpoint);
+	//iPoint TransformFPoint(fPoint fpoint);
 	fPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:

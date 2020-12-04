@@ -86,6 +86,9 @@
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Modules\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Pathfinding.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -186,6 +189,9 @@
     </ClInclude>
     <ClInclude Include="Source\EntityManager.h">
       <Filter>Modules\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pathfinding.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

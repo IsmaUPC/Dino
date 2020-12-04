@@ -31,6 +31,8 @@ enum State {
 	JUMP,
 	WALK,
 	RUN,
+	DEADING,
+	DEAD,
 };
 
 enum MoveDirection {
@@ -47,18 +49,20 @@ enum TypeCollision {
 
 struct EntityData
 {
-	fPoint position;
+	iPoint position;
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation = nullptr;
-	TypeEntity typeEntity;
 	float velocity;
 	TypeEntity type;
 	SDL_Texture* texture;
+	int numPoints = 0;
+	iPoint* pointsCollision;
+
 public:
-	EntityData(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture) :
-		position(pPosition), state(IDLE), direction(WALK_L), velocity(pVelocity),
-		texture(pTexture), typeEntity(pTypeEntity)
+	EntityData(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) :
+		position(pPosition), state(IDLE), direction(WALK_R), velocity(pVelocity),
+		texture(pTexture), type(pTypeEntity)
 	{}
 	EntityData::EntityData() {}
 };
@@ -68,7 +72,7 @@ class Entity : public Module
 public:
 
 
-	Entity(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
+	Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	Entity();
 	~Entity();
 
@@ -99,7 +103,7 @@ public:
 	bool isAlive= false;
 	bool pendingToDelete = false;
 
-	List<EntityData>* entityData;
+	EntityData* entityData;
 	Collisions collision;
 };
 

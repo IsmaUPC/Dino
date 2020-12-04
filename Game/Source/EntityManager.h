@@ -1,18 +1,16 @@
 #ifndef __ENTITY_MANAGER_H__
 #define __ENTITY_MANAGER_H__
 
-
-#include "Module.h"
 #include "Entity.h"
 #include "Player.h"
-
-
+#include "Enemy.h"
+#include "Coins.h"
 
 struct EntitySpawnPoint
 {
-	EntitySpawnPoint(TypeEntity pType, float pX, float pY) : type(pType), x(pX), y(pY) {}
+	EntitySpawnPoint(TypeEntity pType, int pX, int pY) : type(pType), x(pX), y(pY) {}
 	TypeEntity type = TypeEntity::UNKNOWN;
-	float x, y;
+	int x, y;
 };
 
 class EntityManager : public Module
@@ -42,7 +40,7 @@ public:
 	bool LoadState(pugi::xml_node&);
 	// Virtual methods to Save state
 	bool SaveState(pugi::xml_node&) const;
-	bool AddEntity(TypeEntity pType, float pX, float pY);
+	bool AddEntity(TypeEntity pType, int pX, int pY);
 	void HandleEntitiesSpawn();
 	void HandleEntitiesDespawn();
 	void EntityManager::SpawnEnemy(const EntitySpawnPoint& info);
@@ -52,10 +50,7 @@ public:
 	List<EntitySpawnPoint*> spawnQueue;
 	List<Entity*> entities;
 
-
 	bool isAlive = false;
-
-
 };
 
 #endif // __MODULE_H__

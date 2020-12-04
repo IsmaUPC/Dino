@@ -12,10 +12,12 @@
 #include "SceneLevel2.h"
 #include "Map.h"
 #include "Player.h"
-#include "Enemy.h"
-#include "Coins.h"
+//#include "Enemy.h"
+//#include "Coins.h"
 #include "Entity.h"
+#include "EntityManager.h"
 #include "ModuleFadeToBlack.h"
+#include "Pathfinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -35,8 +37,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	map = new Map();
 	player = new Player();
-	enemy = new Enemy();
-	coins = new Coins();
+	//enemy = new Enemy();
+	entityManager = new EntityManager();
+	//coins = new Coins();
 	sceneLogo = new SceneLogo();
 	scene = new Scene();
 	sceneIntro = new SceneIntro();
@@ -44,6 +47,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	sceneLose = new SceneLose();
 	sceneLevel2 = new SceneLevel2();
 	fade = new ModuleFadeToBlack(); 
+	pathfinding = new PathFinding();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -53,8 +57,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(player);
-	AddModule(enemy);
-	AddModule(coins);
+	//AddModule(enemy);
+	AddModule(entityManager);
+	//AddModule(coins);
 	AddModule(sceneLogo);
 	AddModule(scene);
 	AddModule(sceneIntro);
@@ -62,6 +67,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneLose);
 	AddModule(sceneLevel2);
 	AddModule(fade);
+	AddModule(pathfinding);
 
 	//actives
 	sceneIntro->active = false;
@@ -70,7 +76,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	sceneLose->active = false;
 	sceneLevel2->active = false;
 	player->active = false;
-	enemy->active = false;
+	//enemy->active = false;
 	map->active = false;
 
 	
