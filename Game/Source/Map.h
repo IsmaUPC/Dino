@@ -42,7 +42,6 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
-
 struct Properties
 {
 	struct Property
@@ -106,6 +105,36 @@ struct MapData
 	List<MapLayer*> layers;
 };
 
+struct CheckPoints{
+	
+	struct CP
+	{
+		CP(iPoint pos) : pos(pos){
+			active = false;
+		}
+
+		iPoint pos;
+		bool active;
+	};
+
+	~CheckPoints()
+	{
+		ListItem<CP*>* listD;
+		listD = list.start;
+		while (listD != nullptr)
+		{
+			RELEASE(listD->data);
+			listD = listD->next;
+		}
+		list.Clear();
+	}
+
+	Animation* checkPointOffAnim = new Animation();
+	Animation* checkPointOnAnim = new Animation();
+	SDL_Texture* texture;
+	List<CP*> list;
+};
+
 class Map : public Module
 {
 public:
@@ -153,6 +182,7 @@ public:
 	int CalculateDistanceToDestiny(iPoint node);
 	int CalculateDistanceToStart(iPoint node);
 
+	void CheckPointActive(iPoint position);
 
 private:
 
@@ -161,11 +191,10 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	int LoadCheckPoint();
 
 	// Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-
-
 
 	// Pick the right Tileset based on a tile id
 	TileSet* GetTilesetFromTileId(int id) const;
@@ -196,6 +225,9 @@ private:
 	bool finishAStar = false;	// Detect when reached goal
 
 	SDL_Texture* tileX = nullptr;
+
+	CheckPoints checKpointsMap;
+
 };
 
 #endif // __MAP_H__

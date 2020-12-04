@@ -186,6 +186,18 @@ unsigned int Audio::LoadFx(const char* path)
 	return ret;
 }
 
+// UnloadFx
+bool Audio::UnloadFxs()
+{
+	ListItem<Mix_Chunk*>* item;
+	for (item = fx.start; item != NULL; item = item->next)
+		Mix_FreeChunk(item->data);
+
+	fx.Clear();
+
+	return true;
+}
+
 // Play WAV
 bool Audio::PlayFx(unsigned int id, int repeat)
 {

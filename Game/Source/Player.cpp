@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Entity.h"
+#include "Audio.h"
 
 Player::Player() : Entity()
 {
@@ -23,6 +24,9 @@ bool Player::Start()
 	app->map->ResetPath(pathInit);
 	playerData->texture = app->tex->Load("Assets/textures/Dino_Green.png");
 	playerData->position = positionInitial;
+
+	//FX
+	bonfireFx = app->audio->LoadFx("Assets/audio/fx/bonfire.wav");
 
 	checkpointMove = false;
 	endUpdate = true;
@@ -364,6 +368,8 @@ bool Player::CleanUp()
 	app->tex->UnLoad(playerData->texture);
 	active = false;
 
+	checkPoints.Clear();
+	cameraPosCP.Clear();
 	return true;
 }
 
@@ -485,13 +491,12 @@ void Player::activeCheckpoint(iPoint positionMapPlayer)
 {
 	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid + 2)
 	{
-
 		for (int i = 0; i < checkPoints.Count(); i++)
 		{
 			if (checkPoints.At(i)->data == positionMapPlayer) {
 
 				lastCP = i;
-				if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
+				if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate && checkPoints.Count()>1) {
 					endUpdate = false;
 					checkpointMove = !checkpointMove;
 				}
@@ -503,7 +508,9 @@ void Player::activeCheckpoint(iPoint positionMapPlayer)
 		iPoint cam(app->render->camera.x, app->render->camera.y);
 		cameraPosCP.Add(cam);
 		LOG("CHECKPOINT pos:%d,%d", positionMapPlayer.x, positionMapPlayer.y);
-
+		app->map->CheckPointActive(positionMapPlayer);
+		//FX
+		app->audio->PlayFx(bonfireFx);
 	}
 }
 
