@@ -3,9 +3,6 @@
 #include "Defs.h"
 #include "Log.h"
 
-
-#define VSYNC true
-
 EntityManager::EntityManager() : Module()
 {
 	name.Create("EntityManager");
@@ -83,12 +80,10 @@ bool EntityManager::LoadState(pugi::xml_node& data)
 bool EntityManager::SaveState(pugi::xml_node& data) const
 {
 
-
-
 	return true;
 }
 
-bool EntityManager::AddEntity(TypeEntity pType, float pX, float pY)
+bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY)
 {
 	if (spawnQueue.Add(new EntitySpawnPoint(pType, pX, pY))) return true;
 	else return false;
@@ -117,35 +112,33 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 	Entity* iterateEntity;
 	SDL_Texture* tex=nullptr;
 	// Find an empty slot in the enemies array
-	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+	ListItem<Entity*>* entiti= entities.start;
+	switch (info.type)
 	{
-			switch (info.type)
-			{
-			case TypeEntity::PLAYER:
-				entities.Add(new Player(info.type,{ info.x,info.y }, 1, tex));
-				entities.end->data->Start();
-				break;
+	case TypeEntity::PLAYER:
+		entities.Add(new Player(info.type,{ info.x,info.y }, 1, tex));
+		entities.end->data->Start();
+		break;
 
-			case TypeEntity::GROUND_ENEMY:
-				entities.Add(new Entity(info.type, { info.x,info.y }, 1, tex));
-				entities.end->data->Start();
-				break;
+	case TypeEntity::GROUND_ENEMY:
+		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex));
+		entities.end->data->Start();
+		//entities.end->data->Awake();
+		break;
 
-			case TypeEntity::AIR_ENEMY:
-				entities.Add(new Entity(info.type, { info.x,info.y }, 1, tex));
-				entities.end->data->Start();
-				break;
-			}
-		
-			break;
-		}
-	
+	case TypeEntity::AIR_ENEMY:
+		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex));
+		entities.end->data->Start();
+		break;
+	}
 }
+	
+
 
 
 void EntityManager::HandleEntitiesDespawn()
 {
-	fPoint positionEntity;
+	/*fPoint positionEntity;
 	int cameraX= app->render->camera.x;
 	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
 	{
@@ -156,6 +149,6 @@ void EntityManager::HandleEntitiesDespawn()
 			LOG("DeSpawning enemy at %d", positionEntity.x * SCREEN_SIZE);
 			entities.Del(entiti);
 		}
-	}
+	}*/
 }
 

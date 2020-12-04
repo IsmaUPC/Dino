@@ -1,17 +1,18 @@
 #include "Player.h"
 #include "Entity.h"
+#include "Audio.h"
 
 Player::Player() : Entity()
 {
     name.Create("player");
 }
 
-Player::Player(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture) 
+Player::Player(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) 
 	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
 {
-	
 	playerData.state = IDLE;
     name.Create("player");
+
 }
 
 Player::~Player()
@@ -24,6 +25,9 @@ bool Player::Start()
 	playerData.texture = app->tex->Load("Assets/textures/Dino_Green.png");
 	playerData.position = positionInitial;
 	playerData.state = IDLE;
+
+	//FX
+	bonfireFx = app->audio->LoadFx("Assets/audio/fx/bonfire.wav");
 
 	checkpointMove = false;
 	endUpdate = true;
@@ -282,24 +286,45 @@ void Player::MoveToDirection(int velocity)
 		break;
 	}
 }
-iPoint Player::TransformFPoint(fPoint fpoint)
-{
-	iPoint transformation;
 
-	transformation.x = fpoint.x;
-	transformation.y = fpoint.y;
-	
-	return transformation;
-}
+
 iPoint Player::TransformIPointMapToFPointWorld(iPoint ipoint)
 {
 	iPoint CPos = app->map->MapToWorld(ipoint.x, ipoint.y);
-	iPoint CPosF;
-	CPosF.x = CPos.x;
-	CPosF.y = CPos.y;
-	return CPosF;
+	return CPos;
 }
 
+
+
+// Implements to gravity fall down
+//void Player::Fallings(float dt)
+//{	
+//	tmp = playerData.position;
+//	int playerX= playerData.position.x;
+//	int playerY=playerData.position.y;
+//
+//
+//	// Horizontal Collision
+//	if (!CollisionPlayer(TransformFPoint({ playerX + velX, playerY+ velY })) 
+//		|| !CollisionPlayer(TransformFPoint({ playerX -  velX,  playerY +velY })))
+//	{
+//		playerData.position.y += velY;
+//		velY += gravity*dt;
+//	}
+//	else
+//	{
+// 		velY = 0.0f;
+//	} // Verctical collision
+//	if (CollisionJumping(TransformFPoint({ playerX + velX, playerY + velY }))
+//		 || CollisionJumping(TransformFPoint({ playerX + velX, playerY - velY })) && velY==0)
+//	{
+//		playerData.isJumped = false;
+//		playerData.isJumpedAgain = false;
+//		playerData.state = State::IDLE;
+//	}
+//	if (CollisionPlayer(playerData.position))playerData.position = tmp;
+//}
+//>>>>>>> 660f07a8f0d40f299a25f9b3cb80bf8ddefbbf4e
 
 bool Player::PostUpdate() 
 {
@@ -378,9 +403,26 @@ bool Player::CleanUp()
 	app->tex->UnLoad(playerData.texture);
 	active = false;
 
+	checkPoints.Clear();
+	cameraPosCP.Clear();
 	return true;
 }
 
+
+bool Player::CollisionPlayer(iPoint nextPosition) 
+{
+	iPoint positionMapPlayer;
+	int y = nextPosition.y;
+	int x = nextPosition.x;
+
+	for (int i = 0; i < playerData.numPoints; i++)
+	{	
+		// Concvert position player WorldToMap 
+		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i].x, y+playerData.pointsCollision[i].y);
+		if (CheckCollision(positionMapPlayer)== COLLISION) return true;
+	}
+	return false;
+}
 
 bool Player::CollisionJumping(iPoint nextPosition)
 {
@@ -461,10 +503,12 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1720)
 		{
+
 			//isDead = true;
 			playerData.position = TransformIPointMapToFPointWorld(checkPoints.end->data);
 			app->render->camera.x = cameraPosCP.end->data.x;
 			app->render->camera.y = cameraPosCP.end->data.y;
+
 			return true;
 		}
 	}
@@ -472,25 +516,32 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1968)
 		{
-			isDead = true;
 			return true;
 		}
 	}
-	
+	if (lives <= 0)
+	{
+		return true;
+	}
 	return false;
 }
+
+void Player::SetHit()
+{
+	lives--;
+}
+
 
 void Player::activeCheckpoint(iPoint positionMapPlayer)
 {
 	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid + 2)
 	{
-
 		for (int i = 0; i < checkPoints.Count(); i++)
 		{
 			if (checkPoints.At(i)->data == positionMapPlayer) {
 
 				lastCP = i;
-				if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
+				if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate && checkPoints.Count()>1) {
 					endUpdate = false;
 					checkpointMove = !checkpointMove;
 				}
@@ -502,6 +553,9 @@ void Player::activeCheckpoint(iPoint positionMapPlayer)
 		iPoint cam(app->render->camera.x, app->render->camera.y);
 		cameraPosCP.Add(cam);
 		LOG("CHECKPOINT pos:%d,%d", positionMapPlayer.x, positionMapPlayer.y);
-
+		app->map->CheckPointActive(positionMapPlayer);
+		//FX
+		app->audio->PlayFx(bonfireFx);
 	}
 }
+

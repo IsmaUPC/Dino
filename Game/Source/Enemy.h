@@ -1,28 +1,14 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 
-#include "Point.h"
 #include "Entity.h"
-#include "Animation.h"
-
 #include "PugiXml\src\pugixml.hpp"
-
-struct EnemyData
-{
-	iPoint position;
-	MoveDirection direction;
-	Animation* currentAnimation;
-	int velocity;
-
-	SDL_Texture* texture;
-	//static const int numPoints = 6;
-	//int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
-};
 
 class Enemy : public Entity
 {
 public:
 	Enemy();
+	Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 
 	virtual ~Enemy();
 
@@ -30,7 +16,9 @@ public:
 
 	bool Start();
 
-	//bool PreUpdate();
+	bool Radar(iPoint distance);
+
+	bool PreUpdate();
 
 	bool Update(float dt);
 
@@ -41,8 +29,12 @@ public:
 
 public:
 	iPoint positionInitial;
-	EnemyData enemyData;
 private:
+	Animation* idleAnim = new Animation();
 	Animation* walkAnim = new Animation();
+	Animation* deadAnim = new Animation();
+	int range = 500;
+	// we store the created path here
+	DynArray<iPoint> lastPath;
 };
 #endif // _ENEMY_H_

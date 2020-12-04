@@ -17,6 +17,7 @@ struct PlayerData
 	static const int numPoints = 6;
 	iPoint pointsCollision[numPoints] = { { 1,0 },{46 , 0},{ 0,-54 },{46 ,-54 }, {1,-26},{46,-26} };
 
+
 };
 
 
@@ -25,7 +26,7 @@ class Player : public Entity
 public:
 
 	Player();
-	Player(TypeEntity pTypeEntity, fPoint pPosition, float pVelocity, SDL_Texture* pTexture);
+	Player(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 	virtual ~Player();
 
 	bool Awake(pugi::xml_node&);
@@ -54,9 +55,13 @@ public:
 	bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 
+	void SetHit();
+
 	void activeCheckpoint(iPoint positionMapPlayer);
 
 	iPoint TransformFPoint(fPoint fpoint);
+
+	//iPoint TransformFPoint(fPoint fpoint);
 	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
@@ -81,7 +86,9 @@ private:
 	
 	float gravity = 0.5f;
 	float velY = 0;
-	int velX = 0;
+
+	float velX = 0;
+	uint lives = 3;
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
@@ -90,11 +97,11 @@ private:
 	Animation* runAnim = new Animation( );
 	Animation* jumpAnim = new Animation( );
 
-	bool isDead = false;
-
 	pugi::xml_document playerFile;
 	SString folder;
 	iPoint tmp;
+
+	uint bonfireFx;
 
 	//CheckPoint's vars
 	List<iPoint> checkPoints;

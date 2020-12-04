@@ -1,13 +1,6 @@
 #include "App.h"
-#include "Render.h"
-#include "Textures.h"
 #include "Coins.h"
 
-#include "Input.h"
-#include "Map.h"
-
-#include "Defs.h"
-#include "Log.h"
 
 Coins::Coins() : Entity()
 {

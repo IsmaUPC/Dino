@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="62" height="38" tilewidth="48" tileheight="48" infinite="0" nextlayerid="4" nextobjectid="1">
- <tileset firstgid="1" name="Nature_environment_02" tilewidth="48" tileheight="48" tilecount="154" columns="22" numTilesWidth="22" numTilesHeight="7">
+ <tileset firstgid="1" name="Nature_environment_02" tilewidth="48" tileheight="48" tilecount="154" columns="22">
   <image source="Nature_environment_02.png" width="1056" height="336"/>
  </tileset>
- <tileset firstgid="155" name="Nature_props_02" tilewidth="48" tileheight="48" tilecount="104" columns="13" numTilesWidth="13" numTilesHeight="8">
+ <tileset firstgid="155" name="Nature_props_02" tilewidth="48" tileheight="48" tilecount="104" columns="13">
   <image source="Nature_props_02.png" width="624" height="400"/>
  </tileset>
- <tileset firstgid="259" name="Collisions2" tilewidth="48" tileheight="48" tilecount="3" columns="3" numTilesWidth="3" numTilesHeight="1">
+ <tileset firstgid="259" name="Collisions2" tilewidth="48" tileheight="48" tilecount="3" columns="3">
   <image source="Collisions2.png" trans="ffffff" width="144" height="48"/>
  </tileset>
  <layer id="2" name="Decorcion" width="62" height="38">
@@ -559,8 +559,8 @@
    <tile/>
    <tile/>
    <tile gid="196"/>
-   <tile gid="197"/>
-   <tile/>
+   <tile gid="259"/>
+   <tile gid="259"/>
    <tile/>
    <tile/>
    <tile/>
@@ -621,8 +621,8 @@
    <tile/>
    <tile/>
    <tile gid="209"/>
-   <tile gid="210"/>
-   <tile gid="211"/>
+   <tile gid="259"/>
+   <tile gid="259"/>
    <tile gid="155"/>
    <tile/>
    <tile/>

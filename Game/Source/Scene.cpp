@@ -7,10 +7,12 @@
 #include "Scene.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "EntityManager.h"
 #include "Coins.h"
 #include "SceneIntro.h"
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
+#include "Pathfinding.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
@@ -44,19 +46,24 @@ bool Scene::Start()
 	app->SetLastScene((Module*)this);
 
 	//app->map->Load("Mapa_PixelArt.tmx");
-	app->map->Load("Mapa_PixelArt_CP.tmx");
+	if (app->map->Load("Mapa_PixelArt_CP.tmx") == true)
+	{
+		int w, h;
+		uchar* data = NULL;
 
+		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
 	//Positions Initials
 	app->player->positionInitial = { 432,1170 };
-	app->enemy->positionInitial = {1100, 1335};
-	app->coins->positionInitial = {1100, 1235};
+	app->entityManager->AddEntity(GROUND_ENEMY, 1100, 1335);
+	app->entityManager->AddEntity(GROUND_ENEMY, 1200, 1335);
+
 	//Active calls
 	app->player->Init();
 	app->player->Start();
-	app->enemy->Init();
-	app->enemy->Start();
-	app->coins->Init();
-	app->coins->Start();
+
 	app->map->active = true;
 
 	// Load music
@@ -173,6 +180,7 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(img);
 	app->tex->UnLoad(animationFather.texture);
 	app->player->CleanUp();
+	app->audio->UnloadFxs();
 
 	active = false;
 	return true;

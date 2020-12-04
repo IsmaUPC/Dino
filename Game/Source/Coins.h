@@ -1,10 +1,7 @@
 #ifndef __COINS_H__
 #define __COINS_H__
 
-#include "Point.h"
 #include "Entity.h"
-#include "Animation.h"
-
 #include "PugiXml\src\pugixml.hpp"
 
 struct CoinsData

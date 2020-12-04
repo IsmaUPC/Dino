@@ -1,5 +1,5 @@
-#ifndef __SCENELEVEL2_H__
-#define __SCENELEVEL2_H__
+#ifndef __SCENE_LEVEL_2_H__
+#define __SCENE_LEVEL_2_H__
 
 #include "Module.h"
 #include "Animation.h"
