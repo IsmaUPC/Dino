@@ -94,6 +94,8 @@ private:
 	SString folder;
 	fPoint tmp;
 
+	uint bonfireFx;
+
 	//CheckPoint's vars
 	List<iPoint> checkPoints;
 	List<iPoint> cameraPosCP;

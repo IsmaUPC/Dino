@@ -222,6 +222,17 @@ int Map::CalculateDistanceToStart(iPoint node)
 
 }
 
+void Map::CheckPointActive(iPoint position)
+{
+	for (int i = 0; i < checKpointsMap.list.Count(); i++)
+	{	
+		if (checKpointsMap.list.At(i)->data->pos == position){
+			checKpointsMap.list.At(i)->data->active = true;
+		}
+
+	}
+}
+
 
 
 // Ask for the value of a custom property
@@ -248,6 +259,8 @@ bool Map::Awake(pugi::xml_node& config)
     folder.Create(config.child("folder").child_value());
 
 	drawColl = app->scene->GetDebugCollaider();
+
+
 
     return ret;
 }
@@ -277,6 +290,29 @@ void Map::Draw()
 			}
 		}
 	}
+	
+	//CheckPoints
+	checKpointsMap.checkPointOnAnim->Update();
+	for (int i = 0; i < checKpointsMap.list.Count(); i++)
+	{
+		iPoint pos = checKpointsMap.list.At(i)->data->pos;
+		pos = MapToWorld(pos.x,pos.y);
+
+		CheckPoints::CP* actCP = checKpointsMap.list.At(i)->data;
+		
+		////
+		SDL_Rect rectCP;
+
+		if (actCP->active) {
+			rectCP = checKpointsMap.checkPointOnAnim->GetCurrentFrame();
+		}
+		else
+			rectCP = checKpointsMap.checkPointOffAnim->GetCurrentFrame();
+		
+		app->render->DrawTexture(checKpointsMap.texture, pos.x, pos.y, &rectCP);
+	}
+
+
 	if(*drawColl)app->map->DrawPath();
 }
 
@@ -466,23 +502,7 @@ bool Map::Load(const char* filenameGame)
 			LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
 			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
 		}
-		//CheckPoint count
-		int checkpointCount = 0;
-		for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)
-		{
-			for (int y = 0; y < data.height; ++y)
-			{
-				for (int x = 0; x < data.width; ++x)
-				{
-					int tileId = layer->data->Get(x, y);
-					if (tileId == data.tilesets.At(2)->data->firstgid + 2)
-					{
-						checkpointCount++;
-					}
-				}
-			}
-		}
-		LOG("\nCheckPoint count: %d\n", checkpointCount);
+		LOG("CheckPoint count: %d", LoadCheckPoint());
 		for (int i = 0; i < data.layers.Count(); i++)
 		{
 			LOG("Layer ----");
@@ -533,9 +553,9 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->tileHeight = tileset_node.attribute("tileheight").as_int(0);
 	set->spacing = tileset_node.attribute("spacing").as_int(0);
 	set->margin = tileset_node.attribute("margin").as_int(0);
-	set->numTilesWidth = tileset_node.attribute("numTilesWidth").as_int(1);
-	set->numTilesHeight = tileset_node.attribute("numTilesHeight").as_int(1);
+	set->numTilesWidth = tileset_node.attribute("columns").as_int(1);
 	set->tilecount= tileset_node.attribute("tilecount").as_int(0);
+	set->numTilesHeight = set->tilecount / set->numTilesWidth;
 
 	return ret;
 }
@@ -579,6 +599,45 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 
 	return ret;
+}
+
+int Map::LoadCheckPoint()
+{
+	{
+	checKpointsMap.texture = app->tex->Load("Assets/textures/Check_Point.png");
+	int texW, texH;
+	SDL_QueryTexture(checKpointsMap.texture, NULL, NULL, &texW, &texH);
+	texW = texW / 9;
+
+	checKpointsMap.checkPointOnAnim->loop = true;
+	checKpointsMap.checkPointOnAnim->speed = 0.25f;
+
+	checKpointsMap.checkPointOffAnim->PushBack({ 0,0, texW, texH });
+	for (int i = 1; i < 8; i++)
+		checKpointsMap.checkPointOnAnim->PushBack({ texW * i,0, texW, texH });
+	}
+
+
+
+	int checkPointCount = 0;
+	for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)
+	{
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tileId = layer->data->Get(x, y);
+				if (tileId == data.tilesets.At(2)->data->firstgid + 2)
+				{
+					checkPointCount++;
+					iPoint checkPointPos(x, y);
+					CheckPoints::CP* newCP = new CheckPoints::CP(checkPointPos);
+					checKpointsMap.list.Add(newCP);
+				}
+			}
+		}
+	}
+	return checkPointCount;
 }
 
 
