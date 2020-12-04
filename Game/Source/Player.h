@@ -3,32 +3,9 @@
 
 #include "Entity.h"
 
-
-
-//
-//enum State {
-//
-//	IDLE,
-//	JUMP,
-//	WALK,
-//	RUN,
-//};
-//
-//enum MoveDirection {
-//
-//	WALK_R,
-//	WALK_L,
-//};
-//enum TypeCollision{
-//
-//	VICTORY,
-//	COLLISION,
-//	CHECK_POINT,
-//};
-
 struct PlayerData
 {
-	fPoint position;
+	iPoint position;
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation;
@@ -38,7 +15,8 @@ struct PlayerData
 	
 	SDL_Texture* texture;
 	static const int numPoints = 6;
-	int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
+	iPoint pointsCollision[numPoints] = { { 1,0 },{46 , 0},{ 0,-54 },{46 ,-54 }, {1,-26},{46,-26} };
+
 };
 
 
@@ -60,11 +38,11 @@ public:
 
 	void PlayerMoveAnimation();
 
-	void PlayerControls();
+	void PlayerControls(float dt);
 
-	void Jump();
+	void Jump(float dt);
 
-	void MovePlayer(MoveDirection playerDirection);
+	void MovePlayer(MoveDirection playerDirection, float dt);
 
 	bool PostUpdate();
 
@@ -79,9 +57,11 @@ public:
 	void activeCheckpoint(iPoint positionMapPlayer);
 
 	iPoint TransformFPoint(fPoint fpoint);
-	fPoint TransformIPointMapToFPointWorld(iPoint ipoint);
+	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
+
+	bool DownY(iPoint Position);
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game
@@ -92,16 +72,16 @@ private:
 
 public:
 
-	PlayerData* playerData = new PlayerData();
+	PlayerData playerData;
 	bool godMode = false;
-	fPoint positionInitial;	
+	iPoint positionInitial;	
 	bool win= false;
 
 private:
 	
-	float gravity = 9;
+	float gravity = 0.5f;
 	float velY = 0;
-	float velX = 0;
+	int velX = 0;
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
@@ -114,7 +94,7 @@ private:
 
 	pugi::xml_document playerFile;
 	SString folder;
-	fPoint tmp;
+	iPoint tmp;
 
 	//CheckPoint's vars
 	List<iPoint> checkPoints;

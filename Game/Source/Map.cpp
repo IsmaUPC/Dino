@@ -114,8 +114,6 @@ void Map::ComputePath(int x, int y)
 	int size = breadcrumbs.Count()-1;
 	path.PushBack(goal);
 
-
-
 	ListItem<iPoint>* iterator= visited.end;
 	ListItem<iPoint>* tmp = breadcrumbs.At(size);
 
@@ -453,18 +451,18 @@ bool Map::Load(const char* filenameGame)
     if(ret == true)
     {
 		LOG("Successfully parsed map XML file: %s", filenameGame);
-		LOG("Width: %d	Hight: %d", data.width, data.height);
-		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
+		//LOG("Width: %d	Hight: %d", data.width, data.height);
+		//LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
 		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
-			LOG("TileSet ----");
-			LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
-			LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
-			LOG("Tile Height: %d", data.tilesets.At(i)->data->tileHeight);
-			LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
-			LOG("Margin: %d", data.tilesets.At(i)->data->margin);
-			LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
-			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
+			//LOG("TileSet ----");
+			//LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
+			//LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
+			//LOG("Tile Height: %d", data.tilesets.At(i)->data->tileHeight);
+			//LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
+			//LOG("Margin: %d", data.tilesets.At(i)->data->margin);
+			//LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
+			//LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
 		}
 		//CheckPoint count
 		int checkpointCount = 0;
@@ -485,10 +483,10 @@ bool Map::Load(const char* filenameGame)
 		LOG("\nCheckPoint count: %d\n", checkpointCount);
 		for (int i = 0; i < data.layers.Count(); i++)
 		{
-			LOG("Layer ----");
-			LOG("Name: %s", data.layers.At(i)->data->name.GetString());
-			LOG("Tile width: %d", data.layers.At(i)->data->width);
-			LOG("Tile Height: %d", data.layers.At(i)->data->height);
+			//LOG("Layer ----");
+			//LOG("Name: %s", data.layers.At(i)->data->name.GetString());
+			//LOG("Tile width: %d", data.layers.At(i)->data->width);
+			//LOG("Tile Height: %d", data.layers.At(i)->data->height);
 		}
     }
 

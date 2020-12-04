@@ -152,6 +152,7 @@ bool App::Start()
 	ListItem<Module*>* item;
 	item = modules.start;
 
+
 	while(item != NULL && ret == true)
 	{
 		if (item->data->active == true)
