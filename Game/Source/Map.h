@@ -162,6 +162,8 @@ public:
 	// Translates x,y coordinates from  world positions to map positions 
 	iPoint WorldToMap(int x, int y) const;
 
+	//Get dimensions of map
+	iPoint GetDimensionsMap();
 
 	// L10: BFS Pathfinding methods
 	void ResetPath(iPoint start);
