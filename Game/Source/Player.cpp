@@ -32,31 +32,24 @@ bool Player::Start()
 
 	checkpointMove = false;
 	endUpdate = true;
-	return true;
-}
-
-bool Player::Awake(pugi::xml_node& config)
-{
-	LOG("Loading Player Parser");
-	bool ret = true;
 	win = false;
-	
+
 	playerData.velocity = 1;
 	playerData.isJumped = false;
 	playerData.state = IDLE;
 	playerData.direction = WALK_R;
 
 	idleAnim->loop = true;
-	idleAnim->speed = 0.025f;
+	idleAnim->speed = 0.05f;
 	walkAnim->loop = true;
-	walkAnim->speed = 0.04f;
+	walkAnim->speed = 0.08f;
 	damageAnim->loop = true;
-	damageAnim->speed = 0.025f;
+	damageAnim->speed = 0.05f;
 	runAnim->loop = true;
-	runAnim->speed = 0.05f;
-	
+	runAnim->speed = 0.10f;
+
 	jumpAnim->loop = true;
-	jumpAnim->speed = 0.12f;
+	jumpAnim->speed = 0.24f;
 
 	for (int i = 0; i < 4; i++)
 		idleAnim->PushBack({ 78 * i,0, 78, 78 });
@@ -72,14 +65,22 @@ bool Player::Awake(pugi::xml_node& config)
 
 	for (int i = 0; i < 4; i++)
 		damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
-	
+
 	for (int i = 0; i < 4; i++)
 		runAnim->PushBack({ 1319 + (78 * i),0, 78, 78 });
 
 	playerData.currentAnimation = idleAnim;
-	return ret;
+	velX = playerData.velocity;
+	return true;
 }
 
+bool Player::Awake(pugi::xml_node& config)
+{
+	LOG("Loading Player Parser");
+	bool ret = true;
+
+	return ret;
+}
 
 bool Player::LoadState(pugi::xml_node& player) 
 {
@@ -88,6 +89,7 @@ bool Player::LoadState(pugi::xml_node& player)
 		playerData.position.y = player.child("position").attribute("y").as_int(playerData.position.y);
 	return ret;
 }
+
 bool Player::SaveState(pugi::xml_node& player) const
 {
 	pugi::xml_node positionPlayer = player.child("position");
@@ -99,7 +101,6 @@ bool Player::SaveState(pugi::xml_node& player) const
 	return true;
 }
 
-
 bool Player::PreUpdate() 
 {
 
@@ -108,14 +109,18 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt) 
 {
-	if(godMode==false)Fallings(dt);
-	//playerData.velocity = (125*dt);
-	playerData.velocity = 5;
+	//playerData.velocity =(1000*dt)/3;
+	playerData.velocity =5;
+	gravity = ceil(600 * dt) ;
+
+	if(godMode==false)GravityDown(dt);
+	//playerData.velocity = 5;
 	//LOG("Delta %d  <--------", velX);
 
 	if (godMode == false)playerData.currentAnimation->Update();
 	else playerData.currentAnimation = idleAnim;
 
+	//Camera follow the player
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
 
@@ -205,7 +210,6 @@ void Player::PlayerControls(float dt)
 		{
 			playerData.state = State::WALK;
 			velX = playerData.velocity ;
-
 		}
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_R,dt);
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_L,dt);
@@ -225,7 +229,7 @@ void Player::PlayerControls(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT&& playerData.state == State::WALK)
 	{
 			playerData.state = State::RUN;
-		velX = playerData.velocity * 1.50f;
+			velX = playerData.velocity * 2;
 	}
 
 	PlayerMoveAnimation();
@@ -237,9 +241,9 @@ void Player::MovePlayer(MoveDirection playerDirection, float dt)
 	tmp = playerData.position;
 	playerData.direction = playerDirection;
 
-
 	switch (playerData.state)
 	{
+		
 	case IDLE:
 		// Future conditions in state IDLE...
 		break;	
@@ -266,7 +270,6 @@ void Player::MovePlayer(MoveDirection playerDirection, float dt)
 		break;
 	}
 
-	//if (!DownY(playerData.position) && velY != 0)
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 	
 }
@@ -295,38 +298,6 @@ iPoint Player::TransformIPointMapToFPointWorld(iPoint ipoint)
 	return CPos;
 }
 
-
-
-// Implements to gravity fall down
-//void Player::Fallings(float dt)
-//{	
-//	tmp = playerData.position;
-//	int playerX= playerData.position.x;
-//	int playerY=playerData.position.y;
-//
-//
-//	// Horizontal Collision
-//	if (!CollisionPlayer(TransformFPoint({ playerX + velX, playerY+ velY })) 
-//		|| !CollisionPlayer(TransformFPoint({ playerX -  velX,  playerY +velY })))
-//	{
-//		playerData.position.y += velY;
-//		velY += gravity*dt;
-//	}
-//	else
-//	{
-// 		velY = 0.0f;
-//	} // Verctical collision
-//	if (CollisionJumping(TransformFPoint({ playerX + velX, playerY + velY }))
-//		 || CollisionJumping(TransformFPoint({ playerX + velX, playerY - velY })) && velY==0)
-//	{
-//		playerData.isJumped = false;
-//		playerData.isJumpedAgain = false;
-//		playerData.state = State::IDLE;
-//	}
-//	if (CollisionPlayer(playerData.position))playerData.position = tmp;
-//}
-
-
 bool Player::PostUpdate() 
 {
 	SDL_Rect rectPlayer;
@@ -341,40 +312,38 @@ bool Player::PostUpdate()
 	return true;
 }
 // Implements to gravity fall down
-void Player::Fallings(float dt)
+void Player::GravityDown(float dt)
 {
-	velY += gravity;
+	//velY += gravity/10;
+
 	tmp = playerData.position;
-	iPoint iPointTmp;
-	iPoint PlayerCurrPos = { playerData.position.x ,playerData.position.y+ (int)velY};
+
+	iPoint PlayerCurrPos = { playerData.position.x  ,playerData.position.y+ (int)velY};
 	bool fallingCollision = false;
-	//gravity = (dt * 10);
-	//gravity = 0.0f;
-	//playerData.position.y += velY;
+	bool feedCollision = false;
 	for (int i = 0; i < playerData.numPoints; i++)
 	{
-
-		iPointTmp = { PlayerCurrPos.x+ playerData.pointsCollision[i].x ,PlayerCurrPos.y+ playerData.pointsCollision[i].y};
 		if (CollisionJumping({ PlayerCurrPos.x + playerData.pointsCollision[i].x ,PlayerCurrPos.y + playerData.pointsCollision[i].y }))
 			fallingCollision = true;		
-		if (fallingCollision && (i == 0 || i == 1))
+		if (fallingCollision && (i == 0 || i == 1))feedCollision = true;
+	}
+	if (fallingCollision)
+	{	
+		if (feedCollision)
 		{
 			playerData.isJumped = false;
 			playerData.isJumpedAgain = false;
 			playerData.state = State::IDLE;
 		}
-	}
-	if (fallingCollision)
-	{	
-		playerData.position = tmp;
+		//playerData.position = tmp;
 		velY = 0.0f;
 		fallingCollision = false;
 	}
-	else playerData.position.y += velY;
-	
+	else{
+		playerData.position.y += velY;
+		velY += 0.6f;
+	}
 }
-
-
 
 bool Player::CleanUp() 
 {
@@ -389,12 +358,11 @@ bool Player::CleanUp()
 	return true;
 }
 
-
 bool Player::CollisionPlayer(iPoint nextPosition) 
 {
 	iPoint positionMapPlayer;
 	int y = nextPosition.y;
-	int x = nextPosition.x;
+	int x = nextPosition.x ;
 
 	for (int i = 0; i < playerData.numPoints; i++)
 	{	
@@ -419,22 +387,21 @@ bool Player::CollisionJumping(iPoint nextPosition)
 	return false;
 }
 
-
 void Player::Jump(float dt)
 {
+
 	if (playerData.isJumped && !playerData.isJumpedAgain)
 	{
 		// Generate second impulse
-		//velY =-floor(20 *gravity);
-		velY =-12;
-
+		//velY = (-gravity*1.5) / 1.25f;
+		velY = -9.75f;
 		playerData.isJumpedAgain = true;
 	}
 	if (!playerData.isJumped)
 	{
 		// Generate first impulse
-		//velY = -floor(30 * gravity);
-		velY = -15;
+		//velY = -gravity*1.5;
+		velY = -10.5f;
 		playerData.isJumped = true;
 	}
 
@@ -449,7 +416,6 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1720)
 		{
-
 			//isDead = true;
 			playerData.position = TransformIPointMapToFPointWorld(checkPoints.end->data);
 			app->render->camera.x = cameraPosCP.end->data.x;

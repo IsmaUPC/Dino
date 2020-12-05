@@ -15,7 +15,7 @@ struct PlayerData
 	
 	SDL_Texture* texture;
 	static const int numPoints = 6;
-	iPoint pointsCollision[numPoints] = { { 0,0 },{46 , 0},{ 0,-54 },{46 ,-54 }, {0,-26},{46,-26} };
+	iPoint pointsCollision[numPoints] = { { 0,0 },{46 ,0},{ 0,-54 },{46 ,-54 }, {0,-26},{46,-26} };
 };
 
 
@@ -67,7 +67,7 @@ private:
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 
-	void Fallings(float dt);
+	void GravityDown(float dt);
 	void MoveToDirection(int velocity);
 
 public:
@@ -79,7 +79,7 @@ public:
 
 private:
 	
-	float gravity = 0.5f;
+	float gravity = 0.3f;
 	float velY = 0;
 
 	float velX = 0;

@@ -173,6 +173,18 @@ bool App::Start()
 bool App::Update()
 {
 	bool ret = true;
+
+
+	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) 
+	{
+		cappedMs = 1000 / 30;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+	{
+		cappedMs = 1000 / 60;
+	}
+
+
 	PrepareUpdate();
 	if(input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
@@ -210,15 +222,19 @@ void App::PrepareUpdate()
 	frameCount++;
 	lastSecFrameCount++;
 
+
 	// Calculate the dt: differential time since last frame
 	// dt = (oldLastFrame - lastFrameMs) / 1000;
 	dt = frameTime.ReadSec();
 	frameTime.Start();
+	fPS = SDL_GetTicks();
 }
 
 // ---------------------------------------------
 void App::FinishUpdate()
 {
+	float tmpFPS = SDL_GetTicks() - fPS;
+
 	if (saveGameRequested == true) SaveGame(filenameGame.GetString());
 	if (loadGameRequested == true) LoadGame(filenameGame.GetString());
 
@@ -241,16 +257,20 @@ void App::FinishUpdate()
 	lastFrameMs = lastSecFrameTime.Read();
 	lastSecFrameTime.Start();
 	
-	if ((cappedMs > 0.000f) && (lastFrameMs < cappedMs))
+	//if ((cappedMs > 0.000f) && (lastFrameMs < cappedMs))
+	//{
+	//	//ptimer.Start();
+	//	// Delay delimitation
+	//	SDL_Delay(cappedMs);
+	//	//perfTime = ptimer.ReadMs();
+	//	//LOG("We waited for %f milliseconds and got back in %f milliseconds", cappedMs, perfTime);
+	//}
+
+	if (cappedMs > tmpFPS )
 	{
-		//ptimer.Start();
-		// Delay delimitation
-		SDL_Delay(cappedMs);
-
-		//perfTime = ptimer.ReadMs();
-		//LOG("We waited for %f milliseconds and got back in %f milliseconds", cappedMs, perfTime);
-
+			SDL_Delay(cappedMs- tmpFPS);
 	}
+
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
@@ -478,6 +498,9 @@ bool App::SaveGame(SString filename) const
 }
 
 
+int App::GetFramerate() {
+	return framerate;
+}
 
 float App::GetCapMs() {
 	return cappedMs;

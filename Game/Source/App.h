@@ -71,6 +71,8 @@ public:
 
 	void SetLastScene(Module* scene) { lastScene = scene; }
 	float GetCapMs();
+
+	int GetFramerate();
 private:
 
 	// Load config file
@@ -155,6 +157,8 @@ private:
 	bool loadConfigRequested;
 	SString filenameGame = "save_game.xml";
 	SString filenameConfig = "config.xml";
+
+	float fPS = 0;
 
 	Module* lastScene;
 };
