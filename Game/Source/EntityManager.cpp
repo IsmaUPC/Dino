@@ -96,13 +96,13 @@ void EntityManager::HandleEntitiesSpawn()
 		if (spawnEntiti->data->type != TypeEntity::UNKNOWN)
 		{
 			// Spawn a new enemy if the screen has reached a spawn position
-			if (spawnEntiti->data->x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
-			{
+			//if (spawnEntiti->data->x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
+			//{
 				LOG("Spawning enemy at %d", spawnEntiti->data->x * SCREEN_SIZE);
 
 				SpawnEnemy(*spawnEntiti->data);
 				spawnEntiti->data->type = TypeEntity::UNKNOWN; // Removing the newly spawned enemy from the queue
-			}
+			//}
 		}
 	}
 }

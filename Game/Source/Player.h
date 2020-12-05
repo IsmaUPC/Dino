@@ -15,7 +15,7 @@ struct PlayerData
 	
 	SDL_Texture* texture;
 	static const int numPoints = 6;
-	iPoint pointsCollision[numPoints] = { { 0,0 },{48 , 0},{ 0,-54 },{48 ,-54 }, {0,-26},{48,-26} };
+	iPoint pointsCollision[numPoints] = { { 0,0 },{46 , 0},{ 0,-54 },{46 ,-54 }, {0,-26},{46,-26} };
 };
 
 
@@ -49,7 +49,6 @@ public:
 
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
-	int CheckCollision(iPoint positionMapPlayer);
 	bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 

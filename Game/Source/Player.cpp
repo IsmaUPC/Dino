@@ -393,43 +393,6 @@ bool Player::CollisionJumping(iPoint nextPosition)
 	return false;
 }
 
-// Comprove position player in array of tiles in mapLayer collision
-int Player::CheckCollision(iPoint positionMapPlayer)
-{
-	uint typeTilePlayer = app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) ;
-	uint firstgidLayerCollisions = app->map->data.tilesets.At(2)->data->firstgid;
-	typeTilePlayer -= firstgidLayerCollisions;
-
-	if (godMode == false) {
-		switch (typeTilePlayer)
-		{
-		case VICTORY:
-			//victory
-			win = true;
-			return 0;
-			break;
-
-		case COLLISION:
-			//collision
-			return 1;
-			break;
-
-		case CHECK_POINT:
-			//checkpoint
-			app->SaveGameRequest();
-			activeCheckpoint(positionMapPlayer);
-			return 2;
-			break;
-
-		default:
-			return -1;
-			break;
-		}
-	}
-
-	return false;
-}
-
 //bool Player::CheckVictory(iPoint positionMapPlayer_)
 //{
 //	iPoint positionMapPlayer;

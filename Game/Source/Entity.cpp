@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -85,5 +86,39 @@ iPoint Entity::TransformFPoint(fPoint fpoint)
 
 	return transformation;
 }
+// Comprove position player in array of tiles in mapLayer collision
+int Entity::CheckCollision(iPoint positionMap)
+{
+	uint typeTilePlayer = app->map->data.layers.At(2)->data->Get(positionMap.x, positionMap.y);
+	uint firstgidLayerCollisions = app->map->data.tilesets.At(2)->data->firstgid;
+	typeTilePlayer -= firstgidLayerCollisions;
 
+	if (app->player->godMode == false) {
+		switch (typeTilePlayer)
+		{
+		case VICTORY:
+			//victory
+			app->player->win = true;
+			return 0;
+			break;
 
+		case COLLISION:
+			//collision
+			return 1;
+			break;
+
+		case CHECK_POINT:
+			//checkpoint
+			app->SaveGameRequest();
+			app->player->activeCheckpoint(positionMap);
+			return 2;
+			break;
+
+		default:
+			return -1;
+			break;
+		}
+	}
+
+	return false;
+}

@@ -26,15 +26,16 @@ public:
 
 	bool CleanUp();
 
-
-public:
-	iPoint positionInitial;
 private:
 	Animation* idleAnim = new Animation();
 	Animation* walkAnim = new Animation();
 	Animation* deadAnim = new Animation();
-	int range = 500;
-	// we store the created path here
-	DynArray<iPoint> lastPath;
+	int range = 300;
+	bool isDetected = false;
+	//Timer
+	Timer* checkDestination = new Timer();
+	iPoint destination;
+	//We store the created path here
+	DynArray<iPoint>* lastPath;
 };
 #endif // _ENEMY_H_
