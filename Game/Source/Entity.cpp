@@ -109,7 +109,7 @@ int Entity::CheckCollision(iPoint positionMap)
 
 		case CHECK_POINT:
 			//checkpoint
-			app->SaveGameRequest();
+			//app->SaveGameRequest();
 			app->player->activeCheckpoint(positionMap);
 			return 2;
 			break;

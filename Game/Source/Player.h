@@ -59,6 +59,12 @@ public:
 	//iPoint TransformFPoint(fPoint fpoint);
 	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
+
+	uint* GetLives() { return &lives; };
+	uint* GetRespawn() { return &respawns; };
+	bool GetInCheckPoint() { return inCheckPoint; };
+	bool GetCheckPointMove() { return checkpointMove; };
+
 private:
 
 	//bool DownY(iPoint Position);
@@ -83,7 +89,8 @@ private:
 	float velY = 0;
 
 	float velX = 0;
-	uint lives = 3;
+	uint lives = 0;
+	uint respawns = 0;
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
@@ -99,6 +106,7 @@ private:
 	uint bonfireFx;
 
 	//CheckPoint's vars
+	bool inCheckPoint;
 	List<iPoint> checkPoints;
 	List<iPoint> cameraPosCP;
 	int lastCP;

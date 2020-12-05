@@ -64,8 +64,7 @@ bool Enemy::Start()
 		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 
-	destination=app->map->WorldToMap(app->player->playerData.position.x, app->player->playerData.position.y);
-
+	destination = app->player->playerData.position;
 	return true;
 }
 
@@ -128,8 +127,7 @@ bool Enemy::Update(float dt)
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 		iPoint worldPositionPalyer = app->player->playerData.position;
 		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
-
-		if (checkDestination->check(1000))
+		if (destination != app->player->playerData.position)
 		{
 			if (destination != mapPositionPalyer)
 			{

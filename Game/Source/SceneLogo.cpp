@@ -28,6 +28,7 @@ bool SceneLogo::Awake()
 bool SceneLogo::Start()
 {
 	app->SetLastScene((Module*)this);
+	transition = false;
 
 	img = app->tex->Load("Assets/Textures/scene_logo.png");
 
@@ -54,9 +55,10 @@ bool SceneLogo::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN)
+	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition)
 	{
+		transition = true;
 		app->fade->FadeToBlack(this, (Module*)app->sceneIntro, 60.f);
 		return true;
 	}
