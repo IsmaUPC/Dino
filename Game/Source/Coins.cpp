@@ -14,7 +14,7 @@ bool Coins::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
-	coinsData.texture = app->tex->Load("Assets/textures/Monedas.png");
+	coinsData.texture = app->tex->Load("Assets/Textures/coin.png");
 	coinsData.position = positionInitial;
 
 	return true;

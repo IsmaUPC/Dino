@@ -29,7 +29,7 @@ bool SceneLogo::Start()
 {
 	app->SetLastScene((Module*)this);
 
-	img = app->tex->Load("Assets/textures/SceneLogo.png");
+	img = app->tex->Load("Assets/Textures/scene_logo.png");
 
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;

@@ -9,6 +9,7 @@ Enemy::Enemy() : Entity()
 {
 	name.Create("Enemy");
 }
+
 Enemy::Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
 	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
 {
@@ -24,7 +25,7 @@ bool Enemy::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
-	entityData->texture = app->tex->Load("Assets/textures/Enemy_Walk.png");
+	entityData->texture = app->tex->Load("Assets/Textures/enemy_walk.png");
 
 	entityData->velocity = 1;
 
@@ -56,15 +57,16 @@ bool Enemy::Start()
 	if (entityData->type == GROUND_ENEMY)
 	{
 		entityData->numPoints = 4;
-		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 	if (entityData->type == AIR_ENEMY)
 	{
 		entityData->numPoints = 4;
-		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
-	iPoint worldPositionPalyer = TransformFPoint(app->player->playerData->position);
-	destination=app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
+
+	destination=app->map->WorldToMap(app->player->playerData.position.x, app->player->playerData.position.y);
+
 	return true;
 }
 
@@ -84,9 +86,10 @@ bool Enemy::Radar(iPoint distance)
 bool Enemy::PreUpdate()
 {
 	//app->pathfinding->ComputePathAStar();
-	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData->position);
+	iPoint currentPositionPlayer = app->player->playerData.position;
 	if (Radar(currentPositionPlayer) && entityData->state != DEADING)
 	{
+		if (isDetected == false)app->pathfinding->ResetPath(app->map->WorldToMap(entityData->position.x, entityData->position.y)), isDetected = true;
 		entityData->state = WALK;
 		entityData->currentAnimation = walkAnim;
 
@@ -99,10 +102,11 @@ bool Enemy::PreUpdate()
 		iPoint auxPositionPlayer[6];
 		for (int i = 0; i < 6; i++)
 		{
-			auxPositionPlayer[i] = {currentPositionPlayer.x + app->player->playerData->pointsCollision[i].x,
-				14 + currentPositionPlayer.y + app->player->playerData->pointsCollision[i].y };
+			auxPositionPlayer[i] = {currentPositionPlayer.x + app->player->playerData.pointsCollision[i].x,
+				14 + currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
+
 		}
-		if (collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData->numPoints))
+		if (collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
 		{
 			entityData->state = DEADING;
 			entityData->currentAnimation = deadAnim;
@@ -119,12 +123,13 @@ bool Enemy::Update(float dt)
 	if (entityData->state == WALK)
 	{
 		//Direction
-		if (entityData->position.x < app->player->playerData->position.x)entityData->direction = WALK_L;
+		if (entityData->position.x < app->player->playerData.position.x)entityData->direction = WALK_L;
 		else entityData->direction = WALK_R;
 		//If player move
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
-		iPoint worldPositionPalyer = TransformFPoint(app->player->playerData->position);
+		iPoint worldPositionPalyer = app->player->playerData.position;
 		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
+
 		if (checkDestination->check(1000))
 		{
 			if (destination != mapPositionPalyer)
@@ -142,6 +147,7 @@ bool Enemy::Update(float dt)
 		{
 			if (mapPositionEnemy == iPoint({ lastPath->At(i)->x, lastPath->At(i)->y })) break;
 		}
+
 		if (lastPath->At(i + 1) != NULL)
 		{
 			if (lastPath->At(i + 1)->x < mapPositionEnemy.x && CheckCollision({mapPositionEnemy.x, mapPositionEnemy.y+1})==1)
@@ -161,6 +167,7 @@ bool Enemy::Update(float dt)
 		{
 			if(entityData->direction == WALK_L) entityData->position.x += entityData->velocity;
 			else entityData->position.x -= entityData->velocity;
+
 		}
 		if (entityData->type == AIR_ENEMY)
 		{

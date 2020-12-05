@@ -5,7 +5,7 @@
 
 struct PlayerData
 {
-	fPoint position;
+	iPoint position;
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation;
@@ -37,11 +37,11 @@ public:
 
 	void PlayerMoveAnimation();
 
-	void PlayerControls();
+	void PlayerControls(float dt);
 
-	void Jump();
+	void Jump(float dt);
 
-	void MovePlayer(MoveDirection playerDirection);
+	void MovePlayer(MoveDirection playerDirection, float dt);
 
 	bool PostUpdate();
 
@@ -56,10 +56,14 @@ public:
 
 	void activeCheckpoint(iPoint positionMapPlayer);
 
+	iPoint TransformFPoint(fPoint fpoint);
+
 	//iPoint TransformFPoint(fPoint fpoint);
-	fPoint TransformIPointMapToFPointWorld(iPoint ipoint);
+	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
+
+	bool DownY(iPoint Position);
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game
@@ -70,15 +74,16 @@ private:
 
 public:
 
-	PlayerData* playerData = new PlayerData();
+	PlayerData playerData;
 	bool godMode = false;
-	fPoint positionInitial;	
+	iPoint positionInitial;	
 	bool win= false;
 
 private:
 	
-	float gravity = 9;
+	float gravity = 0.5f;
 	float velY = 0;
+
 	float velX = 0;
 	uint lives = 3;
 
@@ -91,7 +96,7 @@ private:
 
 	pugi::xml_document playerFile;
 	SString folder;
-	fPoint tmp;
+	iPoint tmp;
 
 	uint bonfireFx;
 

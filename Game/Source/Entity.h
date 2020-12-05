@@ -15,13 +15,13 @@
 #include "Log.h"
 
 
-
 enum TypeEntity {
 
 	UNKNOWN,
 	PLAYER,
 	GROUND_ENEMY,
 	AIR_ENEMY,
+	HUD,
 };
 
 
@@ -37,8 +37,8 @@ enum State {
 
 enum MoveDirection {
 
-	WALK_R,
-	WALK_L,
+	WALK_R=1,
+	WALK_L=-1,
 };
 enum TypeCollision {
 

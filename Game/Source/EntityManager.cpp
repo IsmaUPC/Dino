@@ -130,6 +130,11 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex));
 		entities.end->data->Start();
 		break;
+	case TypeEntity::HUD:
+		entities.Add(new GUI());
+		entities.end->data->Start();
+		break;
+
 	}
 }
 	

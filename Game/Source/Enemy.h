@@ -30,6 +30,7 @@ private:
 	Animation* idleAnim = new Animation();
 	Animation* walkAnim = new Animation();
 	Animation* deadAnim = new Animation();
+
 	int range = 300;
 	bool isDetected = false;
 	//Timer

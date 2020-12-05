@@ -114,8 +114,6 @@ void Map::ComputePath(int x, int y)
 	int size = breadcrumbs.Count()-1;
 	path.PushBack(goal);
 
-
-
 	ListItem<iPoint>* iterator= visited.end;
 	ListItem<iPoint>* tmp = breadcrumbs.At(size);
 
@@ -299,13 +297,10 @@ void Map::Draw()
 		pos = MapToWorld(pos.x,pos.y);
 
 		CheckPoints::CP* actCP = checKpointsMap.list.At(i)->data;
-		
-		////
 		SDL_Rect rectCP;
 
-		if (actCP->active) {
+		if (actCP->active)
 			rectCP = checKpointsMap.checkPointOnAnim->GetCurrentFrame();
-		}
 		else
 			rectCP = checKpointsMap.checkPointOffAnim->GetCurrentFrame();
 		
@@ -489,26 +484,26 @@ bool Map::Load(const char* filenameGame)
     if(ret == true)
     {
 		LOG("Successfully parsed map XML file: %s", filenameGame);
-		LOG("Width: %d	Hight: %d", data.width, data.height);
-		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
+		//LOG("Width: %d	Hight: %d", data.width, data.height);
+		//LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
 		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
-			LOG("TileSet ----");
-			LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
-			LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
-			LOG("Tile Height: %d", data.tilesets.At(i)->data->tileHeight);
-			LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
-			LOG("Margin: %d", data.tilesets.At(i)->data->margin);
-			LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
-			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
+			//LOG("TileSet ----");
+			//LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
+			//LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
+			//LOG("Tile Height: %d", data.tilesets.At(i)->data->tileHeight);
+			//LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
+			//LOG("Margin: %d", data.tilesets.At(i)->data->margin);
+			//LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
+			//LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
 		}
 		LOG("CheckPoint count: %d", LoadCheckPoint());
 		for (int i = 0; i < data.layers.Count(); i++)
 		{
-			LOG("Layer ----");
-			LOG("Name: %s", data.layers.At(i)->data->name.GetString());
-			LOG("Tile width: %d", data.layers.At(i)->data->width);
-			LOG("Tile Height: %d", data.layers.At(i)->data->height);
+			//LOG("Layer ----");
+			//LOG("Name: %s", data.layers.At(i)->data->name.GetString());
+			//LOG("Tile width: %d", data.layers.At(i)->data->width);
+			//LOG("Tile Height: %d", data.layers.At(i)->data->height);
 		}
     }
 
@@ -604,20 +599,18 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 int Map::LoadCheckPoint()
 {
 	{
-	checKpointsMap.texture = app->tex->Load("Assets/textures/Check_Point.png");
+	checKpointsMap.texture = app->tex->Load("Assets/Textures/checkpoint.png");
 	int texW, texH;
 	SDL_QueryTexture(checKpointsMap.texture, NULL, NULL, &texW, &texH);
 	texW = texW / 9;
 
 	checKpointsMap.checkPointOnAnim->loop = true;
-	checKpointsMap.checkPointOnAnim->speed = 0.25f;
+	checKpointsMap.checkPointOnAnim->speed = 0.1f;
 
 	checKpointsMap.checkPointOffAnim->PushBack({ 0,0, texW, texH });
 	for (int i = 1; i < 8; i++)
 		checKpointsMap.checkPointOnAnim->PushBack({ texW * i,0, texW, texH });
 	}
-
-
 
 	int checkPointCount = 0;
 	for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)
