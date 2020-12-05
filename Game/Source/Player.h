@@ -49,21 +49,19 @@ public:
 
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
-	bool CheckVictory(iPoint positionMapPlayer);
+	//bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 
 	void SetHit();
 
 	void activeCheckpoint(iPoint positionMapPlayer);
 
-	iPoint TransformFPoint(fPoint fpoint);
-
 	//iPoint TransformFPoint(fPoint fpoint);
 	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
 
-	bool DownY(iPoint Position);
+	//bool DownY(iPoint Position);
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game

@@ -419,6 +419,12 @@ bool Map::CleanUp()
 	}
 	data.layers.Clear();
 
+	for (int i = 0; i < checKpointsMap.list.Count(); i++)
+	{
+		//checKpointsMap.list.At(i)->data->active = false;
+		checKpointsMap.~CheckPoints();
+	}
+	
 	// Clean up the pugui tree
 	mapFile.reset();
 	active = false;

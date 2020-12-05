@@ -23,8 +23,7 @@ Enemy::~Enemy()
 
 bool Enemy::Start()
 {
-	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
-	//app->map->ResetPath(pathInit);
+	active = true;
 	entityData->texture = app->tex->Load("Assets/Textures/enemy_walk.png");
 
 	entityData->velocity = 1;
@@ -211,7 +210,7 @@ bool Enemy::CleanUp()
 
 	if (!active)
 		return true;
-
+	pendingToDelete = true;
 	app->tex->UnLoad(entityData->texture);
 	active = false;
 

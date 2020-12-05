@@ -63,7 +63,20 @@ bool EntityManager::CleanUp()
 {
 	LOG("Destroying EntityManager");
 
-	return true;
+	bool ret = true;
+	ListItem<Entity*>* item;
+	item = entities.end;
+
+	while (item != NULL && ret == true)
+	{
+		if (item->data->active == true)
+			ret = item->data->CleanUp();
+
+		item = item->prev;
+	}
+
+	return ret;
+	//return true;
 }
 
 

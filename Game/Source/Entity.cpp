@@ -59,7 +59,7 @@ bool Entity::PostUpdate()
 bool Entity::CleanUp()
 {
 	LOG("Destroying Entity");
-
+	active = false;
 	return true;
 }
 
