@@ -92,6 +92,9 @@
     <ClCompile Include="Source\GUI.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FireBall.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -197,6 +200,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\GUI.h">
+      <Filter>Modules\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FireBall.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>

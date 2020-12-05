@@ -22,6 +22,7 @@ enum TypeEntity {
 	GROUND_ENEMY,
 	AIR_ENEMY,
 	HUD,
+	FIREBALL,
 };
 
 
@@ -63,8 +64,8 @@ public:
 	EntityData(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) :
 		position(pPosition), state(IDLE), direction(WALK_R), velocity(pVelocity),
 		texture(pTexture), type(pTypeEntity)
-	{}
-	EntityData::EntityData() {}
+	{};
+	EntityData::EntityData() {};
 };
 
 class Entity : public Module

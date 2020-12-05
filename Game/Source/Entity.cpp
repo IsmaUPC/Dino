@@ -14,9 +14,9 @@ Entity::Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Te
 
 Entity::Entity() : Module()
 {
-	EntityData();
 	name.Create("Entity");
 	isAlive = true;
+	entityData = new EntityData();
 }
 
 // Destructor

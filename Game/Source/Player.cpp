@@ -143,8 +143,7 @@ bool Player::Update(float dt)
 		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(WINDOW_H+(4 * app->map->data.tileHeight))))
 			app->render->camera.y = followPositionPalyerY;
 
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) respawns--;
-
+	//if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) respawns--;
 
 	// Move player inputs control
 	if (!checkpointMove)
@@ -153,14 +152,16 @@ bool Player::Update(float dt)
 	}
 	else // Move Between CheckPoints
 	{
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) 
+		{
 			if ((lastCP + 1) >= checkPoints.Count()) lastCP = 0;
 			else lastCP++;
 			playerData.position = TransformIPointMapToFPointWorld(checkPoints.At(lastCP)->data);
 			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
 			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
 		}
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) 
+		{
 			if (lastCP == 0) lastCP = checkPoints.Count() - 1;
 			else lastCP--;
 			playerData.position = TransformIPointMapToFPointWorld(checkPoints.At(lastCP)->data);

@@ -64,12 +64,11 @@ bool Scene::Start()
 	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
-
 	//Active calls
 	app->player->Init();
 	app->player->Start();
 
-	
+	app->entityManager->AddEntity(FIREBALL, 0, 0);
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
