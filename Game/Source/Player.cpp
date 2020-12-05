@@ -30,6 +30,10 @@ bool Player::Start()
 	//FX
 	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
 
+	respawns = 3;
+	lives = 3;
+
+	inCheckPoint = false;
 	checkpointMove = false;
 	endUpdate = true;
 	win = false;
@@ -71,6 +75,7 @@ bool Player::Start()
 
 	playerData.currentAnimation = idleAnim;
 	velX = playerData.velocity;
+
 	return true;
 }
 
@@ -78,9 +83,10 @@ bool Player::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Player Parser");
 	bool ret = true;
-
-	return ret;
+	
+	return true;
 }
+
 
 bool Player::LoadState(pugi::xml_node& player) 
 {
@@ -137,6 +143,7 @@ bool Player::Update(float dt)
 		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(WINDOW_H+(4 * app->map->data.tileHeight))))
 			app->render->camera.y = followPositionPalyerY;
 
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) respawns--;
 
 
 	// Move player inputs control
@@ -325,7 +332,7 @@ void Player::GravityDown(float dt)
 	{
 		if (CollisionJumping({ PlayerCurrPos.x + playerData.pointsCollision[i].x ,PlayerCurrPos.y + playerData.pointsCollision[i].y }))
 			fallingCollision = true;		
-		if (fallingCollision && (i == 0 || i == 1))feedCollision = true;
+		if (fallingCollision && (i == 0 || i == 4))feedCollision = true;
 	}
 	if (fallingCollision)
 	{	
@@ -366,6 +373,7 @@ bool Player::CollisionPlayer(iPoint nextPosition)
 
 	for (int i = 0; i < playerData.numPoints; i++)
 	{	
+		inCheckPoint = false;
 		// Concvert position player WorldToMap 
 		positionMapPlayer = app->map->WorldToMap(x+playerData.pointsCollision[i].x, y+playerData.pointsCollision[i].y);
 		if (CheckCollision(positionMapPlayer)== COLLISION) return true;
@@ -453,9 +461,13 @@ void Player::activeCheckpoint(iPoint positionMapPlayer)
 			if (checkPoints.At(i)->data == positionMapPlayer) {
 
 				lastCP = i;
-				if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate && checkPoints.Count()>1) {
-					endUpdate = false;
-					checkpointMove = !checkpointMove;
+				if (checkPoints.Count() > 1){
+					inCheckPoint = true;
+
+					if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
+						endUpdate = false;
+						checkpointMove = !checkpointMove;
+					}
 				}
 				return;
 			}

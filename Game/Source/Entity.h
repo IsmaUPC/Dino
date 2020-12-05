@@ -37,8 +37,8 @@ enum State {
 
 enum MoveDirection {
 
-	WALK_R=1,
-	WALK_L=-1,
+	WALK_R,
+	WALK_L,
 };
 enum TypeCollision {
 
@@ -97,6 +97,7 @@ public:
 	bool SaveState(pugi::xml_node&) const;
 	//Transform fPoint to iPoint
 	iPoint TransformFPoint(fPoint fpoint);
+	iPoint MapToWorld(iPoint position);
 	int CheckCollision(iPoint positionMap);
 	
 public:

@@ -122,7 +122,10 @@ bool Collisions::IsInsidePolygons(iPoint polygon[],int n, iPoint polygon2[], int
 			}
 			i = next;
 		} while (i != 0);
-		if (count % 2 == 1)return true;
+		if (count % 2 == 1)
+		{
+			return true;
+		}
 		else count = 0;
 	}
 	// Return true if count is odd, false otherwise 

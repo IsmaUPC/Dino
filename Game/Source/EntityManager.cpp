@@ -98,7 +98,8 @@ bool EntityManager::SaveState(pugi::xml_node& data) const
 
 bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY)
 {
-	if (spawnQueue.Add(new EntitySpawnPoint(pType, pX, pY))) return true;
+	iPoint positionSpawn = app->entity->MapToWorld(iPoint(pX,pY));
+	if (spawnQueue.Add(new EntitySpawnPoint(pType, positionSpawn.x, positionSpawn.y))) return true;
 	else return false;
 }
 

@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Player.h"
+#include "EntityManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -26,7 +27,6 @@ Entity::~Entity()
 bool Entity::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
-
 	return ret;
 }
 
@@ -86,6 +86,14 @@ iPoint Entity::TransformFPoint(fPoint fpoint)
 
 	return transformation;
 }
+iPoint Entity::MapToWorld(iPoint position)
+{
+	app->entityManager->mapDimensions = app->map->GetDimensionsMap();
+	iPoint ret;
+	ret.x = position.x * app->entityManager->mapDimensions.x;
+	ret.y = position.y * app->entityManager->mapDimensions.y;
+	return ret;
+}
 // Comprove position player in array of tiles in mapLayer collision
 int Entity::CheckCollision(iPoint positionMap)
 {
@@ -109,7 +117,7 @@ int Entity::CheckCollision(iPoint positionMap)
 
 		case CHECK_POINT:
 			//checkpoint
-			app->SaveGameRequest();
+			//app->SaveGameRequest();
 			app->player->activeCheckpoint(positionMap);
 			return 2;
 			break;

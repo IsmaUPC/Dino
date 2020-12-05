@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "SceneIntro.h"
 #include "Map.h"
+#include "EntityManager.h"
 #include "ModuleFadeToBlack.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
@@ -39,8 +40,9 @@ bool SceneLevel2::Start()
 	// Load map
 	app->SetLastScene((Module*)this);
 	app->player->win = false;
-
+	//Positions initials
 	app->player->positionInitial = {576,1534};
+	//app->entityManager->AddEntity(GROUND_ENEMY, 1200, 1335);
 	app->player->Init();
 	app->player->Start();
 	app->map->active = true;

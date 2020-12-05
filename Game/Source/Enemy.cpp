@@ -64,8 +64,7 @@ bool Enemy::Start()
 		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 
-	destination=app->map->WorldToMap(app->player->playerData.position.x, app->player->playerData.position.y);
-
+	destination = app->player->playerData.position;
 	return true;
 }
 
@@ -102,10 +101,10 @@ bool Enemy::PreUpdate()
 		for (int i = 0; i < 6; i++)
 		{
 			auxPositionPlayer[i] = {currentPositionPlayer.x + app->player->playerData.pointsCollision[i].x,
-				14 + currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
+				-48+currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
 
 		}
-		if (collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
+		if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
 		{
 			entityData->state = DEADING;
 			entityData->currentAnimation = deadAnim;
@@ -122,14 +121,13 @@ bool Enemy::Update(float dt)
 	if (entityData->state == WALK)
 	{
 		//Direction
-		if (entityData->position.x < app->player->playerData.position.x)entityData->direction = WALK_L;
-		else entityData->direction = WALK_R;
+		if (entityData->position.x < app->player->playerData.position.x)entityData->direction = WALK_R;
+		else entityData->direction = WALK_L;
 		//If player move
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 		iPoint worldPositionPalyer = app->player->playerData.position;
 		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
-
-		if (checkDestination->check(1000))
+		if (destination != app->player->playerData.position)
 		{
 			if (destination != mapPositionPalyer)
 			{
@@ -149,23 +147,27 @@ bool Enemy::Update(float dt)
 
 		if (lastPath->At(i + 1) != NULL)
 		{
-			if (lastPath->At(i + 1)->x < mapPositionEnemy.x && CheckCollision({mapPositionEnemy.x, mapPositionEnemy.y+1})==1)
+			iPoint nextPositionEnemy = *lastPath->At(i + 1);
+			iPoint nextAuxPositionEenemy = MapToWorld(nextPositionEnemy);
+			if (nextAuxPositionEenemy.x < entityData->position.x && (CheckCollision({mapPositionEnemy.x, mapPositionEnemy.y+1})==1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
 			{
 				entityData->position.x -= entityData->velocity;
 			}
-			else if (lastPath->At(i + 1)->x > mapPositionEnemy.x && CheckCollision({ mapPositionEnemy.x+1, mapPositionEnemy.y + 1 })==1)
+			else if (nextAuxPositionEenemy.x > entityData->position.x && (CheckCollision({ mapPositionEnemy.x+1, mapPositionEnemy.y + 1 })==1 || CheckCollision({ mapPositionEnemy.x+1, mapPositionEnemy.y + 2 }) == 1))
 			{
 				entityData->position.x += entityData->velocity;
 			}
-			if (lastPath->At(i + 1)->y > mapPositionEnemy.y)
+			if (nextAuxPositionEenemy.y > entityData->position.y && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
 			{
-				entityData->position.y += entityData->velocity;
+				entityData->position.y += entityData->velocity+1;
 			}
 		}
 		else //if the next position is destination continue with current direction
 		{
-			if(entityData->direction == WALK_L) entityData->position.x += entityData->velocity;
-			else entityData->position.x -= entityData->velocity;
+			if (entityData->direction == WALK_L && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1)) 
+				entityData->position.x -= entityData->velocity;
+			else if(entityData->direction == WALK_R && (CheckCollision({ mapPositionEnemy.x + 1, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x + 1, mapPositionEnemy.y + 2 }) == 1))
+				entityData->position.x += entityData->velocity;
 
 		}
 		if (entityData->type == AIR_ENEMY)
@@ -197,10 +199,10 @@ bool Enemy::PostUpdate()
 	SDL_Rect rectEnemy;
 	rectEnemy = entityData->currentAnimation->GetCurrentFrame();
 	// Draw player in correct direction
-	if (entityData->direction == MoveDirection::WALK_R)
-		app->render->DrawTexture(entityData->texture, entityData->position.x, entityData->position.y - (rectEnemy.h - 10), &rectEnemy);
 	if (entityData->direction == MoveDirection::WALK_L)
-		app->render->DrawTextureFlip(entityData->texture, entityData->position.x - (rectEnemy.w - idleAnim->frames->w), entityData->position.y - (rectEnemy.h - 10), &rectEnemy);
+		app->render->DrawTexture(entityData->texture, entityData->position.x, entityData->position.y, &rectEnemy);
+	if (entityData->direction == MoveDirection::WALK_R)
+		app->render->DrawTextureFlip(entityData->texture, entityData->position.x - (rectEnemy.w - idleAnim->frames->w), entityData->position.y, &rectEnemy);
 
 	return true;
 }
