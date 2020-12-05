@@ -19,6 +19,6 @@
 		<fx volume="100" />
 	</audio>
 	<map>
-		<folder>Assets/maps/</folder>
+		<folder>Assets/Maps/</folder>
 	</map>
 </config>

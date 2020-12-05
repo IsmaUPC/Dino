@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Player.h"
+#include "GUI.h"
 #include "Enemy.h"
 #include "Coins.h"
 

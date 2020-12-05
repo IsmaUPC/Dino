@@ -105,10 +105,10 @@ void PathFinding::PropagateAStar(const iPoint& destination)
 	if (frontier.Pop(curr))
 	{
 		iPoint neighbors[4];
-		neighbors[0].Create(curr.x + 1, curr.y + 0);
-		neighbors[1].Create(curr.x + 0, curr.y - 1);
-		neighbors[2].Create(curr.x - 1, curr.y + 0);
-		neighbors[3].Create(curr.x + 0, curr.y + 1);
+		neighbors[0].Create(curr.x + 0, curr.y + 1);
+		neighbors[1].Create(curr.x - 1, curr.y + 0);
+		neighbors[2].Create(curr.x + 0, curr.y - 1);
+		neighbors[3].Create(curr.x + 1, curr.y + 0);
 
 		int j = 0;
 		bool init = false;
@@ -150,34 +150,31 @@ void PathFinding::PropagateAStar(const iPoint& destination)
 void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destination)
 {
 	//ResetPath(origin);
+	int count = 0;
 	while (destinationIsFind == false)
 	{
 		PropagateAStar(destination);
-		for (int i = 0; i < visited.Count(); i++)
+		for (count; count < visited.Count(); count++)
 		{
-			if (visited.At(i)->data.x == destination.x && visited.At(i)->data.y == destination.y)
+			if (visited.At(count)->data.x == destination.x && visited.At(count)->data.y == destination.y)
 			{
 				destinationIsFind = true;
+				break;
 			}
 		}
 	}
+	destinationIsFind = false;
 	//PropagateAStar(destination);
 	lastPath.Clear();
-	int j;
-	for (j = visited.Count() - 1; j > 0; j--)
-	{
-		if (visited.At(j)->data.x == destination.x && visited.At(j)->data.y == destination.y)
-		{
-			lastPath.PushBack(breadcrumbs.At(j)->data);
-			break;
-		}
-	}
+
+	lastPath.PushBack(breadcrumbs.At(count)->data);
 	for (int i = visited.Count() - 1; i > 0; i--)
 	{
-		if (visited.At(i)->data == breadcrumbs.At(j)->data)
+		if (visited.At(i)->data == breadcrumbs.At(count)->data)
 		{
 			lastPath.PushBack(breadcrumbs.At(i)->data);
-			j = i;
+			count = i;
 		}
 	}
+	lastPath.Flip();
 }

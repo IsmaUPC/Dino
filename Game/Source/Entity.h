@@ -15,13 +15,13 @@
 #include "Log.h"
 
 
-
 enum TypeEntity {
 
 	UNKNOWN,
 	PLAYER,
 	GROUND_ENEMY,
 	AIR_ENEMY,
+	HUD,
 };
 
 
@@ -97,6 +97,7 @@ public:
 	bool SaveState(pugi::xml_node&) const;
 	//Transform fPoint to iPoint
 	iPoint TransformFPoint(fPoint fpoint);
+	int CheckCollision(iPoint positionMap);
 	
 public:
 

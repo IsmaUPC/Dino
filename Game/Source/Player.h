@@ -15,9 +15,7 @@ struct PlayerData
 	
 	SDL_Texture* texture;
 	static const int numPoints = 6;
-	iPoint pointsCollision[numPoints] = { { 1,0 },{46 , 0},{ 0,-54 },{46 ,-54 }, {1,-26},{46,-26} };
-
-
+	iPoint pointsCollision[numPoints] = { { 0,0 },{46 , 0},{ 0,-54 },{46 ,-54 }, {0,-26},{46,-26} };
 };
 
 
@@ -51,22 +49,19 @@ public:
 
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
-	int CheckCollision(iPoint positionMapPlayer);
-	bool CheckVictory(iPoint positionMapPlayer);
+	//bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 
 	void SetHit();
 
 	void activeCheckpoint(iPoint positionMapPlayer);
 
-	iPoint TransformFPoint(fPoint fpoint);
-
 	//iPoint TransformFPoint(fPoint fpoint);
 	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
 
 private:
 
-	bool DownY(iPoint Position);
+	//bool DownY(iPoint Position);
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game

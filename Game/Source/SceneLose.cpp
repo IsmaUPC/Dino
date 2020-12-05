@@ -32,9 +32,9 @@ bool SceneLose::Start()
 {
 	app->SetLastScene((Module*)this);
 
-	app->audio->PlayMusic("Assets/audio/music/MusicLost.ogg");
-	img = app->tex->Load("Assets/textures/EndScreen.png");
-	animationEnd.texture = app->tex->Load("Assets/textures/DinoSpritesaDead.png");
+	app->audio->PlayMusic("Assets/Audio/Music/MusicLost.ogg");
+	img = app->tex->Load("Assets/Textures/end_screen.png");
+	animationEnd.texture = app->tex->Load("Assets/Textures/dino_sprites_dead.png");
 	animationEnd.position = { 480 , 345 };
 	idleAnim.loop = true;
 	idleAnim.speed = 0.008f;

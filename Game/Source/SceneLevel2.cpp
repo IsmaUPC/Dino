@@ -45,11 +45,11 @@ bool SceneLevel2::Start()
 	app->player->Start();
 	app->map->active = true;
 
-	app->map->Load("Dino_Map_2.tmx");
+	app->map->Load("dino_map_2.tmx");
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/LOKI_8bits.ogg");
-	img = app->tex->Load("Assets/textures/sky_3.png");
-	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange.png");
+	app->audio->PlayMusic("Assets/Audio/Music/LOKI_8bits.ogg");
+	img = app->tex->Load("Assets/Textures/sky_3.png");
+	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 
 	animationFather.position = { 10500, 639 };
 	idleAnim.loop = true;

@@ -32,9 +32,9 @@ bool SceneWin::Start()
 {
 	app->SetLastScene((Module*)this);
 
-	app->audio->PlayMusic("Assets/audio/music/MusicVictory_1.ogg");
-	img = app->tex->Load("Assets/textures/SceneWin.png");
-	animationSon.texture = app->tex->Load("Assets/textures/DinoSprites.png");
+	app->audio->PlayMusic("Assets/Audio/Music/MusicVictory_1.ogg");
+	img = app->tex->Load("Assets/Textures/scene_win.png");
+	animationSon.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
 	animationSon.position = { 340 , 372 };
 	idleAnimSon.loop = true;
 	idleAnimSon.speed = 0.01;
@@ -44,7 +44,7 @@ bool SceneWin::Start()
 
 	animationSon.currentAnimation = &idleAnimSon;
 
-	animationFather.texture = app->tex->Load("Assets/textures/Dino_Orange_Big.png");
+	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange_big.png");
 	animationFather.position = { 540 , 180 };
 	idleAnimFather.loop = true;
 	idleAnimFather.speed = 0.01;
