@@ -151,7 +151,7 @@ bool Enemy::Update(float dt)
 		{
 			iPoint nextPositionEnemy = *lastPath->At(i + 1);
 			iPoint nextAuxPositionEenemy = MapToWorld(nextPositionEnemy);
-			if (nextAuxPositionEenemy.x < entityData->position.x && (CheckCollision({mapPositionEnemy.x-1, mapPositionEnemy.y+1})==1 || CheckCollision({ mapPositionEnemy.x - 1, mapPositionEnemy.y + 2 }) == 1))
+			if (nextAuxPositionEenemy.x < entityData->position.x && (CheckCollision({mapPositionEnemy.x, mapPositionEnemy.y+1})==1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
 			{
 				entityData->position.x -= entityData->velocity;
 			}
@@ -159,15 +159,17 @@ bool Enemy::Update(float dt)
 			{
 				entityData->position.x += entityData->velocity;
 			}
-			if (nextAuxPositionEenemy.y > entityData->position.y )
+			if (nextAuxPositionEenemy.y > entityData->position.y && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
 			{
 				entityData->position.y += entityData->velocity+1;
 			}
 		}
 		else //if the next position is destination continue with current direction
 		{
-			if(entityData->direction == WALK_R) entityData->position.x += entityData->velocity;
-			else entityData->position.x -= entityData->velocity;
+			if (entityData->direction == WALK_L && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1)) 
+				entityData->position.x -= entityData->velocity;
+			else if(entityData->direction == WALK_R && (CheckCollision({ mapPositionEnemy.x + 1, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x + 1, mapPositionEnemy.y + 2 }) == 1))
+				entityData->position.x += entityData->velocity;
 
 		}
 		if (entityData->type == AIR_ENEMY)

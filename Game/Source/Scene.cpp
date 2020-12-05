@@ -140,7 +140,7 @@ bool Scene::Update(float dt)
 	//	LOG("Congratulations, YOU WIN!");
 	//	victory = true;
 	//}
-	if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
+	else if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
 		//lose = true;
