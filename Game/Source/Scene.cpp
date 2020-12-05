@@ -57,8 +57,9 @@ bool Scene::Start()
 	}
 	//Positions Initials
 	app->player->positionInitial = { 432,1170 };
-	app->entityManager->AddEntity(GROUND_ENEMY, 1100, 1335);
+	
 	app->entityManager->AddEntity(GROUND_ENEMY, 1200, 1335);
+	app->entityManager->AddEntity(GROUND_ENEMY, 1700, 1335);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
 	//Active calls
@@ -202,8 +203,8 @@ void Scene::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
-		app->player->playerData->position = app->player->positionInitial;
-		app->player->playerData->direction = WALK_R;
+		app->player->playerData.position = app->player->positionInitial;
+		app->player->playerData.direction = WALK_R;
 		Mix_RewindMusic();
 	}
 

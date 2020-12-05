@@ -180,4 +180,5 @@ void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destinati
 			j = i;
 		}
 	}
+	lastPath.Flip();
 }
