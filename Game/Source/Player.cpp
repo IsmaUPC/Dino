@@ -30,8 +30,8 @@ bool Player::Start()
 	//FX
 	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
 
-	respawns = 3;
-	lives = 3;
+	playerData.respawns = 3;
+	playerData.lives = 3;
 
 	inCheckPoint = false;
 	checkpointMove = false;
@@ -115,12 +115,13 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt) 
 {
-	//playerData.velocity =(1000*dt)/3;
-	playerData.velocity =5;
+
+
+	playerData.velocity =(1000*dt)/3;
+	//playerData.velocity =5;
 	gravity = ceil(600 * dt) ;
 
 	if(godMode==false)GravityDown(dt);
-	//playerData.velocity = 5;
 	//LOG("Delta %d  <--------", velX);
 
 	if (godMode == false)playerData.currentAnimation->Update();
@@ -143,7 +144,7 @@ bool Player::Update(float dt)
 		else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(WINDOW_H+(4 * app->map->data.tileHeight))))
 			app->render->camera.y = followPositionPalyerY;
 
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) respawns--;
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) playerData.respawns--;
 
 
 	// Move player inputs control
@@ -156,14 +157,14 @@ bool Player::Update(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
 			if ((lastCP + 1) >= checkPoints.Count()) lastCP = 0;
 			else lastCP++;
-			playerData.position = TransformIPointMapToFPointWorld(checkPoints.At(lastCP)->data);
+			playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
 			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
 			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 			if (lastCP == 0) lastCP = checkPoints.Count() - 1;
 			else lastCP--;
-			playerData.position = TransformIPointMapToFPointWorld(checkPoints.At(lastCP)->data);
+			playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
 			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
 			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
 		}
@@ -299,7 +300,7 @@ void Player::MoveToDirection(int velocity)
 }
 
 
-iPoint Player::TransformIPointMapToFPointWorld(iPoint ipoint)
+iPoint Player::IPointMapToWorld(iPoint ipoint)
 {
 	iPoint CPos = app->map->MapToWorld(ipoint.x, ipoint.y);
 	return CPos;
@@ -323,16 +324,17 @@ void Player::GravityDown(float dt)
 {
 	//velY += gravity/10;
 
-	tmp = playerData.position;
+	tmp = playerData.position;	
+	playerData.position.y += velY;
 
-	iPoint PlayerCurrPos = { playerData.position.x  ,playerData.position.y+ (int)velY};
+	iPoint PlayerCurrPos = { playerData.position.x  ,playerData.position.y};
 	bool fallingCollision = false;
 	bool feedCollision = false;
 	for (int i = 0; i < playerData.numPoints; i++)
 	{
 		if (CollisionJumping({ PlayerCurrPos.x + playerData.pointsCollision[i].x ,PlayerCurrPos.y + playerData.pointsCollision[i].y }))
 			fallingCollision = true;		
-		if (fallingCollision && (i == 0 || i == 4))feedCollision = true;
+		if (fallingCollision && (i == 0 || i == 1))feedCollision = true;
 	}
 	if (fallingCollision)
 	{	
@@ -342,12 +344,12 @@ void Player::GravityDown(float dt)
 			playerData.isJumpedAgain = false;
 			playerData.state = State::IDLE;
 		}
-		//playerData.position = tmp;
+		playerData.position = tmp;
 		velY = 0.0f;
 		fallingCollision = false;
 	}
 	else{
-		playerData.position.y += velY;
+	
 		velY += 0.6f;
 	}
 }
@@ -420,12 +422,17 @@ void Player::Jump(float dt)
 
 bool Player::CheckGameOver(int level)
 {
+	
+	if (playerData.state==DEAD)
+	{
+		return true;
+	}
 	if (level == 1)
 	{
 		if (playerData.position.y > 1720)
 		{
 			//isDead = true;
-			playerData.position = TransformIPointMapToFPointWorld(checkPoints.end->data);
+			playerData.position = IPointMapToWorld(checkPoints.end->data);
 			app->render->camera.x = cameraPosCP.end->data.x;
 			app->render->camera.y = cameraPosCP.end->data.y;
 
@@ -439,16 +446,17 @@ bool Player::CheckGameOver(int level)
 			return true;
 		}
 	}
-	if (lives <= 0)
-	{
-		return true;
-	}
+	
 	return false;
 }
 
 void Player::SetHit()
 {
-	lives--;
+	if (playerData.lives > 0) {
+		playerData.respawns--;
+		playerData.position = IPointMapToWorld(checkPoints.end->data);
+	}
+	else playerData.state = DEAD;
 }
 
 
@@ -459,11 +467,9 @@ void Player::activeCheckpoint(iPoint positionMapPlayer)
 		for (int i = 0; i < checkPoints.Count(); i++)
 		{
 			if (checkPoints.At(i)->data == positionMapPlayer) {
-
 				lastCP = i;
 				if (checkPoints.Count() > 1){
 					inCheckPoint = true;
-
 					if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
 						endUpdate = false;
 						checkpointMove = !checkpointMove;

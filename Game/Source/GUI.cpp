@@ -56,8 +56,8 @@ bool GUI::Start()
 	arrowAnim->PushBack({ 0,0,arrowW,arrowH });
 	buttonEAnim->PushBack({ arrowW,0,arrowW,arrowH });
 
-	lives = app->player->GetLives();
-	respawn = app->player->GetRespawn();
+	lives = &app->player->playerData.lives;
+	respawn = &app->player->playerData.respawns;
 
 
 	return true;
