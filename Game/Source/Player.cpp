@@ -324,7 +324,7 @@ iPoint Player::TransformIPointMapToFPointWorld(iPoint ipoint)
 //	}
 //	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 //}
-//>>>>>>> 660f07a8f0d40f299a25f9b3cb80bf8ddefbbf4e
+
 
 bool Player::PostUpdate() 
 {
@@ -373,26 +373,6 @@ void Player::Fallings(float dt)
 	
 }
 
-bool Player::CollisionPlayer(iPoint Position) 
-{
-	iPoint positionMapPlayer;
-	int y = Position.y ;
-	int x = Position.x;
-	bool xCollision = false;
-	bool yCollision = false;
-
-	for (int i = 0; i < playerData.numPoints; i++)
-	{	
-		// Convert position player WorldToMap 
-		//positionMapPlayer = app->map->WorldToMap(Position.x + playerData.pointsCollision[i][0], y + playerData.pointsCollision[i][1]);
-		//if (CheckCollision(positionMapPlayer) == COLLISION)	yCollision = true;
-		
-		positionMapPlayer = app->map->WorldToMap(x + playerData.pointsCollision[i].x, y + playerData.pointsCollision[i].y);
-		if (CheckCollision(positionMapPlayer)== COLLISION) xCollision=true;
-	}
-
-	return yCollision || xCollision;
-}
 
 
 bool Player::CleanUp() 
@@ -451,19 +431,19 @@ int Player::CheckCollision(iPoint positionMapPlayer)
 		case VICTORY:
 			//victory
 			win = true;
-			return 0;
+			return 	VICTORY;
 			break;
 
 		case COLLISION:
 			//collision
-			return 1;
+			return COLLISION;
 			break;
 
 		case CHECK_POINT:
 			//checkpoint
 			app->SaveGameRequest();
 			activeCheckpoint(positionMapPlayer);
-			return 2;
+			return CHECK_POINT;
 			break;
 
 		default:

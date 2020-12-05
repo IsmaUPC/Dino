@@ -35,6 +35,7 @@ private:
 	Animation* deadAnim = new Animation();
 	int range = 500;
 	// we store the created path here
-	DynArray<iPoint> lastPath;
+	DynArray<iPoint>* lastPath;
+
 };
 #endif // _ENEMY_H_

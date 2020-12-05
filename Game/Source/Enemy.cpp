@@ -55,12 +55,12 @@ bool Enemy::Start()
 	if (entityData->type == GROUND_ENEMY)
 	{
 		entityData->numPoints = 4;
-		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 	if (entityData->type == AIR_ENEMY)
 	{
 		entityData->numPoints = 4;
-		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 
 	return true;
@@ -82,7 +82,7 @@ bool Enemy::Radar(iPoint distance)
 bool Enemy::PreUpdate()
 {
 	//app->pathfinding->ComputePathAStar();
-	iPoint currentPositionPlayer = TransformFPoint(app->player->playerData->position);
+	iPoint currentPositionPlayer = app->player->playerData.position;
 	if (Radar(currentPositionPlayer) && entityData->state != DEADING)
 	{
 		entityData->currentAnimation = walkAnim;
@@ -98,10 +98,10 @@ bool Enemy::PreUpdate()
 		iPoint auxPositionPlayer[6];
 		for (int i = 0; i < 6; i++)
 		{
-			auxPositionPlayer[i] = { 15+currentPositionPlayer.x + app->player->playerData->pointsCollision[i].x,
-				14+currentPositionPlayer.y + app->player->playerData->pointsCollision[i].y };
+			auxPositionPlayer[i] = { 15+currentPositionPlayer.x + app->player->playerData.pointsCollision[i].x,
+				14+currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
 		}
-		if (collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData->numPoints))
+		if (collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
 		{
 			entityData->state = DEADING;
 			entityData->currentAnimation = deadAnim;
