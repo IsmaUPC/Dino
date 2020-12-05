@@ -30,7 +30,8 @@ private:
 	Animation* idleAnim = new Animation();
 	Animation* walkAnim = new Animation();
 	Animation* deadAnim = new Animation();
-	int range = 400;
+
+	int range = 300;
 	bool isDetected = false;
 	//Timer
 	Timer* checkDestination = new Timer();
