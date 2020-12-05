@@ -32,9 +32,9 @@ bool SceneIntro::Start()
 {
 	app->SetLastScene((Module*)this);
 
-	app->audio->PlayMusic("Assets/audio/music/MusicIntro.ogg");
-	bgIntro = app->tex->Load("Assets/textures/TitleScreen.png");
-	animationIntro.texture = app->tex->Load("Assets/textures/DinoSprites.png");
+	app->audio->PlayMusic("Assets/Audio/Music/MusicIntro.ogg");
+	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
+	animationIntro.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
 	animationIntro.position = { 400 , 345 };
 	idleAnim.loop = true;
 	idleAnim.speed = 0.005f;

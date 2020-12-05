@@ -89,6 +89,9 @@
     <ClCompile Include="Source\Pathfinding.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUI.cpp">
+      <Filter>Modules\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="Source\Pathfinding.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI.h">
+      <Filter>Modules\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

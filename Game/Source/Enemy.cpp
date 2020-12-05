@@ -9,6 +9,7 @@ Enemy::Enemy() : Entity()
 {
 	name.Create("Enemy");
 }
+
 Enemy::Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
 	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
 {
@@ -23,7 +24,7 @@ bool Enemy::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
-	entityData->texture = app->tex->Load("Assets/textures/Enemy_Walk.png");
+	entityData->texture = app->tex->Load("Assets/Textures/enemy_walk.png");
 
 	entityData->velocity = 1;
 
@@ -55,12 +56,12 @@ bool Enemy::Start()
 	if (entityData->type == GROUND_ENEMY)
 	{
 		entityData->numPoints = 4;
-		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 	if (entityData->type == AIR_ENEMY)
 	{
 		entityData->numPoints = 4;
-		entityData->pointsCollision = new iPoint[]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	}
 
 	return true;

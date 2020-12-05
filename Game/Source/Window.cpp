@@ -43,7 +43,6 @@ bool Window::Awake(pugi::xml_node& config)
 		width = config.child("resolution").attribute("width").as_int(640);
 		height = config.child("resolution").attribute("height").as_int(480);
 		scale = config.child("resolution").attribute("scale").as_int(1);
-		icon = IMG_Load("Assets/textures/logo.png");
 
 		if(fullscreen == true) flags |= SDL_WINDOW_FULLSCREEN;
 		if(borderless == true) flags |= SDL_WINDOW_BORDERLESS;
@@ -51,7 +50,7 @@ bool Window::Awake(pugi::xml_node& config)
 		if(fullscreen_window == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 		window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-		//SDL_SetWindowIcon(window, icon);
+		
 
 		if(window == NULL)
 		{

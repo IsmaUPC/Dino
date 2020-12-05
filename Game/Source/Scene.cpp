@@ -46,7 +46,7 @@ bool Scene::Start()
 	app->SetLastScene((Module*)this);
 
 	//app->map->Load("Mapa_PixelArt.tmx");
-	if (app->map->Load("Mapa_PixelArt_CP.tmx") == true)
+	if (app->map->Load("mapa_pixelart_cp.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -59,6 +59,7 @@ bool Scene::Start()
 	app->player->positionInitial = { 432,1170 };
 	app->entityManager->AddEntity(GROUND_ENEMY, 1100, 1335);
 	app->entityManager->AddEntity(GROUND_ENEMY, 1200, 1335);
+	app->entityManager->AddEntity(HUD, 0, 0);
 
 	//Active calls
 	app->player->Init();
@@ -69,7 +70,7 @@ bool Scene::Start()
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
-	animationFather.texture = app->tex->Load("Assets/Textures/Dino_Orange.png");
+	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 	
 	animationFather.position = { 2352, 495 };
 	idleAnim.loop = true;

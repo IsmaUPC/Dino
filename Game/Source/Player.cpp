@@ -22,11 +22,11 @@ bool Player::Start()
 {
 	iPoint pathInit =  app->map->WorldToMap(positionInitial.x ,positionInitial.y) ;
 	app->map->ResetPath(pathInit);
-	playerData->texture = app->tex->Load("Assets/textures/Dino_Green.png");
+	playerData->texture = app->tex->Load("Assets/Textures/dino_green.png");
 	playerData->position = positionInitial;
 
 	//FX
-	bonfireFx = app->audio->LoadFx("Assets/audio/fx/bonfire.wav");
+	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
 
 	checkpointMove = false;
 	endUpdate = true;
@@ -416,7 +416,6 @@ int Player::CheckCollision(iPoint positionMapPlayer)
 
 		case CHECK_POINT:
 			//checkpoint
-			app->SaveGameRequest();
 			activeCheckpoint(positionMapPlayer);
 			return 2;
 			break;
@@ -494,7 +493,7 @@ void Player::activeCheckpoint(iPoint positionMapPlayer)
 				return;
 			}
 		}
-		app->SaveGameRequest();
+		//app->SaveGameRequest();
 		checkPoints.Add(positionMapPlayer);
 		iPoint cam(app->render->camera.x, app->render->camera.y);
 		cameraPosCP.Add(cam);

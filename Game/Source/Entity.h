@@ -15,13 +15,13 @@
 #include "Log.h"
 
 
-
 enum TypeEntity {
 
 	UNKNOWN,
 	PLAYER,
 	GROUND_ENEMY,
 	AIR_ENEMY,
+	HUD,
 };
 
 
