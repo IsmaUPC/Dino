@@ -62,6 +62,7 @@ bool Scene::Start()
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
 	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
+	app->entityManager->AddEntity(GROUND_ENEMY, 17, 14);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
 	//Active calls
@@ -142,7 +143,8 @@ bool Scene::Update(float dt)
 	else if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
-		//lose = true;
+		app->player->playerData.respawns--;
+		lose = true;
 	}
 	return true;
 }

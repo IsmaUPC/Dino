@@ -41,7 +41,7 @@ bool GUI::Start()
 	arrowAnim->PushBack({ 0,0,arrowW,arrowH });
 	buttonEAnim->PushBack({ arrowW,0,arrowW,arrowH });
 
-	respawn = app->player->GetRespawn();
+	respawn = &app->player->playerData.respawns;
 
 	return true;
 }

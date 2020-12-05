@@ -12,7 +12,9 @@ struct PlayerData
 	float velocity ;
 	bool isJumped;
 	bool isJumpedAgain;
-	
+	uint lives = 0;
+	uint respawns = 0;
+
 	SDL_Texture* texture;
 	static const int numPoints = 6;
 
@@ -59,11 +61,9 @@ public:
 	void activeCheckpoint(iPoint positionMapPlayer);
 
 	//iPoint TransformFPoint(fPoint fpoint);
-	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
+	iPoint IPointMapToWorld(iPoint ipoint);
 
 
-	uint* GetLives() { return &lives; };
-	uint* GetRespawn() { return &respawns; };
 	bool GetInCheckPoint() { return inCheckPoint; };
 	bool GetCheckPointMove() { return checkpointMove; };
 
@@ -91,8 +91,7 @@ private:
 	float velY = 0;
 
 	float velX = 0;
-	uint lives = 0;
-	uint respawns = 0;
+
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
