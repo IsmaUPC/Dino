@@ -50,6 +50,7 @@ public:
 	
 	List<EntitySpawnPoint*> spawnQueue;
 	List<Entity*> entities;
+	iPoint mapDimensions = { 0,0 };
 
 	bool isAlive = false;
 };

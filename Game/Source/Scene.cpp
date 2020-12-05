@@ -55,10 +55,13 @@ bool Scene::Start()
 
 		RELEASE_ARRAY(data);
 	}
+	app->map->active = true;
 	//Positions Initials
 	app->player->positionInitial = { 432,1170 };
-	app->entityManager->AddEntity(GROUND_ENEMY, 1200, 1335);
-	app->entityManager->AddEntity(GROUND_ENEMY, 1700, 1335);
+	app->entityManager->AddEntity(GROUND_ENEMY, 23, 27);
+	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
+	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
+	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
 
@@ -66,7 +69,7 @@ bool Scene::Start()
 	app->player->Init();
 	app->player->Start();
 
-	app->map->active = true;
+	
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");

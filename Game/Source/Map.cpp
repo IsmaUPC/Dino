@@ -1,4 +1,3 @@
-
 #include "App.h"
 #include "Render.h"
 #include "Textures.h"
@@ -389,7 +388,10 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	
 	return rect;
 }
-
+iPoint Map::GetDimensionsMap()
+{
+	return { data.tileWidth,data.tileHeight };
+}
 // Called before quitting
 bool Map::CleanUp()
 {
