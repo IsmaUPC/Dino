@@ -42,9 +42,9 @@ enum MoveDirection {
 };
 enum TypeCollision {
 
-	VICTORY,
-	COLLISION,
-	CHECK_POINT,
+	VICTORY=0,
+	COLLISION=1,
+	CHECK_POINT=2,
 };
 
 struct EntityData
