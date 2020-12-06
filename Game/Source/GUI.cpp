@@ -131,13 +131,11 @@ bool GUI::PostUpdate()
 	//FireBall
 	if (*fireBallState == 0)
 	{
-		LOG("Puedes disparar");
 		rectGUI = fireBallOnAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y,&rectGUI);
 	}
 	else
 	{
-		LOG("No puedes disparar");
 		rectGUI = fireBallOffAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y, &rectGUI);
 	}
@@ -153,7 +151,9 @@ bool GUI::CleanUp()
 	app->tex->UnLoad(headTex);
 	app->tex->UnLoad(arrowTex);
 	app->tex->UnLoad(imgCoin);
-
+	app->tex->UnLoad(fireBallTex);
+	app->tex->UnLoad(imgCoin);
+	app->fonts->UnLoad(hudFont);
 	active = false;
 
 	pendingToDelete = true;

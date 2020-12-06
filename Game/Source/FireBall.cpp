@@ -1,5 +1,6 @@
 #include "FireBall.h"
 #include "Player.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -44,8 +45,9 @@ bool FireBall::Start()
 	}
 	explosionAnim->PushBack({ 0, 0, 0, 0 });
 
-
 	entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { texW , 0 }, { texW,-texH }, { 0 ,-texH } };
+
+	hitFx = app->audio->LoadFx("Assets/Audio/Fx/hit.wav");
 
 	cooldown = 2;
 	startexplosion = false;
@@ -71,6 +73,7 @@ bool FireBall::Update(float dt)
 	if (lastState == SHOOT && stateShoot == WAIT){
 		explosionAnim->Reset();
 		explosionPos = entityData->position;
+		app->audio->PlayFx(hitFx);
 		BackToPos0();
 	}
 
