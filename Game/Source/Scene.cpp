@@ -62,7 +62,7 @@ bool Scene::Start()
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
 	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
-	app->entityManager->AddEntity(AIR_ENEMY, 38, 24);
+	app->entityManager->AddEntity(AIR_ENEMY, 42, 15);
 	
 
 	//Active calls

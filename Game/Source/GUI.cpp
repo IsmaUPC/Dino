@@ -131,13 +131,13 @@ bool GUI::PostUpdate()
 	//FireBall
 	if (*fireBallState == 0)
 	{
-		LOG("Puedes disparar");
+		//LOG("Puedes disparar");
 		rectGUI = fireBallOnAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y,&rectGUI);
 	}
 	else
 	{
-		LOG("No puedes disparar");
+		//LOG("No puedes disparar");
 		rectGUI = fireBallOffAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y, &rectGUI);
 	}

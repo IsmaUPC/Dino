@@ -286,7 +286,7 @@ bool Enemy::Update(float dt)
 		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
 
 		//Cerate Path
-		CreatePathEnemy(mapPositionEnemy, mapPositionPalyer);
+		if(app->player->playerData.state!=HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionPalyer);
 		int i = GetCurrentPositionInPath(mapPositionEnemy);
 
 		//Move Enemy
@@ -311,7 +311,7 @@ bool Enemy::Update(float dt)
 			entityData->currentAnimation = walkAnim;
 			//if (returning == false)
 			//{
-			CreatePathEnemy(mapPositionEnemy, mapPositionInitial);
+			if (app->player->playerData.state != HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionInitial);
 			//returning = true;
 		//}
 			int i = GetCurrentPositionInPath(mapPositionEnemy);
