@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "EntityManager.h"
 #include "Entity.h"
 #include "Audio.h"
 
@@ -75,6 +76,9 @@ bool Player::Start()
 
 	playerData.currentAnimation = idleAnim;
 	velX = playerData.velocity;
+
+	app->entityManager->AddEntity(HUD, 0, 0);
+
 
 	return true;
 }

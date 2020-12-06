@@ -31,6 +31,7 @@ class EntityManager;
 class Entity;
 class ModuleFadeToBlack;
 class PathFinding;
+class ModuleFonts;
 
 class App
 {
@@ -120,6 +121,7 @@ public:
 	Entity* entity;
 	ModuleFadeToBlack* fade;
 	PathFinding* pathfinding;
+	ModuleFonts* fonts;
 
 private:
 

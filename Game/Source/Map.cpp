@@ -303,7 +303,7 @@ void Map::Draw()
 		else
 			rectCP = checKpointsMap.checkPointOffAnim->GetCurrentFrame();
 		
-		app->render->DrawTexture(checKpointsMap.texture, pos.x, pos.y, &rectCP);
+		app->render->DrawTexture(checKpointsMap.texture, pos.x, pos.y-2, &rectCP);
 	}
 
 
