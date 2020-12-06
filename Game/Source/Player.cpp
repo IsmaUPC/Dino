@@ -109,75 +109,82 @@ bool Player::SaveState(pugi::xml_node& player) const
 
 bool Player::PreUpdate() 
 {
-
+	
 	return true;
 }
 
 bool Player::Update(float dt) 
 {
-
-
-	playerData.velocity =(1000*dt)/3;
-	//playerData.velocity =5;
-	gravity = ceil(600 * dt) ;
+	SpeedAnimationCheck(dt);
+	playerData.velocity = (1000 * dt) / 3;
+	gravity = ceil(600 * dt);
 
 	if(godMode==false)GravityDown(dt);
-	//LOG("Delta %d  <--------", velX);
 
 	if (godMode == false)playerData.currentAnimation->Update();
 	else playerData.currentAnimation = idleAnim;
 
+	CameraPlayer();
+	// Move player inputs control
+	if (!checkpointMove)PlayerControls(dt);
+	//Move Between CheckPoints
+	else MoveBetweenCheckPoints();
+
+	return true;
+}
+
+void Player::SpeedAnimationCheck(float dt)
+{
+	if (CheckChangeFPS(app->GetFramerate()))
+	{
+		idleAnim->speed = (dt * 100) * 0.025f;
+		walkAnim->speed = (dt * 100) * 0.04f;
+		atakAnim->speed = (dt * 100) * 0.08f;
+		damageAnim->speed = (dt * 100) * 0.08f;
+		runAnim->speed = (dt * 100) * 0.08f;
+		jumpAnim->speed = (dt * 100) * 0.08f;
+		
+	}
+}
+
+void Player::MoveBetweenCheckPoints()
+{
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	{
+		if ((lastCP + 1) >= checkPoints.Count()) lastCP = 0;
+		else lastCP++;
+		playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
+		app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
+		app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	{
+		if (lastCP == 0) lastCP = checkPoints.Count() - 1;
+		else lastCP--;
+		playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
+		app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
+		app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
+	}
+}
+
+void Player::CameraPlayer()
+{
 	//Camera follow the player
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
-	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1)+200;
+	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 200;
 
 
 	// Camera delimitation x
-	if (app->render->camera.x <= -1 && app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth)- WINDOW_W))
+	if (app->render->camera.x <= -1 && app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
 	else if (followPositionPalyerX<-1 && followPositionPalyerX>-((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
 
 	// Camera delimitation x
-	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H+(4* app->map->data.tileHeight))))
-			app->render->camera.y = followPositionPalyerY;
-	else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight)-(WINDOW_H+(4 * app->map->data.tileHeight))))
-			app->render->camera.y = followPositionPalyerY;
-
-
-
-	// Move player inputs control
-	if (!checkpointMove)
-	{
-		PlayerControls(dt);
-	}
-	else // Move Between CheckPoints
-	{
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) 
-		{
-			if ((lastCP + 1) >= checkPoints.Count()) lastCP = 0;
-			else lastCP++;
-			playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
-			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
-			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
-		}
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) 
-		{
-			if (lastCP == 0) lastCP = checkPoints.Count() - 1;
-			else lastCP--;
-			playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
-			app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
-			app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		app->map->PropagateDijkstra();
-		//app->map->PropagateAStar(1);
-	}
-
-	return true;
+	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
+		app->render->camera.y = followPositionPalyerY;
+	else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
+		app->render->camera.y = followPositionPalyerY;
 }
 
 
@@ -350,8 +357,8 @@ void Player::GravityDown(float dt)
 		fallingCollision = false;
 	}
 	else{
-	
-		velY += 0.6f;
+		if(app->GetFramerate()==60)velY += 0.6f;
+		else if(app->GetFramerate()==30) velY += 2.2f;
 	}
 }
 
@@ -392,9 +399,6 @@ bool Player::CollisionJumping(iPoint nextPosition)
 
 	positionMapPlayer = app->map->WorldToMap(nextPosition.x, nextPosition.y);
 	if (CheckCollision(positionMapPlayer)== COLLISION) return true;
-	//positionMapPlayer = app->map->WorldToMap((int)nextPosition.x+30, y);
-	//if (CheckCollision(positionMapPlayer)== COLLISION) return true;
-
 	return false;
 }
 
@@ -404,15 +408,17 @@ void Player::Jump(float dt)
 	if (playerData.isJumped && !playerData.isJumpedAgain)
 	{
 		// Generate second impulse
-		//velY = (-gravity*1.5) / 1.25f;
-		velY = -9.75f;
+		if (app->GetFramerate() == 60)velY = -9.75f;
+		else if (app->GetFramerate() == 30) velY = -19.50;
+		
 		playerData.isJumpedAgain = true;
 	}
 	if (!playerData.isJumped)
 	{
 		// Generate first impulse
-		//velY = -gravity*1.5;
-		velY = -10.5f;
+		if (app->GetFramerate() == 60)	velY = -10.5f;
+		else if (app->GetFramerate() == 30) velY = -21;
+	
 		playerData.isJumped = true;
 	}
 
