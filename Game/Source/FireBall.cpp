@@ -51,35 +51,6 @@ bool FireBall::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
 		Shoot();
 	}
-	LOG("%d", stateShoot);
-	/*switch (stateShoot)
-	{
-	case CAN_SHOOT:
-		return true;
-		break;
-	case SHOOT:
-		fireBallAnim->Update();
-		if (direc == 0)
-			entityData->position.x += entityData->velocity;
-		else
-			entityData->position.x -= entityData->velocity;
-
-		actualCooldown--;
-		if (actualCooldown <= 0) {
-			BackToPos0();
-		}
-		break;
-	case WAIT:
-		actualCooldown--;
-		if (actualCooldown <= 0) {
-			BackToPos0();
-			actualCooldown = cooldown;
-			stateShoot = CAN_SHOOT;
-		}
-		break;
-	default:
-		break;
-	}*/
 	switch (stateShoot)
 	{
 	case CAN_SHOOT:
@@ -107,7 +78,6 @@ bool FireBall::Update(float dt)
 	default:
 		break;
 	}
-	LOG("CoolDown: %.2f", frameTime.ReadSec());
 
 	return true;
 }
@@ -134,6 +104,7 @@ bool FireBall::CleanUp()
 	app->tex->UnLoad(entityData->texture);
 
 	active = false;
+	pendingToDelete = true;
 
 	return true;
 }

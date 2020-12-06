@@ -18,6 +18,7 @@
 #include "EntityManager.h"
 #include "ModuleFadeToBlack.h"
 #include "Pathfinding.h"
+#include "ModuleFonts.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	sceneLevel2 = new SceneLevel2();
 	fade = new ModuleFadeToBlack(); 
 	pathfinding = new PathFinding();
+	fonts = new ModuleFonts();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -66,6 +68,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneWin);
 	AddModule(sceneLose);
 	AddModule(sceneLevel2);
+	AddModule(fonts);
 	AddModule(fade);
 	AddModule(pathfinding);
 

@@ -46,6 +46,7 @@ private:
 	Module* moduleToDisable = nullptr;
 
 	Module* lastLevel = nullptr;
+
 };
 
 #endif // !__MODULEFADETOBLACK_H__
