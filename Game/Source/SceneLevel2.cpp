@@ -30,13 +30,14 @@ bool SceneLevel2::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	numThisScene = 2;
 	return ret;
 }
 
 // Called before the first frame
 bool SceneLevel2::Start()
 {
+	
 	// Load map
 	app->SetLastScene((Module*)this);
 	app->player->win = false;

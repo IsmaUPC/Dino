@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Audio.h"
+#include "ModuleFadeToBlack.h"
 
 Player::Player() : Entity()
 {
@@ -48,8 +49,8 @@ bool Player::Start()
 	idleAnim->speed = 0.05f;
 	walkAnim->loop = true;
 	walkAnim->speed = 0.08f;
-	damageAnim->loop = true;
-	damageAnim->speed = 0.05f;
+	damageAnim->loop = false;
+	damageAnim->speed = 0.005f;
 	runAnim->loop = true;
 	runAnim->speed = 0.10f;
 
@@ -71,14 +72,19 @@ bool Player::Start()
 	for (int i = 0; i < 4; i++)
 		damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
 
+	for (int j = 0; j < 3; j++)
+		for (int i = 2; i < 4; i++)
+			damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
+
 	for (int i = 0; i < 4; i++)
 		runAnim->PushBack({ 1319 + (78 * i),0, 78, 78 });
-
+	   
 	playerData.currentAnimation = idleAnim;
 	velX = playerData.velocity;
 
 	app->entityManager->AddEntity(HUD, 0, 0);
 
+	levelScene = app->fade->GetLastLevel()->GetNumThisScene();
 
 	return true;
 }
@@ -104,16 +110,16 @@ bool Player::SaveState(pugi::xml_node& player) const
 {
 	pugi::xml_node positionPlayer = player.child("position");
 
-
 	positionPlayer.attribute("x").set_value(playerData.position.x) ;
 	positionPlayer.attribute("y").set_value( playerData.position.y) ;
-
+	player.child("level").attribute("lvl").set_value(levelScene);
 	return true;
 }
 
 bool Player::PreUpdate() 
 {
-	
+	PlayerMoveAnimation();
+
 	return true;
 }
 
@@ -123,33 +129,69 @@ bool Player::Update(float dt)
 	playerData.velocity = (1000 * dt) / 3;
 	gravity = ceil(600 * dt);
 
+	MoveHit();
+	GravityDown(dt);
 
+	
+	CameraPlayer();
+
+	if (playerData.state!=HIT)
+	{
+		// Move player inputs control
+		if (!checkpointMove)PlayerControls(dt);
+		//Move Between CheckPoints
+		else MoveBetweenCheckPoints();
+	}
+	return true;
+}
+
+void Player::MoveHit()
+{
+	if (app->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)SetHit();
+
+	if (playerData.currentAnimation == damageAnim) {
+		if (!playerData.currentAnimation->HasFinished())
+		{
+			tmp = playerData.position;
+			playerData.position.x -= 2 * playerData.direction;
+			if (!jumpHit)
+			{
+				jumpHit = true;
+				if (app->GetFramerate() == 60)	velY = -10.5f;
+				else if (app->GetFramerate() == 30) velY = -21;
+			}
+			
+			if (CollisionPlayer(playerData.position)) playerData.position = tmp;
+			//(hitDirection == WALK_L) ? MovePlayer(WALK_R,dt): MovePlayer(WALK_L,dt);
+		}
+		else
+		{
+			playerData.currentAnimation->Reset();
+			playerData.state = DEAD;
+		}
+	}
+}
+
+void Player::GravityDown(float dt)
+{
 	if (godMode == false)
 	{
 		playerData.currentAnimation->Update();
-		GravityDown(dt);
+		GravityDownCollision(dt);
 	}
 	else playerData.currentAnimation = idleAnim;
-
-	CameraPlayer();
-	// Move player inputs control
-	if (!checkpointMove)PlayerControls(dt);
-	//Move Between CheckPoints
-	else MoveBetweenCheckPoints();
-
-	return true;
 }
 
 void Player::SpeedAnimationCheck(float dt)
 {
 	if (CheckChangeFPS(app->GetFramerate()))
 	{
-		idleAnim->speed = (dt * 100) * 0.0025f;
-		walkAnim->speed = (dt * 100) * 0.004f;
-		atakAnim->speed = (dt * 100) * 0.008f;
-		damageAnim->speed = (dt * 100) * 0.008f;
-		runAnim->speed = (dt * 100) * 0.008f;
-		jumpAnim->speed = (dt * 100) * 0.008f;
+		idleAnim->speed = (dt * 100) * 0.5f;
+		walkAnim->speed = (dt * 100) * 0.01f;
+		jumpAnim->speed = (dt * 100) * 0.022f;
+		atakAnim->speed = (dt * 100) * 0.08f;
+		damageAnim->speed = (dt * 100) * 0.011f;
+		runAnim->speed = (dt * 100) * 0.08f;
 		
 	}
 }
@@ -215,6 +257,10 @@ void Player::PlayerMoveAnimation()
 	case RUN:
 		playerData.currentAnimation = runAnim;
 		break;
+	
+	case HIT:
+		playerData.currentAnimation = damageAnim;
+		break;
 
 	default:
 		break;
@@ -242,13 +288,12 @@ void Player::PlayerControls(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)MovePlayer(MoveDirection::WALK_L, dt);
 
 	}	// Any key is pressed or A and D pressed in same time, set player in IDLE state
-	else playerData.state = State::IDLE;
+	else if(playerData.state != JUMP) playerData.state = State::IDLE;
+
+
 
 	// Player Jump
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
-	{
-		Jump(dt);
-	}
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) Jump();
 
 	if (godMode == true)
 	{
@@ -257,7 +302,6 @@ void Player::PlayerControls(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)playerData.position.y += velX;
 	}
 
-	PlayerMoveAnimation();
 }
 
 
@@ -268,7 +312,6 @@ void Player::MovePlayer(MoveDirection playerDirection, float dt)
 
 	switch (playerData.state)
 	{
-		
 	case IDLE:
 		// Future conditions in state IDLE...
 		break;	
@@ -294,6 +337,7 @@ void Player::MovePlayer(MoveDirection playerDirection, float dt)
 	default:
 		break;
 	}
+
 	if (CollisionPlayer(playerData.position))playerData.position = tmp;
 	
 }
@@ -325,6 +369,7 @@ iPoint Player::IPointMapToWorld(iPoint ipoint)
 
 bool Player::PostUpdate() 
 {
+
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
 	// Draw player in correct direction
@@ -338,7 +383,7 @@ bool Player::PostUpdate()
 }
 
 // Implements to gravity fall down
-void Player::GravityDown(float dt)
+void Player::GravityDownCollision(float dt)
 {
 	//velY += gravity/10;
 
@@ -360,9 +405,11 @@ void Player::GravityDown(float dt)
 	{	
 		if (feedCollision)
 		{
+			jumpHit = false;
 			playerData.isJumped = false;
 			playerData.isJumpedAgain = false;
-			playerData.state = lastState;
+			if (playerData.state != JUMP)playerData.state = lastState;
+			else playerData.state = IDLE;
 		}
 		playerData.position = tmp;
 		velY = 0.0f;
@@ -412,7 +459,7 @@ bool Player::CollisionJumping(iPoint nextPosition)
 	return false;
 }
 
-void Player::Jump(float dt)
+void Player::Jump()
 {
 	lastState = playerData.state;
 	if (playerData.isJumped && !playerData.isJumpedAgain)
@@ -462,11 +509,13 @@ bool Player::CheckGameOver(int level)
 
 void Player::SetHit()
 {
-	if (playerData.lives > 0) {
+	if (playerData.respawns > 0) {
 		playerData.respawns--;
-		playerData.position = IPointMapToWorld(checkPoints.end->data);
+		playerData.state = HIT;
+		hitDirection = playerData.direction;
+		//playerData.position = IPointMapToWorld(checkPoints.end->data);
 	}
-	else playerData.state = DEAD;
+	
 }
 
 void Player::activeCheckpoint(iPoint positionMapPlayer)

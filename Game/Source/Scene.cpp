@@ -33,13 +33,14 @@ bool Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	numThisScene = 1;
 	return ret;
 }
 
 // Called before the first frame
 bool Scene::Start()
 {
+	
 	victory=false;
 	app->player->win = false;
 	// Load map
@@ -233,3 +234,4 @@ void Scene::DebugKeys()
 		else app->player->godMode = false;
 	}
 }
+

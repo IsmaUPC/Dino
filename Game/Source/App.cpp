@@ -186,7 +186,7 @@ bool App::Update()
 	if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
 	{
 		cappedMs = 1000 / 60;
-		framerate = 30;
+		framerate = 60;
 
 	}
 

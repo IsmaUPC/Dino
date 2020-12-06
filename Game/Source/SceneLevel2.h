@@ -45,8 +45,15 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	int GetNumThisScene()
+	{
+		return 0;
+	};
+
 
 private:
+
+	int numThisScene;
 
 	void Parallax();
 	void DebugKeys();

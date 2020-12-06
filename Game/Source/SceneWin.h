@@ -39,6 +39,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	int GetNumThisScene()
+	{
+		return 0;
+	};
+
+
 private:
 	AnimationWin animationSon;
 	Animation idleAnimSon;
