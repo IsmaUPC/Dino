@@ -42,7 +42,9 @@ bool SceneLevel2::Start()
 	
 	// Load map
 	app->SetLastScene((Module*)this);
-	if (app->map->Load("dino_map_2.tmx") == true)
+	victory = false;
+	app->player->win = false;
+	if (app->map->Load("map_2.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -51,7 +53,6 @@ bool SceneLevel2::Start()
 
 		RELEASE_ARRAY(data);
 	}
-	app->player->win = false;
 	app->map->active = true;
 	//Positions initials
 	app->player->positionInitial = {576,1534};
@@ -77,14 +78,12 @@ bool SceneLevel2::Start()
 	app->entityManager->AddEntity(AIR_ENEMY, 189, 11);
 	app->entityManager->AddEntity(AIR_ENEMY, 201, 9);
 
-	app->entityManager->AddEntity(FIREBALL, 0, 0);
-
 	app->player->Init();
 	app->player->Start();
 	
 
 	// Load music
-	app->audio->PlayMusic("Assets/Audio/Music/LOKI_8bits.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/loki_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky_3.png");
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 
@@ -140,7 +139,7 @@ bool SceneLevel2::Update(float dt)
 	
 	if (app->player->win)victory = true;
 
-	if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
+	else if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
 		lose = true;

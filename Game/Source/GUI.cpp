@@ -32,7 +32,6 @@ bool GUI::Awake(pugi::xml_node& config)
 
 bool GUI::Start()
 {
-
 	int imgH = 0;
 	int imgW = 0;
 
@@ -70,11 +69,19 @@ bool GUI::Start()
 
 	fireBallState = app->player->playerData.stateShoot;
 
+	activeFPS = false;
+
 	return true;
 }
 
 bool GUI::PreUpdate()
 {
+
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		activeFPS = !activeFPS;
+
+	}
 	return true;
 }
 
@@ -131,15 +138,26 @@ bool GUI::PostUpdate()
 	//FireBall
 	if (*fireBallState == 0)
 	{
-		LOG("Puedes disparar");
 		rectGUI = fireBallOnAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y,&rectGUI);
 	}
 	else
 	{
-		LOG("No puedes disparar");
 		rectGUI = fireBallOffAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y, &rectGUI);
+	}
+
+	if (activeFPS){
+		point0.x = -app->render->camera.x;
+		point0.y = -app->render->camera.y;
+		
+		point0.x = point0.x + (WINDOW_W-150);
+		point0.y = point0.y + 10;
+
+		sprintf_s(coinText, 10, "%3d", app->GetFramesOnLastSecond());
+
+		app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
+
 	}
 
 	return true;
@@ -153,7 +171,9 @@ bool GUI::CleanUp()
 	app->tex->UnLoad(headTex);
 	app->tex->UnLoad(arrowTex);
 	app->tex->UnLoad(imgCoin);
-
+	app->tex->UnLoad(fireBallTex);
+	app->tex->UnLoad(imgCoin);
+	app->fonts->UnLoad(hudFont);
 	active = false;
 
 	pendingToDelete = true;

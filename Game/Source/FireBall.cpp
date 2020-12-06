@@ -1,5 +1,6 @@
 #include "FireBall.h"
 #include "Player.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -20,6 +21,8 @@ bool FireBall::Awake(pugi::xml_node&)
 
 bool FireBall::Start()
 {
+	active = true;
+
 	entityData->velocity = 12;
 	startPos = { -100,-100 };
 	entityData->position = startPos;
@@ -44,8 +47,9 @@ bool FireBall::Start()
 	}
 	explosionAnim->PushBack({ 0, 0, 0, 0 });
 
-
 	entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { texW , 0 }, { texW,-texH }, { 0 ,-texH } };
+
+	hitFx = app->audio->LoadFx("Assets/Audio/Fx/hit.wav");
 
 	cooldown = 2;
 	startexplosion = false;
@@ -71,6 +75,7 @@ bool FireBall::Update(float dt)
 	if (lastState == SHOOT && stateShoot == WAIT){
 		explosionAnim->Reset();
 		explosionPos = entityData->position;
+		app->audio->PlayFx(hitFx);
 		BackToPos0();
 	}
 
@@ -106,7 +111,9 @@ bool FireBall::Update(float dt)
 
 	if (startexplosion)
 		explosionAnim->Update();
-	
+
+	if (CheckCollision(app->map->WorldToMap(entityData->position.x, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
+	if (CheckCollision(app->map->WorldToMap(entityData->position.x+13, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
 
 	return true;
 }

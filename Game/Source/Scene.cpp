@@ -6,9 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "EntityManager.h"
-#include "Coins.h"
 #include "SceneIntro.h"
 #include "Map.h"
 #include "ModuleFadeToBlack.h"
@@ -40,15 +38,16 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+
 	app->SaveConfigRequested();
+	app->SetLastScene((Module*)this);
 
 	victory=false;
 	app->player->win = false;
 	// Load map
-	app->SetLastScene((Module*)this);
 
 	//app->map->Load("Mapa_PixelArt.tmx");
-	if (app->map->Load("mapa_pixelart_cp.tmx") == true)
+	if (app->map->Load("map_1.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -63,7 +62,7 @@ bool Scene::Start()
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
 	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
-	app->entityManager->AddEntity(AIR_ENEMY, 38, 24);
+	//app->entityManager->AddEntity(AIR_ENEMY, 51, 16);
 	
 
 	//Active calls
@@ -71,7 +70,7 @@ bool Scene::Start()
 	app->player->Start();
 
 	// Load music
-	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/hades_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 	

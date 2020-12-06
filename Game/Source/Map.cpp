@@ -2,6 +2,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "SceneLevel2.h"
 #include "Map.h"
 #include "EntityManager.h"
 
@@ -257,6 +258,7 @@ bool Map::Awake(pugi::xml_node& config)
     folder.Create(config.child("folder").child_value());
 
 	drawColl = app->scene->GetDebugCollaider();
+	drawColl2 = app->sceneLevel2->GetDebugCollaider();
 
 
 
@@ -282,6 +284,8 @@ void Map::Draw()
 					for (int i = 0; i < data.tilesets.Count(); i++)
 					{
 						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0 || *drawColl)
+							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
+						else if (data.layers.At(i)->data->properties.GetProperty("Nodraw", 0) == 0 || *drawColl2)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 					}
 				}
@@ -309,6 +313,7 @@ void Map::Draw()
 
 
 	if(*drawColl)app->map->DrawPath();
+	if(*drawColl2)app->map->DrawPath();
 }
 
 // Translates x,y coordinates from map positions to world positions
@@ -549,28 +554,28 @@ bool Map::LoadMap()
 }
 
 // Load Tileset attributes
-bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
 	
-	set->name = tileset_node.attribute("name").as_string("");
-	set->firstgid = tileset_node.attribute("firstgid").as_int(0);
-	set->tileWidth = tileset_node.attribute("tilewidth").as_int(0);
-	set->tileHeight = tileset_node.attribute("tileheight").as_int(0);
-	set->spacing = tileset_node.attribute("spacing").as_int(0);
-	set->margin = tileset_node.attribute("margin").as_int(0);
-	set->numTilesWidth = tileset_node.attribute("columns").as_int(1);
-	set->tilecount= tileset_node.attribute("tilecount").as_int(0);
+	set->name = tilesetNode.attribute("name").as_string("");
+	set->firstgid = tilesetNode.attribute("firstgid").as_int(0);
+	set->tileWidth = tilesetNode.attribute("tilewidth").as_int(0);
+	set->tileHeight = tilesetNode.attribute("tileheight").as_int(0);
+	set->spacing = tilesetNode.attribute("spacing").as_int(0);
+	set->margin = tilesetNode.attribute("margin").as_int(0);
+	set->numTilesWidth = tilesetNode.attribute("columns").as_int(1);
+	set->tilecount= tilesetNode.attribute("tilecount").as_int(0);
 	set->numTilesHeight = set->tilecount / set->numTilesWidth;
 
 	return ret;
 }
 
 // Load Tileset image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	pugi::xml_node image = tilesetNode.child("image");
 
 	if (image == NULL)
 	{

@@ -33,7 +33,7 @@ bool SceneWin::Start()
 	app->SetLastScene((Module*)this);
 	transition = false;
 
-	app->audio->PlayMusic("Assets/Audio/Music/MusicVictory_1.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/music_victory.ogg");
 	img = app->tex->Load("Assets/Textures/scene_win.png");
 	animationSon.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
 	animationSon.position = { 340 , 372 };

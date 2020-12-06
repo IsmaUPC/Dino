@@ -55,6 +55,8 @@ private:
 
 	bool startexplosion;
 
+	uint hitFx;
+
 	Timer frameTime;
 };
 

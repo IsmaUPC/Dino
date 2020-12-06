@@ -33,7 +33,7 @@ bool SceneLose::Start()
 	app->SetLastScene((Module*)this);
 	transition = false;
 
-	app->audio->PlayMusic("Assets/Audio/Music/MusicLost.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/music_lost.ogg");
 	img = app->tex->Load("Assets/Textures/end_screen.png");
 	animationEnd.texture = app->tex->Load("Assets/Textures/dino_sprites_dead.png");
 	animationEnd.position = { 480 , 345 };
