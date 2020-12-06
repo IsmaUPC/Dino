@@ -16,6 +16,8 @@ struct PlayerData
 	uint respawns = 0;
 	uint coins = 0;
 	uint *stateShoot = 0;
+	iPoint* shootPosition;
+	iPoint* shootPointsCollision;
 
 	SDL_Texture* texture;
 	static const int numPoints = 6;
@@ -82,6 +84,8 @@ public:
 	bool GetCheckPointMove() { return checkpointMove; };
 
 	void SetStateShoot(uint *state) { playerData.stateShoot = state; };
+	void SetPositionShoot(iPoint* position) { playerData.shootPosition = position; };
+	void SetCollidersShoot(iPoint* colliders) { playerData.shootPointsCollision = colliders; };
 
 private:
 

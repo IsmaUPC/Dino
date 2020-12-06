@@ -184,6 +184,48 @@ void Enemy::MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, Typ
 		}
 	}
 }
+void Enemy::CheckCollisionEnemyToPlayer()
+{
+	iPoint auxPositionEnemey[4];
+	for (int i = 0; i < 4; i++)
+	{
+		auxPositionEnemey[i] = { entityData->position.x + entityData->pointsCollision[i].x,
+			entityData->position.y + entityData->pointsCollision[i].y };
+	}
+	iPoint collisionPlayer[6];
+	for (int i = 0; i < 6; i++)
+	{
+		collisionPlayer[i] = { app->player->playerData.position.x + app->player->playerData.pointsCollision[i].x,
+			-48 + app->player->playerData.position.y + app->player->playerData.pointsCollision[i].y };
+		
+	}
+	if (collision.IsInsidePolygons(collisionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
+		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionPlayer, app->player->playerData.numPoints))
+	{
+		if (!app->player->godMode)app->player->SetHit();
+	}
+}
+void Enemy::CheckCollisionEnemyToFireBall()
+{
+	iPoint auxPositionEnemey[4];
+	for (int i = 0; i < 4; i++)
+	{
+		auxPositionEnemey[i] = { entityData->position.x + entityData->pointsCollision[i].x,
+			entityData->position.y + entityData->pointsCollision[i].y };
+	}
+	iPoint collisionFireBall[4];
+	for (int i = 0; i < 4; i++)
+	{
+		collisionFireBall[i] = { app->player->playerData.shootPosition->x + app->player->playerData.shootPointsCollision[i].x,
+			-48 + app->player->playerData.shootPosition->y + app->player->playerData.shootPointsCollision[i].y };
+	}
+	if (collision.IsInsidePolygons(collisionFireBall, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
+		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionFireBall, app->player->playerData.numPoints))
+	{
+		entityData->state = DEADING;
+		entityData->currentAnimation = deadAnim;
+	}
+}
 void Enemy::MoveEnemyNULL(iPoint mapPositionEnemy)
 {
 	if (entityData->type == GROUND_ENEMY) //if the next position is destination continue with current direction
@@ -218,32 +260,14 @@ bool Enemy::PreUpdate()
 		{
 			entityData->currentAnimation = walkAnim;
 		}
-		iPoint auxPositionEnemey[4];
-		for (int i = 0; i < 4; i++)
-		{
-			auxPositionEnemey[i] = { entityData->position.x + entityData->pointsCollision[i].x,
-				entityData->position.y + entityData->pointsCollision[i].y };
-		}
-		iPoint auxPositionPlayer[6];
-		for (int i = 0; i < 6; i++)
-		{
-			auxPositionPlayer[i] = { currentPositionPlayer.x + app->player->playerData.pointsCollision[i].x,
-				-48 + currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
-
-		}
-		if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints) 
-			&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
-		{
- 			entityData->state = DEADING;
-			entityData->currentAnimation = deadAnim;
-			if(!app->player->godMode)app->player->SetHit();
-		}
+		CheckCollisionEnemyToPlayer();
 	}
-	else if (entityData->state != DEADING)entityData->state = IDLE, entityData->currentAnimation = idleAnim, isDetected = false;
-	//if (entityData->type == GROUND_ENEMY && !Radar(currentPositionPlayer))lastPath = nullptr;// app->pathfinding->ResetPath(app->map->WorldToMap(entityData->position.x, entityData->position.y));
+	CheckCollisionEnemyToFireBall();
+	if (!Radar(currentPositionPlayer) && entityData->state != DEADING)entityData->state = IDLE, entityData->currentAnimation = idleAnim, isDetected = false;
 	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())pendingToDelete = true, entityData->state = DEAD;
 	return true;
 }
+
 bool Enemy::Update(float dt)
 {
 	//entityData->type == AIR_ENEMY && !Radar(app->player->playerData.position)
