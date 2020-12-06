@@ -16,8 +16,6 @@ public:
 
 	bool Start();
 
-	bool Radar(iPoint distance);
-
 	bool PreUpdate();
 
 	bool Update(float dt);
@@ -27,15 +25,28 @@ public:
 	bool CleanUp();
 
 private:
+
+	bool Radar(iPoint origin);
+	void CreatePathEnemy(iPoint origin, iPoint destination);
+	int GetCurrentPositionInPath(iPoint mapPositionEnemy);
+	void MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, TypeEntity type);
+	void MoveEnemyNULL(iPoint mapPositionEnemy);
+	int CalculateDistance(iPoint origin, iPoint destination);
+
+
+private:
 	Animation* idleAnim = new Animation();
+	Animation* isDetectedAnim = new Animation();
 	Animation* walkAnim = new Animation();
 	Animation* deadAnim = new Animation();
 
-	int range = 300;
+	int range = 500;
 	bool isDetected = false;
+	bool returning;
 	//Timer
 	Timer* checkDestination = new Timer();
 	iPoint destination;
+	iPoint positionInitial;
 	//We store the created path here
 	DynArray<iPoint>* lastPath;
 };
