@@ -19,6 +19,7 @@ bool Coins::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
+	active = true;
 	texture = app->tex->Load("Assets/Textures/coin.png");
 
 	coinFx= app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
