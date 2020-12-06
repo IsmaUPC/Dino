@@ -71,11 +71,10 @@ bool SceneWin::Update(float dt)
 {
 	animationSon.currentAnimation->Update();
 	animationFather.currentAnimation->Update();
-	if (CheckChangeFPS(app->GetFramerate()) )
-	{
+	
 		idleAnimSon.speed = (dt * 100) * 0.08f;
 		idleAnimFather.speed = (dt * 100) * 0.08f;
-	}
+	
 	return true;
 }
 

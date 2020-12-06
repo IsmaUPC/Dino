@@ -66,19 +66,8 @@ public:
 	{
 		return true;
 	}
-	 bool CheckChangeFPS(float fPS)
-	{
-		 if (fPS != oldFPS)
-		 {
-			 oldFPS = fPS;
-			 if (firstCheck) return true;
-			 firstCheck = false;
-		 }
-
-		return false;
-	}
-
-	  int GetNumThisScene()
+	 
+	 int GetNumThisScene()
 	 {
 		 return numThisScene;
 	 }

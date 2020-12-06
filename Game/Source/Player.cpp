@@ -187,16 +187,15 @@ void Player::GravityDown(float dt)
 
 void Player::SpeedAnimationCheck(float dt)
 {
-	if (CheckChangeFPS(app->GetFramerate()))
-	{
-		idleAnim->speed = (dt * 100) * 0.5f;
-		walkAnim->speed = (dt * 100) * 0.01f;
-		jumpAnim->speed = (dt * 100) * 0.022f;
-		atakAnim->speed = (dt * 100) * 0.08f;
-		damageAnim->speed = (dt * 100) * 0.011f;
-		runAnim->speed = (dt * 100) * 0.08f;
+	
+		idleAnim->speed = (dt * 5) ;
+		walkAnim->speed = (dt * 9) ;
+		jumpAnim->speed = (dt * 18) ;
+		atakAnim->speed = (dt * 5) ;
+		damageAnim->speed = (dt * 18) ;
+		runAnim->speed = (dt * 9) ;
 		
-	}
+	
 }
 
 void Player::MoveBetweenCheckPoints()

@@ -132,7 +132,6 @@ bool SceneLevel2::Update(float dt)
 	vec.x = 0, vec.y = 0;
 	app->input->GetMousePosition(vec.x, vec.y);
 
-	if (CheckChangeFPS(app->GetFramerate()))
 		idleAnim.speed = (dt * 100) * 0.025f;
 
 	animationFather.currentAnimation->Update();
