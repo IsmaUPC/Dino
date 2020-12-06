@@ -178,12 +178,13 @@ bool App::Update()
 	bool ret = true;
 
 
-	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) 
-	{
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) changeFPS = !changeFPS;
+	
+	if(changeFPS){
 		cappedMs = 1000 / 30;
 		framerate = 30;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+	else
 	{
 		cappedMs = 1000 / 60;
 		framerate = 60;
@@ -230,7 +231,6 @@ void App::PrepareUpdate()
 
 
 	// Calculate the dt: differential time since last frame
-	// dt = (oldLastFrame - lastFrameMs) / 1000;
 	dt = frameTime.ReadSec();
 	frameTime.Start();
 	fPS = SDL_GetTicks();

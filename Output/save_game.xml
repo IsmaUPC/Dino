@@ -6,10 +6,13 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="-975" />
+		<camera x="0" y="-687" />
 	</renderer>
 	<player>
-		<position x="576" y="1535" />
+		<position x="432" y="1247" />
 		<level lvl="0" />
 	</player>
+	<entities>
+		<entity />
+	</entities>
 </save_state>

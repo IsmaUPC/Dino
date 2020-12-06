@@ -54,6 +54,9 @@ bool Player::Start()
 	damageAnim->speed = 0.005f;
 	runAnim->loop = true;
 	runAnim->speed = 0.10f;
+	
+	atakAnim->loop = false;
+	atakAnim->speed = 0.10f;
 
 	jumpAnim->loop = true;
 	jumpAnim->speed = 0.24f;
@@ -68,7 +71,7 @@ bool Player::Start()
 		walkAnim->PushBack({ 312 + (78 * i),0, 78, 78 });
 
 	for (int i = 0; i < 3; i++)
-		atakAnim->PushBack({ 480 + (78 * i),0, 78, 78 });
+		atakAnim->PushBack({ 858 + (78 * i),0, 78, 78 });
 
 	for (int i = 0; i < 4; i++)
 		damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
@@ -135,8 +138,12 @@ bool Player::Update(float dt)
 	MoveHit();
 	GravityDown(dt);	
 	CameraPlayer();
-
-	if (playerData.state!=HIT && playerData.state != DEAD)
+	if (playerData.state == ATTACK && playerData.currentAnimation->HasFinished())
+	{
+		playerData.state = IDLE;
+		atakAnim->Reset();
+	}
+	if (playerData.state!=HIT && playerData.state != DEAD && playerData.state != ATTACK)
 	{
 		// Move player inputs control
 		if (!checkpointMove)PlayerControls(dt);
@@ -259,6 +266,10 @@ void Player::PlayerMoveAnimation()
 	
 	case HIT:
 		playerData.currentAnimation = damageAnim;
+		break;	
+	
+	case ATTACK:
+		playerData.currentAnimation = atakAnim;
 		break;
 
 	default:
@@ -289,6 +300,7 @@ void Player::PlayerControls(float dt)
 	}	// Any key is pressed or A and D pressed in same time, set player in IDLE state
 	else if(playerData.state != JUMP) playerData.state = State::IDLE;
 
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) playerData.state= ATTACK;
 
 
 	// Player Jump

@@ -40,7 +40,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	
+	app->SaveConfigRequested();
+
 	victory=false;
 	app->player->win = false;
 	// Load map

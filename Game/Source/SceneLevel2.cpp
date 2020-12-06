@@ -38,6 +38,7 @@ bool SceneLevel2::Awake()
 // Called before the first frame
 bool SceneLevel2::Start()
 {
+	app->SaveConfigRequested();
 	
 	// Load map
 	app->SetLastScene((Module*)this);

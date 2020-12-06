@@ -42,6 +42,7 @@ private:
 	uint width;
 	uint height;
 	uint scale;
+	SDL_Surface* icon = nullptr;
 
 };
 

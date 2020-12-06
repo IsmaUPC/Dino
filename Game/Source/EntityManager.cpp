@@ -81,20 +81,7 @@ bool EntityManager::CleanUp()
 
 
 // Load Game State
-bool EntityManager::LoadState(pugi::xml_node& data)
-{
 
-
-	return true;
-}
-
-
-// Save Game State
-bool EntityManager::SaveState(pugi::xml_node& data) const
-{
-
-	return true;
-}
 
 bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY)
 {
@@ -178,3 +165,23 @@ void EntityManager::HandleEntitiesDespawn()
 	}*/
 }
 
+bool EntityManager::LoadState(pugi::xml_node& entities)
+{
+	bool ret = true;
+
+	return ret;
+}
+bool EntityManager::SaveState(pugi::xml_node& entitiesNode) const
+{
+
+	//pugi::xml_node rootSaveFile= entitiesNode.child("entity");
+
+	//for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+	//{
+	//	//rootSaveFile
+	//	rootSaveFile.next_sibling().append_child("entity");
+
+	//}
+
+	return true;
+}

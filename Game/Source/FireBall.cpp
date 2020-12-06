@@ -169,7 +169,8 @@ void FireBall::Shoot()
 		entityData->fireBallState = stateShoot;
 		frameTime.Start();
 		entityData->position = app->player->playerData.position;
-		entityData->position.y -= 30;
+		entityData->position.y -= 36;
+		entityData->position.x += (5* app->player->playerData.direction);
 		direc = app->player->playerData.direction;
 	}
 }

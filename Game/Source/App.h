@@ -161,6 +161,7 @@ private:
 	SString filenameConfig = "config.xml";
 
 	float fPS = 0;
+	bool changeFPS=false;
 
 	Module* lastScene;
 };

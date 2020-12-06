@@ -34,6 +34,7 @@ enum State {
 	WALK,
 	RUN,
 	RETURN,
+	ATTACK,
 	DEADING,
 	DEAD,
 	HIT,
