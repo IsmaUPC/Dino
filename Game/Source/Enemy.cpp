@@ -219,13 +219,22 @@ void Enemy::CheckCollisionEnemyToFireBall()
 		collisionFireBall[i] = { app->player->playerData.shootPosition->x + app->player->playerData.shootPointsCollision[i].x,
 			-48 + app->player->playerData.shootPosition->y + app->player->playerData.shootPointsCollision[i].y };
 	}
-	if (collision.IsInsidePolygons(collisionFireBall, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
-		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionFireBall, app->player->playerData.numPoints))
+	//if (collision.IsInsidePolygons(collisionFireBall, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
+	//	&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionFireBall, app->player->playerData.numPoints))
+	//{
+		//*app->player->playerData.stateShoot = 2;
+		//entityData->state = DEADING;
+		//entityData->currentAnimation = deadAnim;
+	//}
+	iPoint collisionBullet = app->map->WorldToMap(app->player->playerData.shootPosition->x, app->player->playerData.shootPosition->y);
+	iPoint collisionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
+	if (collisionBullet == collisionEnemy)
 	{
 		*app->player->playerData.stateShoot = 2;
 		entityData->state = DEADING;
 		entityData->currentAnimation = deadAnim;
 	}
+
 }
 void Enemy::MoveEnemyNULL(iPoint mapPositionEnemy)
 {
