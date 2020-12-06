@@ -4,14 +4,6 @@
 #include "Entity.h"
 #include "PugiXml\src\pugixml.hpp"
 
-
-/*
-struct CoinsData
-{
-
-};
-*/
-
 class Coins : public Entity
 {
 public:
@@ -42,6 +34,8 @@ private:
 	iPoint* pointsCollision;
 
 	Animation* currentAnimation = new Animation();
+
+	uint coinFx;
 
 	SDL_Texture* texture;
 };

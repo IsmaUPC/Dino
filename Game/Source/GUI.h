@@ -53,8 +53,6 @@ private:
 	Animation* fireBallOnAnim = new Animation();
 	Animation* fireBallOffAnim = new Animation();
 
-
-
 	bool inCheckPoint;
 
 	//Coin
