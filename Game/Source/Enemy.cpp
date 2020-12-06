@@ -98,8 +98,7 @@ bool Enemy::Start()
 		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 83 , 0 }, { 83,-47 }, { 0 ,-47 } };
 	}
 
-	destination=app->map->WorldToMap(app->player->playerData.position.x, app->player->playerData.position.y);
-
+	destination = app->player->playerData.position;
 	return true;
 }
 

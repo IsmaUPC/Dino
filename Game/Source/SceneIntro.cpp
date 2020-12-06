@@ -31,6 +31,7 @@ bool SceneIntro::Awake()
 bool SceneIntro::Start()
 {
 	app->SetLastScene((Module*)this);
+	transition = false;
 
 	app->audio->PlayMusic("Assets/Audio/Music/MusicIntro.ogg");
 	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
@@ -46,6 +47,9 @@ bool SceneIntro::Start()
 
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
+
+	timer.Start();
+
 	return true;
 }
 
@@ -71,9 +75,10 @@ bool SceneIntro::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN 
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) 
+	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN 
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN)&& !transition && timer.ReadSec()>CCOOLDOWNSCENE) 
 	{
+		transition = true;
 		app->fade->FadeToBlack(this, (Module*)app->scene, 60.f);
 		return true;
 	}

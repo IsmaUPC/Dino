@@ -16,7 +16,7 @@
 #define SCREEN_SIZE 1
 #define SPAWN_MARGIN 50
 
-
+#define CCOOLDOWNSCENE 1
 //
 
 

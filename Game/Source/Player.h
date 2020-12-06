@@ -12,10 +12,14 @@ struct PlayerData
 	float velocity ;
 	bool isJumped;
 	bool isJumpedAgain;
-	
+	uint lives = 0;
+	uint respawns = 0;
+
 	SDL_Texture* texture;
 	static const int numPoints = 6;
+
 	iPoint pointsCollision[numPoints] = { { 0,0 },{46 , 0},{ 46,-26 },{46 ,-54 }, {0, -54},{0, -26} };
+
 };
 
 
@@ -57,7 +61,11 @@ public:
 	void activeCheckpoint(iPoint positionMapPlayer);
 
 	//iPoint TransformFPoint(fPoint fpoint);
-	iPoint TransformIPointMapToFPointWorld(iPoint ipoint);
+	iPoint IPointMapToWorld(iPoint ipoint);
+
+
+	bool GetInCheckPoint() { return inCheckPoint; };
+	bool GetCheckPointMove() { return checkpointMove; };
 
 private:
 
@@ -67,7 +75,7 @@ private:
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 
-	void Fallings(float dt);
+	void GravityDown(float dt);
 	void MoveToDirection(int velocity);
 
 public:
@@ -79,11 +87,11 @@ public:
 
 private:
 	
-	float gravity = 0.5f;
+	float gravity = 0.3f;
 	float velY = 0;
 
 	float velX = 0;
-	uint lives = 3;
+
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
@@ -99,6 +107,7 @@ private:
 	uint bonfireFx;
 
 	//CheckPoint's vars
+	bool inCheckPoint;
 	List<iPoint> checkPoints;
 	List<iPoint> cameraPosCP;
 	int lastCP;

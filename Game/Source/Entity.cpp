@@ -14,9 +14,9 @@ Entity::Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Te
 
 Entity::Entity() : Module()
 {
-	EntityData();
 	name.Create("Entity");
 	isAlive = true;
+	entityData = new EntityData();
 }
 
 // Destructor
@@ -117,7 +117,7 @@ int Entity::CheckCollision(iPoint positionMap)
 
 		case CHECK_POINT:
 			//checkpoint
-			app->SaveGameRequest();
+			//app->SaveGameRequest();
 			app->player->activeCheckpoint(positionMap);
 			return 2;
 			break;

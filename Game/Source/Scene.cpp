@@ -65,12 +65,11 @@ bool Scene::Start()
 	app->entityManager->AddEntity(AIR_ENEMY, 38, 24);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
-
 	//Active calls
 	app->player->Init();
 	app->player->Start();
 
-	
+	app->entityManager->AddEntity(FIREBALL, 0, 0);
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
@@ -144,7 +143,8 @@ bool Scene::Update(float dt)
 	else if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
-		//lose = true;
+		app->player->playerData.respawns--;
+		lose = true;
 	}
 	return true;
 }

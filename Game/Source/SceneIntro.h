@@ -45,7 +45,9 @@ private:
 
 	SDL_Texture* bgIntro;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
+	bool transition;
 
+	Timer timer;
 };
 
 #endif // __SCENEINTRO_H__
