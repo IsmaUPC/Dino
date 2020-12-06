@@ -167,6 +167,7 @@ void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destinati
 	//PropagateAStar(destination);
 	lastPath.Clear();
 
+	lastPath.PushBack(destination);
 	lastPath.PushBack(breadcrumbs.At(count)->data);
 	for (int i = visited.Count() - 1; i > 0; i--)
 	{
@@ -176,5 +177,5 @@ void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destinati
 			count = i;
 		}
 	}
-	lastPath.Flip();
+ 	lastPath.Flip();
 }

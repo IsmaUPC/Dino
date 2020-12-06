@@ -31,6 +31,7 @@ enum State {
 	JUMP,
 	WALK,
 	RUN,
+	RETURN,
 	DEADING,
 	DEAD,
 };
