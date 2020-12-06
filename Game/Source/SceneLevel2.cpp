@@ -50,6 +50,7 @@ bool SceneLevel2::Start()
 		RELEASE_ARRAY(data);
 	}
 	app->player->win = false;
+	app->map->active = true;
 	//Positions initials
 	app->player->positionInitial = {576,1534};
 	app->entityManager->AddEntity(GROUND_ENEMY, 34, 31);
@@ -78,7 +79,7 @@ bool SceneLevel2::Start()
 
 	app->player->Init();
 	app->player->Start();
-	app->map->active = true;
+	
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/LOKI_8bits.ogg");

@@ -18,6 +18,9 @@ public:
 
 	bool PreUpdate();
 
+	void CheckCollisionEnemyToPlayer();
+	void CheckCollisionEnemyToFireBall();
+
 	bool Update(float dt);
 
 	bool PostUpdate();
