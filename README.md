@@ -2,7 +2,7 @@
 
 ## Description
 
-Dino is a 2D Platformer where our main character is a dinosaur. He has to jump cliffs and jump to high places to be able to meet again with his father because he has been lost.  
+Dino is a 2D Platformer where our main character is a dinosaur. He has to jump cliffs and jump to high places to be able to meet again with his mother because he has been lost.  
 
 ## Key Features
 
