@@ -129,7 +129,7 @@ bool Player::PreUpdate()
 bool Player::Update(float dt) 
 {
 	SpeedAnimationCheck(dt);
-	playerData.velocity = (1000 * dt) / 3;
+	playerData.velocity = (1000 * dt) / 4;
 	gravity = ceil(600 * dt);
 
 	MoveHit();
@@ -511,11 +511,10 @@ bool Player::CheckGameOver(int level)
 
 void Player::SetHit()
 {
-	if (playerData.respawns > 0) {
+	if (playerData.respawns > 0&& playerData.state != HIT) {
 		playerData.respawns--;
 		playerData.state = HIT;
 		hitDirection = playerData.direction;
-		//playerData.position = IPointMapToWorld(checkPoints.end->data);
 	}
 	
 }
