@@ -1,5 +1,7 @@
 ﻿#include "GUI.h"
 #include "Player.h"
+#include "FireBall.h"
+#include "EntityManager.h"
 #include "ModuleFonts.h"
 
 #include "Defs.h"
@@ -30,23 +32,43 @@ bool GUI::Awake(pugi::xml_node& config)
 
 bool GUI::Start()
 {
+
+	int imgH = 0;
+	int imgW = 0;
+
 	headTex = app->tex->Load("Assets/Textures/GUI/dino_head.png");
-	SDL_QueryTexture(headTex, NULL, NULL, &headW, &headH);
+	SDL_QueryTexture(headTex, NULL, NULL, &headW, &imgH);
 
-	headAnim->PushBack({0,0,headW,headH });
+	headAnim->PushBack({0,0,headW,imgH });
 
+	imgH = 0;
+	imgW = 0;
 	arrowTex = app->tex->Load("Assets/Textures/GUI/arrows.png");
-	SDL_QueryTexture(arrowTex, NULL, NULL, &arrowW, &arrowH);
-	arrowW = arrowW / 2;
+	SDL_QueryTexture(arrowTex, NULL, NULL, &imgW, &imgH);
+	imgW = imgW / 2;
 
-	arrowAnim->PushBack({ 0,0,arrowW,arrowH });
-	buttonEAnim->PushBack({ arrowW,0,arrowW,arrowH });
+	arrowAnim->PushBack({ 0,0,imgW,imgH });
+	buttonEAnim->PushBack({ imgW,0,imgW,imgH });
+
+
+	imgCoin = app->tex->Load("Assets/Textures/GUI/coin.png");
+
+	imgH = 0;
+	imgW = 0;
+	fireBallTex = app->tex->Load("Assets/Textures/GUI/fire_ball.png");
+	SDL_QueryTexture(fireBallTex, NULL, NULL, &imgW, &imgH);
+	imgH = imgH / 2;
+
+	fireBallOnAnim->PushBack(	{ 0,0,imgW,imgH		});
+	fireBallOffAnim->PushBack(	{ 0,imgH,imgW,imgH	});
 
 	respawn = &app->player->playerData.respawns;
+	coins = &app->player->playerData.coins;
 
 	//Text
 	hudFont = app->fonts->Load("Assets/Textures/GUI/hud_font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,0123456789им?!*$%&()+-/:;<=>@__     ", 5, 705, 225);
 
+	fireBallState = app->player->playerData.stateShoot;
 
 	return true;
 }
@@ -59,7 +81,6 @@ bool GUI::PreUpdate()
 bool GUI::Update(float dt)
 {
 
-
 	return true;
 }
 
@@ -71,11 +92,14 @@ bool GUI::PostUpdate()
 	point0.x = point0.x + headPositionX;
 	point0.y = point0.y + headPositionY;
 
+
+	//Respawns
 	SDL_Rect rectGUI;
 	rectGUI = headAnim->GetCurrentFrame();
 	for (int i = 0; i < *respawn; i++)
 		app->render->DrawTexture(headTex,point0.x +((headW + headSeparation)*i),point0.y,&rectGUI);
 	
+	//ChecKPoints HUD
 	rectGUI = buttonEAnim->GetCurrentFrame();
 	if (app->player->GetInCheckPoint())
 		app->render->DrawTexture(arrowTex, app->player->playerData.position.x+10, app->player->playerData.position.y - 90, &rectGUI);
@@ -87,15 +111,33 @@ bool GUI::PostUpdate()
 		app->render->DrawTextureFlip(arrowTex,app->player->playerData.position.x - 45, app->player->playerData.position.y - 40, &rectGUI);
 	}
 
+	//FireBall
+	if (*fireBallState == 0)
+	{
+		LOG("Puedes disparar");
+	}
+	else
+	{
+		LOG("No puedes disparar");
+	}
 
-	//Text
+
+
+	for (int i = 0; i < app->entityManager->entities.Count(); i++)
+	{
+		if (app->entityManager->entities.At(i)->data->entityData->type == TypeEntity::FIREBALL)
+			LOG("%d", app->entityManager->entities.At(i)->data->entityData->fireBallState);
+	}
+	//Coins
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
 
-	point0.x = point0.x + 100;
+	app->render->DrawTexture(imgCoin, point0.x+22, point0.y + 90);
+
+	point0.x = point0.x + 90;
 	point0.y = point0.y + 100;
 
-	sprintf_s(coinText,5,"%3d",coinCount);
+	sprintf_s(coinText,7," x%3d",*coins);
 
 	app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
 
@@ -109,6 +151,7 @@ bool GUI::CleanUp()
 	}
 	app->tex->UnLoad(headTex);
 	app->tex->UnLoad(arrowTex);
+	app->tex->UnLoad(imgCoin);
 
 	active = false;
 

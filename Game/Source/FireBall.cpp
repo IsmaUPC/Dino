@@ -23,7 +23,7 @@ bool FireBall::Start()
 	entityData->velocity = 12;
 	startPos = { -100,-100 };
 
-	entityData->texture = app->tex->Load("Assets/Textures/34w17h.png");
+	entityData->texture = app->tex->Load("Assets/Textures/fire_ball.png");
 	SDL_QueryTexture(entityData->texture, NULL, NULL, &texW, &texH);
 	texW = texW / 5;
 
@@ -36,6 +36,7 @@ bool FireBall::Start()
 	entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { texW , 0 }, { texW,-texH }, { 0 ,-texH } };
 
 	cooldown = 2;
+	app->player->SetStateShoot(&stateShoot);
 
 	return true;
 }
@@ -73,6 +74,7 @@ bool FireBall::Update(float dt)
 		{
 			BackToPos0();
 			stateShoot = CAN_SHOOT;
+			entityData->fireBallState = stateShoot;
 		}
 		break;
 	default:
@@ -119,12 +121,14 @@ void FireBall::BackToPos0()
 {
 	entityData->position = startPos;
 	stateShoot = WAIT;
+	entityData->fireBallState = stateShoot;
 }
 
 void FireBall::Shoot()
 {
 	if (stateShoot == CAN_SHOOT){
 		stateShoot = SHOOT;
+		entityData->fireBallState = stateShoot;
 		frameTime.Start();
 		entityData->position = app->player->playerData.position;
 		entityData->position.y -= 30;

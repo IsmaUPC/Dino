@@ -69,8 +69,6 @@ bool Scene::Start()
 	app->player->Init();
 	app->player->Start();
 
-	app->entityManager->AddEntity(FIREBALL, 0, 0);
-
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
