@@ -505,7 +505,14 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1968)
 		{
-			return true;
+			playerData.respawns--;
+			if (playerData.respawns < 1)playerData.state = DEAD;
+
+			if (playerData.state != DEAD) {
+				playerData.position = IPointMapToWorld(checkPoints.end->data);
+				app->render->camera.x = cameraPosCP.end->data.x;
+				app->render->camera.y = cameraPosCP.end->data.y;
+			}
 		}
 	}
 	return false;
