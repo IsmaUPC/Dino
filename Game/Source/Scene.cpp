@@ -130,7 +130,7 @@ bool Scene::Update(float dt)
 	vec.x = 0, vec.y = 0;
 	app->input->GetMousePosition(vec.x, vec.y);
 
-		idleAnim->speed = (dt * 100) * 0.025f;
+	idleAnim->speed = (dt * 100) * 0.025f;
 
 	animationFather.currentAnimation->Update();
 
@@ -139,7 +139,6 @@ bool Scene::Update(float dt)
 	else if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
-		app->player->playerData.respawns--;
 		lose = true;
 	}
 	return true;

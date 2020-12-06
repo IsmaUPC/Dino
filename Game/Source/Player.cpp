@@ -86,7 +86,7 @@ bool Player::Start()
 	app->entityManager->AddEntity(FIREBALL, 0, 0);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
-	levelScene = app->fade->GetLastLevel()->GetNumThisScene();
+	//levelScene = app->fade->GetLastLevel()->GetNumThisScene();
 
 
 	return true;
@@ -129,16 +129,14 @@ bool Player::PreUpdate()
 bool Player::Update(float dt) 
 {
 	SpeedAnimationCheck(dt);
-	playerData.velocity = (1000 * dt) / 4;
+	playerData.velocity = floor(1000 * dt) / 4;
 	gravity = ceil(600 * dt);
 
 	MoveHit();
-	GravityDown(dt);
-
-	
+	GravityDown(dt);	
 	CameraPlayer();
 
-	if (playerData.state!=HIT)
+	if (playerData.state!=HIT && playerData.state != DEAD)
 	{
 		// Move player inputs control
 		if (!checkpointMove)PlayerControls(dt);
@@ -163,14 +161,14 @@ void Player::MoveHit()
 				if (app->GetFramerate() == 60)	velY = -10.5f;
 				else if (app->GetFramerate() == 30) velY = -21;
 			}
-			
 			if (CollisionPlayer(playerData.position)) playerData.position = tmp;
-			//(hitDirection == WALK_L) ? MovePlayer(WALK_R,dt): MovePlayer(WALK_L,dt);
 		}
 		else
-		{
+		{			
+			playerData.position = IPointMapToWorld(checkPoints.end->data);
 			playerData.currentAnimation->Reset();
-			playerData.state = DEAD;
+			playerData.state = IDLE;
+			if(playerData.respawns <1)playerData.state = DEAD;
 		}
 	}
 }
@@ -187,14 +185,13 @@ void Player::GravityDown(float dt)
 
 void Player::SpeedAnimationCheck(float dt)
 {
-	
+
 		idleAnim->speed = (dt * 5) ;
 		walkAnim->speed = (dt * 9) ;
 		jumpAnim->speed = (dt * 18) ;
 		atakAnim->speed = (dt * 5) ;
 		damageAnim->speed = (dt * 18) ;
 		runAnim->speed = (dt * 9) ;
-		
 	
 }
 
@@ -493,10 +490,15 @@ bool Player::CheckGameOver(int level)
 		if (playerData.position.y > 1720)
 		{
 			//isDead = true;
-			playerData.position = IPointMapToWorld(checkPoints.end->data);
-			app->render->camera.x = cameraPosCP.end->data.x;
-			app->render->camera.y = cameraPosCP.end->data.y;
-			return true;
+			playerData.respawns--;
+			if (playerData.respawns < 1)playerData.state = DEAD;
+
+			if (playerData.state != DEAD) {
+				playerData.position = IPointMapToWorld(checkPoints.end->data);
+				app->render->camera.x = cameraPosCP.end->data.x;
+				app->render->camera.y = cameraPosCP.end->data.y;
+			}
+			//return true;
 		}
 	}
 	if (level == 2)
@@ -511,7 +513,7 @@ bool Player::CheckGameOver(int level)
 
 void Player::SetHit()
 {
-	if (playerData.respawns > 0&& playerData.state != HIT) {
+	if (playerData.respawns > 0 && playerData.state != HIT) {
 		playerData.respawns--;
 		playerData.state = HIT;
 		hitDirection = playerData.direction;
