@@ -41,6 +41,8 @@ bool SceneLevel2::Start()
 	
 	// Load map
 	app->SetLastScene((Module*)this);
+	victory = false;
+	app->player->win = false;
 	if (app->map->Load("dino_map_2.tmx") == true)
 	{
 		int w, h;
@@ -50,7 +52,6 @@ bool SceneLevel2::Start()
 
 		RELEASE_ARRAY(data);
 	}
-	app->player->win = false;
 	app->map->active = true;
 	//Positions initials
 	app->player->positionInitial = {576,1534};
@@ -75,8 +76,6 @@ bool SceneLevel2::Start()
 	app->entityManager->AddEntity(AIR_ENEMY, 54, 32);
 	app->entityManager->AddEntity(AIR_ENEMY, 189, 11);
 	app->entityManager->AddEntity(AIR_ENEMY, 201, 9);
-
-	app->entityManager->AddEntity(FIREBALL, 0, 0);
 
 	app->player->Init();
 	app->player->Start();
@@ -139,7 +138,7 @@ bool SceneLevel2::Update(float dt)
 	
 	if (app->player->win)victory = true;
 
-	if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
+	else if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");
 		lose = true;

@@ -20,6 +20,8 @@ bool FireBall::Awake(pugi::xml_node&)
 
 bool FireBall::Start()
 {
+	active = true;
+
 	entityData->velocity = 12;
 	startPos = { -100,-100 };
 	entityData->position = startPos;
@@ -106,6 +108,7 @@ bool FireBall::Update(float dt)
 
 	if (startexplosion)
 		explosionAnim->Update();
+
 	if (CheckCollision(app->map->WorldToMap(entityData->position.x, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
 	if (CheckCollision(app->map->WorldToMap(entityData->position.x+13, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
 
