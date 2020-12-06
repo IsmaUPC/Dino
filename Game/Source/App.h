@@ -74,6 +74,8 @@ public:
 	float GetCapMs();
 
 	int GetFramerate();
+
+	int GetFramesOnLastSecond() { return framesOnLastSecond; };
 private:
 
 	// Load config file
