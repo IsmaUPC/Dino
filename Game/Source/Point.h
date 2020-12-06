@@ -17,8 +17,11 @@ public:
 
 	Point(const Point<TYPE>& v)
 	{
+		if(&v !=NULL)
+		{
 		this->x = v.x;
 		this->y = v.y;
+		}
 	}
 
 	Point(const TYPE& x, const TYPE& y)

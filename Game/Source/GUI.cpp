@@ -111,23 +111,6 @@ bool GUI::PostUpdate()
 		app->render->DrawTextureFlip(arrowTex,app->player->playerData.position.x - 45, app->player->playerData.position.y - 40, &rectGUI);
 	}
 
-	//FireBall
-	if (*fireBallState == 0)
-	{
-		LOG("Puedes disparar");
-	}
-	else
-	{
-		LOG("No puedes disparar");
-	}
-
-
-
-	for (int i = 0; i < app->entityManager->entities.Count(); i++)
-	{
-		if (app->entityManager->entities.At(i)->data->entityData->type == TypeEntity::FIREBALL)
-			LOG("%d", app->entityManager->entities.At(i)->data->entityData->fireBallState);
-	}
 	//Coins
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
@@ -140,6 +123,24 @@ bool GUI::PostUpdate()
 	sprintf_s(coinText,7," x%3d",*coins);
 
 	app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
+
+	point0.x = -app->render->camera.x;
+	point0.y = -app->render->camera.y;
+	point0.x = point0.x + (WINDOW_W - 100);
+	point0.y = point0.y + (WINDOW_H - 100);
+	//FireBall
+	if (*fireBallState == 0)
+	{
+		LOG("Puedes disparar");
+		rectGUI = fireBallOnAnim->GetCurrentFrame();
+		app->render->DrawTexture(fireBallTex, point0.x, point0.y,&rectGUI);
+	}
+	else
+	{
+		LOG("No puedes disparar");
+		rectGUI = fireBallOffAnim->GetCurrentFrame();
+		app->render->DrawTexture(fireBallTex, point0.x, point0.y, &rectGUI);
+	}
 
 	return true;
 }

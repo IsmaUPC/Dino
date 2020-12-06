@@ -68,22 +68,28 @@ public:
 	}
 	 bool CheckChangeFPS(float fPS)
 	{
-		 // TODO Dragon Fix First iteration
-		if (fPS != oldFPS || firstCheck)
-		{
-			oldFPS = fPS;
-			firstCheck = false;
-			return true;
-		}
+		 if (fPS != oldFPS)
+		 {
+			 oldFPS = fPS;
+			 if (firstCheck) return true;
+			 firstCheck = false;
+		 }
 
 		return false;
 	}
+
+	  int GetNumThisScene()
+	 {
+		 return numThisScene;
+	 }
+
 
 public:
 
 	SString name;
 	bool active;
 private:
+	int numThisScene;
 	float oldFPS=-1;
 	bool firstCheck =true;
 	

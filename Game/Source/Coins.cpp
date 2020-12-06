@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Coins.h"
+#include "Audio.h"
 #include "Player.h"
 
 
@@ -19,11 +20,12 @@ bool Coins::Start()
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 	//app->map->ResetPath(pathInit);
 	texture = app->tex->Load("Assets/Textures/coin.png");
+
+	coinFx= app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
 	
 	numPoints = 4;
 	pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	
-
 	currentAnimation->loop = true;
 	currentAnimation->speed = 0.06f;
 
@@ -62,6 +64,7 @@ bool Coins::PreUpdate()
 	if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionCoin, numPoints) 
 		&& collision.IsInsidePolygons(auxPositionCoin, numPoints, auxPositionPlayer, app->player->playerData.numPoints))
 	{
+		app->audio->PlayFx(coinFx);
 		app->player->CoinPlus();
 		isCollected = true;
 		pendingToDelete = true;

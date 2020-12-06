@@ -28,6 +28,11 @@ public:
 
 	bool FadeToBlack(Module* toDisable, Module* toEnable, float frames = 60);
 
+	Module* GetLastLevel() 
+	{
+		return lastLevel;
+	}
+
 private:
 
 	enum FadeStep

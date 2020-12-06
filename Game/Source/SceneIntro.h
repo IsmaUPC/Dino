@@ -39,6 +39,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+
+
 private:
 	AnimationIntro animationIntro;
 	Animation* idleAnim=new Animation();

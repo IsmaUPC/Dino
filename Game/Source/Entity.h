@@ -36,12 +36,13 @@ enum State {
 	RETURN,
 	DEADING,
 	DEAD,
+	HIT,
 };
 
 enum MoveDirection {
 
-	WALK_R,
-	WALK_L,
+	WALK_L=-1,
+	WALK_R=1,
 };
 enum TypeCollision {
 

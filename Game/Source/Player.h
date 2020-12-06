@@ -43,6 +43,10 @@ public:
 
 	bool Update(float dt);
 
+	void MoveHit();
+
+	void GravityDown(float dt);
+
 	void SpeedAnimationCheck(float dt);
 
 	void MoveBetweenCheckPoints();
@@ -53,7 +57,7 @@ public:
 
 	void PlayerControls(float dt);
 
-	void Jump(float dt);
+	void Jump();
 
 	void MovePlayer(MoveDirection playerDirection, float dt);
 
@@ -91,7 +95,7 @@ private:
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 
-	void GravityDown(float dt);
+	void GravityDownCollision(float dt);
 	void MoveToDirection(int velocity);
 
 public:
@@ -103,6 +107,8 @@ public:
 
 private:
 	
+	int levelScene;
+
 	float gravity = 0.3f;
 	float velY = 0;
 	float velX = 0;
@@ -127,8 +133,10 @@ private:
 	int lastCP;
 	bool checkpointMove;
 	bool endUpdate;
+	bool jumpHit;
 
 	State lastState;
+	MoveDirection hitDirection;
 };
 
 #endif // _PLAYER_H_
