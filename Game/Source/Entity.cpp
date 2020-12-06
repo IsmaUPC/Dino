@@ -107,19 +107,19 @@ int Entity::CheckCollision(iPoint positionMap)
 		case VICTORY:
 			//victory
 			app->player->win = true;
-			return 0;
+			return VICTORY;
 			break;
 
 		case COLLISION:
 			//collision
-			return 1;
+			return COLLISION;
 			break;
 
 		case CHECK_POINT:
 			//checkpoint
 			//app->SaveGameRequest();
 			app->player->activeCheckpoint(positionMap);
-			return 2;
+			return CHECK_POINT;
 			break;
 
 		default:

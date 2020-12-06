@@ -64,11 +64,9 @@ bool SceneIntro::Update(float dt)
 	animationIntro.currentAnimation->Update();
 	if (CheckChangeFPS(app->GetFramerate()))
 	{
-	idleAnim->speed = (dt * 100) * 0.05f;
-
+		idleAnim->speed = (dt * 100) * 0.05f;
 	}
 
-	
 	return true;
 }
 

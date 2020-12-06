@@ -107,8 +107,8 @@ void PathFinding::PropagateAStar(const iPoint& destination)
 		iPoint neighbors[4];
 		neighbors[0].Create(curr.x + 0, curr.y + 1);
 		neighbors[1].Create(curr.x - 1, curr.y + 0);
-		neighbors[2].Create(curr.x + 0, curr.y - 1);
-		neighbors[3].Create(curr.x + 1, curr.y + 0);
+		neighbors[2].Create(curr.x + 1, curr.y + 0);
+		neighbors[3].Create(curr.x + 0, curr.y - 1);
 
 		int j = 0;
 		bool init = false;
