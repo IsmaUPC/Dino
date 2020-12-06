@@ -164,6 +164,7 @@ void Enemy::MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, Typ
 	}
 	else if (type == AIR_ENEMY)
 	{
+		velocity = 2;
 		if (nextAuxPositionEenemy.x < positionEnemyX)
 		{
 			entityData->position.x -= velocity;
@@ -268,7 +269,7 @@ bool Enemy::Update(float dt)
 			MoveEnemy(nextAuxPositionEenemy, mapPositionEnemy, entityData->type);
 		}
 	}
-	else if (entityData->type == AIR_ENEMY && CalculateDistance(app->player->playerData.position, positionInitial) > range) // if position enemy is diferent of init position, return to position initial
+	else if (entityData->type == AIR_ENEMY && (CalculateDistance(app->player->playerData.position, positionInitial) > range || !Radar(app->player->playerData.position))) // if position enemy is diferent of init position, return to position initial
 	{
 		//Direction
 		if (entityData->position.x < positionInitial.x)entityData->direction = WALK_R;
