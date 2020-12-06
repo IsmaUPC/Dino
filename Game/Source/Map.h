@@ -215,6 +215,7 @@ private:
     bool mapLoaded;
 
 	bool* drawColl;
+	bool* drawColl2;
 	// L10: BFS Pathfinding variables
 	PQueue<iPoint> frontier;
 	List<iPoint> visited;

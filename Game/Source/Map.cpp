@@ -2,6 +2,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "SceneLevel2.h"
 #include "Map.h"
 #include "EntityManager.h"
 
@@ -257,6 +258,7 @@ bool Map::Awake(pugi::xml_node& config)
     folder.Create(config.child("folder").child_value());
 
 	drawColl = app->scene->GetDebugCollaider();
+	drawColl2 = app->sceneLevel2->GetDebugCollaider();
 
 
 
@@ -282,6 +284,8 @@ void Map::Draw()
 					for (int i = 0; i < data.tilesets.Count(); i++)
 					{
 						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0 || *drawColl)
+							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
+						else if (data.layers.At(i)->data->properties.GetProperty("Nodraw", 0) == 0 || *drawColl2)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 					}
 				}
@@ -309,6 +313,7 @@ void Map::Draw()
 
 
 	if(*drawColl)app->map->DrawPath();
+	if(*drawColl2)app->map->DrawPath();
 }
 
 // Translates x,y coordinates from map positions to world positions

@@ -43,7 +43,7 @@ bool SceneLevel2::Start()
 	app->SetLastScene((Module*)this);
 	victory = false;
 	app->player->win = false;
-	if (app->map->Load("dino_map_2.tmx") == true)
+	if (app->map->Load("map_2.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -82,7 +82,7 @@ bool SceneLevel2::Start()
 	
 
 	// Load music
-	app->audio->PlayMusic("Assets/Audio/Music/LOKI_8bits.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/loki_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky_3.png");
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 

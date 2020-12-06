@@ -45,7 +45,7 @@ bool Scene::Start()
 	// Load map
 
 	//app->map->Load("Mapa_PixelArt.tmx");
-	if (app->map->Load("mapa_pixelart_cp.tmx") == true)
+	if (app->map->Load("map_1.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -68,7 +68,7 @@ bool Scene::Start()
 	app->player->Start();
 
 	// Load music
-	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/hades_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 	

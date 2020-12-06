@@ -33,7 +33,7 @@ bool SceneIntro::Start()
 	app->SetLastScene((Module*)this);
 	transition = false;
 
-	app->audio->PlayMusic("Assets/Audio/Music/MusicIntro.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/music_intro.ogg");
 	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
 	animationIntro.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
 	animationIntro.position = { 400 , 345 };
