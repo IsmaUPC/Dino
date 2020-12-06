@@ -68,7 +68,7 @@ public:
 	}
 	 bool CheckChangeFPS(float fPS)
 	{
-		 // Fix First iteration
+		 // TODO Dragon Fix First iteration
 		if (fPS != oldFPS || firstCheck)
 		{
 			oldFPS = fPS;
