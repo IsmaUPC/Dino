@@ -99,6 +99,7 @@ private:
 	float velX = 0;
 
 
+
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();
 	Animation* atakAnim = new Animation();
@@ -119,6 +120,8 @@ private:
 	int lastCP;
 	bool checkpointMove;
 	bool endUpdate;
+
+	State lastState;
 };
 
 #endif // _PLAYER_H_
