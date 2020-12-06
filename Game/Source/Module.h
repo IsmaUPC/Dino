@@ -66,11 +66,27 @@ public:
 	{
 		return true;
 	}
+	 bool CheckChangeFPS(float fPS)
+	{
+		 // Fix First iteration
+		if (fPS != oldFPS || firstCheck)
+		{
+			oldFPS = fPS;
+			firstCheck = false;
+			return true;
+		}
+
+		return false;
+	}
 
 public:
 
 	SString name;
 	bool active;
+private:
+	float oldFPS=-1;
+	bool firstCheck =true;
+	
 
 };
 

@@ -99,16 +99,13 @@ bool SceneLevel2::Update(float dt)
 	vec.x = 0, vec.y = 0;
 	app->input->GetMousePosition(vec.x, vec.y);
 
+	if (CheckChangeFPS(app->GetFramerate()))
+		idleAnim.speed = (dt * 100) * 0.025f;
+
 	animationFather.currentAnimation->Update();
 	
 	if (app->player->win)victory = true;
 
-	//if (app->player->CheckVictory(app->player->TransformFPoint({ app->player->playerData.position.x + app->player->playerData.velocity + 48,
-	//	 app->player->playerData.position.y })) && victory == false)
-	//{
-	//	LOG("Congratulations, YOU WIN!");
-	//	victory = true;
-	//}
 	if (app->player->CheckGameOver(2) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");

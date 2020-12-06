@@ -39,6 +39,12 @@ public:
 
 	bool Update(float dt);
 
+	void SpeedAnimationCheck(float dt);
+
+	void MoveBetweenCheckPoints();
+
+	void CameraPlayer();
+
 	void PlayerMoveAnimation();
 
 	void PlayerControls(float dt);

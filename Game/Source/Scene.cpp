@@ -77,13 +77,13 @@ bool Scene::Start()
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 	
 	animationFather.position = { 2352, 495 };
-	idleAnim.loop = true;
-	idleAnim.speed = 0.025;
+	idleAnim->loop = true;
+	idleAnim->speed = 0.025;
 
 	for (int i = 0; i < 4; i++)
-		idleAnim.PushBack({ 117 * i,0, 117, 117 });
+		idleAnim->PushBack({ 117 * i,0, 117, 117 });
 
-	animationFather.currentAnimation = &idleAnim;
+	animationFather.currentAnimation = idleAnim;
 
 	SDL_QueryTexture(img, NULL,NULL,&imgW,&imgH);
 
@@ -110,6 +110,7 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 
+
 	//DEBUG KEYS
 	DebugKeys();
 
@@ -131,15 +132,13 @@ bool Scene::Update(float dt)
 	vec.x = 0, vec.y = 0;
 	app->input->GetMousePosition(vec.x, vec.y);
 
+	if (CheckChangeFPS(app->GetFramerate()))
+		idleAnim->speed = (dt * 100) * 0.025f;
+
 	animationFather.currentAnimation->Update();
 
 	if(app->player->win)victory = true;
-	//if (app->player->CheckCollision(app->player->TransformFPoint({ app->player->playerData->position.x + app->player->playerData->velocity + 48,
-	//	app->player->playerData->position.y }))==0 && victory == false)
-	//{
-	//	LOG("Congratulations, YOU WIN!");
-	//	victory = true;
-	//}
+
 	else if (app->player->CheckGameOver(1) && lose == false && app->player->godMode == false)
 	{
 		LOG("GAME OVER!");

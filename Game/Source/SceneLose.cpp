@@ -60,6 +60,9 @@ bool SceneLose::PreUpdate()
 bool SceneLose::Update(float dt)
 {
 	animationEnd.currentAnimation->Update();
+	if (CheckChangeFPS(app->GetFramerate()))
+	idleAnim.speed = (dt*100 )*0.08f;
+
 	return true;
 }
 

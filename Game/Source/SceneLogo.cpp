@@ -47,6 +47,7 @@ bool SceneLogo::PreUpdate()
 
 bool SceneLogo::Update(float dt)
 {
+
 	return true;
 }
 
@@ -61,7 +62,7 @@ bool SceneLogo::PostUpdate()
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec()> CCOOLDOWNSCENE)
 	{
 		transition = true;
-		app->fade->FadeToBlack(this, (Module*)app->sceneIntro, 60.f);
+		app->fade->FadeToBlack(this, (Module*)app->sceneIntro, 80.f);
 		return true;
 	}
 

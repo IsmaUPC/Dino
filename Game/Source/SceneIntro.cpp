@@ -37,13 +37,13 @@ bool SceneIntro::Start()
 	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
 	animationIntro.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
 	animationIntro.position = { 400 , 345 };
-	idleAnim.loop = true;
-	idleAnim.speed = 0.005f;
+	idleAnim->loop = true;
+	idleAnim->speed = 0.005f;
 
 	for (int i = 0; i < 4; i++)
-		idleAnim.PushBack({ 336 * i,0, 336, 336 });
+		idleAnim->PushBack({ 336 * i,0, 336, 336 });
 
-	animationIntro.currentAnimation = &idleAnim;
+	animationIntro.currentAnimation = idleAnim;
 
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
@@ -62,6 +62,12 @@ bool SceneIntro::Update(float dt)
 {
 
 	animationIntro.currentAnimation->Update();
+	if (CheckChangeFPS(app->GetFramerate()))
+	{
+	idleAnim->speed = (dt * 100) * 0.05f;
+
+	}
+
 	
 	return true;
 }

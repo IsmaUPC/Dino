@@ -181,10 +181,13 @@ bool App::Update()
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) 
 	{
 		cappedMs = 1000 / 30;
+		framerate = 30;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
 	{
 		cappedMs = 1000 / 60;
+		framerate = 30;
+
 	}
 
 
@@ -253,24 +256,16 @@ void App::FinishUpdate()
 		framesOnLastSecond = lastSecFrameCount;
 		lastSecFrameCount = 0;
 		timeFramesSecond = 0;
-		//frameTime.Start();
 	}
 
 	oldLastFrame = lastFrameMs;
 	lastFrameMs = lastSecFrameTime.Read();
 	lastSecFrameTime.Start();
-	
-	//if ((cappedMs > 0.000f) && (lastFrameMs < cappedMs))
-	//{
-	//	//ptimer.Start();
-	//	// Delay delimitation
-	//	SDL_Delay(cappedMs);
-	//	//perfTime = ptimer.ReadMs();
-	//	//LOG("We waited for %f milliseconds and got back in %f milliseconds", cappedMs, perfTime);
-	//}
 
 	if (cappedMs > tmpFPS )
-	{
+	{	
+		//Use SDL_Delay to make sure you get your capped framerate
+
 			SDL_Delay(cappedMs- tmpFPS);
 	}
 
@@ -280,7 +275,6 @@ void App::FinishUpdate()
 		averageFps, lastFrameMs, framesOnLastSecond, dt, secondsSinceStartup, frameCount);
 
 	app->win->SetTitle(title);
-	//Use SDL_Delay to make sure you get your capped framerate
 
 }
 
