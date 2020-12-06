@@ -38,14 +38,22 @@ public:
 
 
 	uint stateShoot;
+	uint lastState;
 private:
 
 	int direc;
 
 	iPoint startPos;
+	iPoint explosionPos;
 	Animation* fireBallAnim = new Animation();
+	Animation* explosionAnim = new Animation();
+
+	SDL_Texture* explsionTex;
+
 	int texW, texH;
 	int cooldown;
+
+	bool startexplosion;
 
 	Timer frameTime;
 };

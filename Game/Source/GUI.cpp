@@ -126,8 +126,8 @@ bool GUI::PostUpdate()
 
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
-	point0.x = point0.x + (WINDOW_W - 100);
-	point0.y = point0.y + (WINDOW_H - 100);
+	point0.x = point0.x + (50);
+	point0.y = point0.y + (WINDOW_H - 70);
 	//FireBall
 	if (*fireBallState == 0)
 	{

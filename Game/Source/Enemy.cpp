@@ -222,6 +222,7 @@ void Enemy::CheckCollisionEnemyToFireBall()
 	if (collision.IsInsidePolygons(collisionFireBall, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
 		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionFireBall, app->player->playerData.numPoints))
 	{
+		*app->player->playerData.stateShoot = 2;
 		entityData->state = DEADING;
 		entityData->currentAnimation = deadAnim;
 	}
