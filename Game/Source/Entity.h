@@ -23,6 +23,7 @@ enum TypeEntity {
 	AIR_ENEMY,
 	HUD,
 	FIREBALL,
+	COIN,
 };
 
 
@@ -61,6 +62,7 @@ struct EntityData
 	SDL_Texture* texture;
 	int numPoints = 0;
 	iPoint* pointsCollision;
+	int fireBallState;
 
 public:
 	EntityData(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) :

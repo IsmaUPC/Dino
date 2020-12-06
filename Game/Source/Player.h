@@ -14,11 +14,13 @@ struct PlayerData
 	bool isJumpedAgain;
 	uint lives = 0;
 	uint respawns = 0;
+	uint coins = 0;
+	uint *stateShoot = 0;
 
 	SDL_Texture* texture;
 	static const int numPoints = 6;
 
-	iPoint pointsCollision[numPoints] = { { 0,0 },{46 , 0},{ 46,-26 },{46 ,-54 }, {0, -54},{0, -26} };
+	iPoint pointsCollision[numPoints] = { { 0,0 },{45 , 0},{ 45,-26 },{45 ,-54 }, {0, -54},{0, -26} };
 
 };
 
@@ -68,7 +70,9 @@ public:
 
 	void SetHit();
 
-	void activeCheckpoint(iPoint positionMapPlayer);
+	void CoinPlus() { playerData.coins++; };
+
+	void ActiveCheckpoint(iPoint positionMapPlayer);
 
 	//iPoint TransformFPoint(fPoint fpoint);
 	iPoint IPointMapToWorld(iPoint ipoint);
@@ -76,6 +80,8 @@ public:
 
 	bool GetInCheckPoint() { return inCheckPoint; };
 	bool GetCheckPointMove() { return checkpointMove; };
+
+	void SetStateShoot(uint *state) { playerData.stateShoot = state; };
 
 private:
 
@@ -101,10 +107,7 @@ private:
 
 	float gravity = 0.3f;
 	float velY = 0;
-
 	float velX = 0;
-
-
 
 	Animation* idleAnim= new Animation();
 	Animation* walkAnim = new Animation();

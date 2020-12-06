@@ -36,27 +36,31 @@ private:
 	int headPositionY = 20;
 
 	int headW = 0;
-	int headH = 0;
-	int arrowW = 0;
-	int arrowH = 0;
-
 
 	uint* respawn = 0;
-	bool inCheckPoint;
+	uint* fireBallState = 0;
 
 	iPoint point0 = { 0,0 };
 	SDL_Texture* headTex;
 	SDL_Texture* arrowTex;
+	SDL_Texture* fireBallTex;
 
 	Animation* headAnim = new Animation();
+
 	Animation* arrowAnim = new Animation();
 	Animation* buttonEAnim = new Animation();
 
+	Animation* fireBallOnAnim = new Animation();
+	Animation* fireBallOffAnim = new Animation();
+
+	bool inCheckPoint;
+
+	//Coin
+	SDL_Texture* imgCoin;
+
 	//Text
-	int coinCount = 3;
-
+	uint* coins = 0;
 	int hudFont = 0;
-
 	char coinText[10] = { "\0" };
 };
 

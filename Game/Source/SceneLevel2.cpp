@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "EntityManager.h"
 #include "ModuleFadeToBlack.h"
+#include "Pathfinding.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
@@ -40,15 +41,46 @@ bool SceneLevel2::Start()
 	
 	// Load map
 	app->SetLastScene((Module*)this);
+	if (app->map->Load("dino_map_2.tmx") == true)
+	{
+		int w, h;
+		uchar* data = NULL;
+
+		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
 	app->player->win = false;
 	//Positions initials
 	app->player->positionInitial = {576,1534};
-	//app->entityManager->AddEntity(GROUND_ENEMY, 1200, 1335);
+	app->entityManager->AddEntity(GROUND_ENEMY, 34, 31);
+	app->entityManager->AddEntity(GROUND_ENEMY, 57, 25);
+	app->entityManager->AddEntity(GROUND_ENEMY, 77, 8);
+	app->entityManager->AddEntity(GROUND_ENEMY, 119, 10);
+	app->entityManager->AddEntity(GROUND_ENEMY, 149, 8);
+	app->entityManager->AddEntity(GROUND_ENEMY, 130, 8);
+	app->entityManager->AddEntity(GROUND_ENEMY, 168, 8);
+	app->entityManager->AddEntity(GROUND_ENEMY, 198, 6);
+	app->entityManager->AddEntity(GROUND_ENEMY, 77, 29);
+	app->entityManager->AddEntity(GROUND_ENEMY, 77, 29);
+	app->entityManager->AddEntity(GROUND_ENEMY, 127, 29);
+	app->entityManager->AddEntity(GROUND_ENEMY, 145, 29);
+	app->entityManager->AddEntity(GROUND_ENEMY, 163, 23);
+	app->entityManager->AddEntity(GROUND_ENEMY, 163, 23);
+	app->entityManager->AddEntity(GROUND_ENEMY, 203, 15);
+	app->entityManager->AddEntity(AIR_ENEMY, 53, 20);
+	app->entityManager->AddEntity(AIR_ENEMY, 66, 10);
+	app->entityManager->AddEntity(AIR_ENEMY, 66, 10);
+	app->entityManager->AddEntity(AIR_ENEMY, 54, 32);
+	app->entityManager->AddEntity(AIR_ENEMY, 189, 11);
+	app->entityManager->AddEntity(AIR_ENEMY, 201, 9);
+
+	app->entityManager->AddEntity(FIREBALL, 0, 0);
+
 	app->player->Init();
 	app->player->Start();
 	app->map->active = true;
 
-	app->map->Load("dino_map_2.tmx");
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/LOKI_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky_3.png");
@@ -152,6 +184,8 @@ bool SceneLevel2::CleanUp()
 	app->tex->UnLoad(img);
 	app->tex->UnLoad(animationFather.texture);
 	app->player->CleanUp();
+	app->entityManager->CleanUp();
+	app->audio->UnloadFxs();
 
 	active = false;
 	return true;

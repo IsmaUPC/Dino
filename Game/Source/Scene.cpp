@@ -59,7 +59,7 @@ bool Scene::Start()
 	app->map->active = true;
 	//Positions Initials
 	app->player->positionInitial = { 432,1170 };
-	app->entityManager->AddEntity(GROUND_ENEMY, 23, 27);
+	app->entityManager->AddEntity(GROUND_ENEMY, 18, 26);
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
 	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
@@ -69,8 +69,6 @@ bool Scene::Start()
 	//Active calls
 	app->player->Init();
 	app->player->Start();
-
-	app->entityManager->AddEntity(FIREBALL, 0, 0);
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/HADES_8bits.ogg");

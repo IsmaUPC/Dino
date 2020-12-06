@@ -36,9 +36,10 @@ public:
 
 	void Shoot();
 
+
+	uint stateShoot;
 private:
 
-	StateShoot stateShoot;
 	int direc;
 
 	iPoint startPos;

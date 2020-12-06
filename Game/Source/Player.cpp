@@ -33,6 +33,7 @@ bool Player::Start()
 	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
 
 	playerData.respawns = 3;
+	playerData.coins = 0;
 	playerData.lives = 3;
 
 	inCheckPoint = false;
@@ -82,9 +83,11 @@ bool Player::Start()
 	playerData.currentAnimation = idleAnim;
 	velX = playerData.velocity;
 
+	app->entityManager->AddEntity(FIREBALL, 0, 0);
 	app->entityManager->AddEntity(HUD, 0, 0);
 
 	levelScene = app->fade->GetLastLevel()->GetNumThisScene();
+
 
 	return true;
 }
@@ -518,7 +521,8 @@ void Player::SetHit()
 	
 }
 
-void Player::activeCheckpoint(iPoint positionMapPlayer)
+void Player::ActiveCheckpoint(iPoint positionMapPlayer)
+
 {
 	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid + 2)
 	{

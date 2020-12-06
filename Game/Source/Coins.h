@@ -4,20 +4,11 @@
 #include "Entity.h"
 #include "PugiXml\src\pugixml.hpp"
 
-struct CoinsData
-{
-	iPoint position;
-	Animation* currentAnimation;
-
-	SDL_Texture* texture;
-	//static const int numPoints = 6;
-	//int pointsCollision[numPoints][2] = { { 1,0 },{47 , 0},{ 1,-54 },{47 ,-54 }, {1,-47},{47,-47} };
-};
-
 class Coins : public Entity
 {
 public:
-	Coins();
+
+	Coins(iPoint pos);
 
 	virtual ~Coins();
 
@@ -25,7 +16,7 @@ public:
 
 	bool Start();
 
-	//bool PreUpdate();
+	bool PreUpdate();
 
 	bool Update(float dt);
 
@@ -35,10 +26,18 @@ public:
 
 
 public:
-	iPoint positionInitial;
-	CoinsData coinsData;
+
+	bool isCollected = false;
 private:
-	Animation* idleAnim = new Animation();
+	iPoint position;
+	int numPoints;
+	iPoint* pointsCollision;
+
+	Animation* currentAnimation = new Animation();
+
+	uint coinFx;
+
+	SDL_Texture* texture;
 };
 #endif // _COINS_H_
 

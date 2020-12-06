@@ -123,14 +123,15 @@ void Enemy::CreatePathEnemy(iPoint mapPositionEnemy, iPoint mapPositionDestinati
 {
 	if (checkDestination->check(1000))
 	{
-		//if (destination != mapPositionDestination)//player if move
-		//{
+		//destination != mapPositionDestination
+		if (CheckCollision(mapPositionDestination)==-1 && (entityData->state==WALK || entityData->state==IDLE))//player if move
+		{
 			app->pathfinding->ResetPath(mapPositionEnemy);
 			checkDestination->Start();
 			app->pathfinding->ComputePathAStar(mapPositionEnemy, mapPositionDestination);
 			lastPath = app->pathfinding->GetLastPath();
 			//destination = mapPositionDestination;
-		//}
+		}
 	}
 }
 int Enemy::GetCurrentPositionInPath(iPoint mapPositionEnemy)
@@ -230,14 +231,16 @@ bool Enemy::PreUpdate()
 				-48 + currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
 
 		}
-		if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints) && collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
+		if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints) 
+			&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, auxPositionPlayer, app->player->playerData.numPoints))
 		{
-			entityData->state = DEADING;
+ 			entityData->state = DEADING;
 			entityData->currentAnimation = deadAnim;
-			app->player->SetHit();
+			if(!app->player->godMode)app->player->SetHit();
 		}
 	}
 	else if (entityData->state != DEADING)entityData->state = IDLE, entityData->currentAnimation = idleAnim, isDetected = false;
+	//if (entityData->type == GROUND_ENEMY && !Radar(currentPositionPlayer))lastPath = nullptr;// app->pathfinding->ResetPath(app->map->WorldToMap(entityData->position.x, entityData->position.y));
 	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())pendingToDelete = true, entityData->state = DEAD;
 	return true;
 }
@@ -278,7 +281,7 @@ bool Enemy::Update(float dt)
 		//if(entityData->state != RETURN)entityData->state = RETURNING;
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y);
-		if (entityData->position != positionInitial)
+		if (entityData->position != positionInitial && entityData->state!=DEADING)
 		{
 			entityData->currentAnimation = walkAnim;
 			//if (returning == false)

@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "Map.h"
+#include "EntityManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -489,6 +490,8 @@ bool Map::Load(const char* filenameGame)
 		}
 	}
 
+	LoadCollectable();
+
     if(ret == true)
     {
 		LOG("Successfully parsed map XML file: %s", filenameGame);
@@ -639,6 +642,24 @@ int Map::LoadCheckPoint()
 		}
 	}
 	return checkPointCount;
+}
+
+void Map::LoadCollectable()
+{
+	for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)
+	{
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tileId = layer->data->Get(x, y);
+				if (tileId == data.tilesets.At(3)->data->firstgid)
+				{
+					app->entityManager->AddEntity(COIN,x,y);
+				}
+			}
+		}
+	}
 }
 
 

@@ -152,6 +152,10 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		entities.Add(new FireBall());
 		entities.end->data->Start();
 		break;
+	case TypeEntity::COIN:
+		entities.Add(new Coins({info.x,info.y}));
+		entities.end->data->Start();
+	break;
 	}
 }
 	
