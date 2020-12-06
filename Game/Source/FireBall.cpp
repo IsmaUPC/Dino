@@ -36,8 +36,6 @@ bool FireBall::Start()
 	entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { texW , 0 }, { texW,-texH }, { 0 ,-texH } };
 
 	cooldown = 2;
-	cooldown *= 120;
-	actualCooldown = cooldown;
 
 	return true;
 }
@@ -54,7 +52,7 @@ bool FireBall::Update(float dt)
 		Shoot();
 	}
 	LOG("%d", stateShoot);
-	switch (stateShoot)
+	/*switch (stateShoot)
 	{
 	case CAN_SHOOT:
 		return true;
@@ -81,9 +79,35 @@ bool FireBall::Update(float dt)
 		break;
 	default:
 		break;
-	}
+	}*/
+	switch (stateShoot)
+	{
+	case CAN_SHOOT:
+		return true;
+		break;
+	case SHOOT:
+		fireBallAnim->Update();
+		if (direc == 0)
+			entityData->position.x += entityData->velocity;
+		else
+			entityData->position.x -= entityData->velocity;
 
-	LOG("CoolDown: %d",actualCooldown);
+		if (frameTime.ReadSec()>=cooldown) 
+		{
+			BackToPos0();
+		}
+		break;
+	case WAIT:
+		if (frameTime.ReadSec() >=cooldown) 
+		{
+			BackToPos0();
+			stateShoot = CAN_SHOOT;
+		}
+		break;
+	default:
+		break;
+	}
+	LOG("CoolDown: %.2f", frameTime.ReadSec());
 
 	return true;
 }
@@ -130,7 +154,7 @@ void FireBall::Shoot()
 {
 	if (stateShoot == CAN_SHOOT){
 		stateShoot = SHOOT;
-		actualCooldown = cooldown;
+		frameTime.Start();
 		entityData->position = app->player->playerData.position;
 		entityData->position.y -= 30;
 		direc = app->player->playerData.direction;

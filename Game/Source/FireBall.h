@@ -45,7 +45,8 @@ private:
 	Animation* fireBallAnim = new Animation();
 	int texW, texH;
 	int cooldown;
-	int actualCooldown;
+
+	Timer frameTime;
 };
 
 #endif // __FIREBALL__H__

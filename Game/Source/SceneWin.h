@@ -47,7 +47,9 @@ private:
 
 	SDL_Texture* img;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
+	bool transition;
 
+	Timer timer;
 };
 
 #endif // !__SCENEWIN_H__

@@ -31,6 +31,7 @@ bool SceneLose::Awake()
 bool SceneLose::Start()
 {
 	app->SetLastScene((Module*)this);
+	transition = false;
 
 	app->audio->PlayMusic("Assets/Audio/Music/MusicLost.ogg");
 	img = app->tex->Load("Assets/Textures/end_screen.png");
@@ -46,6 +47,8 @@ bool SceneLose::Start()
 
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
+
+	timer.Start();
 	return true;
 }
 
@@ -69,8 +72,9 @@ bool SceneLose::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN 
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) {
+	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
+	{
 		app->fade->FadeToBlack(this, (Module*)app->scene, 60.f);
 		return true;
 	}

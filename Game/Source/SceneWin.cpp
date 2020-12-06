@@ -31,6 +31,7 @@ bool SceneWin::Awake()
 bool SceneWin::Start()
 {
 	app->SetLastScene((Module*)this);
+	transition = false;
 
 	app->audio->PlayMusic("Assets/Audio/Music/MusicVictory_1.ogg");
 	img = app->tex->Load("Assets/Textures/scene_win.png");
@@ -56,6 +57,8 @@ bool SceneWin::Start()
 
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
+
+	timer.Start();
 	return true;
 }
 
@@ -82,8 +85,8 @@ bool SceneWin::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) 
+	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
 		app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 60.f);
 		return true;
