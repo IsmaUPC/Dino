@@ -40,7 +40,7 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
-	void PropagateAStar(const iPoint&);
+	bool PropagateAStar(const iPoint&);
 	void ComputePathAStar(const iPoint& origin, const iPoint& destination);
 
 private:

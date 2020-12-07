@@ -96,10 +96,11 @@ uchar PathFinding::GetTileAt(const iPoint& pos) const
 //
 //	return ret;
 //}
-void PathFinding::PropagateAStar(const iPoint& destination)
+bool PathFinding::PropagateAStar(const iPoint& destination)
 {
 	// L12a: TODO 2: Implement AStar algorythm
 	// Consider the different heuristics
+	bool ret = true;
 	iPoint curr;
 	int newCost[4];
 	if (frontier.Pop(curr))
@@ -107,8 +108,8 @@ void PathFinding::PropagateAStar(const iPoint& destination)
 		iPoint neighbors[4];
 		neighbors[0].Create(curr.x + 0, curr.y + 1);
 		neighbors[1].Create(curr.x - 1, curr.y + 0);
-		neighbors[2].Create(curr.x + 1, curr.y + 0);
-		neighbors[3].Create(curr.x + 0, curr.y - 1);
+		neighbors[2].Create(curr.x + 0, curr.y - 1);
+		neighbors[3].Create(curr.x + 1, curr.y + 0);
 
 		int j = 0;
 		bool init = false;
@@ -146,36 +147,45 @@ void PathFinding::PropagateAStar(const iPoint& destination)
 			}
 		}
 	}
+	else ret = false;
+	return ret;
 }
 void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destination)
 {
 	//ResetPath(origin);
+	bool wasFind = true;
 	int count = 0;
 	while (destinationIsFind == false)
 	{
-		PropagateAStar(destination);
-		for (count; count < visited.Count(); count++)
+		if (PropagateAStar(destination))
 		{
-			if (visited.At(count)->data.x == destination.x && visited.At(count)->data.y == destination.y)
+			for (count; count < visited.Count(); count++)
 			{
-				destinationIsFind = true;
-				break;
+				if (visited.At(count)->data.x == destination.x && visited.At(count)->data.y == destination.y)
+				{
+					destinationIsFind = true;
+					break;
+				}
 			}
 		}
+		else destinationIsFind = true, wasFind = false;
 	}
 	destinationIsFind = false;
 	//PropagateAStar(destination);
-	lastPath.Clear();
-
-	lastPath.PushBack(destination);
-	lastPath.PushBack(breadcrumbs.At(count)->data);
-	for (int i = visited.Count() - 1; i > 0; i--)
+	if (wasFind == true)
 	{
-		if (visited.At(i)->data == breadcrumbs.At(count)->data)
+		lastPath.Clear();
+
+		lastPath.PushBack(destination);
+		lastPath.PushBack(breadcrumbs.At(count)->data);
+		for (int i = visited.Count() - 1; i > 0; i--)
 		{
-			lastPath.PushBack(breadcrumbs.At(i)->data);
-			count = i;
+			if (visited.At(i)->data == breadcrumbs.At(count)->data)
+			{
+				lastPath.PushBack(breadcrumbs.At(i)->data);
+				count = i;
+			}
 		}
+		lastPath.Flip();
 	}
- 	lastPath.Flip();
 }

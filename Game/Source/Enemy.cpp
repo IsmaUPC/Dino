@@ -158,10 +158,10 @@ void Enemy::MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, Typ
 		{
 			entityData->position.x += velocity;
 		}
-		if (nextAuxPositionEenemy.y > positionEnemyY && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
-		{
-			entityData->position.y += velocity + 1;
-		}
+		//if (nextAuxPositionEenemy.y > positionEnemyY && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
+		//{
+			//entityData->position.y += velocity + 1;
+		//}
 	}
 	else if (type == AIR_ENEMY)
 	{
@@ -343,7 +343,7 @@ bool Enemy::PostUpdate()
 	// Draw player in correct direction
 	if (entityData->direction == MoveDirection::WALK_L)
 		app->render->DrawTexture(entityData->texture, entityData->position.x, entityData->position.y, &rectEnemy);
-	if (entityData->direction == MoveDirection::WALK_R)
+	else if (entityData->direction == MoveDirection::WALK_R)
 		app->render->DrawTextureFlip(entityData->texture, entityData->position.x - (rectEnemy.w - idleAnim->frames->w), entityData->position.y, &rectEnemy);
 
 	return true;

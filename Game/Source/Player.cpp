@@ -76,7 +76,7 @@ bool Player::Start()
 	for (int i = 0; i < 4; i++)
 		damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
 
-	for (int j = 0; j < 3; j++)
+	//for (int j = 0; j < 1; j++)
 		for (int i = 2; i < 4; i++)
 			damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
 
@@ -197,7 +197,7 @@ void Player::SpeedAnimationCheck(float dt)
 		walkAnim->speed = (dt * 9) ;
 		jumpAnim->speed = (dt * 18) ;
 		atakAnim->speed = (dt * 5) ;
-		damageAnim->speed = (dt * 18) ;
+		damageAnim->speed = (dt * 10) ;
 		runAnim->speed = (dt * 9) ;
 	
 }
@@ -386,7 +386,7 @@ bool Player::PostUpdate()
 	// Draw player in correct direction
 	if (playerData.direction == MoveDirection::WALK_R )
 		app->render->DrawTexture(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
-	if (playerData.direction == MoveDirection::WALK_L)
+	else if (playerData.direction == MoveDirection::WALK_L)
 		app->render->DrawTextureFlip(playerData.texture, playerData.position.x -15, playerData.position.y - (rectPlayer.h - 10), &rectPlayer);
 	
 	endUpdate = true;
