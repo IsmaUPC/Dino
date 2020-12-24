@@ -203,7 +203,7 @@ void Scene::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
-		app->player->playerData.ship.position = app->player->positionInitial;
+		app->player->playerData.position = app->player->positionInitial;
 		app->player->playerData.direction = WALK_R;
 		Mix_RewindMusic();
 	}

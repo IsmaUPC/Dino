@@ -48,7 +48,7 @@ bool Coins::Awake(pugi::xml_node& config)
 
 bool Coins::PreUpdate()
 {
-	/*fPoint currentPositionPlayer = app->player->playerData.ship.position;
+	iPoint currentPositionPlayer = app->player->playerData.position;
 	iPoint auxPositionCoin[4];
 	for (int i = 0; i < 4; i++)
 	{
@@ -70,7 +70,6 @@ bool Coins::PreUpdate()
 		isCollected = true;
 		pendingToDelete = true;
 	}
-	*/
 	return false;
 }
 

@@ -46,8 +46,8 @@ bool Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
-		camera.x = (WINDOW_W / 2) + (app->player->playerData.ship.position.x * -1);
-		camera.y = (WINDOW_H / 2) + (app->player->playerData.ship.position.y * -1);
+		camera.x = (WINDOW_W / 2) + (app->player->playerData.position.x * -1);
+		camera.y = (WINDOW_H / 2) + (app->player->playerData.position.y * -1);
 	}
 
 	return ret;

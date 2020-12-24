@@ -98,9 +98,6 @@
     <ClCompile Include="Source\ModuleFonts.cpp">
       <Filter>Modules\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Space4HD.cpp">
-      <Filter>MotorEngine</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -214,9 +211,6 @@
     <ClInclude Include="Source\ModuleFonts.h">
       <Filter>Modules\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Space4HD.h">
-      <Filter>MotorEngine</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -242,9 +236,6 @@
     </Filter>
     <Filter Include="Modules\Managers">
       <UniqueIdentifier>{0ec4ad08-2606-4c2e-881b-6300a21d9e49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MotorEngine">
-      <UniqueIdentifier>{a5281ec5-fa53-4330-85a7-18c5e495dea1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

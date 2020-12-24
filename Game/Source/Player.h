@@ -2,15 +2,14 @@
 #define __PLAYER_H__
 
 #include "Entity.h"
-#include "Space4HD.h"
 
-struct PlayerData : public PhysicsEngine
+struct PlayerData
 {
-	//iPoint position;
+	iPoint position;
 	State state;
 	MoveDirection direction;
 	Animation* currentAnimation;
-	//float velocity;
+	float velocity ;
 	bool isJumped;
 	bool isJumpedAgain;
 	uint lives = 0;
@@ -21,10 +20,9 @@ struct PlayerData : public PhysicsEngine
 	iPoint* shootPointsCollision;
 
 	SDL_Texture* texture;
-	static const int numPoints = 5;
-	
-	fPoint pointsCollision[numPoints] = { { 0,0 }, {24,0}, {48 , 0},{48 ,-54 }, {0, -54} };
-	//fPoint pointsCollision[numPoints] = { { 0,54 }, {23,54}, {46 , 54},{46 ,-54 }, {-46, -54} };
+	static const int numPoints = 6;
+
+	iPoint pointsCollision[numPoints] = { { 0,0 },{45 , 0},{ 45,-26 },{45 ,-54 }, {0, -54},{0, -26} };
 
 };
 
@@ -67,7 +65,7 @@ public:
 
 	bool CleanUp();
 
-	bool CollisionPlayer(fPoint nextPosition);
+	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
 	//bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
@@ -101,10 +99,10 @@ private:
 	void MoveToDirection(int velocity);
 
 public:
-	//PhysicsEngine playerData;
+
 	PlayerData playerData;
 	bool godMode = false;
-	fPoint positionInitial;	
+	iPoint positionInitial;	
 	bool win= false;
 
 private:
@@ -116,15 +114,15 @@ private:
 	float velX = 0;
 
 	Animation* idleAnim= new Animation();
-	/*Animation* walkAnim = new Animation();
+	Animation* walkAnim = new Animation();
 	Animation* atakAnim = new Animation();
 	Animation* damageAnim = new Animation();
 	Animation* runAnim = new Animation( );
-	Animation* jumpAnim = new Animation( );*/
+	Animation* jumpAnim = new Animation( );
 
 	pugi::xml_document playerFile;
 	SString folder;
-	fPoint tmp;
+	iPoint tmp;
 
 	uint bonfireFx;
 

@@ -98,7 +98,7 @@ bool Enemy::Start()
 		entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { 83 , 0 }, { 83,-47 }, { 0 ,-47 } };
 	}
 
-	destination = app->player->playerData.ship.position;
+	destination = app->player->playerData.position;
 	return true;
 }
 
@@ -186,7 +186,7 @@ void Enemy::MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, Typ
 }
 void Enemy::CheckCollisionEnemyToPlayer()
 {
-	/*iPoint auxPositionEnemey[4];
+	iPoint auxPositionEnemey[4];
 	for (int i = 0; i < 4; i++)
 	{
 		auxPositionEnemey[i] = { entityData->position.x + entityData->pointsCollision[i].x,
@@ -195,15 +195,15 @@ void Enemy::CheckCollisionEnemyToPlayer()
 	iPoint collisionPlayer[6];
 	for (int i = 0; i < 6; i++)
 	{
-		collisionPlayer[i] = { app->player->playerData.ship.position.x + app->player->playerData.pointsCollision[i].x,
-			-48 + app->player->playerData.ship.position.y + app->player->playerData.pointsCollision[i].y };
+		collisionPlayer[i] = { app->player->playerData.position.x + app->player->playerData.pointsCollision[i].x,
+			-48 + app->player->playerData.position.y + app->player->playerData.pointsCollision[i].y };
 		
 	}
 	if (collision.IsInsidePolygons(collisionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
 		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionPlayer, app->player->playerData.numPoints))
 	{
 		if (!app->player->godMode)app->player->SetHit();
-	}*/
+	}
 }
 void Enemy::CheckCollisionEnemyToFireBall()
 {
@@ -256,7 +256,7 @@ void Enemy::MoveEnemyNULL(iPoint mapPositionEnemy)
 }
 bool Enemy::PreUpdate()
 {
-	/*iPoint currentPositionPlayer = app->player->playerData.ship.position;
+	iPoint currentPositionPlayer = app->player->playerData.position;
 	if (Radar(currentPositionPlayer) && entityData->state != DEADING)
 	{
 		entityData->state = WALK;
@@ -275,65 +275,64 @@ bool Enemy::PreUpdate()
 	CheckCollisionEnemyToFireBall();
 	if (!Radar(currentPositionPlayer) && entityData->state != DEADING)entityData->state = IDLE, entityData->currentAnimation = idleAnim, isDetected = false;
 	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())pendingToDelete = true, entityData->state = DEAD;
-	*/
 	return true;
 }
 
 bool Enemy::Update(float dt)
 {
-	//entityData->type == AIR_ENEMY && !Radar(app->player->playerData.ship.position)
-	//if (Radar(app->player->playerData.ship.position)) returning = false;
-	//entityData->state == WALK && Radar(app->player->playerData.ship.position)
-	//CalculateDistance(app->player->playerData.ship.position, positionInitial) < range
-	//if (entityData->state == WALK && Radar(app->player->playerData.ship.position))
-	//{
-	//	//Direction
-	//	if (entityData->position.x < app->player->playerData.ship.position.x)entityData->direction = WALK_R;
-	//	else entityData->direction = WALK_L;
-	//	//If player move
-	//	iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
-	//	iPoint worldPositionPalyer = app->player->playerData.ship.position;
-	//	iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
+	//entityData->type == AIR_ENEMY && !Radar(app->player->playerData.position)
+	//if (Radar(app->player->playerData.position)) returning = false;
+	//entityData->state == WALK && Radar(app->player->playerData.position)
+	//CalculateDistance(app->player->playerData.position, positionInitial) < range
+	if (entityData->state == WALK && Radar(app->player->playerData.position))
+	{
+		//Direction
+		if (entityData->position.x < app->player->playerData.position.x)entityData->direction = WALK_R;
+		else entityData->direction = WALK_L;
+		//If player move
+		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
+		iPoint worldPositionPalyer = app->player->playerData.position;
+		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
 
-	//	//Cerate Path
-	//	if(app->player->playerData.state!=HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionPalyer);
-	//	int i = GetCurrentPositionInPath(mapPositionEnemy);
+		//Cerate Path
+		if(app->player->playerData.state!=HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionPalyer);
+		int i = GetCurrentPositionInPath(mapPositionEnemy);
 
-	//	//Move Enemy
-	//	if (lastPath->At(i + 1) != NULL)
-	//	{
-	//		iPoint nextPositionEnemy = *lastPath->At(i + 1);
-	//		iPoint nextAuxPositionEenemy = MapToWorld(nextPositionEnemy);
-	//		MoveEnemy(nextAuxPositionEenemy, mapPositionEnemy, entityData->type);
-	//	}
-	//}
-	//else if (entityData->type == AIR_ENEMY && (CalculateDistance(app->player->playerData.ship.position, positionInitial) > range || !Radar(app->player->playerData.ship.position))) // if position enemy is diferent of init position, return to position initial
-	//{
-	//	//Direction
-	//	if (entityData->position.x < positionInitial.x)entityData->direction = WALK_R;
-	//	else entityData->direction = WALK_L;
+		//Move Enemy
+		if (lastPath->At(i + 1) != NULL)
+		{
+			iPoint nextPositionEnemy = *lastPath->At(i + 1);
+			iPoint nextAuxPositionEenemy = MapToWorld(nextPositionEnemy);
+			MoveEnemy(nextAuxPositionEenemy, mapPositionEnemy, entityData->type);
+		}
+	}
+	else if (entityData->type == AIR_ENEMY && (CalculateDistance(app->player->playerData.position, positionInitial) > range || !Radar(app->player->playerData.position))) // if position enemy is diferent of init position, return to position initial
+	{
+		//Direction
+		if (entityData->position.x < positionInitial.x)entityData->direction = WALK_R;
+		else entityData->direction = WALK_L;
 
-	//	//if(entityData->state != RETURN)entityData->state = RETURNING;
-	//	iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
-	//	iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y);
-	//	if (entityData->position != positionInitial && entityData->state!=DEADING)
-	//	{
-	//		entityData->currentAnimation = walkAnim;
-	//		//if (returning == false)
-	//		//{
-	//		if (app->player->playerData.state != HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionInitial);
-	//		//returning = true;
-	//	//}
-	//		int i = GetCurrentPositionInPath(mapPositionEnemy);
-	//		if (lastPath->At(i + 1) != NULL)
-	//		{
-	//			iPoint nextPositionEnemy = *lastPath->At(i + 1);
-	//			iPoint nextAuxPositionEenemy = MapToWorld(nextPositionEnemy);
-	//			MoveEnemy(nextAuxPositionEenemy, mapPositionEnemy, entityData->type);
-	//		}
-	//	}
-	//}
-	//entityData->currentAnimation->Update();
+		//if(entityData->state != RETURN)entityData->state = RETURNING;
+		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
+		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y);
+		if (entityData->position != positionInitial && entityData->state!=DEADING)
+		{
+			entityData->currentAnimation = walkAnim;
+			//if (returning == false)
+			//{
+			if (app->player->playerData.state != HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionInitial);
+			//returning = true;
+		//}
+			int i = GetCurrentPositionInPath(mapPositionEnemy);
+			if (lastPath->At(i + 1) != NULL)
+			{
+				iPoint nextPositionEnemy = *lastPath->At(i + 1);
+				iPoint nextAuxPositionEenemy = MapToWorld(nextPositionEnemy);
+				MoveEnemy(nextAuxPositionEenemy, mapPositionEnemy, entityData->type);
+			}
+		}
+	}
+	entityData->currentAnimation->Update();
 	return true;
 }
 bool Enemy::PostUpdate()

@@ -48,7 +48,7 @@ private:
 	bool returning;
 	//Timer
 	Timer* checkDestination = new Timer();
-	fPoint destination;
+	iPoint destination;
 	iPoint positionInitial;
 	//We store the created path here
 	DynArray<iPoint>* lastPath;
