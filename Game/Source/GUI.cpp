@@ -109,13 +109,13 @@ bool GUI::PostUpdate()
 	//ChecKPoints HUD
 	rectGUI = buttonEAnim->GetCurrentFrame();
 	if (app->player->GetInCheckPoint())
-		app->render->DrawTexture(arrowTex, app->player->playerData.position.x+10, app->player->playerData.position.y - 90, &rectGUI);
+		app->render->DrawTexture(arrowTex, app->player->playerData.ship.position.x+10, app->player->playerData.ship.position.y - 90, &rectGUI);
 	
 	rectGUI = arrowAnim->GetCurrentFrame();
 	if (app->player->GetCheckPointMove())
 	{
-		app->render->DrawTexture(arrowTex, app->player->playerData.position.x + 60, app->player->playerData.position.y - 40, &rectGUI);
-		app->render->DrawTextureFlip(arrowTex,app->player->playerData.position.x - 45, app->player->playerData.position.y - 40, &rectGUI);
+		app->render->DrawTexture(arrowTex, app->player->playerData.ship.position.x + 60, app->player->playerData.ship.position.y - 40, &rectGUI);
+		app->render->DrawTextureFlip(arrowTex,app->player->playerData.ship.position.x - 45, app->player->playerData.ship.position.y - 40, &rectGUI);
 	}
 
 	//Coins

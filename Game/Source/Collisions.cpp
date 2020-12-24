@@ -3,7 +3,7 @@
 using namespace std;
 #define INF 1000 
 
-bool Collisions::OnSegment(iPoint p, iPoint q, iPoint r)
+bool Collisions::OnSegment(fPoint p, fPoint q, fPoint r)
 {
 	if (q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
 		q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y))
@@ -16,7 +16,7 @@ bool Collisions::OnSegment(iPoint p, iPoint q, iPoint r)
 // 0 --> p, q and r are colinear 
 // 1 --> Clockwise 
 // 2 --> Counterclockwise 
-int Collisions::Orientation(iPoint p, iPoint q, iPoint r)
+int Collisions::Orientation(fPoint p, fPoint q, fPoint r)
 {
 	int val = (q.y - p.y) * (r.x - q.x) -
 		(q.x - p.x) * (r.y - q.y);
@@ -27,7 +27,7 @@ int Collisions::Orientation(iPoint p, iPoint q, iPoint r)
 
 // The function that returns true if line segment 'p1q1' 
 // and 'p2q2' intersect. 
-bool Collisions::DoIntersect(iPoint p1, iPoint q1, iPoint p2, iPoint q2)
+bool Collisions::DoIntersect(fPoint p1, fPoint q1, fPoint p2, fPoint q2)
 {
 	// Find the four orientations needed for general and 
 	// special cases 
@@ -57,13 +57,13 @@ bool Collisions::DoIntersect(iPoint p1, iPoint q1, iPoint p2, iPoint q2)
 }
 
 // Returns true if the point p lies inside the polygon[] with n vertices 
-bool Collisions::IsInside(iPoint polygon[], int n, iPoint p)
+bool Collisions::IsInside(fPoint polygon[], int n, fPoint p)
 {
 	// There must be at least 3 vertices in polygon[] 
 	if (n < 3)  return false;
 
 	// Create a point for line segment from p to infinite 
-	iPoint extreme = { INF, p.y };
+	fPoint extreme = { INF, p.y };
 
 	// Count intersections of the above line with sides of polygon 
 	int count = 0, i = 0;
@@ -90,17 +90,17 @@ bool Collisions::IsInside(iPoint polygon[], int n, iPoint p)
 	return count & 1;  // Same as (count%2 == 1) 
 }
 // Returns true if the polygon1 is inside the polygon2 
-bool Collisions::IsInsidePolygons(iPoint polygon[],int n, iPoint polygon2[], int n2)
+bool Collisions::IsInsidePolygons(fPoint polygon[],int n, fPoint polygon2[], int n2)
 {
 	// There must be at least 3 vertices in polygon[] 
 	if (n < 3 || n2 < 3)  return false;
-	iPoint p;
+	fPoint p;
 	int count = 0;
 	for ( int j = 0; j < n2; j++)
 	{
 		p = polygon2[j];
 		// Create a point for line segment from p to infinite 
-		iPoint extreme = { INF, p.y };
+		fPoint extreme = { INF, p.y };
 
 		// Count intersections of the above line with sides of polygon 
 		int i = 0;
