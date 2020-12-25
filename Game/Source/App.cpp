@@ -58,16 +58,16 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(player);
-	//AddModule(enemy);
-	AddModule(entityManager);
-	//AddModule(coins);
 	AddModule(sceneLogo);
 	AddModule(scene);
 	AddModule(sceneIntro);
 	AddModule(sceneWin);
 	AddModule(sceneLose);
 	AddModule(sceneLevel2);
+	AddModule(player);
+	//AddModule(enemy);
+	AddModule(entityManager);
+	//AddModule(coins);
 	AddModule(fonts);
 	AddModule(fade);
 	AddModule(pathfinding);
@@ -179,6 +179,7 @@ bool App::Update()
 
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) changeFPS = !changeFPS;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) pause = !pause;
 	
 	if(changeFPS){
 		cappedMs = 1000 / 30;
@@ -199,7 +200,7 @@ bool App::Update()
 	if(ret == true)
 		ret = PreUpdate();
 
-	if(ret == true)
+	if(ret == true && !pause)
 		ret = DoUpdate();
 
 	if(ret == true)

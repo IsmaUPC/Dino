@@ -124,13 +124,12 @@ bool Player::SaveState(pugi::xml_node& player) const
 
 bool Player::PreUpdate() 
 {
-	PlayerMoveAnimation();
-
 	return true;
 }
 
 bool Player::Update(float dt) 
 {
+	PlayerMoveAnimation();
 	SpeedAnimationCheck(dt);
 	playerData.velocity = floor(1000 * dt) / 4;
 	gravity = ceil(600 * dt);
@@ -380,7 +379,6 @@ iPoint Player::IPointMapToWorld(iPoint ipoint)
 
 bool Player::PostUpdate() 
 {
-
 	SDL_Rect rectPlayer;
 	rectPlayer = playerData.currentAnimation->GetCurrentFrame();
 	// Draw player in correct direction

@@ -254,7 +254,7 @@ void Enemy::MoveEnemyNULL(iPoint mapPositionEnemy)
 			entityData->position.x += entityData->velocity;
 	}
 }
-bool Enemy::PreUpdate()
+void Enemy::CheckCollisions()
 {
 	iPoint currentPositionPlayer = app->player->playerData.position;
 	if (Radar(currentPositionPlayer) && entityData->state != DEADING)
@@ -275,11 +275,16 @@ bool Enemy::PreUpdate()
 	CheckCollisionEnemyToFireBall();
 	if (!Radar(currentPositionPlayer) && entityData->state != DEADING)entityData->state = IDLE, entityData->currentAnimation = idleAnim, isDetected = false;
 	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())pendingToDelete = true, entityData->state = DEAD;
+
+}
+bool Enemy::PreUpdate()
+{
 	return true;
 }
 
 bool Enemy::Update(float dt)
 {
+	CheckCollisions();
 	//entityData->type == AIR_ENEMY && !Radar(app->player->playerData.position)
 	//if (Radar(app->player->playerData.position)) returning = false;
 	//entityData->state == WALK && Radar(app->player->playerData.position)

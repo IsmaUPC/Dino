@@ -107,16 +107,9 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-
-
 	//DEBUG KEYS
 	DebugKeys();
-
-	//Draw Background
-	Parallax();
-
-	// Draw map
-	app->map->Draw();
+	app->map->checKpointsMap.checkPointOnAnim->Update();
 	if (app->input->GetKey(SDL_SCANCODE_M)==KEY_UP)
 	{
 		app->input->GetMousePosition(app->map->tileDestiny.x, app->map->tileDestiny.y);
@@ -147,12 +140,17 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	//Draw Background
+	Parallax();
+	// Draw map
+	app->map->Draw();
+
 	bool ret = true;
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	//if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		//ret = false;
 	if (victory == true)
 	{
 		victory = false;
@@ -166,6 +164,7 @@ bool Scene::PostUpdate()
 		return true;
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
+	
 	return ret;
 }
 

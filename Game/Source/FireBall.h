@@ -58,6 +58,8 @@ private:
 	uint hitFx;
 
 	Timer frameTime;
+	Timer auxTimePause;
+	bool stopTime = false;
 };
 
 #endif // __FIREBALL__H__

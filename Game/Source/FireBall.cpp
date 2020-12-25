@@ -91,13 +91,13 @@ bool FireBall::Update(float dt)
 		else
 			entityData->position.x -= entityData->velocity;
 
-		if (frameTime.ReadSec()>=cooldown) 
+		if (frameTime.ReadSec()>=cooldown && !stopTime)
 		{
 			BackToPos0();
 		}
 		break;
 	case WAIT:
-		if (frameTime.ReadSec() >=cooldown) 
+		if (frameTime.ReadSec() >=cooldown && !stopTime)
 		{
 			BackToPos0();
 			stateShoot = CAN_SHOOT;
@@ -114,13 +114,27 @@ bool FireBall::Update(float dt)
 
 	if (CheckCollision(app->map->WorldToMap(entityData->position.x, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
 	if (CheckCollision(app->map->WorldToMap(entityData->position.x+13, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
-
+	if (startexplosion)
+	{
+		if (explosionAnim->HasFinished()) {
+			startexplosion = false;
+		}
+	}
 	return true;
 }
 
 bool FireBall::PostUpdate()
 {
-
+	if (app->GetIsPause() && !stopTime)
+	{
+		auxTimePause.Start();
+		stopTime = true;
+	}
+	if (!app->GetIsPause() && stopTime)
+	{
+		frameTime.startTime += auxTimePause.Read();
+		stopTime = false;
+	}
 	SDL_Rect rect;
 	rect = fireBallAnim->GetCurrentFrame();
 	if (direc== MoveDirection::WALK_R)
@@ -130,9 +144,7 @@ bool FireBall::PostUpdate()
 
 	if (startexplosion)
 	{
-		if (explosionAnim->HasFinished()) {
-			startexplosion = false;
-		}
+		
 		rect = explosionAnim->GetCurrentFrame();
 
 		app->render->DrawTexture(explsionTex, explosionPos.x, explosionPos.y, &rect);

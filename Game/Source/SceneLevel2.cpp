@@ -122,13 +122,7 @@ bool SceneLevel2::Update(float dt)
 {
 	//DEBUG KEYS
 	DebugKeys();
-
-	//Draw Background
-	Parallax();
-
-	// Draw map
-	app->map->Draw();
-
+	app->map->checKpointsMap.checkPointOnAnim->Update();
 	iPoint vec;
 	vec.x = 0, vec.y = 0;
 	app->input->GetMousePosition(vec.x, vec.y);
@@ -150,12 +144,17 @@ bool SceneLevel2::Update(float dt)
 // Called each loop iteration
 bool SceneLevel2::PostUpdate()
 {
+	//Draw Background
+	Parallax();
+	// Draw map
+	app->map->Draw();
+
 	bool ret = true;
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	//if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		//ret = false;
 	if (victory == true)
 	{
 		victory = false;
@@ -169,6 +168,7 @@ bool SceneLevel2::PostUpdate()
 		return true;
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
+	
 	return ret;
 }
 

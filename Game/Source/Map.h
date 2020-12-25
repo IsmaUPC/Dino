@@ -208,6 +208,7 @@ public:
 
 	MapData data;
 	iPoint tileDestiny;
+	CheckPoints checKpointsMap;
 private:
 
     pugi::xml_document mapFile;
@@ -231,8 +232,6 @@ private:
 	bool finishAStar = false;	// Detect when reached goal
 
 	SDL_Texture* tileX = nullptr;
-
-	CheckPoints checKpointsMap;
 
 };
 

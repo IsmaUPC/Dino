@@ -294,7 +294,7 @@ void Map::Draw()
 	}
 	
 	//CheckPoints
-	checKpointsMap.checkPointOnAnim->Update();
+	
 	for (int i = 0; i < checKpointsMap.list.Count(); i++)
 	{
 		iPoint pos = checKpointsMap.list.At(i)->data->pos;

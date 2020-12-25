@@ -16,6 +16,8 @@ public:
 
 	bool Start();
 
+	void CheckCollisions();
+
 	bool PreUpdate();
 
 	void CheckCollisionEnemyToPlayer();

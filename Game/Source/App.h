@@ -76,6 +76,8 @@ public:
 	int GetFramerate();
 
 	int GetFramesOnLastSecond() { return framesOnLastSecond; };
+	bool GetIsPause() { return pause; };
+
 private:
 
 	// Load config file
@@ -99,6 +101,7 @@ private:
 	// Load / Save
 	bool LoadGame(const SString _filename);
 	bool SaveGame(const SString _filename) const;
+
 
 
 public:
@@ -164,7 +167,7 @@ private:
 
 	float fPS = 0;
 	bool changeFPS=false;
-
+	bool pause = false;
 	Module* lastScene;
 };
 
