@@ -3,9 +3,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "SceneWin.h"
-#include "ModuleFadeToBlack.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
@@ -15,6 +13,7 @@
 SceneWin::SceneWin()
 {
 	name.Create("sceneWin");
+	active = true;
 }
 
 SceneWin::~SceneWin()
@@ -92,7 +91,7 @@ bool SceneWin::PostUpdate()
 	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
-		app->fade->FadeToBlack(this, (Module*)app->sceneLevel2, 60.f);
+		TransitionToScene(SceneType::LEVEL2);
 		return true;
 	}
 

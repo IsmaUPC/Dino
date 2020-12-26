@@ -1,7 +1,7 @@
 #ifndef __SCENELOSE_H__
 #define __SCENELOSE_H__
 
-#include "Module.h"
+#include "SceneControl.h"
 #include "Animation.h"
 
 struct SDL_Texture;
@@ -13,7 +13,7 @@ struct AnimationEnd
 	SDL_Texture* texture;
 };
 
-class SceneLose : public Module
+class SceneLose : public SceneControl
 {
 public:
 

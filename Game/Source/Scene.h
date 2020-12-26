@@ -1,7 +1,7 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "Module.h"
+#include "SceneControl.h"
 #include "Animation.h"
 #include "Point.h"
 
@@ -16,7 +16,7 @@ struct AnimationFather
 	SDL_Texture* texture;
 };
 
-class Scene : public Module
+class Scene : public SceneControl
 {
 public:
 
@@ -44,7 +44,7 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
-	 int GetNumThisScene()
+	int GetNumThisScene()
 	{
 		return numThisScene;
 	}

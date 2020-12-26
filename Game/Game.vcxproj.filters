@@ -53,9 +53,6 @@
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Modules\Gameplay</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Entity.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
@@ -108,6 +105,12 @@
       <Filter>Modules\Gameplay\Scenas</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneWin.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Modules\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
       <Filter>Modules\Gameplay\Scenas</Filter>
     </ClCompile>
   </ItemGroup>
@@ -240,6 +243,9 @@
     </ClInclude>
     <ClInclude Include="Source\SceneControl.h">
       <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneManager.h">
+      <Filter>Modules\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,9 @@
 #ifndef __SCENEINTRO_H__
 #define __SCENEINTRO_H__
 
-#include "Module.h"
+#include "Scene.h"
 #include "Animation.h"
+#include "GuiButton.h"
 
 struct SDL_Texture;
 
@@ -13,7 +14,7 @@ struct AnimationIntro
 	SDL_Texture* texture;
 };
 
-class SceneIntro : public Module
+class SceneIntro : public SceneControl
 {
 public:
 
@@ -39,7 +40,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-
+	bool OnGuiMouseClickEvent(GuiControl* control);
 
 private:
 	AnimationIntro animationIntro;
@@ -49,7 +50,11 @@ private:
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	bool transition;
 
-	Timer timer;
+	//Timer timer;
+
+	GuiButton* btnStart;
+	GuiButton* btnExit;
+	GuiButton* btnScrollBar;
 };
 
 #endif // __SCENEINTRO_H__

@@ -3,13 +3,10 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "Scene.h"
 #include "Player.h"
 #include "EntityManager.h"
-#include "SceneIntro.h"
 #include "Map.h"
-#include "ModuleFadeToBlack.h"
 #include "Pathfinding.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
@@ -17,8 +14,9 @@
 #include "Defs.h"
 #include "Log.h"
 
-Scene::Scene() : Module()
+Scene::Scene()
 {
+	active = true;
 	name.Create("scene");
 }
 
@@ -154,13 +152,13 @@ bool Scene::PostUpdate()
 	if (victory == true)
 	{
 		victory = false;
-		app->fade->FadeToBlack(this, (Module*)app->sceneWin, 0);
+		TransitionToScene(SceneType::WIN);
 		return true;
 	}
 	if (lose == true)
 	{
 		lose = false;
-		app->fade->FadeToBlack(this, (Module*)app->sceneLose, 0);
+		TransitionToScene(SceneType::LOSE);
 		return true;
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);

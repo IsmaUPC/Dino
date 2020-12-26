@@ -3,7 +3,7 @@
 
 #include "Input.h"
 #include "Render.h"
-#include "Scene.h"
+#include "SceneControl.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -65,14 +65,14 @@ public:
         section = { 0, 0, 0, 0 };
     }
 
-    void SetObserver(Scene* module)
+    void SetObserver(SceneControl* module)
     {
         observer = module;
     }
 
     void NotifyObserver()
     {
-       // observer->OnGuiMouseClickEvent(this);
+       observer->OnGuiMouseClickEvent(this);
     }
 
 public:
@@ -88,9 +88,9 @@ public:
     SDL_Texture* texture;   // Texture atlas reference
     SDL_Rect section;       // Texture atlas base section
 
-    //Font font;              // Text font
+    //Font font;            // Text font
 
-    Scene* observer;        // Observer module (it should probably be an array/list)
+    SceneControl* observer;        // Observer module (it should probably be an array/list)
 };
 
 #endif // __GUICONTROL_H__

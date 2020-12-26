@@ -4,18 +4,19 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-#include "SceneLogo.h"
-#include "Scene.h"
-#include "SceneIntro.h"
-#include "SceneWin.h"
-#include "SceneLose.h"
-#include "SceneLevel2.h"
+//#include "SceneLogo.h"
+//#include "Scene.h"
+//#include "SceneIntro.h"
+//#include "SceneWin.h"
+//#include "SceneLose.h"
+//#include "SceneLevel2.h"
 #include "Map.h"
 #include "Player.h"
 //#include "Enemy.h"
 //#include "Coins.h"
 #include "Entity.h"
 #include "EntityManager.h"
+#include "SceneManager.h"
 #include "ModuleFadeToBlack.h"
 #include "Pathfinding.h"
 #include "ModuleFonts.h"
@@ -40,13 +41,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player();
 	//enemy = new Enemy();
 	entityManager = new EntityManager();
+	sceneManager = new SceneManager(input, render, tex);
 	//coins = new Coins();
-	sceneLogo = new SceneLogo();
+	/*sceneLogo = new SceneLogo();
 	scene = new Scene();
 	sceneIntro = new SceneIntro();
 	sceneWin = new SceneWin();
 	sceneLose = new SceneLose();
-	sceneLevel2 = new SceneLevel2();
+	sceneLevel2 = new SceneLevel2();*/
 	fade = new ModuleFadeToBlack(); 
 	pathfinding = new PathFinding();
 	fonts = new ModuleFonts();
@@ -58,26 +60,28 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(sceneLogo);
-	AddModule(scene);
-	AddModule(sceneIntro);
-	AddModule(sceneWin);
-	AddModule(sceneLose);
-	AddModule(sceneLevel2);
+	//AddModule(sceneManager);
+	//AddModule(sceneLogo);
+	//AddModule(scene);
+	//AddModule(sceneIntro);
+	//AddModule(sceneWin);
+	//AddModule(sceneLose);
+	//AddModule(sceneLevel2);
 	AddModule(player);
 	//AddModule(enemy);
 	AddModule(entityManager);
+	AddModule(sceneManager);
 	//AddModule(coins);
 	AddModule(fonts);
 	AddModule(fade);
 	AddModule(pathfinding);
 
 	//actives
-	sceneIntro->active = false;
+	/*sceneIntro->active = false;
 	scene->active = false;
 	sceneWin->active = false;
 	sceneLose->active = false;
-	sceneLevel2->active = false;
+	sceneLevel2->active = false;*/
 	player->active = false;
 	//enemy->active = false;
 	map->active = false;
@@ -342,10 +346,10 @@ bool App::PostUpdate()
 		ret = item->data->PostUpdate();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		app->fade->FadeToBlack(lastScene,(Module*)app->scene,0.f);
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		app->fade->FadeToBlack(lastScene, (Module*)app->sceneLevel2, 0.f);
+	//if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	//	app->fade->FadeToBlack(lastScene,(Module*)app->scene,0.f);
+	//if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	//	app->fade->FadeToBlack(lastScene, (Module*)app->sceneLevel2, 0.f);
 
 	return ret;
 }

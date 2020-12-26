@@ -3,18 +3,27 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "SceneIntro.h"
-#include "ModuleFadeToBlack.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
 #include "Defs.h"
 #include "Log.h"
 
-SceneIntro::SceneIntro() : Module()
+SceneIntro::SceneIntro()
 {
+	active = true;
 	name.Create("sceneIntro");
+
+	// GUI: Initialize required controls for the screen
+	btnStart = new GuiButton(1, { 1280 / 2 - 300 / 2, 300, 300, 80 }, "START");
+	btnStart->SetObserver(this);
+
+	btnExit = new GuiButton(2, { 1280 / 2 - 300 / 2, 400, 300, 80 }, "EXIT");
+	btnExit->SetObserver(this);
+
+	btnScrollBar = new GuiButton(3, { 100, 100, 100, 50 }, "VALUE");
+	btnScrollBar->SetObserver(this);
 }
 
 SceneIntro::~SceneIntro()
@@ -48,7 +57,7 @@ bool SceneIntro::Start()
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
 
-	timer.Start();
+	//timer.Start();
 
 	return true;
 }
@@ -79,10 +88,10 @@ bool SceneIntro::PostUpdate()
 		//ret = false;
 
 	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN 
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN)&& !transition && timer.ReadSec()>CCOOLDOWNSCENE) 
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN))//has quitado un timer 
 	{
 		transition = true;
-		app->fade->FadeToBlack(this, (Module*)app->scene, 60.f);
+		TransitionToScene(SceneType::LEVEL1);
 		return true;
 	}
 
@@ -102,5 +111,19 @@ bool SceneIntro::CleanUp()
 	app->tex->UnLoad(animationIntro.texture);
 	bgIntro = nullptr;
 	active = false;
+	return true;
+}
+bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
+{
+	switch (control->type)
+	{
+	case GuiControlType::BUTTON:
+	{
+		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);
+		//else if (control->id == 2) return false; // TODO: Exit request
+	}
+	default: break;
+	}
+
 	return true;
 }

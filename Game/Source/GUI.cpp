@@ -9,6 +9,7 @@
 
 GUI::GUI() : Entity()
 {
+	active = true;
 	name.Create("GUI");
 }
 

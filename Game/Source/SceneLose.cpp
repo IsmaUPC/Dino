@@ -3,17 +3,16 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "SceneLose.h"
-#include "ModuleFadeToBlack.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
 #include "Defs.h"
 #include "Log.h"
 
-SceneLose::SceneLose() : Module()
+SceneLose::SceneLose()
 {
+	active = true;
 	name.Create("sceneLose");
 }
 
@@ -77,7 +76,7 @@ bool SceneLose::PostUpdate()
 	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
-		app->fade->FadeToBlack(this, (Module*)app->scene, 60.f);
+		TransitionToScene(SceneType::LEVEL1);
 		return true;
 	}
 

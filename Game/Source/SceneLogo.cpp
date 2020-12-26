@@ -2,17 +2,16 @@
 #include "Input.h"
 #include "Textures.h"
 #include "Render.h"
-#include "Window.h"
 #include "SceneLogo.h"
-#include "ModuleFadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #define LOGO_FADE_SPEED 100.0f
 
-SceneLogo::SceneLogo() : Module()
+SceneLogo::SceneLogo()
 {
+	active = true;
 	name.Create("sceneLogo");
 }
 
@@ -37,6 +36,7 @@ bool SceneLogo::Start()
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
 	logo = {imgX,imgY,imgW,imgH};
+
 	state = 0;
 	timeCounter = 0.0f;
 	logoAlpha = 0.0f;
@@ -79,7 +79,7 @@ bool SceneLogo::Update(float dt)
 		if (logoAlpha < 0.0f)
 		{
 			logoAlpha = 0.0f;
-			app->fade->FadeToBlack(this, (Module*)app->sceneIntro, 60.f);
+			TransitionToScene(SceneType::INTRO);
 		}
 	}
 

@@ -1,7 +1,7 @@
 #ifndef __SCENEWIN_H__
 #define __SCENEWIN_H__
 
-#include "Module.h"
+#include "SceneControl.h"
 #include "Animation.h"
 
 struct SDL_Texture;
@@ -13,7 +13,7 @@ struct AnimationWin
 	SDL_Texture* texture;
 };
 
-class SceneWin :public Module
+class SceneWin :public SceneControl
 {
 public:
 

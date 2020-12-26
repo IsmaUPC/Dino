@@ -1,10 +1,9 @@
 #ifndef __SCENE_LEVEL_2_H__
 #define __SCENE_LEVEL_2_H__
 
-#include "Module.h"
-#include "Animation.h"
+#include "SceneControl.h"
 #include "Point.h"
-
+#include "Animation.h"
 #include "PugiXml\src\pugixml.hpp"
 
 struct SDL_Texture;
@@ -16,7 +15,7 @@ struct AnimationFather2
 	SDL_Texture* texture;
 };
 
-class SceneLevel2 : public Module
+class SceneLevel2 : public SceneControl
 {
 public:
 

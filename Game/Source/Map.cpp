@@ -5,6 +5,7 @@
 #include "SceneLevel2.h"
 #include "Map.h"
 #include "EntityManager.h"
+#include "SceneManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -257,8 +258,8 @@ bool Map::Awake(pugi::xml_node& config)
 
     folder.Create(config.child("folder").child_value());
 
-	drawColl = app->scene->GetDebugCollaider();
-	drawColl2 = app->sceneLevel2->GetDebugCollaider();
+	drawColl = app->sceneManager->scene->GetDebugCollaider();
+	drawColl2 = app->sceneManager->sceneLevel2->GetDebugCollaider();
 
 
 
