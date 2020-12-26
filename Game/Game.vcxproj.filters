@@ -35,9 +35,6 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Modules\Gameplay</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Modules\Application</Filter>
     </ClCompile>
@@ -46,21 +43,6 @@
     </ClCompile>
     <ClCompile Include="Source\ModuleFadeToBlack.cpp">
       <Filter>Modules\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneIntro.cpp">
-      <Filter>Modules\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneLose.cpp">
-      <Filter>Modules\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneWin.cpp">
-      <Filter>Modules\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneLogo.cpp">
-      <Filter>Modules\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneLevel2.cpp">
-      <Filter>Modules\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Source\PerfTimer.cpp">
       <Filter>Utils</Filter>
@@ -97,6 +79,36 @@
     </ClCompile>
     <ClCompile Include="Source\ModuleFonts.cpp">
       <Filter>Modules\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiManager.cpp">
+      <Filter>Modules\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiButton.cpp">
+      <Filter>Modules\GuiControls</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiCheckBox.cpp">
+      <Filter>Modules\GuiControls</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiSlider.cpp">
+      <Filter>Modules\GuiControls</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneIntro.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneLevel2.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneLogo.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneLose.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneWin.cpp">
+      <Filter>Modules\Gameplay\Scenas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,26 +163,11 @@
     <ClInclude Include="Source\Player.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene.h">
-      <Filter>Modules\Gameplay</Filter>
-    </ClInclude>
     <ClInclude Include="Source\App.h">
       <Filter>Modules\Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleFadeToBlack.h">
       <Filter>Modules\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneIntro.h">
-      <Filter>Modules\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneLose.h">
-      <Filter>Modules\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneWin.h">
-      <Filter>Modules\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneLogo.h">
-      <Filter>Modules\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="PQueue.h">
       <Filter>Utils</Filter>
@@ -182,9 +179,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy.h">
-      <Filter>Modules\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneLevel2.h">
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Source\Entity.h">
@@ -211,6 +205,42 @@
     <ClInclude Include="Source\ModuleFonts.h">
       <Filter>Modules\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>Modules\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiControl.h">
+      <Filter>Modules\GuiControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiButton.h">
+      <Filter>Modules\GuiControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiCheckBox.h">
+      <Filter>Modules\GuiControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiSlider.h">
+      <Filter>Modules\GuiControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneIntro.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLevel2.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLogo.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLose.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneWin.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneControl.h">
+      <Filter>Modules\Gameplay\Scenas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -236,6 +266,12 @@
     </Filter>
     <Filter Include="Modules\Managers">
       <UniqueIdentifier>{0ec4ad08-2606-4c2e-881b-6300a21d9e49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\GuiControls">
+      <UniqueIdentifier>{e4bbf6e8-2865-480e-afef-10efaefa9158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Gameplay\Scenas">
+      <UniqueIdentifier>{1583aee1-b8bd-42dc-8c9a-3647825b204e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
