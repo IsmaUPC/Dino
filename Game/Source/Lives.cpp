@@ -7,7 +7,7 @@
 
 Lives::Lives(iPoint pos) : Entity()
 {
-	name.Create("Lives");
+	name.Create("lives");
 
 	position = pos;
 }
@@ -22,7 +22,7 @@ bool Lives::Start()
 	active = true;
 	texture = app->tex->Load("Assets/Textures/lives.png");
 
-	liveFx = app->audio->LoadFx("Assets/Audio/Fx/live.wav");
+	liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
 
 	numPoints = 4;
 	pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
