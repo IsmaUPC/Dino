@@ -159,7 +159,6 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			if (currentScene == 1)TransitionToScene(SceneType::LEVEL1);
 			if (currentScene == 2)TransitionToScene(SceneType::LEVEL2);
 			isContinue = true;
-
 		}
 		else if (control->id == 3) ComprobeState(3);
 		else if (control->id == 4)
@@ -207,6 +206,13 @@ bool SceneIntro::LoadState(pugi::xml_node& data)
 	return true;
 }
 
+//bool SceneIntro::SaveState(pugi::xml_node& data) const
+//{
+//	data.child("level").attribute("lvl").set_value(0);
+//	
+//	return true;
+//}
+
 void SceneIntro::RemoveState(pugi::xml_node& data)const
 {
 	data.child("level").attribute("lvl").set_value(0);
@@ -228,7 +234,7 @@ bool SceneIntro::ComprobeState(int id)
 		sceneStateFile = sceneFile.first_child();
 		sceneStateFile = sceneStateFile.child("scene_manager");
 		if(id==2)LoadState(sceneStateFile);
-		else if (id == 3)RemoveState(sceneStateFile);
+		else if (id == 3)RemoveState(sceneStateFile), currentScene=0;
 	}
 	sceneFile.reset();
 	return ret;

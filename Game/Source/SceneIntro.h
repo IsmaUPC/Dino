@@ -45,6 +45,7 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	bool LoadState(pugi::xml_node& data);
+	//bool SaveState(pugi::xml_node& data)const;
 
 	void RemoveState(pugi::xml_node& data)const;
 	bool ComprobeState(int id);
