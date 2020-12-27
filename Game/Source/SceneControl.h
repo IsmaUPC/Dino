@@ -84,7 +84,8 @@ public:
 
     bool transitionRequired;
     SceneType nextScene;
-	int currentScene=0;
+	int currentScene = 0;
+	bool isContinue = false;
 };
 
 #endif // __SCENECONTROL_H__

@@ -1,75 +1,129 @@
 #include "GuiSlider.h"
+#include "Log.h"
 
-GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
+GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int min, int max) : GuiControl(GuiControlType::SLIDER, id)
 {
     this->bounds = bounds;
     this->text = text;
-	minValue = 0;
-	maxValue = 100;
-	value = 50;
+
+    if (min > max)
+    {
+        this->minValue = max;
+        this->maxValue = min;
+        LOG("The minimum value is higher than the maximum, they have been changed to avoid errors");
+    }
+    else
+    {
+        this->minValue = min;
+        this->maxValue = max;
+    }
+
+    this->value = minValue;
+    //Permite colocar el slider en la posicion que del valor inicial
+    float X, h, h1, h2, h3, i;
+    h1 = (((bounds.w - slider.w) + minValue) * (maxValue - minValue));
+    h2 = maxValue - minValue;
+    h3 = (bounds.w - slider.w) + minValue;
+
+    h = (h1 * h2) / h3;
+    i = (((bounds.w - slider.w) + minValue) * (maxValue - minValue)) * value;
+    X = (i / h) + (bounds.x + (slider.w / 2));
+
+    slider.x = (int)X;
+    slider.y = bounds.y;
+    slider.w = bounds.w / 10;
+    slider.h = bounds.h;
 }
 
 GuiSlider::~GuiSlider()
 {
 }
 
-bool GuiSlider::Update(Input* input, float dt)
+bool GuiSlider::Update(float dt)
 {
     if (state != GuiControlState::DISABLED)
     {
         int mouseX, mouseY;
-        input->GetMousePosition(mouseX, mouseY);
+        app->input->GetMousePosition(mouseX, mouseY);
 
         // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
+        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
             (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
         {
-			if (input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
-			{
-				state = GuiControlState::PRESSED;
-				value = ((maxValue - minValue) * (mouseX - (float)(bounds.x + slider.w / 2))) / (float)(bounds.w - slider.w) + minValue;
-				if (slider.w > 0) slider.x = mouseX - slider.w / 2;  // Slider
-				else if (slider.w == 0) slider.w = value;          // SliderBar
-			}
-            else state = GuiControlState::FOCUSED;
-            // TODO.
+            state = GuiControlState::FOCUSED;
+
+            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+            {
+                state = GuiControlState::PRESSED;
+            }
+
+            if (state == GuiControlState::PRESSED)
+            {
+                SliderControl(mouseX, mouseY);
+                NotifyObserver();
+            }
         }
         else state = GuiControlState::NORMAL;
-
-		if (value > maxValue) value = maxValue;
-		else if (value < minValue) value = minValue;
     }
-	 //Bar limits check
-	//if (slider.w > 0)        // Slider
-	//{
-	//	if (slider.x <= (bounds.x + GuiGetStyle(SLIDER, BORDER_WIDTH))) slider.x = bounds.x + GuiGetStyle(SLIDER, BORDER_WIDTH);
-	//	else if ((slider.x + slider.w) >= (bounds.x + bounds.w)) slider.x = bounds.x + bounds.w - slider.w - GuiGetStyle(SLIDER, BORDER_WIDTH);
-	//}
-	//else if (slider.w == 0)  // SliderBar
-	//{
-	//	if (slider.w > bounds.w) slider.w = bounds.w - 2 * GuiGetStyle(SLIDER, BORDER_WIDTH);
-	//}
+
     return false;
 }
 
-bool GuiSlider::Draw(Render* render)
+bool GuiSlider::Draw()
 {
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, 100, 100, 100, 255);
+    case GuiControlState::DISABLED:
+
+        app->render->DrawRectangle(bounds, 100, 100, 100, 255);
+        app->render->DrawRectangle(slider,120,120,120,255);
+
         break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, 0, 255, 0, 255);
+    case GuiControlState::NORMAL:
+        app->render->DrawRectangle(bounds,0, 255, 0, 255);
+        app->render->DrawRectangle(slider,255,0,255,255);
+
         break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255);
+    case GuiControlState::FOCUSED:
+        app->render->DrawRectangle(bounds,255, 255, 0, 255);
+        app->render->DrawRectangle(slider,255,0,255,255);
+
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+    case GuiControlState::PRESSED:
+        app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+        app->render->DrawRectangle(slider,255,0,0,255);
+
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
+    case GuiControlState::SELECTED:
+        app->render->DrawRectangle(bounds,0, 255, 0, 255);
+        app->render->DrawRectangle(slider,255,0,255,255);
+
         break;
     default:
         break;
     }
 
     return false;
+}
+
+void GuiSlider::SliderControl(int mouseX, int mouseY)
+{
+
+    slider.x = mouseX - (slider.w / 2);
+
+    value = ((maxValue - minValue) * (mouseX - (float)(bounds.x + slider.w / 2))) / (float)(bounds.w - slider.w) + minValue;
+
+    //Limites
+    if (slider.x < bounds.x)
+    {
+        slider.x = bounds.x;
+        value = minValue;
+    }
+    if ((slider.x + slider.w) > (bounds.x + bounds.w))
+    {
+        slider.x = (bounds.x + bounds.w) - slider.w;
+        value = maxValue;
+    }
+
 }

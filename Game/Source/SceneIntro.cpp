@@ -17,14 +17,27 @@ SceneIntro::SceneIntro()
 	name.Create("sceneIntro");
 
 	// GUI: Initialize required controls for the screen
-	btnStart = new GuiButton(1, { 1280 / 2 - 300 / 2, 300, 300, 80 }, "START");
-	btnStart->SetObserver(this);
 
-	btnExit = new GuiButton(2, { 1280 / 2 - 300 / 2, 400, 300, 80 }, "EXIT");
+	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, 400, 200, 40 }, "PLAY");
+	btnPlay->SetObserver(this);
+
+	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, 450, 200, 40 }, "CONTINUE");
+	btnContinue->SetObserver(this);
+
+	btnRemove = new GuiButton(3, { WINDOW_W / 2 - 200 / 2, 500, 200, 40 }, "REMOVE");
+	btnRemove->SetObserver(this);
+
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS");
+	btnSettings->SetObserver(this);
+
+	btnCredits = new GuiButton(5, { WINDOW_W / 2 - 200 / 2, 600, 200, 40 }, "CREDITS");
+	btnCredits->SetObserver(this);
+
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT");
 	btnExit->SetObserver(this);
 
-	btnScrollBar = new GuiButton(3, { 100, 100, 100, 50 }, "VALUE");
-	btnScrollBar->SetObserver(this);
+
+	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },this);
 }
 
 SceneIntro::~SceneIntro()
@@ -58,8 +71,8 @@ bool SceneIntro::Start()
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
 	
-	//timer.Start();
-	//app->LoadGameRequest();
+	ComprobeState(2);
+
 	return true;
 }
 
@@ -75,9 +88,13 @@ bool SceneIntro::Update(float dt)
 	
 	idleAnim->speed = (dt * 100) * 0.05f;
 
-	btnStart->Update(dt);
+	btnPlay->Update(dt);
+	btnContinue->Update(dt);
+	btnRemove->Update(dt);
+	btnSettings->Update(dt);
+	btnCredits->Update(dt);
 	btnExit->Update(dt);
-	btnScrollBar->Update(dt);
+	menuSettings->Update(dt);
 
 	return true;
 }
@@ -102,9 +119,14 @@ bool SceneIntro::PostUpdate()
 	app->render->DrawTexture(bgIntro, app->render->camera.x, app->render->camera.y);
 	app->render->DrawTexture(animationIntro.texture, animationIntro.position.x, animationIntro.position.y, &rectIntro);
 	
-	btnStart->Draw();
+	btnPlay->Draw();
+	btnContinue->Draw();
+	btnRemove->Draw();
+	btnSettings->Draw();
+	btnCredits->Draw();
 	btnExit->Draw();
-	btnScrollBar->Draw();
+
+	menuSettings->Draw();
 
 	return ret;
 }
@@ -129,13 +151,49 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
+
 		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
-		else if (control->id == 2)
+		else if (control->id == 2 && currentScene != 0)
 		{
-			//app->LoadGameRequest(); // CONTINUED
-			if(currentScene == 1)TransitionToScene(SceneType::LEVEL1);
-			if(currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+			// CONTINUED in last scene
+			if (currentScene == 1)TransitionToScene(SceneType::LEVEL1);
+			if (currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+			isContinue = true;
 		}
+		else if (control->id == 3) ComprobeState(3);
+		else if (control->id == 4)
+		{
+			LOG("SETTINGS");
+			btnPlay->state = GuiControlState::DISABLED;
+			btnContinue->state = GuiControlState::DISABLED;
+			btnSettings->state = GuiControlState::DISABLED;
+			btnCredits->state = GuiControlState::DISABLED;
+			btnExit->state = GuiControlState::DISABLED;
+			btnRemove->state = GuiControlState::DISABLED;
+			menuSettings->AbleDisableSetting();
+		}
+		else if (control->id == 5) LOG("CREDITS");
+		else if (control->id == 6) LOG("EXIT");
+		else if (control->id == 12)
+		{
+			LOG("RETURN");
+			btnPlay->state = GuiControlState::NORMAL;
+			btnContinue->state = GuiControlState::NORMAL;
+			btnSettings->state = GuiControlState::NORMAL;
+			btnCredits->state = GuiControlState::NORMAL;
+			btnExit->state = GuiControlState::NORMAL;
+			btnRemove->state = GuiControlState::NORMAL;
+			menuSettings->AbleDisableSetting();
+		}
+	}
+	case GuiControlType::SLIDER:
+	{
+		/*if (control->id == 3)
+		{
+			int newVolum;
+			newVolum = btnScrollBar->GetValue();
+			LOG("%d", newVolum);
+		}*/
 	}
 	default: break;
 	}
@@ -145,6 +203,40 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 bool SceneIntro::LoadState(pugi::xml_node& data)
 {
 	currentScene = data.child("level").attribute("lvl").as_int(0);
-	return false;
+	return true;
+}
+
+//bool SceneIntro::SaveState(pugi::xml_node& data) const
+//{
+//	data.child("level").attribute("lvl").set_value(0);
+//	
+//	return true;
+//}
+
+void SceneIntro::RemoveState(pugi::xml_node& data)const
+{
+	data.child("level").attribute("lvl").set_value(0);
+}
+
+bool SceneIntro::ComprobeState(int id)
+{
+	bool ret = true;
+	pugi::xml_parse_result result = sceneFile.load_file("save_game.xml");
+
+	// Check result for loading errors
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		sceneStateFile = sceneFile.first_child();
+		sceneStateFile = sceneStateFile.child("scene_manager");
+		if(id==2)LoadState(sceneStateFile);
+		else if (id == 3)RemoveState(sceneStateFile), currentScene=0;
+	}
+	sceneFile.reset();
+	return ret;
 }
 

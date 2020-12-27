@@ -116,6 +116,9 @@
     <ClCompile Include="Source\Lives.cpp">
       <Filter>Modules\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuiSettings.cpp">
+      <Filter>Modules\GuiControls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -252,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="Source\Lives.h">
       <Filter>Modules\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiSettings.h">
+      <Filter>Modules\GuiControls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
