@@ -25,7 +25,7 @@ bool Lives::Start()
 	liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
 
 	numPoints = 4;
-	pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
+	pointsCollision = new iPoint[4]{ { 0, 0 }, { 28 , 0 }, { 28,-28 }, { 0 ,-28 } };
 
 	currentAnimation->loop = true;
 	currentAnimation->speed = 0.06f;
