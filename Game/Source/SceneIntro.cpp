@@ -72,8 +72,11 @@ bool SceneIntro::Update(float dt)
 
 	animationIntro.currentAnimation->Update();
 	
-		idleAnim->speed = (dt * 100) * 0.05f;
+	idleAnim->speed = (dt * 100) * 0.05f;
 
+	btnStart->Update(dt);
+	btnExit->Update(dt);
+	btnScrollBar->Update(dt);
 
 	return true;
 }
@@ -97,6 +100,11 @@ bool SceneIntro::PostUpdate()
 
 	app->render->DrawTexture(bgIntro, app->render->camera.x, app->render->camera.y);
 	app->render->DrawTexture(animationIntro.texture, animationIntro.position.x, animationIntro.position.y, &rectIntro);
+	
+	btnStart->Draw();
+	btnExit->Draw();
+	btnScrollBar->Draw();
+
 	return ret;
 }
 
