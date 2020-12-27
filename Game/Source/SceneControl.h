@@ -62,6 +62,16 @@ public:
     {
         return true;
     }
+	// Load state game
+	virtual bool LoadState(pugi::xml_node& data)
+	{
+		return true;
+	}
+	// Save state game
+	virtual bool SaveState(pugi::xml_node& data)const
+	{
+		return true;
+	}
 
 public:
 
@@ -74,6 +84,7 @@ public:
 
     bool transitionRequired;
     SceneType nextScene;
+	int currentScene=0;
 };
 
 #endif // __SCENECONTROL_H__

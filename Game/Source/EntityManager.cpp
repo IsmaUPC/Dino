@@ -1,5 +1,5 @@
 #include "EntityManager.h"
-
+#include "SceneManager.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -44,9 +44,12 @@ bool EntityManager::PreUpdate()
 
 bool EntityManager::Update(float dt)
 {
-	HandleEntitiesSpawn();
-	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti=entiti->next) entiti->data->Update(dt);
-	HandleEntitiesDespawn();
+	if (!app->sceneManager->GetIsPause())
+	{
+		HandleEntitiesSpawn();
+		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next) entiti->data->Update(dt);
+		HandleEntitiesDespawn();
+	}
 
 	return true;
 }

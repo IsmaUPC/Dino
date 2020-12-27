@@ -42,6 +42,9 @@ public:
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
+	bool LoadState(pugi::xml_node& data);
+	bool ComprobeLoadState(pugi::xml_node& data);
+
 private:
 	AnimationIntro animationIntro;
 	Animation* idleAnim=new Animation();
@@ -51,6 +54,7 @@ private:
 	bool transition;
 
 	//Timer timer;
+	pugi::xml_document sceneFile;
 
 	GuiButton* btnStart;
 	GuiButton* btnExit;

@@ -44,8 +44,16 @@ public:
 	//Add Scenes
 	void AddScene(SceneControl* scene, bool active);
 
+	//Return Pause
+	bool GetIsPause() { return pause; };
+
 	// Called before quitting
 	bool CleanUp();
+
+	// Load state game
+	bool LoadState(pugi::xml_node& data);
+	// Save state game
+	bool SaveState(pugi::xml_node& data)const;
 
 private:
 
@@ -60,7 +68,7 @@ private:
 	bool onTransition;
 	bool fadeOutCompleted;
 	float transitionAlpha;
-
+	bool pause = false;
 	List<SceneControl*> scenes;
 
 public:
@@ -70,6 +78,9 @@ public:
 	SceneWin* sceneWin;
 	SceneLose* sceneLose;
 	SceneLevel2* sceneLevel2;
+
+	SceneControl* sceneControl;
+
 };
 
 #endif // __SCENEMANAGER_H__

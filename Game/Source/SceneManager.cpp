@@ -23,7 +23,7 @@
 
 SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module()
 {
-	name.Create("scenemanager");
+	name.Create("scene_manager");
 
 	sceneLogo = new SceneLogo();
 	sceneIntro = new SceneIntro();
@@ -32,7 +32,7 @@ SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module
 	sceneWin = new SceneWin();
 	sceneLose = new SceneLose();
 
-	AddScene(sceneLogo, true);
+	AddScene(sceneLogo, false);
 	AddScene(sceneIntro, false);
 	AddScene(scene, false);
 	AddScene(sceneLevel2, false);
@@ -75,13 +75,6 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
-	ListItem<SceneControl*>* item = scenes.start;
-	while (item!=nullptr)
-	{
-		if (item->data->active == true)
-			item->data->PreUpdate();
-		item = item->next;
-	}
 	/*
 	// L12b: Debug pathfing
 	static iPoint origin;
@@ -113,67 +106,79 @@ bool SceneManager::PreUpdate()
 // Called each loop iteration
 bool SceneManager::Update(float dt)
 {
-	ListItem<SceneControl*>* item = scenes.start;
-	while (item != nullptr)
-	{
-		if (item->data->active == true)
-			item->data->Update(dt);
-		item = item->next;
-	}
-
-	if (!onTransition)
-	{
-		//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
-		//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
-		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
-		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
-
-		current->Update(dt);
-	}
-	else
-	{
-		if (!fadeOutCompleted)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (current->name == "scene" || current->name == "sceneLevel2"))
+		pause = !pause;
+	//if (!pause)
+	//{
+		if (!onTransition)
 		{
-			transitionAlpha += (FADEOUT_TRANSITION_SPEED * dt);
+			//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
+			//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
+			//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
+			//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
-			// NOTE: Due to float internal representation, condition jumps on 1.0f instead of 1.05f
-			// For that reason we compare against 1.01f, to avoid last frame loading stop
-			if (transitionAlpha > 1.01f)
+			current->Update(dt);
+		}
+		else
+		{
+			if (!fadeOutCompleted)
 			{
-				transitionAlpha = 1.0f;
+				transitionAlpha += (FADEOUT_TRANSITION_SPEED * dt);
 
-				current->CleanUp();	// Unload current screen
-				next->Start();	// Load next screen
+				// NOTE: Due to float internal representation, condition jumps on 1.0f instead of 1.05f
+				// For that reason we compare against 1.01f, to avoid last frame loading stop
+				if (transitionAlpha > 1.01f)
+				{
+					transitionAlpha = 1.0f;
 
-				RELEASE(current);	// Free current pointer
-				current = next;		// Assign next pointer
-				next = nullptr;
+					current->CleanUp();	// Unload current screen
+					next->Start();	// Load next screen
 
-				// Activate fade out effect to next loaded screen
-				fadeOutCompleted = true;
+					RELEASE(current);	// Free current pointer
+					current = next;		// Assign next pointer
+					next = nullptr;
+
+					// Activate fade out effect to next loaded screen
+					fadeOutCompleted = true;
+				}
+			}
+			else  // Transition fade out logic
+			{
+				transitionAlpha -= (FADEIN_TRANSITION_SPEED * dt);
+
+				if (transitionAlpha < -0.01f)
+				{
+					transitionAlpha = 0.0f;
+					fadeOutCompleted = false;
+					onTransition = false;
+				}
 			}
 		}
-		else  // Transition fade out logic
+
+		if (current->transitionRequired)
 		{
-			transitionAlpha -= (FADEIN_TRANSITION_SPEED * dt);
+			onTransition = true;
+			fadeOutCompleted = false;
+			transitionAlpha = 0.0f;
 
-			if (transitionAlpha < -0.01f)
+			switch (current->nextScene)
 			{
-				transitionAlpha = 0.0f;
-				fadeOutCompleted = false;
-				onTransition = false;
+			case SceneType::LOGO: next = new SceneLogo(); break;
+			case SceneType::INTRO: next = new SceneIntro(); break;
+			case SceneType::LEVEL1: next = new Scene(); break;
+			case SceneType::LEVEL2: next = new SceneLevel2(); break;
+			case SceneType::WIN: next = new SceneWin(); break;
+			case SceneType::LOSE: next = new SceneLose(); break;
+			default: break;
 			}
+
+			current->transitionRequired = false;
 		}
-	}
+	//}
+	
+	//if(app->input->GetKey(SDL_SCANCODE_F1)==KEY_DOWN)sceneControl->TransitionToScene(SceneType::LEVEL1);
+	//if(app->input->GetKey(SDL_SCANCODE_F2)==KEY_DOWN)sceneControl->TransitionToScene(SceneType::LEVEL2);
 
-	// Draw current scene
-	current->PostUpdate();
-
-	// Draw full screen rectangle in front of everything
-	if (onTransition)
-	{
-		render->DrawRectangle({ 0, 0, 1280, 720 }, 0, 0, 0, (unsigned char)(255.0f * transitionAlpha));
-	}
 
 	// L12b: Debug pathfinding
 	/*
@@ -191,27 +196,9 @@ bool SceneManager::Update(float dt)
 	}
 	*/
 
-	if (current->transitionRequired)
-	{
-		onTransition = true;
-		fadeOutCompleted = false;
-		transitionAlpha = 0.0f;
 
-		switch (current->nextScene)
-		{
-			case SceneType::LOGO: next = new SceneLogo(); break;
-			case SceneType::INTRO: next = new SceneIntro(); break;
-			case SceneType::LEVEL1: next = new Scene(); break;
-			case SceneType::LEVEL2: next = new SceneLevel2(); break;
-			case SceneType::WIN: next = new SceneWin(); break;
-			case SceneType::LOSE: next = new SceneLose(); break;
-			default: break;
-		}
 
-		current->transitionRequired = false;
-	}
-
-	if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
+	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 	return true;
 }
 
@@ -219,12 +206,13 @@ bool SceneManager::Update(float dt)
 bool SceneManager::PostUpdate()
 {
 	bool ret = true;
-	ListItem<SceneControl*>* item = scenes.start;
-	while (item != nullptr)
+	// Draw current scene
+	current->PostUpdate();
+
+	// Draw full screen rectangle in front of everything
+	if (onTransition)
 	{
-		if (item->data->active == true)
-			item->data->PostUpdate();
-		item = item->next;
+		render->DrawRectangle({ 0, 0, 1280, 720 }, 0, 0, 0, (unsigned char)(255.0f * transitionAlpha));
 	}
 	return ret;
 }
@@ -242,5 +230,19 @@ bool SceneManager::CleanUp()
 
 	if (current != nullptr) current->CleanUp();
 
+	return true;
+}
+
+bool SceneManager::LoadState(pugi::xml_node& data)
+{
+	if (current->currentScene == 1)current = scene;
+	else if (current->currentScene == 2)current = sceneLevel2;
+	current->LoadState(data);
+	return true;
+}
+
+bool SceneManager::SaveState(pugi::xml_node& data) const
+{
+	current->SaveState(data);
 	return true;
 }

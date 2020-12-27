@@ -49,6 +49,10 @@ public:
 		return numThisScene;
 	}
 
+	// Load state game
+	bool LoadState(pugi::xml_node& data);
+	// Save state game
+	bool SaveState(pugi::xml_node& data)const;
 private:
 
 	int numThisScene ;

@@ -231,3 +231,14 @@ void SceneLevel2::DebugKeys()
 	}
 }
 
+bool SceneLevel2::LoadState(pugi::xml_node& data)
+{
+	//TransitionToScene(SceneType::LEVEL2);
+	return true;
+}
+
+bool SceneLevel2::SaveState(pugi::xml_node& data) const
+{
+	data.child("level").attribute("lvl").set_value(2);
+	return true;
+}

@@ -10,8 +10,10 @@
 	</renderer>
 	<player>
 		<position x="432" y="1247" />
-		<level lvl="0" />
 	</player>
+	<scene_manager>
+		<level lvl="1" />
+	</scene_manager>
 	<entities>
 		<entity />
 	</entities>

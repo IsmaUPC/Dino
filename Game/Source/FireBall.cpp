@@ -1,6 +1,7 @@
 #include "FireBall.h"
 #include "Player.h"
 #include "Audio.h"
+#include "SceneManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -125,12 +126,12 @@ bool FireBall::Update(float dt)
 
 bool FireBall::PostUpdate()
 {
-	if (app->GetIsPause() && !stopTime)
+	if (app->sceneManager->GetIsPause() && !stopTime)
 	{
 		auxTimePause.Start();
 		stopTime = true;
 	}
-	if (!app->GetIsPause() && stopTime)
+	if (!app->sceneManager->GetIsPause() && stopTime)
 	{
 		frameTime.startTime += auxTimePause.Read();
 		stopTime = false;

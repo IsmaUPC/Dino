@@ -4,16 +4,8 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-//#include "SceneLogo.h"
-//#include "Scene.h"
-//#include "SceneIntro.h"
-//#include "SceneWin.h"
-//#include "SceneLose.h"
-//#include "SceneLevel2.h"
 #include "Map.h"
 #include "Player.h"
-//#include "Enemy.h"
-//#include "Coins.h"
 #include "Entity.h"
 #include "EntityManager.h"
 #include "SceneManager.h"
@@ -39,16 +31,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	map = new Map();
 	player = new Player();
-	//enemy = new Enemy();
 	entityManager = new EntityManager();
 	sceneManager = new SceneManager(input, render, tex);
-	//coins = new Coins();
-	/*sceneLogo = new SceneLogo();
-	scene = new Scene();
-	sceneIntro = new SceneIntro();
-	sceneWin = new SceneWin();
-	sceneLose = new SceneLose();
-	sceneLevel2 = new SceneLevel2();*/
 	fade = new ModuleFadeToBlack(); 
 	pathfinding = new PathFinding();
 	fonts = new ModuleFonts();
@@ -60,32 +44,16 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
-	//AddModule(sceneManager);
-	//AddModule(sceneLogo);
-	//AddModule(scene);
-	//AddModule(sceneIntro);
-	//AddModule(sceneWin);
-	//AddModule(sceneLose);
-	//AddModule(sceneLevel2);
-	AddModule(player);
-	//AddModule(enemy);
-	AddModule(entityManager);
 	AddModule(sceneManager);
-	//AddModule(coins);
+	AddModule(entityManager);
+	AddModule(player);
 	AddModule(fonts);
 	AddModule(fade);
 	AddModule(pathfinding);
 
 	//actives
-	/*sceneIntro->active = false;
-	scene->active = false;
-	sceneWin->active = false;
-	sceneLose->active = false;
-	sceneLevel2->active = false;*/
 	player->active = false;
-	//enemy->active = false;
 	map->active = false;
-
 	
 	// Render last to swap buffer
 	AddModule(render);
@@ -183,7 +151,6 @@ bool App::Update()
 
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) changeFPS = !changeFPS;
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) pause = !pause;
 	
 	if(changeFPS){
 		cappedMs = 1000 / 30;
@@ -195,7 +162,8 @@ bool App::Update()
 		framerate = 60;
 
 	}
-
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		stateFile.reset();
 
 	PrepareUpdate();
 	if(input->GetWindowEvent(WE_QUIT) == true)
@@ -204,7 +172,7 @@ bool App::Update()
 	if(ret == true)
 		ret = PreUpdate();
 
-	if(ret == true && !pause)
+	if(ret == true)
 		ret = DoUpdate();
 
 	if(ret == true)
@@ -345,7 +313,7 @@ bool App::PostUpdate()
 
 		ret = item->data->PostUpdate();
 	}
-
+	
 	//if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	//	app->fade->FadeToBlack(lastScene,(Module*)app->scene,0.f);
 	//if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
@@ -451,7 +419,7 @@ bool App::LoadGame(SString filename)
 			currentModule = currentModule->next;
 		}
 		stateFile.reset();
-		(ret == true) ? LOG("Carga de modulos existosa") : LOG("Fallo en la carga del modulo %s", currentModule->prev->data->name.GetString());
+		(ret == true) ? LOG("Carga de modulos existosa \n") : LOG("Fallo en la carga del modulo %s \n", currentModule->prev->data->name.GetString());
 
 	}
 	loadGameRequested = false;
@@ -484,7 +452,7 @@ bool App::SaveGame(SString filename) const
 		ret = true;
 		while (currentModule != NULL && ret)
 		{
-			// Recorremos la lista de modulos, en caso de que falle la carga del nodo perteneciente al modulo correspondiente, ret sera false 
+			// Recorremos la lista de modulos, en caso de que falle la carga del nodo ret sera false 
 			ret = currentModule->data->SaveState(rootSaveFile.child(currentModule->data->name.GetString()));
 			currentModule = currentModule->next;
 		}

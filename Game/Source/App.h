@@ -77,7 +77,7 @@ public:
 	int GetFramerate();
 
 	int GetFramesOnLastSecond() { return framesOnLastSecond; };
-	bool GetIsPause() { return pause; };
+	
 
 private:
 
@@ -169,7 +169,7 @@ private:
 
 	float fPS = 0;
 	bool changeFPS=false;
-	bool pause = false;
+
 	Module* lastScene;
 };
 

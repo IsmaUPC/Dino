@@ -4,6 +4,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "SceneIntro.h"
+#include "SceneManager.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
@@ -56,9 +57,9 @@ bool SceneIntro::Start()
 
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
-
+	
 	//timer.Start();
-
+	//app->LoadGameRequest();
 	return true;
 }
 
@@ -123,15 +124,27 @@ bool SceneIntro::CleanUp()
 }
 bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 {
+	bool ret = true;
 	switch (control->type)
 	{
 	case GuiControlType::BUTTON:
 	{
-		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);
-		//else if (control->id == 2) return false; // TODO: Exit request
+		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
+		else if (control->id == 2)
+		{
+			//app->LoadGameRequest(); // CONTINUED
+			if(currentScene == 1)TransitionToScene(SceneType::LEVEL1);
+			if(currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+		}
 	}
 	default: break;
 	}
-
 	return true;
 }
+
+bool SceneIntro::LoadState(pugi::xml_node& data)
+{
+	currentScene = data.child("level").attribute("lvl").as_int(0);
+	return false;
+}
+

@@ -66,7 +66,7 @@ bool Scene::Start()
 	//Active calls
 	app->player->Init();
 	app->player->Start();
-
+	app->audio->active = true;
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/hades_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
@@ -226,4 +226,13 @@ void Scene::DebugKeys()
 		else app->player->godMode = false;
 	}
 }
-
+bool Scene::LoadState(pugi::xml_node& data)
+{
+	//TransitionToScene(SceneType::LEVEL1);
+	return true;
+}
+bool Scene::SaveState(pugi::xml_node& data) const
+{
+	data.child("level").attribute("lvl").set_value(1);
+	return true;
+}

@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Audio.h"
 #include "ModuleFadeToBlack.h"
+#include "SceneManager.h"
 
 Player::Player() : Entity()
 {
@@ -118,7 +119,7 @@ bool Player::SaveState(pugi::xml_node& player) const
 
 	positionPlayer.attribute("x").set_value(playerData.position.x) ;
 	positionPlayer.attribute("y").set_value( playerData.position.y) ;
-	player.child("level").attribute("lvl").set_value(levelScene);
+	
 	return true;
 }
 
@@ -129,26 +130,30 @@ bool Player::PreUpdate()
 
 bool Player::Update(float dt) 
 {
-	PlayerMoveAnimation();
-	SpeedAnimationCheck(dt);
-	playerData.velocity = floor(1000 * dt) / 4;
-	gravity = ceil(600 * dt);
+	if (!app->sceneManager->GetIsPause())
+	{
+		PlayerMoveAnimation();
+		SpeedAnimationCheck(dt);
+		playerData.velocity = floor(1000 * dt) / 4;
+		gravity = ceil(600 * dt);
 
-	MoveHit();
-	GravityDown(dt);	
-	CameraPlayer();
-	if (playerData.state == ATTACK && playerData.currentAnimation->HasFinished())
-	{
-		playerData.state = IDLE;
-		atakAnim->Reset();
+		MoveHit();
+		GravityDown(dt);
+		CameraPlayer();
+		if (playerData.state == ATTACK && playerData.currentAnimation->HasFinished())
+		{
+			playerData.state = IDLE;
+			atakAnim->Reset();
+		}
+		if (playerData.state != HIT && playerData.state != DEAD && playerData.state != ATTACK)
+		{
+			// Move player inputs control
+			if (!checkpointMove)PlayerControls(dt);
+			//Move Between CheckPoints
+			else MoveBetweenCheckPoints();
+		}
 	}
-	if (playerData.state!=HIT && playerData.state != DEAD && playerData.state != ATTACK)
-	{
-		// Move player inputs control
-		if (!checkpointMove)PlayerControls(dt);
-		//Move Between CheckPoints
-		else MoveBetweenCheckPoints();
-	}
+	
 	return true;
 }
 
