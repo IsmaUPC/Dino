@@ -83,7 +83,7 @@ bool SceneIntro::PreUpdate()
 
 bool SceneIntro::Update(float dt)
 {
-
+	bool ret = true;
 	animationIntro.currentAnimation->Update();
 	
 	idleAnim->speed = (dt * 100) * 0.05f;
@@ -93,10 +93,10 @@ bool SceneIntro::Update(float dt)
 	btnRemove->Update(dt);
 	btnSettings->Update(dt);
 	btnCredits->Update(dt);
-	btnExit->Update(dt);
+	ret=btnExit->Update(dt);
 	menuSettings->Update(dt);
 
-	return true;
+	return ret;
 }
 
 bool SceneIntro::PostUpdate()
@@ -146,7 +146,6 @@ bool SceneIntro::CleanUp()
 }
 bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 {
-	bool ret = true;
 	switch (control->type)
 	{
 	case GuiControlType::BUTTON:
@@ -155,12 +154,12 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
 		else if (control->id == 2 && currentScene != 0)
 		{
-			// CONTINUED in last scene
+			LOG("CONTINUE LAST GAME");
 			if (currentScene == 1)TransitionToScene(SceneType::LEVEL1);
 			if (currentScene == 2)TransitionToScene(SceneType::LEVEL2);
 			isContinue = true;
 		}
-		else if (control->id == 3) ComprobeState(3);
+		else if (control->id == 3) LOG("REMOVE GAME"), ComprobeState(3);
 		else if (control->id == 4)
 		{
 			LOG("SETTINGS");
@@ -172,8 +171,12 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			btnRemove->state = GuiControlState::DISABLED;
 			menuSettings->AbleDisableSetting();
 		}
-		else if (control->id == 5) LOG("CREDITS");
-		else if (control->id == 6) LOG("EXIT");
+		else if (control->id == 5) LOG("CREDITS"), TransitionToScene(SceneType::LOGO);
+		else if (control->id == 6)
+		{
+			LOG("EXIT"); 
+			return false;
+		}
 		else if (control->id == 12)
 		{
 			LOG("RETURN");

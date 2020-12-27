@@ -106,6 +106,7 @@ bool SceneManager::PreUpdate()
 // Called each loop iteration
 bool SceneManager::Update(float dt)
 {
+	bool ret = true;
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (current->name == "scene" || current->name == "sceneLevel2"))
 		pause = !pause;
 	//if (!pause)
@@ -117,7 +118,7 @@ bool SceneManager::Update(float dt)
 			//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
 			//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
-			current->Update(dt);
+			ret = current->Update(dt);
 		}
 		else
 		{
@@ -199,7 +200,7 @@ bool SceneManager::Update(float dt)
 
 
 	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
