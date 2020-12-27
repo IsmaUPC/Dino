@@ -111,6 +111,7 @@ bool Player::LoadState(pugi::xml_node& player)
 		playerData.position.x = player.child("position").attribute("x").as_int(playerData.position.x);
 		playerData.position.y = player.child("position").attribute("y").as_int(playerData.position.y);
 		playerData.coins = player.child("score").attribute("points").as_int(0);
+		playerData.respawns = player.child("lives").attribute("num_respawns").as_int(0);
 	return ret;
 }
 
@@ -118,11 +119,13 @@ bool Player::SaveState(pugi::xml_node& player) const
 {
 	pugi::xml_node positionPlayer = player.child("position");
 	pugi::xml_node scorePlayer = player.child("score");
+	pugi::xml_node respawnsPlayer = player.child("lives");
 
 	positionPlayer.attribute("x").set_value(playerData.position.x) ;
 	positionPlayer.attribute("y").set_value( playerData.position.y) ;
 
 	scorePlayer.attribute("points").set_value(playerData.coins);
+	respawnsPlayer.attribute("num_respawns").set_value(playerData.respawns);
 
 	return true;
 }
