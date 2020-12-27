@@ -110,16 +110,20 @@ bool Player::LoadState(pugi::xml_node& player)
 	bool ret=true;
 		playerData.position.x = player.child("position").attribute("x").as_int(playerData.position.x);
 		playerData.position.y = player.child("position").attribute("y").as_int(playerData.position.y);
+		playerData.coins = player.child("score").attribute("points").as_int(0);
 	return ret;
 }
 
 bool Player::SaveState(pugi::xml_node& player) const
 {
 	pugi::xml_node positionPlayer = player.child("position");
+	pugi::xml_node scorePlayer = player.child("score");
 
 	positionPlayer.attribute("x").set_value(playerData.position.x) ;
 	positionPlayer.attribute("y").set_value( playerData.position.y) ;
-	
+
+	scorePlayer.attribute("points").set_value(playerData.coins);
+
 	return true;
 }
 

@@ -7,6 +7,7 @@
 #include "FireBall.h"
 #include "Enemy.h"
 #include "Coins.h"
+#include "Lives.h"
 
 struct EntitySpawnPoint
 {

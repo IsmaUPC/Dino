@@ -6,11 +6,11 @@
  <tileset firstgid="155" name="Nature_props_02" tilewidth="48" tileheight="48" tilecount="104" columns="13">
   <image source="nature_props_02.png" width="624" height="400"/>
  </tileset>
- <tileset firstgid="259" name="Collisions" tilewidth="48" tileheight="48" tilecount="3" columns="3">
-  <image source="collisions_2.png" trans="ffffff" width="144" height="48"/>
+ <tileset firstgid="259" name="Collisions" tilewidth="48" tileheight="48" tilecount="4" columns="4">
+  <image source="collisions_2.png" trans="ffffff" width="192" height="48"/>
  </tileset>
- <tileset firstgid="262" name="Collectables" tilewidth="48" tileheight="48" tilecount="3" columns="3">
-  <image source="collisions_2.png" trans="ffffff" width="144" height="48"/>
+ <tileset firstgid="263" name="Collectables" tilewidth="48" tileheight="48" tilecount="4" columns="4">
+  <image source="collisions_2.png" trans="ffffff" width="192" height="48"/>
  </tileset>
  <layer id="2" name="Decorcion" width="62" height="38">
   <properties>
@@ -7646,7 +7646,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="262"/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7695,7 +7695,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="262"/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
    <tile/>
@@ -7871,7 +7871,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="262"/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8198,7 +8198,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="262"/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8244,6 +8244,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8269,8 +8270,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="263"/>
    <tile/>
-   <tile gid="262"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8299,8 +8300,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="263"/>
    <tile/>
-   <tile gid="262"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8463,8 +8464,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="263"/>
    <tile/>
-   <tile gid="262"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8599,6 +8600,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="266"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8677,9 +8679,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
-   <tile gid="262"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8687,9 +8689,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
-   <tile gid="262"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8701,9 +8703,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="262"/>
+   <tile gid="263"/>
    <tile/>
    <tile/>
    <tile/>

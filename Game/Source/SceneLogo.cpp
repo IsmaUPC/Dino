@@ -89,10 +89,11 @@ bool SceneLogo::Update(float dt)
 bool SceneLogo::PostUpdate()
 {
 	bool ret = true;
-	
-	SDL_SetTextureAlphaMod(img, logoAlpha);
-	app->render->DrawTexture(img, app->render->camera.x, app->render->camera.y);
-
+	if (img != NULL)
+	{
+		SDL_SetTextureAlphaMod(img, logoAlpha);
+		app->render->DrawTexture(img, app->render->camera.x, app->render->camera.y);
+	}
 	return ret;
 }
 

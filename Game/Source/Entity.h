@@ -10,7 +10,6 @@
 #include "Input.h"
 #include "Map.h"
 #include "Collisions.h"
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -24,6 +23,7 @@ enum TypeEntity {
 	HUD,
 	FIREBALL,
 	COIN,
+	LIVE,
 };
 
 
