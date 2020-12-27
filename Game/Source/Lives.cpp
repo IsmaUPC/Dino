@@ -14,7 +14,7 @@ Lives::Lives(iPoint pos) : Entity()
 
 Lives::~Lives()
 {}
-
+ 
 bool Lives::Start()
 {
 	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
