@@ -7,7 +7,7 @@
 
 Coins::Coins(iPoint pos) : Entity()
 {
-	name.Create("Coins");
+	name.Create("coins");
 
 	position = pos;
 }

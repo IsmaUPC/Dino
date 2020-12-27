@@ -48,7 +48,7 @@ bool Audio::Awake(pugi::xml_node& config)
 
 	if((init & flags) != flags)
 	{
-		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
+		LOG("Could not initialize Mixer lib. Mix_Init: %s \n", Mix_GetError());
 		active = false;
 		ret = true;
 	}

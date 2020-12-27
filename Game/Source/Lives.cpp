@@ -7,7 +7,7 @@
 
 Lives::Lives(iPoint pos) : Entity()
 {
-	name.Create("Lives");
+	name.Create("lives");
 
 	position = pos;
 }
