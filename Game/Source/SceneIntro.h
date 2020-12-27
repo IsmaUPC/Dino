@@ -43,7 +43,9 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	bool LoadState(pugi::xml_node& data);
-	bool ComprobeLoadState(pugi::xml_node& data);
+
+	void RemoveState(pugi::xml_node& data)const;
+	bool ComprobeState(int id);
 
 private:
 	AnimationIntro animationIntro;
@@ -55,9 +57,11 @@ private:
 
 	//Timer timer;
 	pugi::xml_document sceneFile;
+	pugi::xml_node sceneStateFile;
 
 	GuiButton* btnStart;
-	GuiButton* btnExit;
+	GuiButton* btnContinue;
+	GuiButton* btnRemove;
 	GuiButton* btnScrollBar;
 };
 

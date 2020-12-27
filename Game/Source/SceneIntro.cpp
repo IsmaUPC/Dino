@@ -20,10 +20,13 @@ SceneIntro::SceneIntro()
 	btnStart = new GuiButton(1, { 1280 / 2 - 300 / 2, 300, 300, 80 }, "START");
 	btnStart->SetObserver(this);
 
-	btnExit = new GuiButton(2, { 1280 / 2 - 300 / 2, 400, 300, 80 }, "EXIT");
-	btnExit->SetObserver(this);
+	btnContinue = new GuiButton(2, { 1280 / 2 - 300 / 2, 400, 300, 80 }, "CONTINUE");
+	btnContinue->SetObserver(this);
 
-	btnScrollBar = new GuiButton(3, { 100, 100, 100, 50 }, "VALUE");
+	btnRemove = new GuiButton(3, { 1280 / 2 - 300 / 2, 500, 300, 80 }, "REMOVE");
+	btnRemove->SetObserver(this);
+
+	btnScrollBar = new GuiButton(4, { 100, 100, 100, 50 }, "VALUE");
 	btnScrollBar->SetObserver(this);
 }
 
@@ -58,8 +61,7 @@ bool SceneIntro::Start()
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
 	
-	//timer.Start();
-	//app->LoadGameRequest();
+	ComprobeState(2);
 	return true;
 }
 
@@ -76,7 +78,8 @@ bool SceneIntro::Update(float dt)
 	idleAnim->speed = (dt * 100) * 0.05f;
 
 	btnStart->Update(dt);
-	btnExit->Update(dt);
+	btnContinue->Update(dt);
+	btnRemove->Update(dt);
 	btnScrollBar->Update(dt);
 
 	return true;
@@ -103,7 +106,8 @@ bool SceneIntro::PostUpdate()
 	app->render->DrawTexture(animationIntro.texture, animationIntro.position.x, animationIntro.position.y, &rectIntro);
 	
 	btnStart->Draw();
-	btnExit->Draw();
+	btnContinue->Draw();
+	btnRemove->Draw();
 	btnScrollBar->Draw();
 
 	return ret;
@@ -130,12 +134,14 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	case GuiControlType::BUTTON:
 	{
 		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
-		else if (control->id == 2)
+		else if (control->id == 2 && currentScene != 0)
 		{
-			//app->LoadGameRequest(); // CONTINUED
-			if(currentScene == 1)TransitionToScene(SceneType::LEVEL1);
-			if(currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+			// CONTINUED in last scene
+			if (currentScene == 1)TransitionToScene(SceneType::LEVEL1);
+			if (currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+			isContinue = true;
 		}
+		else if (control->id == 3) ComprobeState(3);
 	}
 	default: break;
 	}
@@ -145,6 +151,33 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 bool SceneIntro::LoadState(pugi::xml_node& data)
 {
 	currentScene = data.child("level").attribute("lvl").as_int(0);
-	return false;
+	return true;
+}
+
+void SceneIntro::RemoveState(pugi::xml_node& data)const
+{
+	data.child("level").attribute("lvl").set_value(0);
+}
+
+bool SceneIntro::ComprobeState(int id)
+{
+	bool ret = true;
+	pugi::xml_parse_result result = sceneFile.load_file("save_game.xml");
+
+	// Check result for loading errors
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		sceneStateFile = sceneFile.first_child();
+		sceneStateFile = sceneStateFile.child("scene_manager");
+		if(id==2)LoadState(sceneStateFile);
+		else if (id == 3)RemoveState(sceneStateFile);
+	}
+	sceneFile.reset();
+	return ret;
 }
 

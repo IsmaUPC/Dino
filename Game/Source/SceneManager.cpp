@@ -133,7 +133,7 @@ bool SceneManager::Update(float dt)
 
 					current->CleanUp();	// Unload current screen
 					next->Start();	// Load next screen
-
+					if (current->isContinue)app->LoadGameRequest();
 					RELEASE(current);	// Free current pointer
 					current = next;		// Assign next pointer
 					next = nullptr;
