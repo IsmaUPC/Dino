@@ -17,14 +17,30 @@ SceneIntro::SceneIntro()
 	name.Create("sceneIntro");
 
 	// GUI: Initialize required controls for the screen
-	btnStart = new GuiButton(1, { 1280 / 2 - 300 / 2, 300, 300, 80 }, "START");
-	btnStart->SetObserver(this);
 
-	btnExit = new GuiButton(2, { 1280 / 2 - 300 / 2, 400, 300, 80 }, "EXIT");
+
+	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, 400, 200, 40 }, "PLAY");
+	btnPlay->SetObserver(this);
+
+	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, 450, 200, 40 }, "CONTINUE");
+	btnContinue->SetObserver(this);
+
+	btnSettings = new GuiButton(3, { WINDOW_W / 2 - 200 / 2, 500, 200, 40 }, "SETTINGS");
+	btnSettings->SetObserver(this);
+
+	btnCredits = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "CREDITS");
+	btnCredits->SetObserver(this);
+
+	btnExit = new GuiButton(5, { WINDOW_W / 2 - 200 / 2, 600, 200, 40 }, "EXIT");
 	btnExit->SetObserver(this);
 
-	btnScrollBar = new GuiButton(3, { 100, 100, 100, 50 }, "VALUE");
-	btnScrollBar->SetObserver(this);
+	btnDelete = new GuiButton(6, { WINDOW_W / 2 + 220 / 2, 450, 40, 40 }, "DELETE");
+	btnDelete->SetObserver(this);
+
+	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },this);
+
+	/*btnScrollBar = new GuiSlider(3, { 100, 100, 100, 50 },"VALUE");
+	btnScrollBar->SetObserver(this);*/
 }
 
 SceneIntro::~SceneIntro()
@@ -58,8 +74,6 @@ bool SceneIntro::Start()
 	SDL_QueryTexture(bgIntro, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
 	
-	//timer.Start();
-	//app->LoadGameRequest();
 	return true;
 }
 
@@ -75,9 +89,14 @@ bool SceneIntro::Update(float dt)
 	
 	idleAnim->speed = (dt * 100) * 0.05f;
 
-	btnStart->Update(dt);
+	btnPlay->Update(dt);
+	btnContinue->Update(dt);
+	btnSettings->Update(dt);
+	btnCredits->Update(dt);
 	btnExit->Update(dt);
-	btnScrollBar->Update(dt);
+	btnDelete->Update(dt);
+	menuSettings->Update(dt);
+	//btnScrollBar->Update(dt);
 
 	return true;
 }
@@ -102,9 +121,15 @@ bool SceneIntro::PostUpdate()
 	app->render->DrawTexture(bgIntro, app->render->camera.x, app->render->camera.y);
 	app->render->DrawTexture(animationIntro.texture, animationIntro.position.x, animationIntro.position.y, &rectIntro);
 	
-	btnStart->Draw();
+	btnPlay->Draw();
+	btnContinue->Draw();
+	btnSettings->Draw();
+	btnCredits->Draw();
 	btnExit->Draw();
-	btnScrollBar->Draw();
+	btnDelete->Draw();
+
+	menuSettings->Draw();
+
 
 	return ret;
 }
@@ -129,13 +154,44 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
-		else if (control->id == 2)
+
+		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);
+		//else if (control->id == 2) return false; // TODO: Exit request
+		if (control->id == 2) LOG("CONTINUE");
+		if (control->id == 3)
 		{
-			//app->LoadGameRequest(); // CONTINUED
-			if(currentScene == 1)TransitionToScene(SceneType::LEVEL1);
-			if(currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+			LOG("SETTINGS");
+			btnPlay->state = GuiControlState::DISABLED;
+			btnContinue->state = GuiControlState::DISABLED;
+			btnSettings->state = GuiControlState::DISABLED;
+			btnCredits->state = GuiControlState::DISABLED;
+			btnExit->state = GuiControlState::DISABLED;
+			btnDelete->state = GuiControlState::DISABLED;
+			menuSettings->AbleDisableSetting();
 		}
+		if (control->id == 4) LOG("CREDITS");
+		if (control->id == 5) LOG("EXIT");
+		if (control->id == 6) LOG("DELETE");
+
+		if (control->id == 12)
+		{
+			btnPlay->state = GuiControlState::NORMAL;
+			btnContinue->state = GuiControlState::NORMAL;
+			btnSettings->state = GuiControlState::NORMAL;
+			btnCredits->state = GuiControlState::NORMAL;
+			btnExit->state = GuiControlState::NORMAL;
+			btnDelete->state = GuiControlState::NORMAL;
+			menuSettings->AbleDisableSetting();
+		}
+	}
+	case GuiControlType::SLIDER:
+	{
+		/*if (control->id == 3)
+		{
+			int newVolum;
+			newVolum = btnScrollBar->GetValue();
+			LOG("%d", newVolum);
+		}*/
 	}
 	default: break;
 	}

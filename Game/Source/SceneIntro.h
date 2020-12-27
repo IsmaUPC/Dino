@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "Animation.h"
 #include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiSettings.h"
 
 struct SDL_Texture;
 
@@ -56,9 +58,16 @@ private:
 	//Timer timer;
 	pugi::xml_document sceneFile;
 
-	GuiButton* btnStart;
+	GuiButton* btnPlay;
+	GuiButton* btnContinue;
+	GuiButton* btnSettings;
+	GuiButton* btnCredits;
 	GuiButton* btnExit;
-	GuiButton* btnScrollBar;
+	GuiButton* btnDelete;
+
+	GuiSettings* menuSettings;
+
+	//GuiSlider* btnScrollBar;
 };
 
 #endif // __SCENEINTRO_H__
