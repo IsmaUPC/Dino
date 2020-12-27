@@ -1,31 +1,32 @@
 #include "App.h"
-#include "Coins.h"
+#include "Lives.h"
 #include "Audio.h"
 #include "Player.h"
 
 
 
-Coins::Coins(iPoint pos) : Entity()
+Lives::Lives(iPoint pos) : Entity()
 {
-	name.Create("Coins");
+	name.Create("Lives");
 
 	position = pos;
 }
 
-Coins::~Coins()
+Lives::~Lives()
 {}
 
-bool Coins::Start()
+bool Lives::Start()
 {
-
+	//iPoint pathInit = app->map->WorldToMap(positionInitial.x, positionInitial.y);
+	//app->map->ResetPath(pathInit);
 	active = true;
-	texture = app->tex->Load("Assets/Textures/coin.png");
+	texture = app->tex->Load("Assets/Textures/lives.png");
 
-	coinFx= app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
-	
+	liveFx = app->audio->LoadFx("Assets/Audio/Fx/live.wav");
+
 	numPoints = 4;
 	pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
-	
+
 	currentAnimation->loop = true;
 	currentAnimation->speed = 0.06f;
 
@@ -36,22 +37,22 @@ bool Coins::Start()
 	return true;
 }
 
-bool Coins::Awake(pugi::xml_node& config)
+bool Lives::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Coins Parser");
+	LOG("Loading Lives Parser");
 	bool ret = true;
 
 
 	return ret;
 }
 
-bool Coins::PreUpdate()
+bool Lives::PreUpdate()
 {
 	iPoint currentPositionPlayer = app->player->playerData.position;
-	iPoint auxPositionCoin[4];
+	iPoint auxPositionLive[4];
 	for (int i = 0; i < 4; i++)
 	{
-		auxPositionCoin[i] = { position.x + pointsCollision[i].x,
+		auxPositionLive[i] = { position.x + pointsCollision[i].x,
 			position.y + pointsCollision[i].y };
 	}
 	iPoint auxPositionPlayer[6];
@@ -61,34 +62,34 @@ bool Coins::PreUpdate()
 			-48 + currentPositionPlayer.y + app->player->playerData.pointsCollision[i].y };
 
 	}
-	if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionCoin, numPoints) 
-		&& collision.IsInsidePolygons(auxPositionCoin, numPoints, auxPositionPlayer, app->player->playerData.numPoints))
+	if (collision.IsInsidePolygons(auxPositionPlayer, app->player->playerData.numPoints, auxPositionLive, numPoints)
+		&& collision.IsInsidePolygons(auxPositionLive, numPoints, auxPositionPlayer, app->player->playerData.numPoints))
 	{
-		app->audio->PlayFx(coinFx);
-		app->player->CoinPlus();
+		app->audio->PlayFx(liveFx);
+		app->player->LivePlus();
 		isCollected = true;
 		pendingToDelete = true;
 	}
 	return false;
 }
 
-bool Coins::Update(float dt)
+bool Lives::Update(float dt)
 {
 	currentAnimation->Update();
 	return true;
 }
-bool Coins::PostUpdate()
+bool Lives::PostUpdate()
 {
 
-	SDL_Rect rectCoins;
-	rectCoins = currentAnimation->GetCurrentFrame();
+	SDL_Rect rectLives;
+	rectLives = currentAnimation->GetCurrentFrame();
 	// Draw player in correct direction
-	app->render->DrawTexture(texture, position.x, position.y, &rectCoins);
+	app->render->DrawTexture(texture, position.x, position.y, &rectLives);
 	return true;
 
 }
 
-bool Coins::CleanUp()
+bool Lives::CleanUp()
 {
 	if (!active)
 		return true;

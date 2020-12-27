@@ -663,6 +663,10 @@ void Map::LoadCollectable()
 				{
 					app->entityManager->AddEntity(COIN,x,y);
 				}
+				if (tileId == data.tilesets.At(3)->data->firstgid+3)
+				{
+					app->entityManager->AddEntity(LIVE, x, y);
+				}
 			}
 		}
 	}

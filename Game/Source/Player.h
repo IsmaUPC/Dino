@@ -73,6 +73,7 @@ public:
 	void SetHit();
 
 	void CoinPlus() { playerData.coins++; };
+	void LivePlus() { playerData.respawns++; };
 
 	void ActiveCheckpoint(iPoint positionMapPlayer);
 

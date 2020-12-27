@@ -6,11 +6,11 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="-687" />
+		<camera x="-1217" y="-399" />
 	</renderer>
 	<player>
-		<position x="432" y="1247" />
-		<level lvl="0" />
+		<position x="1857" y="959" />
+		<score points="3" />
 	</player>
 	<entities>
 		<entity />
