@@ -168,6 +168,7 @@ unsigned int Audio::LoadFx(const char* path)
 {
 	unsigned int ret = 0;
 
+	
 	if(!active)
 		return 0;
 
@@ -202,7 +203,7 @@ bool Audio::UnloadFxs()
 bool Audio::PlayFx(unsigned int id, int repeat)
 {
 	bool ret = false;
-
+	Mix_Volume(-1, volumeFx);
 	if(!active)
 		return false;
 
@@ -221,27 +222,35 @@ void Audio::ChangeVolumeMusic(int num)
 	{
 		volumeMusic += num;
 	}
-
 	if (num == -10 && volumeMusic > 0) 
 	{
 		volumeMusic += num;
+	}
+	if (num == 10 && volumeFx < 100)
+	{
+
+		volumeFx += num;
+	}
+	if (num == -10 && volumeFx > 0)
+	{
+		volumeFx += num;
 	}
 	Mix_VolumeMusic(volumeMusic);
 }
 
 bool Audio::LoadState(pugi::xml_node& node) {
 	volumeMusic = node.child("music").attribute("volume").as_int(volumeMusic);
+	volumeFx = node.child("fx").attribute("volume").as_int(volumeFx);
 	Mix_VolumeMusic(volumeMusic);
 	return true;
 }
 bool Audio::SaveState(pugi::xml_node& node) const {
 	node.child("music").attribute("volume").set_value(volumeMusic);
+	node.child("fx").attribute("volume").set_value(volumeFx);
 	return true;
 }
 
-
 /*
-
 	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		app->SaveConfigRequested();
 

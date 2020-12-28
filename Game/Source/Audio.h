@@ -42,14 +42,23 @@ public:
 	// Save and Load volume
 	bool LoadState(pugi::xml_node& node);
 	bool SaveState(pugi::xml_node& node)const;
+	// Return volume music
+	int GetVolumeMusic() { return volumeMusic; }
+	// Return volume Fx
+	int GetVolumeFx() { return volumeFx; }
 
+	// Set volume Music
+		int SetVolumeMusic(int volume) { volumeMusic=volume; }
+	// Set volume Fx
+	int SetVolumeFx(int volume) { volumeFx=volume; }
 private:
 
 	_Mix_Music* music;
 	List<Mix_Chunk *>	fx;
 
-	uint volumeMusic;
-	uint volumeFx;
+
+	uint volumeMusic=0;
+	uint volumeFx=0;
 };
 
 #endif // __AUDIO_H__
