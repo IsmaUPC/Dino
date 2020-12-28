@@ -48,6 +48,8 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	void FullScreen();
+
 public:
 
 	SDL_Renderer* renderer;

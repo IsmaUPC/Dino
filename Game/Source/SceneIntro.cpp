@@ -1,8 +1,9 @@
 #include "App.h"
 #include "Input.h"
 #include "Textures.h"
- #include "Audio.h"
+#include "Audio.h"
 #include "Render.h"
+#include "Window.h"
 #include "SceneIntro.h"
 #include "SceneManager.h"
 
@@ -224,9 +225,9 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	{
 		if (control->id == 13)
 		{
-			bool menuFullScreen;
-			menuFullScreen = menuSettings->chBxFullScreen->GetValue();
-			LOG("%d", menuFullScreen);
+			app->fullScreen = menuSettings->chBxFullScreen->GetValue();
+			app->win->FullScreen();
+			app->render->FullScreen();
 		}
 		if (control->id == 14)
 		{
@@ -262,7 +263,7 @@ bool SceneIntro::SaveState(pugi::xml_node& data) const
 //	btnRemove->state = GuiControlState::DISABLED;
 //}
 
-bool SceneIntro::ComprobeState(int id)
+void SceneIntro::ComprobeState(int id)
 {
 	bool ret = true;
 	pugi::xml_parse_result result = sceneFile.load_file("save_game.xml");
@@ -281,6 +282,23 @@ bool SceneIntro::ComprobeState(int id)
 		//else if (id == 3)SaveState(sceneStateFile), lastLevel=0;
 	}
 	sceneFile.reset();
-	return ret;
+}
+void SceneIntro::FullScreenMode(SString filename)
+{
+	bool ret = true;
+	pugi::xml_parse_result result = sceneFile.load_file("config");
+
+	// Check result for loading errors
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		sceneStateFile = sceneFile.first_child();
+		sceneStateFile = sceneStateFile.child(filename.GetString());
+	}
+	sceneFile.reset();
 }
 

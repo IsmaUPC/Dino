@@ -40,7 +40,7 @@ bool Render::Awake(pugi::xml_node& config)
 	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
 
-	if (WIN_FULL_SCREEN == 1) {
+	if (app->fullScreen == 1) {
 		SDL_RenderSetLogicalSize(renderer, WINDOW_W, WINDOW_H);
 	}
 	if(renderer == NULL)
@@ -120,6 +120,11 @@ bool Render::SaveState(pugi::xml_node& data) const
 void Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
+}
+
+void Render::FullScreen()
+{
+	SDL_RenderSetLogicalSize(renderer, WINDOW_W, WINDOW_H);
 }
 
 void Render::SetViewPort(const SDL_Rect& rect)

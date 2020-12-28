@@ -48,7 +48,8 @@ public:
 	bool SaveState(pugi::xml_node& data)const;
 
 	//void RemoveState(pugi::xml_node& data)const;
-	bool ComprobeState(int id);
+	void ComprobeState(int id);
+	void FullScreenMode(SString filename);
 
 private:
 	AnimationIntro animationIntro;

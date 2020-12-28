@@ -61,8 +61,11 @@ bool Window::Awake(pugi::xml_node& config)
 			//Create window
 			Uint32 flags = SDL_WINDOW_SHOWN;
 
-			if (WIN_FULL_SCREEN == true)
+			if (app->fullScreen == true)
+			{
 				flags |= SDL_WINDOW_FULLSCREEN;
+			}
+				
 
 			if (WIN_BORDERLESS == true)
 				flags |= SDL_WINDOW_BORDERLESS;
@@ -70,10 +73,10 @@ bool Window::Awake(pugi::xml_node& config)
 			if (WIN_RESIZABLE == true)
 				flags |= SDL_WINDOW_RESIZABLE;
 
-			if (WIN_FULLSCREEN_DESKTOP == true)
+			if (app->fullScreen == true)
+			{
 				flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-
+			}
 			window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 			SDL_SetWindowIcon(window, icon);
 
@@ -126,3 +129,9 @@ uint Window::GetScale() const
 {
 	return scale;
 }
+
+void Window::FullScreen()
+{
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+

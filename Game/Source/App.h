@@ -130,6 +130,8 @@ public:
 	PathFinding* pathfinding;
 	ModuleFonts* fonts;
 
+	bool fullScreen=0;
+
 private:
 
 	int argc;
