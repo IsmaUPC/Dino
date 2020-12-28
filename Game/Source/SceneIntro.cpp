@@ -169,6 +169,9 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			btnCredits->state = GuiControlState::DISABLED;
 			btnExit->state = GuiControlState::DISABLED;
 			btnRemove->state = GuiControlState::DISABLED;
+
+			menuSettings->sldMusic->SetValue(app->audio->GetVolumeMusic());
+			menuSettings->sldFx->SetValue(app->audio->GetVolumeFx());
 			menuSettings->AbleDisableSetting();
 		}
 		else if (control->id == 5) LOG("CREDITS"), TransitionToScene(SceneType::LOGO);
@@ -187,21 +190,25 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			btnExit->state = GuiControlState::NORMAL;
 			btnRemove->state = GuiControlState::NORMAL;
 			menuSettings->AbleDisableSetting();
+			app->SaveConfigRequested();
 		}
 	}
 	case GuiControlType::SLIDER:
 	{
 		if (control->id == 11)
 		{
-		int menuMusic;
-		menuMusic = menuSettings->sldMusic->GetValue();
-		LOG("%d", menuMusic);
+			int menuMusic;
+			menuMusic = menuSettings->sldMusic->GetValue();
+			LOG("%d", menuMusic);
+			app->audio->SetVolumeMusic(menuMusic);
+
 		}
 		if (control->id == 12)
 		{
 			int menuFx;
 			menuFx = menuSettings->sldFx->GetValue();
 			LOG("%d", menuFx);
+			app->audio->SetVolumeFx(menuFx);
 		}
 	}
 	case GuiControlType::CHECKBOX:

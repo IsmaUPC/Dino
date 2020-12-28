@@ -48,9 +48,9 @@ public:
 	int GetVolumeFx() { return volumeFx; }
 
 	// Set volume Music
-		int SetVolumeMusic(int volume) { volumeMusic=volume; }
+	void SetVolumeMusic(int volume);
 	// Set volume Fx
-	int SetVolumeFx(int volume) { volumeFx=volume; }
+	void SetVolumeFx(int volume) { volumeFx=volume; }
 private:
 
 	_Mix_Music* music;

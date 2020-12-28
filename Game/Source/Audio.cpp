@@ -250,6 +250,12 @@ bool Audio::SaveState(pugi::xml_node& node) const {
 	return true;
 }
 
+void Audio::SetVolumeMusic(int volume)
+{
+	volumeMusic = volume;
+	Mix_VolumeMusic(volumeMusic);
+}
+
 /*
 	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		app->SaveConfigRequested();
