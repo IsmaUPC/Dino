@@ -12,6 +12,7 @@
 #include "Textures.h"
 
 #include "GuiButton.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -66,8 +67,12 @@ bool SceneManager::Start()
 {
 	current = new SceneLogo();
 	current->Start();
-
 	next = nullptr;
+
+	btnSelected = app->audio->LoadFx("Assets/Audio/Fx/button_selected.wav");
+	btnPressed = app->audio->LoadFx("Assets/Audio/Fx/button_pressed.wav");
+	btnDisabled = app->audio->LoadFx("Assets/Audio/Fx/button_disable.wav");
+	btnSlider = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
 
 	return true;
 }
@@ -236,8 +241,8 @@ bool SceneManager::CleanUp()
 
 bool SceneManager::LoadState(pugi::xml_node& data)
 {
-	if (current->currentScene == 1)current = scene;
-	else if (current->currentScene == 2)current = sceneLevel2;
+	if (current->lastLevel == 1)current = scene;
+	else if (current->lastLevel == 2)current = sceneLevel2;
 	current->LoadState(data);
 	return true;
 }

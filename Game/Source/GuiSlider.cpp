@@ -52,6 +52,10 @@ bool GuiSlider::Update(float dt)
                 SliderControl(mouseX, mouseY);
                 NotifyObserver();
             }
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+			{
+				app->audio->PlayFx(app->sceneManager->btnSlider);
+			}
         }
         else state = GuiControlState::NORMAL;
     }

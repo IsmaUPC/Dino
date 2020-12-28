@@ -81,6 +81,10 @@ public:
 
 	SceneControl* sceneControl;
 
+	uint btnSelected;
+	uint btnPressed;
+	uint btnDisabled;
+	uint btnSlider;
 };
 
 #endif // __SCENEMANAGER_H__

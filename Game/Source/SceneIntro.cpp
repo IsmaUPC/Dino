@@ -1,7 +1,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Textures.h"
-#include "Audio.h"
+ #include "Audio.h"
 #include "Render.h"
 #include "SceneIntro.h"
 #include "SceneManager.h"
@@ -72,6 +72,12 @@ bool SceneIntro::Start()
 	app->render->camera.x = app->render->camera.y = 0;
 	
 	ComprobeState(2);
+
+	if (lastLevel == 0)
+	{
+		btnContinue->state = GuiControlState::DISABLED;
+		btnRemove->state = GuiControlState::DISABLED;
+	}
 
 	return true;
 }
@@ -152,14 +158,14 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	{
 
 		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
-		else if (control->id == 2 && currentScene != 0)
+		else if (control->id == 2 && lastLevel != 0)
 		{
 			LOG("CONTINUE LAST GAME");
-			if (currentScene == 1)TransitionToScene(SceneType::LEVEL1);
-			if (currentScene == 2)TransitionToScene(SceneType::LEVEL2);
+			if (lastLevel == 1)TransitionToScene(SceneType::LEVEL1);
+			if (lastLevel == 2)TransitionToScene(SceneType::LEVEL2);
 			isContinue = true;
 		}
-		else if (control->id == 3) LOG("REMOVE GAME"), ComprobeState(3);
+		else if (control->id == 3) LOG("REMOVE GAME"), app->SaveGameRequest(), lastLevel = 0;
 		else if (control->id == 4)
 		{
 			LOG("SETTINGS");
@@ -233,21 +239,25 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 
 bool SceneIntro::LoadState(pugi::xml_node& data)
 {
-	currentScene = data.child("level").attribute("lvl").as_int(0);
+	lastLevel = data.child("level").attribute("lvl").as_int(0);
 	return true;
 }
 
-//bool SceneIntro::SaveState(pugi::xml_node& data) const
-//{
-//	data.child("level").attribute("lvl").set_value(0);
-//	
-//	return true;
-//}
-
-void SceneIntro::RemoveState(pugi::xml_node& data)const
+bool SceneIntro::SaveState(pugi::xml_node& data) const
 {
 	data.child("level").attribute("lvl").set_value(0);
+	btnContinue->state = GuiControlState::DISABLED;
+	btnRemove->state = GuiControlState::DISABLED;
+
+	return true;
 }
+
+//void SceneIntro::RemoveState(pugi::xml_node& data)const
+//{
+//	data.child("level").attribute("lvl").set_value(0);
+//	btnContinue->state = GuiControlState::DISABLED;
+//	btnRemove->state = GuiControlState::DISABLED;
+//}
 
 bool SceneIntro::ComprobeState(int id)
 {
@@ -265,7 +275,7 @@ bool SceneIntro::ComprobeState(int id)
 		sceneStateFile = sceneFile.first_child();
 		sceneStateFile = sceneStateFile.child("scene_manager");
 		if(id==2)LoadState(sceneStateFile);
-		else if (id == 3)RemoveState(sceneStateFile), currentScene=0;
+		//else if (id == 3)SaveState(sceneStateFile), lastLevel=0;
 	}
 	sceneFile.reset();
 	return ret;

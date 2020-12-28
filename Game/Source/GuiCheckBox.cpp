@@ -25,33 +25,39 @@ GuiCheckBox::~GuiCheckBox()
 
 bool GuiCheckBox::Update(float dt)
 {
-    if (state != GuiControlState::DISABLED)
-    {
-        int mouseX, mouseY;
-        app->input->GetMousePosition(mouseX, mouseY);
+	bool ret = true;
 
-        // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-            (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
-        {
-            state = GuiControlState::FOCUSED;
+	int mouseX, mouseY;
+	app->input->GetMousePosition(mouseX, mouseY);
 
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-            {
-                state = GuiControlState::PRESSED;
-            }
+	// Check collision between mouse and button bounds
+	if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+		(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+	{
+		if (state != GuiControlState::DISABLED)
+		{
+			state = GuiControlState::FOCUSED;
+			if (!mouseIn)app->audio->PlayFx(app->sceneManager->btnSelected), mouseIn = true;
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+			{
+				state = GuiControlState::PRESSED;
+				app->audio->PlayFx(app->sceneManager->btnPressed);
+			}
 
-            // If mouse button pressed -> Generate event!
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-            {
-                checked = !checked;
-                NotifyObserver();
-            }
-        }
-        else state = GuiControlState::NORMAL;
-    }
+			// If mouse button pressed -> Generate event!
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+			{
+				checked = !checked;
+				ret = NotifyObserver();
+			}
+		}
+		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+			app->audio->PlayFx(app->sceneManager->btnDisabled);
+	}
+	else if (state != GuiControlState::DISABLED) state = GuiControlState::NORMAL, mouseIn = false;
 
-    return false;
+
+	return ret;
 }
 
 bool GuiCheckBox::Draw()
