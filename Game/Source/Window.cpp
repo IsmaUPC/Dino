@@ -61,7 +61,7 @@ bool Window::Awake(pugi::xml_node& config)
 			//Create window
 			Uint32 flags = SDL_WINDOW_SHOWN;
 
-			if (WIN_FULLSCREEN == true)
+			if (WIN_FULL_SCREEN == true)
 				flags |= SDL_WINDOW_FULLSCREEN;
 
 			if (WIN_BORDERLESS == true)
