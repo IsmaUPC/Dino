@@ -38,6 +38,7 @@ bool Scene::Start()
 {
 
 	app->SaveConfigRequested();
+	app->SaveGameRequest();
 	app->SetLastScene((Module*)this);
 
 	victory=false;

@@ -110,8 +110,8 @@ bool Player::LoadState(pugi::xml_node& player)
 	bool ret=true;
 		playerData.position.x = player.child("position").attribute("x").as_int(playerData.position.x);
 		playerData.position.y = player.child("position").attribute("y").as_int(playerData.position.y);
-		playerData.coins = player.child("score").attribute("points").as_int(0);
-		playerData.respawns = player.child("lives").attribute("num_respawns").as_int(0);
+		playerData.coins = player.child("score").attribute("points").as_int(playerData.coins);
+		playerData.respawns = player.child("lives").attribute("num_respawns").as_int(playerData.respawns);
 	return ret;
 }
 
