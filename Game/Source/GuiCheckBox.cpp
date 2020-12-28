@@ -76,19 +76,41 @@ bool GuiCheckBox::Draw()
     {
         if (checked) app->render->DrawRectangle(bounds, 0, 255, 0, 255);
         else app->render->DrawRectangle(bounds, 0, 255, 0, 255);
-    } break;
-    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+
+        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
+        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
         break;
-    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+    }
+    case GuiControlState::FOCUSED: 
+    {
+        app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+
+        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
+        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
+
         break;
-    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+    }
+    case GuiControlState::PRESSED:
+    {
+        app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+
+        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
+        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
         break;
+    }
+    case GuiControlState::SELECTED:
+    {
+        app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+
+        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
+        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
+        break;
+    }
     default:
         break;
     }
 
-    if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
-    else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
+
 
     return false;
 }

@@ -22,6 +22,8 @@ GuiSettings::GuiSettings(iPoint Position, SceneControl* moduleObserver)
 	chBxVSync = new GuiCheckBox(14, { initialPos.x, initialPos.y + separacion * 3, 200, 40 }, "FULLSCREEN",true);
 	chBxVSync->SetObserver(moduleObserver);
 
+	chBxVSync->state = GuiControlState::DISABLED;
+
 	btnBack = new GuiButton(10, { initialPos.x + 50, initialPos.y + separacion * 4, 150, 40 }, "BACK");
 	btnBack->SetObserver(moduleObserver);
 }
