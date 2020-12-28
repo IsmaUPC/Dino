@@ -52,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 
 	//actives
+	audio->active = true;
 	player->active = false;
 	map->active = false;
 	

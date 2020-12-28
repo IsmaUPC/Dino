@@ -94,10 +94,10 @@ bool Audio::CleanUp()
 bool Audio::Update(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-		app->audio->ChangeVolumeMusic(-10);
+		ChangeVolumeMusic(-10);
 
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
-		app->audio->ChangeVolumeMusic(10);
+		ChangeVolumeMusic(10);
 
 	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		app->SaveConfigRequested();
@@ -215,13 +215,15 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
-void Audio::ChangeVolumeMusic(int num) {
+void Audio::ChangeVolumeMusic(int num)
+{
 	if (num == 10 && volumeMusic < 100)
 	{
 		volumeMusic += num;
 	}
 
-	if (num == -10 && volumeMusic > 0) {
+	if (num == -10 && volumeMusic > 0) 
+	{
 		volumeMusic += num;
 	}
 	Mix_VolumeMusic(volumeMusic);
