@@ -8,7 +8,12 @@
 
 FireBall::FireBall() : Entity()
 {
-	name.Create("Fire");
+	name.Create("fire");
+}
+FireBall::FireBall(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
+	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
+{
+	name.Create("fire");
 }
 
 FireBall::~FireBall()

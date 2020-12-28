@@ -11,6 +11,13 @@ Coins::Coins(iPoint pos) : Entity()
 
 	position = pos;
 }
+Coins::Coins(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
+	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
+{
+	name.Create("coins");
+	position = pPosition;
+
+}
 
 Coins::~Coins()
 {}

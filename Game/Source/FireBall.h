@@ -15,6 +15,7 @@ class FireBall : public Entity
 {
 public:
 	FireBall();
+	FireBall(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 
 	virtual ~FireBall();
 

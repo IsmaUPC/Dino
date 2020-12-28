@@ -9,6 +9,7 @@ class Coins : public Entity
 public:
 
 	Coins(iPoint pos);
+	Coins(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
 
 	virtual ~Coins();
 

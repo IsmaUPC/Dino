@@ -5,7 +5,7 @@
 
 EntityManager::EntityManager() : Module()
 {
-	name.Create("EntityManager");
+	name.Create("entity_manager");
 
 }
 
@@ -92,7 +92,12 @@ bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY)
 	if (spawnQueue.Add(new EntitySpawnPoint(pType, positionSpawn.x, positionSpawn.y))) return true;
 	else return false;
 }
-
+bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY,int num)
+{
+	
+	if (spawnQueue.Add(new EntitySpawnPoint(pType, pX, pY))) return true;
+	else return false;
+}
 void EntityManager::HandleEntitiesSpawn()
 {
 	for (ListItem<EntitySpawnPoint*>* spawnEntiti = spawnQueue.start; spawnEntiti; spawnEntiti = spawnEntiti->next)
@@ -135,19 +140,19 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		entities.end->data->Start();
 		break;
 	case TypeEntity::HUD:
-		entities.Add(new GUI());
+		entities.Add(new GUI(info.type, { info.x,info.y }, 1, tex));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::FIREBALL:
-		entities.Add(new FireBall());
+		entities.Add(new FireBall(info.type, { info.x,info.y }, 1, tex));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::COIN:
-		entities.Add(new Coins({info.x,info.y}));
+		entities.Add(new Coins(info.type, { info.x,info.y }, 1, tex));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::LIVE:
-		entities.Add(new Lives({info.x,info.y}));
+		entities.Add(new Lives(info.type, { info.x,info.y }, 1, tex));
 		entities.end->data->Start();
 	break;
 	}
@@ -172,23 +177,44 @@ void EntityManager::HandleEntitiesDespawn()
 	}*/
 }
 
-bool EntityManager::LoadState(pugi::xml_node& entities)
+bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 {
 	bool ret = true;
+	pugi::xml_node entitiesNode = entityManagerNode.child("entities").first_child();
+	pugi::xml_node aux;
 
+	if (entitiesNode != NULL)
+	{
+		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+		{
+			entiti->data->pendingToDelete = true;
+		}
+
+		entityManagerNode.next_sibling();
+		while (entitiesNode)
+		{
+			AddEntity((TypeEntity)entitiesNode.attribute("type").as_int(), entitiesNode.attribute("x").as_int(), entitiesNode.attribute("y").as_int(), 0);
+			entitiesNode = entitiesNode.next_sibling();
+		}
+	}
 	return ret;
 }
-bool EntityManager::SaveState(pugi::xml_node& entitiesNode) const
+bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
 {
+	
+	entityManagerNode.remove_child("entities");
+	entityManagerNode.append_child("entities").set_value(0);
 
-	//pugi::xml_node rootSaveFile= entitiesNode.child("entity");
+	pugi::xml_node entitiesNode= entityManagerNode.child("entities");
+	pugi::xml_node entity_node = entitiesNode;
 
-	//for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
-	//{
-	//	//rootSaveFile
-	//	rootSaveFile.next_sibling().append_child("entity");
-
-	//}
+	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+	{
+		entitiesNode.append_child("entity").append_attribute("type").set_value(entiti->data->entityData->type);
+		entitiesNode.last_child().append_attribute("x").set_value(entiti->data->entityData->position.x);
+		entitiesNode.last_child().append_attribute("y").set_value(entiti->data->entityData->position.y);
+		entitiesNode.last_child().append_attribute("state").set_value(entiti->data->entityData->state);
+	}
 
 	return true;
 }

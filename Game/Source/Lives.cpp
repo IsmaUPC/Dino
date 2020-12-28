@@ -11,6 +11,13 @@ Lives::Lives(iPoint pos) : Entity()
 
 	position = pos;
 }
+Lives::Lives(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
+	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
+{
+	name.Create("lives");
+
+	position = pPosition;
+}
 
 Lives::~Lives()
 {}

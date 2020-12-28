@@ -44,6 +44,7 @@ public:
 	// Virtual methods to Save state
 	bool SaveState(pugi::xml_node&) const;
 	bool AddEntity(TypeEntity pType, int pX, int pY);
+	bool AddEntity(TypeEntity pType, int pX, int pY, int num);
 	void HandleEntitiesSpawn();
 	void HandleEntitiesDespawn();
 	void EntityManager::SpawnEnemy(const EntitySpawnPoint& info);

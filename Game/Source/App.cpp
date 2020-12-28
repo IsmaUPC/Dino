@@ -51,6 +51,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade);
 	AddModule(pathfinding);
 
+
 	//actives
 	audio->active = true;
 	player->active = false;
