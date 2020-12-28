@@ -1,35 +1,48 @@
 #include "GuiCheckBox.h"
 
-GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
+GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text, bool initState) : GuiControl(GuiControlType::CHECKBOX, id)
 {
     this->bounds = bounds;
     this->text = text;
+
+    
+    bounds.w = (bounds.w / 6) * 5;
+
+    checkBox.w = (bounds.w / 5) + 5;
+    checkBox.h = bounds.h;
+
+    checkBox.x = bounds.x + bounds.w;
+    checkBox.y = bounds.y;
+
+    checked = initState;
+
 }
 
 GuiCheckBox::~GuiCheckBox()
 {
+
 }
 
-bool GuiCheckBox::Update(Input* input, float dt)
+bool GuiCheckBox::Update(float dt)
 {
     if (state != GuiControlState::DISABLED)
     {
         int mouseX, mouseY;
-        input->GetMousePosition(mouseX, mouseY);
+        app->input->GetMousePosition(mouseX, mouseY);
 
         // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
+        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
             (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
         {
             state = GuiControlState::FOCUSED;
 
-            if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
             {
                 state = GuiControlState::PRESSED;
             }
 
             // If mouse button pressed -> Generate event!
-            if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
                 checked = !checked;
                 NotifyObserver();
@@ -41,30 +54,41 @@ bool GuiCheckBox::Update(Input* input, float dt)
     return false;
 }
 
-bool GuiCheckBox::Draw(Render* render)
+bool GuiCheckBox::Draw()
 {
+
+
     // Draw the right button depending on state
     switch (state)
     {
     case GuiControlState::DISABLED:
     {
-        if (checked) render->DrawRectangle(bounds, 100, 100, 100, 255 );
-        else render->DrawRectangle(bounds, 100, 100, 100, 255);
+        if (checked) {
+            app->render->DrawRectangle(bounds, 100, 100, 100, 255);
+            app->render->DrawRectangle(checkBox, 180, 180, 180, 255);
+        }
+        else {
+            app->render->DrawRectangle(bounds, 100, 100, 100, 255);
+            app->render->DrawRectangle(checkBox, 130, 130, 130, 255);
+        }
     } break;
     case GuiControlState::NORMAL: 
     {
-        if (checked) render->DrawRectangle(bounds, 0, 255, 0, 255);
-        else render->DrawRectangle(bounds, 0, 255, 0, 255);
+        if (checked) app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+        else app->render->DrawRectangle(bounds, 0, 255, 0, 255);
     } break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255);
+    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0, 255);
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 255, 255, 255);
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
+    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, 0, 255, 0, 255);
         break;
     default:
         break;
     }
+
+    if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
+    else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
 
     return false;
 }

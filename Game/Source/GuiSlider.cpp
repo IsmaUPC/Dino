@@ -18,18 +18,8 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int
         this->maxValue = max;
     }
 
-    this->value = minValue;
-    //Permite colocar el slider en la posicion que del valor inicial
-    float X, h, h1, h2, h3, i;
-    h1 = (((bounds.w - slider.w) + minValue) * (maxValue - minValue));
-    h2 = maxValue - minValue;
-    h3 = (bounds.w - slider.w) + minValue;
+    SetValue(minValue);
 
-    h = (h1 * h2) / h3;
-    i = (((bounds.w - slider.w) + minValue) * (maxValue - minValue)) * value;
-    X = (i / h) + (bounds.x + (slider.w / 2));
-
-    slider.x = (int)X;
     slider.y = bounds.y;
     slider.w = bounds.w / 10;
     slider.h = bounds.h;
@@ -125,5 +115,22 @@ void GuiSlider::SliderControl(int mouseX, int mouseY)
         slider.x = (bounds.x + bounds.w) - slider.w;
         value = maxValue;
     }
+
+}
+
+void GuiSlider::SetValue(int newValue)
+{
+
+    this->value = newValue;
+    //Permite colocar el slider en la posicion que del valor inicial
+    float X, h, h1, h2, h3, i;
+    h1 = (((bounds.w - slider.w) + minValue) * (maxValue - minValue));
+    h2 = maxValue - minValue;
+    h3 = (bounds.w - slider.w) + minValue;
+
+    h = (h1 * h2) / h3;
+    i = (((bounds.w - slider.w) + minValue) * (maxValue - minValue)) * value;
+    X = (i / h) + (bounds.x + (slider.w / 2));
+    slider.x = (int)X;
 
 }

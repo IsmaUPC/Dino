@@ -177,7 +177,7 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			LOG("EXIT"); 
 			return false;
 		}
-		else if (control->id == 12)
+		else if (control->id == 10)
 		{
 			LOG("RETURN");
 			btnPlay->state = GuiControlState::NORMAL;
@@ -191,12 +191,33 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	}
 	case GuiControlType::SLIDER:
 	{
-		/*if (control->id == 3)
+		if (control->id == 11)
 		{
-			int newVolum;
-			newVolum = btnScrollBar->GetValue();
-			LOG("%d", newVolum);
-		}*/
+		int menuMusic;
+		menuMusic = menuSettings->sldMusic->GetValue();
+		LOG("%d", menuMusic);
+		}
+		if (control->id == 12)
+		{
+			int menuFx;
+			menuFx = menuSettings->sldFx->GetValue();
+			LOG("%d", menuFx);
+		}
+	}
+	case GuiControlType::CHECKBOX:
+	{
+		if (control->id == 13)
+		{
+			bool menuFullScreen;
+			menuFullScreen = menuSettings->chBxFullScreen->GetValue();
+			LOG("%d", menuFullScreen);
+		}
+		if (control->id == 14)
+		{
+			bool menuVSync;
+			menuVSync = menuSettings->chBxVSync->GetValue();
+			LOG("%d", menuVSync);
+		}
 	}
 	default: break;
 	}

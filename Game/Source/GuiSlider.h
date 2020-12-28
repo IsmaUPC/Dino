@@ -19,6 +19,8 @@ public:
     void SliderControl(int mouseX, int mouseY);
 
     int GetValue() { return value; };
+    void SetValue(int newValue);
+
 private:
 
     // GuiSlider specific properties

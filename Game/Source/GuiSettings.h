@@ -28,11 +28,15 @@ public:
         active = !active;
     }
 
-private:
-
     GuiSlider* sldMusic;
     GuiSlider* sldFx;
+    GuiCheckBox* chBxFullScreen;
+    GuiCheckBox* chBxVSync;
+
     GuiButton* btnBack;
+
+private:
+
 
     iPoint initialPos;
 
