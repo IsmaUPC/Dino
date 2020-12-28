@@ -36,7 +36,6 @@ SceneIntro::SceneIntro()
 	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT");
 	btnExit->SetObserver(this);
 
-
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },this);
 }
 
@@ -55,6 +54,8 @@ bool SceneIntro::Start()
 {
 	app->SetLastScene((Module*)this);
 	transition = false;
+
+	menuSettings->MovePosition();
 
 	app->audio->PlayMusic("Assets/Audio/Music/music_intro.ogg");
 	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
@@ -156,7 +157,7 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-
+		
 		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
 		else if (control->id == 2 && lastLevel != 0)
 		{
@@ -176,9 +177,11 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			btnExit->state = GuiControlState::DISABLED;
 			btnRemove->state = GuiControlState::DISABLED;
 
+			menuSettings->MovePosition();
 			menuSettings->sldMusic->SetValue(app->audio->GetVolumeMusic());
 			menuSettings->sldFx->SetValue(app->audio->GetVolumeFx());
 			menuSettings->AbleDisableSetting();
+
 		}
 		else if (control->id == 5) LOG("CREDITS"), TransitionToScene(SceneType::LOGO);
 		else if (control->id == 6)

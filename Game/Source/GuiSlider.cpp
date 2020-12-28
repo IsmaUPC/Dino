@@ -124,7 +124,6 @@ void GuiSlider::SliderControl(int mouseX, int mouseY)
 
 void GuiSlider::SetValue(int newValue)
 {
-
     this->value = newValue;
     //Permite colocar el slider en la posicion que del valor inicial
     float X, h, h1, h2, h3, i;
@@ -136,5 +135,7 @@ void GuiSlider::SetValue(int newValue)
     i = (((bounds.w - slider.w) + minValue) * (maxValue - minValue)) * value;
     X = (i / h) + (bounds.x + (slider.w / 2));
     slider.x = (int)X;
+
+    slider.y = bounds.y;
 
 }

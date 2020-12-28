@@ -119,6 +119,9 @@
     <ClCompile Include="Source\GuiSettings.cpp">
       <Filter>Modules\GuiControls</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuiMenuPause.cpp">
+      <Filter>Modules\GuiControls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Defs.h">
@@ -257,6 +260,9 @@
       <Filter>Modules\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Source\GuiSettings.h">
+      <Filter>Modules\GuiControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiMenuPause.h">
       <Filter>Modules\GuiControls</Filter>
     </ClInclude>
   </ItemGroup>

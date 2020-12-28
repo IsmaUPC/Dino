@@ -65,5 +65,5 @@ bool GuiButton::Draw()
         break;
     }
 
-    return false;
+    return true;
 }

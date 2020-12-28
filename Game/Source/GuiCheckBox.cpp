@@ -5,13 +5,10 @@ GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text, bool init
     this->bounds = bounds;
     this->text = text;
 
-    
-    bounds.w = (bounds.w / 6) * 5;
-
-    checkBox.w = (bounds.w / 5) + 5;
+    checkBox.w = (bounds.w / 5);
     checkBox.h = bounds.h;
 
-    checkBox.x = bounds.x + bounds.w;
+    checkBox.x = bounds.x + ((bounds.w / 6) * 5);
     checkBox.y = bounds.y;
 
     checked = initState;
@@ -25,8 +22,10 @@ GuiCheckBox::~GuiCheckBox()
 
 bool GuiCheckBox::Update(float dt)
 {
-	bool ret = true;
 
+	bool ret = true;
+    checkBox.x = bounds.x + ((bounds.w / 6) * 5);
+    checkBox.y = bounds.y;
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 
@@ -55,7 +54,6 @@ bool GuiCheckBox::Update(float dt)
 			app->audio->PlayFx(app->sceneManager->btnDisabled);
 	}
 	else if (state != GuiControlState::DISABLED) state = GuiControlState::NORMAL, mouseIn = false;
-
 
 	return ret;
 }
