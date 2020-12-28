@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "SceneManager.h"
 #include "Pathfinding.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
@@ -43,8 +44,11 @@ bool Scene::Start()
 
 	victory=false;
 	app->player->win = false;
-	// Load map
 
+	//MENU
+	menu = new GuiMenuPause({ 100,30 },this);
+
+	// Load map
 	//app->map->Load("Mapa_PixelArt.tmx");
 	if (app->map->Load("map_1.tmx") == true)
 	{
@@ -57,6 +61,7 @@ bool Scene::Start()
 	}
 	app->map->active = true;
 	//Positions Initials
+	app->entityManager->Start();
 	app->player->positionInitial = { 432,1170 };
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
@@ -64,7 +69,7 @@ bool Scene::Start()
 	//app->entityManager->AddEntity(AIR_ENEMY, 51, 16);
 	
 
-	//Active calls
+	// Active calls
 	app->player->Init();
 	app->player->Start();
 	app->audio->active = true;
@@ -106,6 +111,10 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	bool ret = true;
+	//MENU
+	ret = menu->Update(dt);
+
 	//DEBUG KEYS
 	DebugKeys();
 	app->map->checKpointsMap.checkPointOnAnim->Update();
@@ -133,7 +142,7 @@ bool Scene::Update(float dt)
 		LOG("GAME OVER!");
 		lose = true;
 	}
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
@@ -143,6 +152,8 @@ bool Scene::PostUpdate()
 	Parallax();
 	// Draw map
 	app->map->Draw();
+
+	//MENU
 
 	bool ret = true;
 	SDL_Rect rectFather;
@@ -164,6 +175,8 @@ bool Scene::PostUpdate()
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
 	
+	menu->Draw();
+
 	return ret;
 }
 
@@ -181,6 +194,8 @@ bool Scene::CleanUp()
 	app->player->CleanUp();
 	app->entityManager->CleanUp();
 	app->audio->UnloadFxs();
+
+	app->sceneManager->SetPause(false);
 
 	active = false;
 	return true;
@@ -227,11 +242,19 @@ void Scene::DebugKeys()
 		else app->player->godMode = false;
 	}
 }
+
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+
+	return menu->Event(control);
+}
+
 bool Scene::LoadState(pugi::xml_node& data)
 {
 	//TransitionToScene(SceneType::LEVEL1);
 	return true;
 }
+
 bool Scene::SaveState(pugi::xml_node& data) const
 {
 	data.child("level").attribute("lvl").set_value(1);

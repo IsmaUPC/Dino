@@ -2,6 +2,8 @@
 #define __GUICHECKBOX_H__
 
 #include "GuiControl.h"
+#include "SceneManager.h"
+#include "Audio.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -25,7 +27,7 @@ private:
     // Maybe some animation properties for state change?
 
     SDL_Rect checkBox;
-
+	bool mouseIn = false;
     bool checked;
 };
 

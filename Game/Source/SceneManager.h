@@ -46,7 +46,7 @@ public:
 
 	//Return Pause
 	bool GetIsPause() { return pause; };
-
+	void SetPause(bool statePause) { pause = statePause; };
 	// Called before quitting
 	bool CleanUp();
 
@@ -81,6 +81,10 @@ public:
 
 	SceneControl* sceneControl;
 
+	uint btnSelected;
+	uint btnPressed;
+	uint btnDisabled;
+	uint btnSlider;
 };
 
 #endif // __SCENEMANAGER_H__

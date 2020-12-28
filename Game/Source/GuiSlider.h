@@ -2,6 +2,8 @@
 #define __GUISLIDER_H__
 
 #include "GuiControl.h"
+#include "SceneManager.h"
+#include "Audio.h"
 
 #include "Point.h"
 #include "SString.h"

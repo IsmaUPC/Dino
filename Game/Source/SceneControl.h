@@ -84,7 +84,7 @@ public:
 
     bool transitionRequired;
     SceneType nextScene;
-	int currentScene = 0;
+	int lastLevel = 0;
 	bool isContinue = false;
 };
 

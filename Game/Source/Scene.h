@@ -4,6 +4,7 @@
 #include "SceneControl.h"
 #include "Animation.h"
 #include "Point.h"
+#include "GuiMenuPause.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -49,13 +50,16 @@ public:
 		return numThisScene;
 	}
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
+
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 private:
 
-	int numThisScene ;
+	int numThisScene;
 
 	void Parallax();
 	void DebugKeys();
@@ -68,6 +72,9 @@ private:
 	SDL_Texture* img;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	float speedImg=0;
+
+	GuiMenuPause* menu;
+
 };
 
 #endif // __SCENE_H__

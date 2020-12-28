@@ -1,7 +1,6 @@
 #ifndef __GUISETTINGS_H__
 #define __GUISETTINGS_H__
 
-
 #include "Point.h"
 #include "SString.h"
 
@@ -17,7 +16,7 @@ public:
 
     GuiSettings(iPoint Position, SceneControl* moduleObserver);
 
-    virtual ~GuiSettings();
+    ~GuiSettings();
 
     bool Update(float dt);
     bool Draw();
@@ -27,6 +26,9 @@ public:
     void AbleDisableSetting() {
         active = !active;
     }
+
+    void MovePosition();
+
 
     GuiSlider* sldMusic;
     GuiSlider* sldFx;

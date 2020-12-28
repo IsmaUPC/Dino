@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Input.h"
+#include "Render.h"
 #include "Window.h"
 
 #include "Defs.h"
@@ -149,8 +150,9 @@ bool Input::GetWindowEvent(EventWindow ev)
 
 void Input::GetMousePosition(int& x, int& y)
 {
-	x = mouseX;
-	y = mouseY;
+
+	x = mouseX - app->render->camera.x;
+	y = mouseY - app->render->camera.y;
 }
 
 void Input::GetMouseMotion(int& x, int& y)

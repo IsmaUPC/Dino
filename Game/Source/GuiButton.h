@@ -2,6 +2,8 @@
 #define __GUIBUTTON_H__
 
 #include "GuiControl.h"
+#include "SceneManager.h"
+#include "Audio.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -17,7 +19,7 @@ public:
     bool Draw();
 
 private:
-
+	bool mouseIn = false;
     // Gui Button specific properties
     // Maybe some animation properties for state change?
 };
