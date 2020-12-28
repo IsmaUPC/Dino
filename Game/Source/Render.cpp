@@ -27,6 +27,8 @@ bool Render::Awake(pugi::xml_node& config)
 	LOG("Create SDL rendering context");
 	bool ret = true;
 
+
+
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
 	if(config.child("vsync").attribute("value").as_bool(true) == true)
@@ -37,6 +39,10 @@ bool Render::Awake(pugi::xml_node& config)
 
 	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
+
+	if (FULL_SCREEN == 1) {
+		SDL_RenderSetLogicalSize(renderer, WINDOW_W, WINDOW_H);
+	}
 	if(renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());

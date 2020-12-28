@@ -50,18 +50,43 @@ bool Window::Awake(pugi::xml_node& config)
 		if(fullscreen_window == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		icon = IMG_Load("Assets/textures/logo.png");
 
-		window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-		SDL_SetWindowIcon(window, icon);
 
-		if(window == NULL)
+
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
-			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
-		else
-		{
-			// Get window surface
-			screenSurface = SDL_GetWindowSurface(window);
+		else {
+			//Create window
+			Uint32 flags = SDL_WINDOW_SHOWN;
+
+			if (WIN_FULLSCREEN == true)
+				flags |= SDL_WINDOW_FULLSCREEN;
+
+			if (WIN_BORDERLESS == true)
+				flags |= SDL_WINDOW_BORDERLESS;
+
+			if (WIN_RESIZABLE == true)
+				flags |= SDL_WINDOW_RESIZABLE;
+
+			if (WIN_FULLSCREEN_DESKTOP == true)
+				flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+
+
+			window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+			SDL_SetWindowIcon(window, icon);
+
+			if (window == NULL)
+			{
+				LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+				ret = false;
+			}
+			else
+			{
+				// Get window surface
+				screenSurface = SDL_GetWindowSurface(window);
+			}
 		}
 	}
 
