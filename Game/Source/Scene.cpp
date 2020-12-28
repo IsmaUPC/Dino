@@ -61,6 +61,7 @@ bool Scene::Start()
 	}
 	app->map->active = true;
 	//Positions Initials
+	app->entityManager->Start();
 	app->player->positionInitial = { 432,1170 };
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
@@ -68,7 +69,7 @@ bool Scene::Start()
 	//app->entityManager->AddEntity(AIR_ENEMY, 51, 16);
 	
 
-	//Active calls
+	// Active calls
 	app->player->Init();
 	app->player->Start();
 	app->audio->active = true;

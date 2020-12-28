@@ -449,6 +449,7 @@ bool Player::CleanUp()
 
 	app->tex->UnLoad(playerData.texture);
 	active = false;
+	pendingToDelete = true;
 
 	checkPoints.Clear();
 	cameraPosCP.Clear();

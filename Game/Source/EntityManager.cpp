@@ -26,6 +26,7 @@ bool EntityManager::Awake(pugi::xml_node& config)
 bool EntityManager::Start()
 {
 	LOG("EntityManager start");
+	active = true;
 	// back background
 	return true;
 }
@@ -77,7 +78,7 @@ bool EntityManager::CleanUp()
 
 		item = item->next;
 	}
-
+	active = false;
 	return ret;
 	//return true;
 }
