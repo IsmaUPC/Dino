@@ -68,7 +68,7 @@ bool GUI::Start()
 	//Text
 	hudFont = app->fonts->Load("Assets/Textures/GUI/hud_font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,0123456789им?!*$%&()+-/:;<=>@__     ", 5, 705, 225);
 
-	fireBallState = app->player->playerData.stateShoot;
+	fireBallState = app->player->GetStateShoot();
 
 	activeFPS = false;
 
