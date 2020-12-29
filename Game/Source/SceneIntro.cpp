@@ -16,6 +16,30 @@ SceneIntro::SceneIntro()
 	active = true;
 	name.Create("sceneIntro");
 
+}
+
+SceneIntro::~SceneIntro()
+{
+}
+
+bool SceneIntro::Awake()
+{
+	LOG("Loading Scene");
+	bool ret = true;
+
+
+
+	return ret;
+
+
+}
+
+bool SceneIntro::Start()
+{
+
+	btnSettingsTex = app->tex->Load("Assets/Textures/GUI/setting_button.png");
+	btnExitTex = app->tex->Load("Assets/Textures/GUI/exit_button.png");
+
 	// GUI: Initialize required controls for the screen
 
 	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, 400, 200, 40 }, "PLAY");
@@ -27,31 +51,27 @@ SceneIntro::SceneIntro()
 	btnRemove = new GuiButton(3, { WINDOW_W / 2 - 200 / 2, 500, 200, 40 }, "REMOVE");
 	btnRemove->SetObserver(this);
 
-	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS");
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS", btnSettingsTex);
 	btnSettings->SetObserver(this);
 
 	btnCredits = new GuiButton(5, { WINDOW_W / 2 - 200 / 2, 600, 200, 40 }, "CREDITS");
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT");
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT", btnExitTex);
 	btnExit->SetObserver(this);
 
-	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },this);
-}
+	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
 
-SceneIntro::~SceneIntro()
-{
-}
 
-bool SceneIntro::Awake()
-{
-	LOG("Loading Scene");
-	bool ret = true;
-	return ret;
-}
 
-bool SceneIntro::Start()
-{
+
+
+
+
+
+
+
+
 	app->SetLastScene((Module*)this);
 	transition = false;
 

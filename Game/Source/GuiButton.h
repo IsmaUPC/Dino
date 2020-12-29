@@ -3,6 +3,7 @@
 
 #include "GuiControl.h"
 #include "Audio.h"
+#include "App.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -11,7 +12,7 @@ class GuiButton : public GuiControl
 {
 public:
 
-    GuiButton(uint32 id, SDL_Rect bounds, const char *text);
+    GuiButton(uint32 id, SDL_Rect bounds, const char *text, SDL_Texture* texture = NULL);
     virtual ~GuiButton();
 
     bool Update(float dt);
@@ -21,6 +22,10 @@ private:
 	bool mouseIn = false;
     // Gui Button specific properties
     // Maybe some animation properties for state change?
+	
+
+	int texturW;
+	int texturH;
 };
 
 #endif // __GUIBUTTON_H__

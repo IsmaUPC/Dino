@@ -1,10 +1,13 @@
 #include "GuiButton.h"
 #include "SceneManager.h"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* texture ) : GuiControl(GuiControlType::BUTTON, id)
 {
     this->bounds = bounds;
     this->text = text;
+    this->texture = texture;
+	SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
+	texturH /= 4;
 }
 
 GuiButton::~GuiButton()
@@ -49,18 +52,33 @@ bool GuiButton::Update(float dt)
 
 bool GuiButton::Draw()
 {
+	SDL_Rect rect = { 0,texturH,texturW,texturH };
+
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100, 255);
+    case GuiControlState::DISABLED: 
+		app->render->DrawRectangle(bounds, 100, 100, 100, 255);
+		rect.y*= 3;
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
-    case GuiControlState::NORMAL: app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+    case GuiControlState::NORMAL: 
+		app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+		rect.y *= 0;
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
-    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+    case GuiControlState::FOCUSED: 
+		app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+		rect.y *= 1;
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
-    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+    case GuiControlState::PRESSED:
+		app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+		rect.y *= 2;
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
-    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+    case GuiControlState::SELECTED:
+		app->render->DrawRectangle(bounds, 0, 255, 0, 255);
         break;
     default:
         break;
