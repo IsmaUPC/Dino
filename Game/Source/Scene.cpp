@@ -193,7 +193,7 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(animationFather.texture);
 	app->player->CleanUp();
 	app->entityManager->CleanUp();
-	app->audio->UnloadFxs();
+	//app->audio->UnloadFxs();
 
 	app->sceneManager->SetPause(false);
 
