@@ -33,7 +33,9 @@ bool FireBall::Start()
 	startPos = { -100,-100 };
 	entityData->position = startPos;
 	entityData->texture = app->tex->Load("Assets/Textures/fire_ball.png");
+
 	SDL_QueryTexture(entityData->texture, NULL, NULL, &texW, &texH);
+
 	texW = texW / 5;
 
 	fireBallAnim->speed = 0.3;
@@ -60,6 +62,7 @@ bool FireBall::Start()
 	cooldown = 2;
 	startexplosion = false;
 
+	stateShoot = 0;
 	app->player->SetStateShoot(&stateShoot);
 	app->player->SetPositionShoot(&entityData->position);
 	app->player->SetCollidersShoot(entityData->pointsCollision);

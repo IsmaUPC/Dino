@@ -130,9 +130,10 @@ uint Window::GetScale() const
 	return scale;
 }
 
-void Window::FullScreen()
+void Window::FullScreen(bool mode)
 {
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	if(mode)SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	if (!mode)SDL_SetWindowFullscreen(window, SDL_FALSE);
 }
 
 bool Window::SaveState(pugi::xml_node& data) const

@@ -83,6 +83,7 @@ public:
 
 	bool GetInCheckPoint() { return inCheckPoint; };
 	bool GetCheckPointMove() { return checkpointMove; };
+	uint* GetStateShoot() { return playerData.stateShoot; };
 
 	void SetStateShoot(uint *state) { playerData.stateShoot = state; };
 	void SetPositionShoot(iPoint* position) { playerData.shootPosition = position; };

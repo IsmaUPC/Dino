@@ -252,7 +252,7 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		if (control->id == 13)
 		{
 			app->fullScreen = menuSettings->chBxFullScreen->GetValue();
-			app->win->FullScreen();
+			app->win->FullScreen(app->fullScreen);
 			app->render->FullScreen();
 		}
 		if (control->id == 14)
