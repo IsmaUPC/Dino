@@ -30,7 +30,7 @@ public:
 	// Retrieve window scale
 	uint GetScale() const;
 
-	void FullScreen();
+	void FullScreen(bool mode);
 
 	//Save FullScreenState
 	bool SaveState(pugi::xml_node& data)const;
