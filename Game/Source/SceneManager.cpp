@@ -24,6 +24,8 @@
 
 SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module()
 {
+
+
 	name.Create("scene_manager");
 
 	sceneLogo = new SceneLogo();
@@ -73,6 +75,8 @@ bool SceneManager::Start()
 	btnPressed = app->audio->LoadFx("Assets/Audio/Fx/button_pressed.wav");
 	btnDisabled = app->audio->LoadFx("Assets/Audio/Fx/button_disable.wav");
 	btnSlider = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
+	btnTextureAtlas = app->tex->Load("Assets/Textures/GUI/button_atlas_small.png");
+
 
 	guiFont = app->fonts->Load("Assets/Textures/GUI/font_gui.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 2, 364, 48);
 
@@ -146,6 +150,8 @@ bool SceneManager::Update(float dt)
 					current = next;		// Assign next pointer
 					next = nullptr;
 
+					//MENU
+					menu = new GuiMenuPause({ 100,30 }, current, btnTextureAtlas);
 					// Activate fade out effect to next loaded screen
 					fadeOutCompleted = true;
 				}
@@ -204,7 +210,8 @@ bool SceneManager::Update(float dt)
 	}
 	*/
 
-
+	//MENU
+	if(pause)ret = menu->Update(dt);
 
 	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 	return ret;
@@ -216,7 +223,6 @@ bool SceneManager::PostUpdate()
 	bool ret = true;
 	// Draw current scene
 	current->PostUpdate();
-
 	// Draw full screen rectangle in front of everything
 	if (onTransition)
 	{

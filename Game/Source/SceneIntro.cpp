@@ -3,7 +3,6 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "SceneIntro.h"
 #include "SceneManager.h"
 
@@ -37,28 +36,31 @@ bool SceneIntro::Awake()
 
 bool SceneIntro::Start()
 {
-
+	SDL_Texture* btnTextureAtlas = app->sceneManager->btnTextureAtlas;
 	btnSettingsTex = app->tex->Load("Assets/Textures/GUI/setting_button.png");
 	btnExitTex = app->tex->Load("Assets/Textures/GUI/exit_button.png");
 
 	// GUI: Initialize required controls for the screen
+	int margin= 7;
+	int padding = 50;
 
-	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, 400, 200, 40 }, "PLAY");
+	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, (padding * 1)+280+(margin*1),  183, 91 }, "PLAY", btnTextureAtlas);
 	btnPlay->SetObserver(this);
 
-	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, 450, 200, 40 }, "CONTINUE");
+	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, padding  + 365 + (margin * 2),  183, 91 }, "CONTINUE", btnTextureAtlas);
 	btnContinue->SetObserver(this);
 
-	btnRemove = new GuiButton(3, { WINDOW_W / 2 - 200 / 2, 500, 200, 40 }, "REMOVE");
+	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 100 , padding  + 365 + (margin * 2), 183, 91 }, "REMOVE", btnTextureAtlas);
 	btnRemove->SetObserver(this);
 
-	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS");//, btnSettingsTex);
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", btnTextureAtlas);
 	btnSettings->SetObserver(this);
 
-	btnCredits = new GuiButton(5, { WINDOW_W / 2 - 200 / 2, 600, 200, 40 }, "CREDITS");
+	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W / 5) , 535 + (margin * 4),  183, 91 }, "CREDITS", btnTextureAtlas);
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT");// , btnExitTex);
+
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 300 ,padding  + 450 + (margin * 3),  183, 91 }, "EXIT", btnTextureAtlas);
 	btnExit->SetObserver(this);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
@@ -90,8 +92,8 @@ bool SceneIntro::Start()
 		btnContinue->state = GuiControlState::DISABLED;
 		btnRemove->state = GuiControlState::DISABLED;
 	}
-	if(app->fullScreen)
-		menuSettings->chBxFullScreen->SetValue(true);
+	/*if(app->fullScreen)
+		menuSettings->chBxFullScreen->SetValue(true);*/
 	return true;
 }
 
@@ -225,6 +227,11 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			btnSettings->state = GuiControlState::NORMAL;
 			btnCredits->state = GuiControlState::NORMAL;
 			btnExit->state = GuiControlState::NORMAL;
+			if (lastLevel != 0)
+			{
+				btnContinue->state = GuiControlState::NORMAL;
+				btnRemove->state = GuiControlState::NORMAL;
+			}
 			menuSettings->AbleDisableSetting();
 			app->SaveConfigRequested();
 		}
@@ -275,7 +282,7 @@ bool SceneIntro::LoadState(pugi::xml_node& data)
 
 bool SceneIntro::SaveState(pugi::xml_node& data) const
 {
-	data.child("level").attribute("lvl").set_value(0);
+	data.child("level").attribute("lvl").set_value(lastLevel);
 
 	return true;
 }

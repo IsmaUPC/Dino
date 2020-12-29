@@ -4,14 +4,14 @@
 #include "Point.h"
 #include "SString.h"
 
-#include "GuiButton.h"
-#include "GuiControl.h"
+//#include "GuiButton.h"
+//#include "GuiControl.h"
 #include "GuiSettings.h"
 
 class GuiMenuPause
 {
 public:
-	GuiMenuPause(iPoint Position,SceneControl* moduleObserver);
+	GuiMenuPause(iPoint Position,SceneControl* moduleObserver, SDL_Texture* textureAtlas);
 	~GuiMenuPause();
 
     bool Update(float dt);

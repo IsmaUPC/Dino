@@ -7,7 +7,6 @@
 #include "GuiButton.h"
 #include "GuiCheckBox.h"
 #include "GuiSlider.h"
-#include "GuiControl.h"
 
 
 class GuiSettings

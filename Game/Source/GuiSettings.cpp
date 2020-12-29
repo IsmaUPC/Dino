@@ -30,6 +30,9 @@ GuiSettings::GuiSettings(iPoint Position, SceneControl* moduleObserver)
 	btnBack = new GuiButton(10, { initialPos.x + 50, initialPos.y + separacion * 4, 150, 40 }, "BACK");
 	btnBack->SetObserver(moduleObserver);
 
+	if (app->fullScreen)
+		chBxFullScreen->SetValue(true);
+
 }
 
 GuiSettings::~GuiSettings()

@@ -2,7 +2,6 @@
 #define __GUIBUTTON_H__
 
 #include "GuiControl.h"
-#include "SceneManager.h"
 #include "Audio.h"
 #include "App.h"
 
@@ -25,8 +24,11 @@ private:
     // Maybe some animation properties for state change?
 	
 
-	int texturW;
-	int texturH;
+	int texturW= 183;
+	int texturH= 91;
+	int pixelImagePosX= 87;
+	int pixelImagePosY= 99;
+	int margin = 10;
 };
 
 #endif // __GUIBUTTON_H__

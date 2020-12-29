@@ -7,20 +7,20 @@
 #include "Defs.h"
 #include "Log.h"
 
-GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver)
+GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver, SDL_Texture* textureAtlas)
 {
 	int separacion = 50;
 
-	btnResume = new GuiButton(1, { Position.x , Position.y + separacion*0, 200, 40 }, "REMOVE");
+	btnResume = new GuiButton(1, { Position.x , Position.y + separacion*0, 200, 40 }, "REMOVE", textureAtlas);
 	btnResume->SetObserver(moduleObserver);
 
-	btnSettings = new GuiButton(2, { Position.x, Position.y + separacion * 1, 200, 40 }, "SETTINGS");
+	btnSettings = new GuiButton(2, { Position.x, Position.y + separacion * 1, 200, 40 }, "SETTINGS", textureAtlas);
 	btnSettings->SetObserver(moduleObserver);
 
-	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "TITLE");
+	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "TITLE", textureAtlas);
 	btnBackToTitle->SetObserver(moduleObserver);
 
-	btnExit = new GuiButton(4, { Position.x, Position.y + separacion * 3, 200, 40 }, "EXIT");
+	btnExit = new GuiButton(4, { Position.x, Position.y + separacion * 3, 200, 40 }, "EXIT", textureAtlas);
 	btnExit->SetObserver(moduleObserver);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },moduleObserver);
@@ -142,9 +142,9 @@ bool GuiMenuPause::Event(GuiControl* control)
 	{
 		if (control->id == 13)
 		{
-			bool menuFullScreen;
-			menuFullScreen = menuSettings->chBxFullScreen->GetValue();
-			LOG("%d", menuFullScreen);
+			app->fullScreen = menuSettings->chBxFullScreen->GetValue();
+			app->win->FullScreen(app->fullScreen);
+			app->render->FullScreen();
 		}
 		if (control->id == 14)
 		{

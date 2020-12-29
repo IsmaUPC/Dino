@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "SceneControl.h"
+#include "GuiMenuPause.h"
+#include "Window.h"
 
 class GuiButton;
 
@@ -58,6 +60,8 @@ public:
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 
+	GuiMenuPause* menu;
+
 private:
 
 	Input* input;
@@ -83,6 +87,8 @@ public:
 	SceneLevel2* sceneLevel2;
 
 	SceneControl* sceneControl;
+
+	SDL_Texture* btnTextureAtlas;
 
 	uint btnSelected;
 	uint btnPressed;
