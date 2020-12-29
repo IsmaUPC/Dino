@@ -63,15 +63,6 @@ bool SceneIntro::Start()
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
 
 
-
-
-
-
-
-
-
-
-
 	app->SetLastScene((Module*)this);
 	transition = false;
 
@@ -99,8 +90,8 @@ bool SceneIntro::Start()
 		btnContinue->state = GuiControlState::DISABLED;
 		btnRemove->state = GuiControlState::DISABLED;
 	}
-	if(app->fullScreen)
-		menuSettings->chBxFullScreen->SetValue(true);
+	/*if(app->fullScreen)
+		menuSettings->chBxFullScreen->SetValue(true);*/
 	return true;
 }
 

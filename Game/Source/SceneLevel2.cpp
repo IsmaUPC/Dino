@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "EntityManager.h"
+#include "SceneManager.h"
 #include "Pathfinding.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
@@ -54,6 +55,7 @@ bool SceneLevel2::Start()
 	}
 	app->map->active = true;
 	//Positions initials
+	app->entityManager->Start();
 	app->player->positionInitial = {576,1534};
 	app->entityManager->AddEntity(GROUND_ENEMY, 34, 31);
 	app->entityManager->AddEntity(GROUND_ENEMY, 57, 25);
@@ -230,6 +232,10 @@ void SceneLevel2::DebugKeys()
 		if (app->player->godMode == false)app->player->godMode = true;
 		else app->player->godMode = false;
 	}
+}
+bool SceneLevel2::OnGuiMouseClickEvent(GuiControl* control)
+{
+	return app->sceneManager->menu->Event(control);
 }
 
 bool SceneLevel2::LoadState(pugi::xml_node& data)

@@ -48,6 +48,7 @@ public:
 	{
 		return 0;
 	};
+	bool OnGuiMouseClickEvent(GuiControl* control);
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game
