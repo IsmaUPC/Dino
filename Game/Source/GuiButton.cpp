@@ -6,8 +6,9 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* 
     this->bounds = bounds;
     this->text = text;
     this->texture = texture;
-	SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
-	texturH /= 4;
+	//SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
+	//texturH /= 4;
+
 }
 
 GuiButton::~GuiButton()
@@ -52,33 +53,33 @@ bool GuiButton::Update(float dt)
 
 bool GuiButton::Draw()
 {
-	SDL_Rect rect = { 0,texturH,texturW,texturH };
+	SDL_Rect rect = { pixelImagePosX,pixelImagePosY,texturW+margin,texturH };
+	//SDL_Rect rect = { pixelImagePosX,pixelImagePosY,100,100 };
 
     // Draw the right button depending on state
     switch (state)
     {
     case GuiControlState::DISABLED: 
-		app->render->DrawRectangle(bounds, 100, 100, 100, 255);
-		rect.y*= 3;
+		//app->render->DrawRectangle(bounds, 100, 100, 100, 255);
+		rect.x+= 3 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::NORMAL: 
-		app->render->DrawRectangle(bounds, 0, 255, 0, 255);
-		rect.y *= 0;
+		//app->render->DrawRectangle(bounds, 0, 255, 0, 255);
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::FOCUSED: 
-		app->render->DrawRectangle(bounds, 255, 255, 0, 255);
-		rect.y *= 1;
+		//app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+		rect.x+= 1*rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::PRESSED:
-		app->render->DrawRectangle(bounds, 0, 255, 255, 255);
-		rect.y *= 2;
+	//	app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+		rect.x+= 2 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::SELECTED:
-		app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+	//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
         break;
     default:
         break;

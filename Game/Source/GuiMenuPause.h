@@ -11,7 +11,7 @@
 class GuiMenuPause
 {
 public:
-	GuiMenuPause(iPoint Position,SceneControl* moduleObserver);
+	GuiMenuPause(iPoint Position,SceneControl* moduleObserver, SDL_Texture* textureAtlas);
 	~GuiMenuPause();
 
     bool Update(float dt);

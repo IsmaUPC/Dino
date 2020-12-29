@@ -24,6 +24,8 @@
 
 SceneManager::SceneManager(Input* input, Render* render, Textures* tex) : Module()
 {
+
+
 	name.Create("scene_manager");
 
 	sceneLogo = new SceneLogo();
@@ -73,6 +75,8 @@ bool SceneManager::Start()
 	btnPressed = app->audio->LoadFx("Assets/Audio/Fx/button_pressed.wav");
 	btnDisabled = app->audio->LoadFx("Assets/Audio/Fx/button_disable.wav");
 	btnSlider = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
+	btnTextureAtlas = app->tex->Load("Assets/Textures/GUI/button_atlas_small.png");
+
 
 	return true;
 }
@@ -145,7 +149,7 @@ bool SceneManager::Update(float dt)
 					next = nullptr;
 
 					//MENU
-					menu = new GuiMenuPause({ 100,30 }, current);
+					menu = new GuiMenuPause({ 100,30 }, current, btnTextureAtlas);
 					// Activate fade out effect to next loaded screen
 					fadeOutCompleted = true;
 				}

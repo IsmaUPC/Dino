@@ -85,6 +85,8 @@ public:
 
 	SceneControl* sceneControl;
 
+	SDL_Texture* btnTextureAtlas;
+
 	uint btnSelected;
 	uint btnPressed;
 	uint btnDisabled;
