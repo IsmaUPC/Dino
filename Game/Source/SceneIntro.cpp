@@ -80,7 +80,8 @@ bool SceneIntro::Start()
 		btnContinue->state = GuiControlState::DISABLED;
 		btnRemove->state = GuiControlState::DISABLED;
 	}
-
+	if(app->fullScreen)
+		menuSettings->chBxFullScreen->SetValue(true);
 	return true;
 }
 
@@ -167,7 +168,14 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			if (lastLevel == 2)TransitionToScene(SceneType::LEVEL2);
 			isContinue = true;
 		}
-		else if (control->id == 3) LOG("REMOVE GAME"), app->SaveGameRequest(), lastLevel = 0;
+		else if (control->id == 3)
+		{
+			LOG("REMOVE GAME");
+			app->SaveGameRequest();
+			lastLevel = 0;
+			btnContinue->state = GuiControlState::DISABLED;
+			btnRemove->state = GuiControlState::DISABLED;
+		}
 		else if (control->id == 4)
 		{
 			LOG("SETTINGS");
@@ -194,11 +202,9 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			LOG("RETURN");
 			btnPlay->state = GuiControlState::NORMAL;
-			btnContinue->state = GuiControlState::NORMAL;
 			btnSettings->state = GuiControlState::NORMAL;
 			btnCredits->state = GuiControlState::NORMAL;
 			btnExit->state = GuiControlState::NORMAL;
-			btnRemove->state = GuiControlState::NORMAL;
 			menuSettings->AbleDisableSetting();
 			app->SaveConfigRequested();
 		}
@@ -250,17 +256,13 @@ bool SceneIntro::LoadState(pugi::xml_node& data)
 bool SceneIntro::SaveState(pugi::xml_node& data) const
 {
 	data.child("level").attribute("lvl").set_value(0);
-	btnContinue->state = GuiControlState::DISABLED;
-	btnRemove->state = GuiControlState::DISABLED;
 
 	return true;
 }
 
-//void SceneIntro::RemoveState(pugi::xml_node& data)const
+//void SceneIntro::SaveFullScreen(pugi::xml_node& data)const
 //{
-//	data.child("level").attribute("lvl").set_value(0);
-//	btnContinue->state = GuiControlState::DISABLED;
-//	btnRemove->state = GuiControlState::DISABLED;
+//	data.attribute("value").set_value(app->fullScreen);
 //}
 
 void SceneIntro::ComprobeState(int id)
@@ -283,22 +285,23 @@ void SceneIntro::ComprobeState(int id)
 	}
 	sceneFile.reset();
 }
-void SceneIntro::FullScreenMode(SString filename)
-{
-	bool ret = true;
-	pugi::xml_parse_result result = sceneFile.load_file("config");
-
-	// Check result for loading errors
-	if (result == NULL)
-	{
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-		ret = false;
-	}
-	else
-	{
-		sceneStateFile = sceneFile.first_child();
-		sceneStateFile = sceneStateFile.child(filename.GetString());
-	}
-	sceneFile.reset();
-}
+//void SceneIntro::FullScreenMode(SString filename)
+//{
+//	bool ret = true;
+//	pugi::xml_parse_result result = sceneFile.load_file("config.xml");
+//
+//	// Check result for loading errors
+//	if (result == NULL)
+//	{
+//		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+//		ret = false;
+//	}
+//	else
+//	{
+//		sceneStateFile = sceneFile.first_child();
+//		sceneStateFile = sceneStateFile.child("window").child("fullscreen_window");
+//		SaveFullScreen(sceneStateFile);
+//	}
+//	sceneFile.reset();
+//}
 

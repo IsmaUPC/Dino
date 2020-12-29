@@ -11,7 +11,7 @@
 #define NULL  0
 
 //Size Window
-#define WINDOW_W 1320
+#define WINDOW_W 1315
 #define WINDOW_H 740
 #define SCREEN_SIZE 1
 #define SPAWN_MARGIN 50

@@ -50,7 +50,7 @@ bool Window::Awake(pugi::xml_node& config)
 		if(fullscreen_window == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		icon = IMG_Load("Assets/textures/logo.png");
 
-
+		if (fullscreen_window == true)app->fullScreen = true;
 
 		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
@@ -61,7 +61,7 @@ bool Window::Awake(pugi::xml_node& config)
 			//Create window
 			Uint32 flags = SDL_WINDOW_SHOWN;
 
-			if (app->fullScreen == true)
+			if (fullscreen_window == true)
 			{
 				flags |= SDL_WINDOW_FULLSCREEN;
 			}
@@ -73,7 +73,7 @@ bool Window::Awake(pugi::xml_node& config)
 			if (WIN_RESIZABLE == true)
 				flags |= SDL_WINDOW_RESIZABLE;
 
-			if (app->fullScreen == true)
+			if (fullscreen_window == true)
 			{
 				flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 			}
@@ -133,5 +133,11 @@ uint Window::GetScale() const
 void Window::FullScreen()
 {
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
+bool Window::SaveState(pugi::xml_node& data) const
+{
+	data.child("fullscreen_window").attribute("value").set_value(app->fullScreen);
+	return true;
 }
 

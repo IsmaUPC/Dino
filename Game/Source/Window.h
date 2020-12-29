@@ -32,6 +32,9 @@ public:
 
 	void FullScreen();
 
+	//Save FullScreenState
+	bool SaveState(pugi::xml_node& data)const;
+
 public:
 	// The window we'll be rendering to
 	SDL_Window* window;
