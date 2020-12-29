@@ -144,6 +144,8 @@ bool SceneManager::Update(float dt)
 					current = next;		// Assign next pointer
 					next = nullptr;
 
+					//MENU
+					menu = new GuiMenuPause({ 100,30 }, current);
 					// Activate fade out effect to next loaded screen
 					fadeOutCompleted = true;
 				}
@@ -202,7 +204,8 @@ bool SceneManager::Update(float dt)
 	}
 	*/
 
-
+	//MENU
+	if(pause)ret = menu->Update(dt);
 
 	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 	return ret;
@@ -214,7 +217,6 @@ bool SceneManager::PostUpdate()
 	bool ret = true;
 	// Draw current scene
 	current->PostUpdate();
-
 	// Draw full screen rectangle in front of everything
 	if (onTransition)
 	{

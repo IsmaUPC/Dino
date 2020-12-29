@@ -1,5 +1,6 @@
 #include "GuiSlider.h"
 #include "Log.h"
+#include "SceneManager.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int min, int max) : GuiControl(GuiControlType::SLIDER, id)
 {

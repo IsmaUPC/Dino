@@ -46,7 +46,7 @@ bool Scene::Start()
 	app->player->win = false;
 
 	//MENU
-	menu = new GuiMenuPause({ 100,30 },this);
+	//menu = new GuiMenuPause({ 100,30 },this);
 
 	// Load map
 	//app->map->Load("Mapa_PixelArt.tmx");
@@ -113,7 +113,7 @@ bool Scene::Update(float dt)
 {
 	bool ret = true;
 	//MENU
-	ret = menu->Update(dt);
+	//ret = menu->Update(dt);
 
 	//DEBUG KEYS
 	DebugKeys();
@@ -175,7 +175,7 @@ bool Scene::PostUpdate()
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
 	
-	menu->Draw();
+	//menu->Draw();
 
 	return ret;
 }
@@ -245,8 +245,7 @@ void Scene::DebugKeys()
 
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
-
-	return menu->Event(control);
+	return app->sceneManager->menu->Event(control);
 }
 
 bool Scene::LoadState(pugi::xml_node& data)

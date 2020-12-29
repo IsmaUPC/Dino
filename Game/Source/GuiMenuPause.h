@@ -4,8 +4,8 @@
 #include "Point.h"
 #include "SString.h"
 
-#include "GuiButton.h"
-#include "GuiControl.h"
+//#include "GuiButton.h"
+//#include "GuiControl.h"
 #include "GuiSettings.h"
 
 class GuiMenuPause

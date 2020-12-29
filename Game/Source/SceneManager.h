@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "SceneControl.h"
+#include "GuiMenuPause.h"
+#include "Window.h"
 
 class GuiButton;
 
@@ -54,6 +56,8 @@ public:
 	bool LoadState(pugi::xml_node& data);
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
+
+	GuiMenuPause* menu;
 
 private:
 

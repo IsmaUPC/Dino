@@ -142,9 +142,9 @@ bool GuiMenuPause::Event(GuiControl* control)
 	{
 		if (control->id == 13)
 		{
-			bool menuFullScreen;
-			menuFullScreen = menuSettings->chBxFullScreen->GetValue();
-			LOG("%d", menuFullScreen);
+			app->fullScreen = menuSettings->chBxFullScreen->GetValue();
+			app->win->FullScreen(app->fullScreen);
+			app->render->FullScreen();
 		}
 		if (control->id == 14)
 		{

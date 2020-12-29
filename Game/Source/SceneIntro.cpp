@@ -3,7 +3,6 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Render.h"
-#include "Window.h"
 #include "SceneIntro.h"
 #include "SceneManager.h"
 
@@ -205,6 +204,11 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			btnSettings->state = GuiControlState::NORMAL;
 			btnCredits->state = GuiControlState::NORMAL;
 			btnExit->state = GuiControlState::NORMAL;
+			if (lastLevel != 0)
+			{
+				btnContinue->state = GuiControlState::NORMAL;
+				btnRemove->state = GuiControlState::NORMAL;
+			}
 			menuSettings->AbleDisableSetting();
 			app->SaveConfigRequested();
 		}
@@ -255,7 +259,7 @@ bool SceneIntro::LoadState(pugi::xml_node& data)
 
 bool SceneIntro::SaveState(pugi::xml_node& data) const
 {
-	data.child("level").attribute("lvl").set_value(0);
+	data.child("level").attribute("lvl").set_value(lastLevel);
 
 	return true;
 }
