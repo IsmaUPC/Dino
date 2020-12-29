@@ -19,10 +19,10 @@ GuiSettings::GuiSettings(iPoint Position, SceneControl* moduleObserver)
 	sldFx = new GuiSlider(12, { initialPos.x, initialPos.y + separacion, 200, 40 }, "FX", 0, 100);
 	sldFx->SetObserver(moduleObserver);
 
-	chBxFullScreen = new GuiCheckBox(13, { initialPos.x, initialPos.y + separacion*2, 200, 40 }, "FULLSCREEN");
+	chBxFullScreen = new GuiCheckBox(13, { initialPos.x, initialPos.y + separacion * 2, 200, 40 }, "Fullscreen");
 	chBxFullScreen->SetObserver(moduleObserver);
 
-	chBxVSync = new GuiCheckBox(14, { initialPos.x, initialPos.y + separacion * 3, 200, 40 }, "FULLSCREEN",true);
+	chBxVSync = new GuiCheckBox(14, { initialPos.x, initialPos.y + separacion * 3, 200, 40 }, "VSync",true);
 	chBxVSync->SetObserver(moduleObserver);
 
 	chBxVSync->state = GuiControlState::DISABLED;

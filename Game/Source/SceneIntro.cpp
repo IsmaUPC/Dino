@@ -52,26 +52,16 @@ bool SceneIntro::Start()
 	btnRemove = new GuiButton(3, { WINDOW_W / 2 - 200 / 2, 500, 200, 40 }, "REMOVE");
 	btnRemove->SetObserver(this);
 
-	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS", btnSettingsTex);
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS");//, btnSettingsTex);
 	btnSettings->SetObserver(this);
 
 	btnCredits = new GuiButton(5, { WINDOW_W / 2 - 200 / 2, 600, 200, 40 }, "CREDITS");
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT", btnExitTex);
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT");// , btnExitTex);
 	btnExit->SetObserver(this);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
-
-
-
-
-
-
-
-
-
-
 
 	app->SetLastScene((Module*)this);
 	transition = false;
@@ -169,6 +159,16 @@ bool SceneIntro::CleanUp()
 	Mix_HaltMusic();
 	app->tex->UnLoad(bgIntro);
 	app->tex->UnLoad(animationIntro.texture);
+
+	delete btnPlay;
+	delete btnContinue;
+	delete btnRemove;
+	delete btnSettings;
+	delete btnCredits;
+	delete btnExit;
+	delete menuSettings;
+
+
 	bgIntro = nullptr;
 	active = false;
 	return true;

@@ -17,7 +17,7 @@ GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver)
 	btnSettings = new GuiButton(2, { Position.x, Position.y + separacion * 1, 200, 40 }, "SETTINGS");
 	btnSettings->SetObserver(moduleObserver);
 
-	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "CREDITS");
+	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "TITLE");
 	btnBackToTitle->SetObserver(moduleObserver);
 
 	btnExit = new GuiButton(4, { Position.x, Position.y + separacion * 3, 200, 40 }, "EXIT");

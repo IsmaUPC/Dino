@@ -23,6 +23,8 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int
     slider.y = bounds.y;
     slider.w = bounds.w / 10;
     slider.h = bounds.h;
+
+    this->font = app->sceneManager->GetGuiFont();
 }
 
 GuiSlider::~GuiSlider()
@@ -97,6 +99,14 @@ bool GuiSlider::Draw()
     default:
         break;
     }
+
+    int centradoY, centradoX;
+
+    centradoX = (bounds.w / 2) - (((float)(text.Length() / 2) + 0.5f) * 14);
+
+    centradoY = bounds.h / 4;
+
+    app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
     return false;
 }

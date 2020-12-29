@@ -11,6 +11,8 @@ GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text, bool init
     checkBox.x = bounds.x + ((bounds.w / 6) * 5);
     checkBox.y = bounds.y;
 
+    this->font = app->sceneManager->GetGuiFont();
+
     checked = initState;
 
 }
@@ -114,6 +116,14 @@ bool GuiCheckBox::Draw()
         break;
     }
 
+
+    int centradoY, centradoX;
+
+    centradoX = (bounds.w / 2) - (((text.Length() / 2) + 0.5f) * 14) - checkBox.w/2;
+
+    centradoY = bounds.h / 4;
+
+    app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
 
     return false;

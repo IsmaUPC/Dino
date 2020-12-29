@@ -7,6 +7,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* 
     this->texture = texture;
 	SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
 	texturH /= 4;
+	this->font = app->sceneManager->GetGuiFont();
+
 }
 
 GuiButton::~GuiButton()
@@ -82,6 +84,14 @@ bool GuiButton::Draw()
     default:
         break;
     }
+
+	int centradoY,centradoX;
+
+	centradoX = (bounds.w / 2) - (((float)(text.Length() / 2)+0.5f) * 14);
+
+	centradoY = bounds.h/4;
+	
+	app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
     return true;
 }

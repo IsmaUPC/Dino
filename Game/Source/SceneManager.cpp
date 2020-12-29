@@ -74,6 +74,8 @@ bool SceneManager::Start()
 	btnDisabled = app->audio->LoadFx("Assets/Audio/Fx/button_disable.wav");
 	btnSlider = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
 
+	guiFont = app->fonts->Load("Assets/Textures/GUI/font_gui.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 2, 364, 48);
+
 	return true;
 }
 

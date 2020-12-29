@@ -47,6 +47,9 @@ public:
 	//Return Pause
 	bool GetIsPause() { return pause; };
 	void SetPause(bool statePause) { pause = statePause; };
+
+	int GetGuiFont() { return guiFont; };
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -85,6 +88,8 @@ public:
 	uint btnPressed;
 	uint btnDisabled;
 	uint btnSlider;
+
+	int guiFont;
 };
 
 #endif // __SCENEMANAGER_H__
