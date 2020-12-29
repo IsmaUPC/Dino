@@ -55,6 +55,9 @@ private:
 	AnimationIntro animationIntro;
 	Animation* idleAnim=new Animation();
 
+	SDL_Texture* btnSettingsTex;
+	SDL_Texture* btnExitTex;
+
 	SDL_Texture* bgIntro;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	bool transition;

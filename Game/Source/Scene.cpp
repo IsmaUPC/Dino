@@ -153,7 +153,7 @@ bool Scene::PostUpdate()
 	// Draw map
 	app->map->Draw();
 
-	//MENU
+	
 
 	bool ret = true;
 	SDL_Rect rectFather;
@@ -174,7 +174,7 @@ bool Scene::PostUpdate()
 		return true;
 	}
 	app->render->DrawTextureFlip(animationFather.texture, animationFather.position.x, animationFather.position.y - (rectFather.h), &rectFather);
-	
+	//MENU
 	menu->Draw();
 
 	return ret;
