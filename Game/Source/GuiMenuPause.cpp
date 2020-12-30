@@ -9,6 +9,8 @@
 
 GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver, SDL_Texture* textureAtlas)
 {
+	screenRect = { 0, 0, WINDOW_W, WINDOW_H };
+
 	initialPos = Position;
 	
 	btnResume = new GuiButton(1, { Position.x , Position.y + padding*0, 183, 91 }, "RESUME", RECTANGLE, textureAtlas);
@@ -59,6 +61,10 @@ bool GuiMenuPause::Draw()
 {
 	if (active)
 	{
+		screenRect.x = -app->render->camera.x;
+		screenRect.y = -app->render->camera.y;
+		app->render->DrawRectangle(screenRect, 0, 0, 0, 200);
+
 		btnResume->Draw();
 		btnSettings->Draw();
 		btnBackToTitle->Draw();

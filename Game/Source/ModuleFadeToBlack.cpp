@@ -12,8 +12,6 @@ ModuleFadeToBlack::ModuleFadeToBlack()
 {
 	name.Create("fade");
 
-
-
 }
 
 ModuleFadeToBlack::~ModuleFadeToBlack()

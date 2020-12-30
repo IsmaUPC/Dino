@@ -30,7 +30,6 @@ class EntityManager;
 class SceneManager;
 //class Coins;
 class Entity;
-class ModuleFadeToBlack;
 class PathFinding;
 class ModuleFonts;
 
@@ -126,7 +125,6 @@ public:
 	SceneManager* sceneManager;
 	//Coins* coins;
 	Entity* entity;
-	ModuleFadeToBlack* fade;
 	PathFinding* pathfinding;
 	ModuleFonts* fonts;
 

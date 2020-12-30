@@ -33,7 +33,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player();
 	entityManager = new EntityManager();
 	sceneManager = new SceneManager(input, render, tex);
-	fade = new ModuleFadeToBlack(); 
 	pathfinding = new PathFinding();
 	fonts = new ModuleFonts();
 
@@ -48,7 +47,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);
 	AddModule(player);
 	AddModule(fonts);
-	AddModule(fade);
 	AddModule(pathfinding);
 
 

@@ -43,6 +43,8 @@ private:
 
     SceneControl* observer;
 
+    SDL_Rect screenRect = { NULL };
+
     bool active;
     bool activeMenu;
 

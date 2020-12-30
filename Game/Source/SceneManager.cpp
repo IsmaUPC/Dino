@@ -230,7 +230,7 @@ bool SceneManager::PostUpdate()
 	// Draw full screen rectangle in front of everything
 	if (onTransition)
 	{
-		render->DrawRectangle({ 0, 0, WINDOW_W, WINDOW_H }, 0, 0, 0, (unsigned char)(255.0f * transitionAlpha));
+		render->DrawRectangle({ -app->render->camera.x, -app->render->camera.y, WINDOW_W, WINDOW_H }, 0, 0, 0, (unsigned char)(255.0f * transitionAlpha));
 	}
 	return ret;
 }
