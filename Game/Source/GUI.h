@@ -71,8 +71,8 @@ private:
 	char timeText[10] = { "\0" };
 	char scoreText[12] = { "\0" };
 	uint miliseconds=0;
-	int minuts;
-	int miliseconds2 = 0;
+	uint minuts=0;
+	uint miliseconds2 = 0;
 	Timer auxTimePause;
 	bool stopTime = false;
 };

@@ -135,8 +135,16 @@ bool Player::SaveState(pugi::xml_node& player) const
 	pugi::xml_node coinsPlayer = player.child("coins");
 	pugi::xml_node respawnsPlayer = player.child("lives");
 
-	positionPlayer.attribute("x").set_value(playerData.position.x) ;
-	positionPlayer.attribute("y").set_value( playerData.position.y) ;
+	if (app->removeGame)
+	{
+		positionPlayer.attribute("x").set_value(432);
+		positionPlayer.attribute("y").set_value(1170);
+	}
+	else
+	{
+		positionPlayer.attribute("x").set_value(playerData.position.x);
+		positionPlayer.attribute("y").set_value(playerData.position.y);
+	}
 
 	coinsPlayer.attribute("count").set_value(playerData.coins);
 	respawnsPlayer.attribute("num_respawns").set_value(playerData.respawns);
