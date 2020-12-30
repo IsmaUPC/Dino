@@ -13,7 +13,8 @@ enum TypeButton {
 	RECTANGLE,
 	REMOVE,
 	CREDITS,
-	EXIT
+	EXIT,
+	BACK
 };
 
 
@@ -45,7 +46,8 @@ private:
 	iPoint* rectAtlasPos = new iPoint(87, 99);
 	iPoint* removeAtlasPos = new iPoint( 552,713 );
 	iPoint* creditAtlasPos = new iPoint(550, 412);
-	iPoint* exitAtlasPos = new iPoint( 0, 1810);
+	iPoint* exitAtlasPos = new iPoint(0, 1810);
+	iPoint* backAtlasPos = new iPoint( 0, 1114);
 	
 	SDL_Rect rect;
 	

@@ -2,9 +2,12 @@
 #include "Log.h"
 #include "SceneManager.h"
 
-GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int min, int max) : GuiControl(GuiControlType::SLIDER, id)
+#define SPACEBOUNDBAR 10
+
+GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int min, int max, SDL_Texture* texture) : GuiControl(GuiControlType::SLIDER, id)
 {
     this->bounds = bounds;
+    this->texture = texture;
     this->text = text;
 
     if (min > max)
@@ -19,11 +22,19 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds,const char* text = "SLIDER", int
         this->maxValue = max;
     }
 
-    SetValue(minValue);
+    sliderBarInput.x = bounds.x + bounds.w + SPACEBOUNDBAR;
+    sliderBarInput.w = 183;
+    sliderBarInput.h = 20;
+    sliderBarInput.y = bounds.y + (bounds.w / 2) - (sliderBarInput.h / 2);
 
-    slider.y = bounds.y;
-    slider.w = bounds.w / 10;
-    slider.h = bounds.h;
+    sliderBarImage = { 497,2623,183,20 };
+    sliderImage = {696,2632,46,46};
+
+    button = { rectAtlasPos->x,rectAtlasPos->y,rectTexW + margin,rectTexH };
+
+    slider.w = sliderImage.w;
+    slider.h = sliderImage.h;
+    SetValue(minValue);
 
     this->font = app->sceneManager->GetGuiFont();
 }
@@ -34,14 +45,19 @@ GuiSlider::~GuiSlider()
 
 bool GuiSlider::Update(float dt)
 {
+    sliderBarInput.x = bounds.x + bounds.w + SPACEBOUNDBAR;
+    sliderBarInput.y = bounds.y + (bounds.h/2) - (sliderBarInput.h / 2);
+
+    SetValue(value);
+
     if (state != GuiControlState::DISABLED)
     {
         int mouseX, mouseY;
         app->input->GetMousePosition(mouseX, mouseY);
 
         // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-            (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+        if ((mouseX > sliderBarInput.x) && (mouseX < (sliderBarInput.x + sliderBarInput.w)) &&
+            (mouseY > sliderBarInput.y) && (mouseY < (sliderBarInput.y + sliderBarInput.h)))
         {
             state = GuiControlState::FOCUSED;
 
@@ -68,45 +84,54 @@ bool GuiSlider::Update(float dt)
 
 bool GuiSlider::Draw()
 {
+    // Draw SliderBar
+    app->render->DrawTexture(texture, sliderBarInput.x, sliderBarInput.y, &sliderBarImage);
+
     // Draw the right button depending on state
     switch (state)
     {
     case GuiControlState::DISABLED:
+        button.x += 3 * button.w;
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
-        app->render->DrawRectangle(bounds, 100, 100, 100, 255);
-        app->render->DrawRectangle(slider,120,120,120,255);
+        sliderImage.x += 3 * (sliderImage.w + marginSliders);
+        app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
 
         break;
     case GuiControlState::NORMAL:
-        app->render->DrawRectangle(bounds,0, 255, 0, 255);
-        app->render->DrawRectangle(slider,255,0,255,255);
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
+        app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
         break;
+
     case GuiControlState::FOCUSED:
-        app->render->DrawRectangle(bounds,255, 255, 0, 255);
-        app->render->DrawRectangle(slider,255,0,255,255);
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
+
+        sliderImage.x += 1 * (sliderImage.w + marginSliders);
+        app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
 
         break;
     case GuiControlState::PRESSED:
-        app->render->DrawRectangle(bounds, 0, 255, 255, 255);
-        app->render->DrawRectangle(slider,255,0,0,255);
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
+
+        sliderImage.x += 2 * (sliderImage.w + marginSliders);
+        app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
 
         break;
     case GuiControlState::SELECTED:
-        app->render->DrawRectangle(bounds,0, 255, 0, 255);
-        app->render->DrawRectangle(slider,255,0,255,255);
 
         break;
     default:
         break;
     }
+    button.x = rectAtlasPos->x;
+    sliderImage.x = 696;
 
     int centradoY, centradoX;
-
-    centradoX = (bounds.w / 2) - (((float)(text.Length() / 2) + 0.5f) * 14);
-
+    // 14 = a letter's width
+    centradoX = (bounds.w / 2) - (((float)(text.Length() / 2) + 0.5f) * 14);    
+    // 48 = height image of font, whith 2 Raws, 48/2 = half a letter's height
     centradoY = (bounds.h / 2) - (48 / 4);
-
     app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
     return false;
@@ -117,17 +142,17 @@ void GuiSlider::SliderControl(int mouseX, int mouseY)
 
     slider.x = mouseX - (slider.w / 2);
 
-    value = ((maxValue - minValue) * (mouseX - (float)(bounds.x + slider.w / 2))) / (float)(bounds.w - slider.w) + minValue;
+    value = ((maxValue - minValue) * (mouseX - (float)(sliderBarInput.x + slider.w / 2))) / (float)(sliderBarInput.w - slider.w) + minValue;
 
     //Limites
-    if (slider.x < bounds.x)
+    if (slider.x < sliderBarInput.x)
     {
-        slider.x = bounds.x;
+        slider.x = sliderBarInput.x;
         value = minValue;
     }
-    if ((slider.x + slider.w) > (bounds.x + bounds.w))
+    if ((slider.x + slider.w) > (sliderBarInput.x + sliderBarInput.w))
     {
-        slider.x = (bounds.x + bounds.w) - slider.w;
+        slider.x = (sliderBarInput.x + sliderBarInput.w) - slider.w;
         value = maxValue;
     }
 
@@ -138,15 +163,14 @@ void GuiSlider::SetValue(int newValue)
     this->value = newValue;
     //Permite colocar el slider en la posicion que del valor inicial
     float X, h, h1, h2, h3, i;
-    h1 = (((bounds.w - slider.w) + minValue) * (maxValue - minValue));
+    h1 = (((sliderBarInput.w - slider.w) + minValue) * (maxValue - minValue));
     h2 = maxValue - minValue;
-    h3 = (bounds.w - slider.w) + minValue;
+    h3 = (sliderBarInput.w - slider.w) + minValue;
 
     h = (h1 * h2) / h3;
-    i = (((bounds.w - slider.w) + minValue) * (maxValue - minValue)) * value;
-    X = (i / h) + (bounds.x + (slider.w / 2));
-    slider.x = (int)X;
+    i = (((sliderBarInput.w - slider.w) + minValue) * (maxValue - minValue)) * value;
 
-    slider.y = bounds.y;
-
+    X = (i / h) + (sliderBarInput.x + (slider.w / 2));
+    slider.x = (int)X-23;
+    slider.y = sliderBarInput.y+(sliderBarInput.h/2) - (slider.h/2);
 }

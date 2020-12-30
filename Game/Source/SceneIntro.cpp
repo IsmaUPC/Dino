@@ -62,7 +62,7 @@ bool SceneIntro::Start()
 	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 ,padding  + 450 + (margin * 3),  88, 88 }, " ", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
 
-	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
+	menuSettings = new GuiSettings({ WINDOW_W / 2 + 100, 100 }, this);
 
 	app->SetLastScene((Module*)this);
 	transition = false;

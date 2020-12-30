@@ -11,7 +11,7 @@ class GuiCheckBox : public GuiControl
 {
 public:
 
-    GuiCheckBox(uint32 id, SDL_Rect bounds, const char *text, bool initState = false);
+    GuiCheckBox(uint32 id, SDL_Rect bounds, const char *text, bool initState = false, SDL_Texture* texture = NULL);
     virtual ~GuiCheckBox();
 
     bool Update(float dt);
@@ -22,10 +22,26 @@ public:
 
 private:
 
+    void ChangeImageChecked();
     // GuiCheckBox specific properties
     // Maybe some animation properties for state change?
 
-    SDL_Rect checkBox;
+    iPoint* rectAtlasPos = new iPoint(87, 99);
+    int margin = 10;
+
+    SDL_Rect button;
+    int rectTexW = 183;
+    int rectTexH = 91;
+
+    SDL_Rect checkBoxInput;
+    SDL_Rect checkBoxImage;
+
+    iPoint* falseAtlasPos = new iPoint(552, 1308);
+    iPoint* trueAtlasPos = new iPoint(552, 1407);
+    int squareTexW = 88;
+    int squareTexH = 88;
+    int marginSquare = 9;
+
 	bool mouseIn = false;
     bool checked;
 };
