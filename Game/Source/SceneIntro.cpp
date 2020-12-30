@@ -64,7 +64,6 @@ bool SceneIntro::Start()
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
 
-
 	app->SetLastScene((Module*)this);
 	transition = false;
 
@@ -161,6 +160,16 @@ bool SceneIntro::CleanUp()
 	Mix_HaltMusic();
 	app->tex->UnLoad(bgIntro);
 	app->tex->UnLoad(animationIntro.texture);
+
+	delete btnPlay;
+	delete btnContinue;
+	delete btnRemove;
+	delete btnSettings;
+	delete btnCredits;
+	delete btnExit;
+	delete menuSettings;
+
+
 	bgIntro = nullptr;
 	active = false;
 	return true;

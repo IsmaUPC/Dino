@@ -78,6 +78,8 @@ bool SceneManager::Start()
 	btnTextureAtlas = app->tex->Load("Assets/Textures/GUI/button_atlas_small.png");
 
 
+	guiFont = app->fonts->Load("Assets/Textures/GUI/font_gui.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 2, 364, 48);
+
 	return true;
 }
 
