@@ -106,6 +106,7 @@ int Entity::CheckCollision(iPoint positionMap)
 		{
 		case VICTORY:
 			//victory
+			if(positionMap== app->map->WorldToMap( app->player->playerData.position))
 			app->player->win = true;
 			return VICTORY;
 			break;
@@ -118,6 +119,7 @@ int Entity::CheckCollision(iPoint positionMap)
 		case CHECK_POINT:
 			//checkpoint
 			//app->SaveGameRequest();
+			if (positionMap == app->map->WorldToMap(app->player->playerData.position)|| this->entityData->type== FIREBALL)
 			app->player->ActiveCheckpoint(positionMap);
 			return CHECK_POINT;
 			break;

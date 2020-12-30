@@ -63,6 +63,7 @@ private:
 
 	//Coin
 	SDL_Texture* imgCoin;
+	Animation* coinHudAnim = new Animation();
 
 	//Text
 	uint* coins = 0;

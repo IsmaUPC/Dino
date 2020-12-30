@@ -54,6 +54,11 @@ bool GUI::Start()
 
 
 	imgCoin = app->tex->Load("Assets/Textures/GUI/coin.png");
+	coinHudAnim->loop = true;
+	coinHudAnim->speed = 0.20f;
+
+	for (int i = 0; i < 16; i++)
+		coinHudAnim->PushBack({ 0,(80 * i), 80, 80 });
 
 	imgH = 0;
 	imgW = 0;
@@ -92,6 +97,8 @@ bool GUI::PreUpdate()
 bool GUI::Update(float dt)
 {
 	miliseconds = timer.Read()+app->entityManager->timeSave - minuts * 60000;
+	coinHudAnim->speed = (dt * 10);
+	coinHudAnim->Update();
 	Chronometer();
 	return true;
 }
@@ -123,11 +130,12 @@ bool GUI::PostUpdate()
 		app->render->DrawTextureFlip(arrowTex,app->player->playerData.position.x - 45, app->player->playerData.position.y - 40, &rectGUI);
 	}
 
-	//Coins
+	//Coin HUD
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
-
-	app->render->DrawTexture(imgCoin, point0.x+22, point0.y + 90);
+	SDL_Rect rectCoins;
+	rectCoins = coinHudAnim->GetCurrentFrame();
+	app->render->DrawTexture(imgCoin, point0.x+22, point0.y + 90, &rectCoins);
 
 	point0.x = point0.x + 90;
 	point0.y = point0.y + 100;
@@ -161,7 +169,7 @@ bool GUI::PostUpdate()
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
 	point0.x = point0.x + (WINDOW_W - 250);
-	point0.y = point0.y + 10;
+	point0.y = point0.y + 20;
 	//Time
 	if (app->sceneManager->GetIsPause() && !stopTime)
 	{
@@ -180,7 +188,7 @@ bool GUI::PostUpdate()
 	if (activeFPS)
 	{
 		point0.x += 170;
-		point0.y += WINDOW_H - 90;
+		point0.y += WINDOW_H - 100;
 		sprintf_s(coinText, 10, "%3d", app->GetFramesOnLastSecond());
 
 		app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);

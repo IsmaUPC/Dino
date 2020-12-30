@@ -26,7 +26,7 @@ bool Coins::Start()
 {
 
 	active = true;
-	texture = app->tex->Load("Assets/Textures/coin.png");
+	texture = app->tex->Load("Assets/Textures/coin_square.png");
 
 	coinFx= app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
 	
@@ -34,10 +34,10 @@ bool Coins::Start()
 	pointsCollision = new iPoint[4]{ { 0, 0 }, { 48 , 0 }, { 48,-48 }, { 0 ,-48 } };
 	
 	currentAnimation->loop = true;
-	currentAnimation->speed = 0.06f;
+	currentAnimation->speed = 0.20f;
 
-	for (int i = 0; i < 3; i++)
-		currentAnimation->PushBack({ (40 * i),0, 40, 40 });
+	for (int i = 0; i < 16; i++)
+		currentAnimation->PushBack({ 0,(40 * i), 40, 40 });
 
 
 	return true;
@@ -82,6 +82,8 @@ bool Coins::PreUpdate()
 bool Coins::Update(float dt)
 {
 	currentAnimation->Update();
+	currentAnimation->speed = (dt * 10);
+
 	return true;
 }
 bool Coins::PostUpdate()
@@ -89,7 +91,6 @@ bool Coins::PostUpdate()
 
 	SDL_Rect rectCoins;
 	rectCoins = currentAnimation->GetCurrentFrame();
-	// Draw player in correct direction
 	app->render->DrawTexture(texture, position.x, position.y, &rectCoins);
 	return true;
 
