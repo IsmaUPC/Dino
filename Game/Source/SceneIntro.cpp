@@ -56,10 +56,10 @@ bool SceneIntro::Start()
 	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", RECTANGLE, btnTextureAtlas);
 	btnSettings->SetObserver(this);
 
-	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W / 5) , 535 + (margin * 4),  88, 88 }, " ", CREDITS, btnTextureAtlas);
+	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W /9) , 0 + (margin * 4),  88, 88 }, " ", CREDITS, btnTextureAtlas);
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 300 ,padding  + 450 + (margin * 3),  88, 88 }, " ", EXIT, btnTextureAtlas);
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 ,padding  + 450 + (margin * 3),  88, 88 }, " ", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);

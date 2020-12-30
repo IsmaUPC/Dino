@@ -122,7 +122,7 @@ bool GuiCheckBox::Draw()
 
     centradoX = (bounds.w / 2) - (((text.Length() / 2) + 0.5f) * 14) - checkBox.w/2;
 
-    centradoY = bounds.h / 4;
+    centradoY = (bounds.h / 2) - (48 / 4);
 
     app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 

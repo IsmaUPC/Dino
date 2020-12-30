@@ -75,10 +75,10 @@ bool SceneManager::Start()
 	btnPressed = app->audio->LoadFx("Assets/Audio/Fx/button_pressed.wav");
 	btnDisabled = app->audio->LoadFx("Assets/Audio/Fx/button_disable.wav");
 	btnSlider = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
-	btnTextureAtlas = app->tex->Load("Assets/Textures/GUI/button_atlas_small.png");
+	btnTextureAtlas = app->tex->Load("Assets/Textures/GUI/button_atlas.png");
 
 
-	guiFont = app->fonts->Load("Assets/Textures/GUI/font_gui.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 2, 364, 48);
+	guiFont = app->fonts->Load("Assets/Textures/GUI/font_gui.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ ", 2, 195, 48);
 
 	return true;
 }

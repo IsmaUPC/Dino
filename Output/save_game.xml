@@ -6,10 +6,11 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+    <camera x="0" y="-600" />
 	</renderer>
 	<player>
 		<position x="432" y="1170" />
+		<coins count="0" />
 		<lives num_respawns="3" />
 	</player>
 	<scene_manager>
@@ -19,41 +20,6 @@
 	<entity_manager>
 		<score value="0" />
 		<entities>
-			<entity type="6" x="3504" y="96" state="0" />
-			<entity type="6" x="3984" y="240" state="0" />
-			<entity type="6" x="9264" y="240" state="0" />
-			<entity type="6" x="6240" y="288" state="0" />
-			<entity type="6" x="7056" y="288" state="0" />
-			<entity type="6" x="8112" y="288" state="0" />
-			<entity type="6" x="8736" y="336" state="0" />
-			<entity type="6" x="2976" y="576" state="0" />
-			<entity type="6" x="4896" y="576" state="0" />
-			<entity type="6" x="8448" y="576" state="0" />
-			<entity type="6" x="3840" y="768" state="0" />
-			<entity type="6" x="2304" y="960" state="0" />
-			<entity type="6" x="4416" y="1248" state="0" />
-			<entity type="6" x="4800" y="1248" state="0" />
-			<entity type="6" x="5184" y="1248" state="0" />
-			<entity type="6" x="6528" y="1248" state="0" />
-			<entity type="6" x="3216" y="1488" state="0" />
-			<entity type="6" x="2832" y="1584" state="0" />
-			<entity type="2" x="1631" y="1488" state="0" />
-			<entity type="2" x="2736" y="1200" state="0" />
-			<entity type="2" x="3696" y="384" state="0" />
-			<entity type="2" x="5712" y="480" state="0" />
-			<entity type="2" x="7152" y="384" state="0" />
-			<entity type="2" x="6240" y="384" state="0" />
-			<entity type="2" x="8064" y="384" state="0" />
-			<entity type="2" x="9504" y="288" state="0" />
-			<entity type="2" x="3696" y="1392" state="0" />
-			<entity type="2" x="6096" y="1392" state="0" />
-			<entity type="2" x="6960" y="1392" state="0" />
-			<entity type="2" x="7824" y="1104" state="0" />
-			<entity type="2" x="9744" y="720" state="0" />
-			<entity type="3" x="2544" y="960" state="0" />
-			<entity type="3" x="3168" y="480" state="0" />
-			<entity type="3" x="9072" y="528" state="0" />
-			<entity type="3" x="9648" y="432" state="0" />
 			<entity type="5" x="-100" y="-100" state="0" />
 			<entity type="4" x="0" y="0" state="0" />
 		</entities>
