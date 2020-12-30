@@ -92,6 +92,7 @@ bool SceneIntro::Start()
 		btnRemove->state = GuiControlState::DISABLED;
 	}
 	app->sceneManager->SetPause(false);
+	
 	return true;
 }
 
@@ -180,7 +181,13 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	case GuiControlType::BUTTON:
 	{
 		
-		if (control->id == 1) TransitionToScene(SceneType::LEVEL1), app->sceneManager->lastLevel = 1;// PLAY
+		if (control->id == 1)
+		{
+			app->removeGame = false;
+			TransitionToScene(SceneType::LEVEL1);
+			app->sceneManager->lastLevel = 1;// PLAY
+			isContinue = false;
+		}
 		else if (control->id == 2 && lastLevel != 0)
 		{
 			LOG("CONTINUE LAST GAME");
@@ -191,6 +198,7 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		else if (control->id == 3)
 		{
 			LOG("REMOVE GAME");
+			app->removeGame = true;
 			app->SaveGameRequest();
 			lastLevel = 0;
 			btnContinue->state = GuiControlState::DISABLED;
@@ -275,6 +283,7 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 bool SceneIntro::LoadState(pugi::xml_node& data)
 {
 	lastLevel = data.child("level").attribute("lvl").as_int(0);
+	if (app->removeGame)lastLevel = 0;
 	return true;
 }
 

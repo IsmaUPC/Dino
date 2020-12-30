@@ -93,7 +93,12 @@ bool SceneWin::PostUpdate()
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
 		if(app->sceneManager->lastLevel == 1) TransitionToScene(SceneType::LEVEL2);
-		if(app->sceneManager->lastLevel == 2) TransitionToScene(SceneType::INTRO);
+		if (app->sceneManager->lastLevel == 2)
+		{
+			TransitionToScene(SceneType::INTRO);
+			app->removeGame = true;
+			app->SaveGameRequest();
+		}
 		return true;
 	}
 

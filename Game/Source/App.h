@@ -131,7 +131,7 @@ public:
 	ModuleFonts* fonts;
 
 	bool fullScreen=0;
-
+	bool removeGame = false;
 private:
 
 	int argc;

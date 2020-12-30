@@ -78,7 +78,6 @@ bool EntityManager::CleanUp()
 
 		item = item->next;
 	}
-	score = 0;
 	active = false;
 	return ret;
 	//return true;
@@ -184,7 +183,7 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 	bool ret = true;
 	pugi::xml_node entitiesNode = entityManagerNode.child("entities").first_child();
 	pugi::xml_node aux;
-
+	score = entityManagerNode.child("score").attribute("value").as_int(0);
 	if (entitiesNode != NULL)
 	{
 		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
@@ -203,7 +202,8 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 }
 bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
 {
-	
+	if(!app->removeGame)entityManagerNode.child("score").attribute("value").set_value(score);
+	else entityManagerNode.child("score").attribute("value").set_value(0);
 	entityManagerNode.remove_child("entities");
 	entityManagerNode.append_child("entities").set_value(0);
 
@@ -217,6 +217,6 @@ bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
 		entitiesNode.last_child().append_attribute("y").set_value(entiti->data->entityData->position.y);
 		entitiesNode.last_child().append_attribute("state").set_value(entiti->data->entityData->state);
 	}
-
+	
 	return true;
 }

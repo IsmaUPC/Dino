@@ -38,7 +38,6 @@ bool SceneLevel2::Awake()
 bool SceneLevel2::Start()
 {
 	app->SaveConfigRequested();
-	app->SaveGameRequest();
 	
 	// Load map
 	app->SetLastScene((Module*)this);
