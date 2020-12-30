@@ -24,6 +24,7 @@ public:
 	bool PostUpdate();
 
 	bool CleanUp();
+	void CurrentLiveAnimation();
 
 
 public:
@@ -34,11 +35,14 @@ private:
 	int numPoints;
 	iPoint* pointsCollision;
 
-	Animation* currentAnimation = new Animation();
+	Animation* liveAnimation = new Animation();
+	Animation* particleAnimation = new Animation();
 
 	uint liveFx;
 
-	SDL_Texture* texture;
+	SDL_Texture* texLive;
+	SDL_Texture* texLiveParticle;
+
 };
 #endif // _LIVES_H_
 
