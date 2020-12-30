@@ -155,7 +155,7 @@ bool SceneManager::Update(float dt)
 					next = nullptr;
 
 					// Menu pause
-					menu = new GuiMenuPause({ 100,30 }, current, btnTextureAtlas);
+					menu = new GuiMenuPause({ 40, WINDOW_H / 2 - 120 }, current, btnTextureAtlas);
 					// Activate fade out effect to next loaded screen
 					fadeOutCompleted = true;
 				}

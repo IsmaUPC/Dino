@@ -31,7 +31,7 @@ public:
     void MovePosition();
 
 private:
-    int padding = 92;
+    int padding = 98;
     GuiButton* btnResume;
     GuiButton* btnSettings;
     GuiButton* btnBackToTitle;
@@ -45,6 +45,7 @@ private:
 
     bool active;
     bool activeMenu;
+
 };
 
 #endif // !__GUIMENUPAUSE_H__

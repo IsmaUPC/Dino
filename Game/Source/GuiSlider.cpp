@@ -56,8 +56,10 @@ bool GuiSlider::Update(float dt)
         app->input->GetMousePosition(mouseX, mouseY);
 
         // Check collision between mouse and button bounds
-        if ((mouseX > sliderBarInput.x) && (mouseX < (sliderBarInput.x + sliderBarInput.w)) &&
-            (mouseY > sliderBarInput.y) && (mouseY < (sliderBarInput.y + sliderBarInput.h)))
+        if (((mouseX > sliderBarInput.x) && (mouseX < (sliderBarInput.x + sliderBarInput.w)) &&
+            (mouseY > sliderBarInput.y) && (mouseY < (sliderBarInput.y + sliderBarInput.h))) || 
+            ((mouseX > slider.x) && (mouseX < (slider.x + slider.w)) &&
+            (mouseY > slider.y) && (mouseY < (slider.y + slider.h))))
         {
             state = GuiControlState::FOCUSED;
 
@@ -73,7 +75,9 @@ bool GuiSlider::Update(float dt)
             }
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
-				app->audio->PlayFx(app->sceneManager->btnSlider);
+                if (text == "FX")
+				    app->audio->PlayFx(app->sceneManager->btnSlider);
+
 			}
         }
         else state = GuiControlState::NORMAL;

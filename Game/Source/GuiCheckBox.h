@@ -36,7 +36,7 @@ private:
     SDL_Rect checkBoxInput;
     SDL_Rect checkBoxImage;
 
-    iPoint* falseAtlasPos = new iPoint(552, 1308);
+    iPoint* falseAtlasPos = new iPoint(227, 201);
     iPoint* trueAtlasPos = new iPoint(552, 1407);
     int squareTexW = 88;
     int squareTexH = 88;

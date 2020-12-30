@@ -61,8 +61,9 @@ bool SceneIntro::Start()
 
 	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 ,padding  + 450 + (margin * 3),  88, 88 }, " ", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
-
-	menuSettings = new GuiSettings({ WINDOW_W / 2 + 100, 100 }, this);
+	
+	//menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, 238 }, this);
+	menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, 143 }, this);
 
 	app->SetLastScene((Module*)this);
 	transition = false;
@@ -72,7 +73,7 @@ bool SceneIntro::Start()
 	app->audio->PlayMusic("Assets/Audio/Music/music_intro.ogg");
 	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
 	animationIntro.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
-	animationIntro.position = { 200 , 363 };
+	animationIntro.position = { 180 , 363 };
 	idleAnim->loop = true;
 	idleAnim->speed = 0.005f;
 
