@@ -11,25 +11,24 @@ GuiSettings::GuiSettings(iPoint Position, SceneControl* moduleObserver)
 
 	initialPos = Position;
 
-	sldMusic = new GuiSlider(11, { initialPos.x, initialPos.y, 200, 40 }, "MUSIC", 0, 100);
+	SDL_Texture* btnTextureAtlas = app->sceneManager->btnTextureAtlas;
+
+	sldMusic = new GuiSlider(11, { initialPos.x, initialPos.y, 183, 91 }, "MUSIC", 0, 100, btnTextureAtlas);
 	sldMusic->SetObserver(moduleObserver);
 
-	sldFx = new GuiSlider(12, { initialPos.x, initialPos.y + padding, 200, 40 }, "FX", 0, 100);
+	sldFx = new GuiSlider(12, { initialPos.x, initialPos.y + padding, 183, 91 }, "FX", 0, 100, btnTextureAtlas);
 	sldFx->SetObserver(moduleObserver);
 
-	chBxFullScreen = new GuiCheckBox(13, { initialPos.x, initialPos.y + padding * 2, 200, 40 }, "FULLSCREEN");
+	chBxFullScreen = new GuiCheckBox(13, { initialPos.x, initialPos.y + padding * 2, 183, 91 }, "FULLSC", app->fullScreen, btnTextureAtlas);
 	chBxFullScreen->SetObserver(moduleObserver);
 
-	chBxVSync = new GuiCheckBox(14, { initialPos.x, initialPos.y + padding * 3, 200, 40 }, "VSync",true);
+	chBxVSync = new GuiCheckBox(14, { initialPos.x, initialPos.y + padding * 3, 183, 91 }, "VSYNC",false, btnTextureAtlas);
 	chBxVSync->SetObserver(moduleObserver);
 
 	chBxVSync->state = GuiControlState::DISABLED;
 
-	btnBack = new GuiButton(10, { initialPos.x + 50, initialPos.y + padding * 4, 150, 40 }, "BACK",RECTANGLE);
+	btnBack = new GuiButton(10, { initialPos.x + 165, initialPos.y + padding * 4, 88, 88 }, " ", BACK,btnTextureAtlas);
 	btnBack->SetObserver(moduleObserver);
-
-	if (app->fullScreen)
-		chBxFullScreen->SetValue(true);
 
 }
 
@@ -92,7 +91,7 @@ void GuiSettings::MovePosition()
 	chBxVSync->bounds.x = x;
 	chBxVSync->bounds.y = y + padding * 3;
 
-	btnBack->bounds.x = x + 50;
+	btnBack->bounds.x = x + 165;
 	btnBack->bounds.y = y + padding * 4;
 
 }

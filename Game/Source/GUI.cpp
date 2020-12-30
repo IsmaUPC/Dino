@@ -96,8 +96,9 @@ bool GUI::PreUpdate()
 
 bool GUI::Update(float dt)
 {
+
+	coinHudAnim->speed = (dt * 9);
 	miliseconds = timer.Read()+app->entityManager->timeSave - minuts * 60000;
-	coinHudAnim->speed = (dt * 10);
 	coinHudAnim->Update();
 	Chronometer();
 	return true;

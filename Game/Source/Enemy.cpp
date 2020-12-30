@@ -298,6 +298,8 @@ bool Enemy::PreUpdate()
 
 bool Enemy::Update(float dt)
 {
+	SpeedAnimationCheck(dt);
+	entityData->velocity = floor(1000 * dt) / 8;
 	CheckCollisions();
 	//entityData->type == AIR_ENEMY && !Radar(app->player->playerData.position)
 	//if (Radar(app->player->playerData.position)) returning = false;
@@ -353,6 +355,14 @@ bool Enemy::Update(float dt)
 	}
 	entityData->currentAnimation->Update();
 	return true;
+}
+
+void Enemy::SpeedAnimationCheck(float dt)
+{
+	idleAnim->speed = (dt * 5);
+	walkAnim->speed = (dt * 9);
+	deadAnim->speed = (dt * 5);
+	isDetectedAnim->speed = (dt * 9);
 }
 bool Enemy::PostUpdate()
 {

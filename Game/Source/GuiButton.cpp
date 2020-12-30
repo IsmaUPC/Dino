@@ -12,7 +12,6 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, TypeButton ty
 	//SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
 	//texturH /= 4;
 
-
 }
 
 GuiButton::~GuiButton()
@@ -72,32 +71,30 @@ bool GuiButton::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::NORMAL: 
-	//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+		//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::FOCUSED: 
-		//app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+		// app->render->DrawRectangle(bounds, 255, 255, 0, 255);
 		rect.x+= 1*rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::PRESSED:
-	//	app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+		//	app->render->DrawRectangle(bounds, 0, 255, 255, 255);
 		rect.x+= 2 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::SELECTED:
-	//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+		//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
         break;
     default:
         break;
     }
 
 	int centradoY,centradoX;
-
 	centradoX = (bounds.w / 2) - (((float)(text.Length() / 2)+0.5f) * 14);
-
+	// 48 = height image of font, whith 2 Raws, 48/2 = half a letter's height
 	centradoY = (bounds.h/2)-(48/4);
-	
 	app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
     return true;
@@ -119,6 +116,9 @@ void GuiButton::DefinePositionAtlas()
 		break;
 	case EXIT:
 		rect = { exitAtlasPos->x,exitAtlasPos->y,squareTexW + marginSquare,squareTexH };
+		break;
+	case BACK:
+		rect = { backAtlasPos->x,backAtlasPos->y,squareTexW + marginSquare,squareTexH };
 		break;
 	default:
 		break;

@@ -1,21 +1,29 @@
 #include "GuiCheckBox.h"
 #include "SceneManager.h"
 
-GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text, bool initState) : GuiControl(GuiControlType::CHECKBOX, id)
+GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text, bool initState, SDL_Texture* texture) : GuiControl(GuiControlType::CHECKBOX, id)
 {
     this->bounds = bounds;
+    this->texture = texture;
     this->text = text;
 
-    checkBox.w = (bounds.w / 5);
-    checkBox.h = bounds.h;
 
-    checkBox.x = bounds.x + ((bounds.w / 6) * 5);
-    checkBox.y = bounds.y;
+    button = { rectAtlasPos->x,rectAtlasPos->y,rectTexW + margin,rectTexH };
+
+    checkBoxInput.x = bounds.x + bounds.w + (bounds.w / 4);
+    checkBoxInput.y = bounds.y;
+
+    checkBoxInput.w = squareTexW;
+    checkBoxInput.h = squareTexH;
+
+    checkBoxImage = { 0,0,squareTexW,squareTexH };
+
 
     this->font = app->sceneManager->GetGuiFont();
 
     checked = initState;
 
+    ChangeImageChecked();
 }
 
 GuiCheckBox::~GuiCheckBox()
@@ -27,14 +35,15 @@ bool GuiCheckBox::Update(float dt)
 {
 
 	bool ret = true;
-    checkBox.x = bounds.x + ((bounds.w / 6) * 5);
-    checkBox.y = bounds.y;
+    checkBoxInput.x = bounds.x + bounds.w + (bounds.w / 4);
+    checkBoxInput.y = bounds.y;
+
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 
 	// Check collision between mouse and button bounds
-	if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-		(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+	if ((mouseX > checkBoxInput.x) && (mouseX < (checkBoxInput.x + checkBoxInput.w)) &&
+		(mouseY > checkBoxInput.y) && (mouseY < (checkBoxInput.y + checkBoxInput.h)))
 	{
 		if (state != GuiControlState::DISABLED)
 		{
@@ -63,69 +72,67 @@ bool GuiCheckBox::Update(float dt)
 
 bool GuiCheckBox::Draw()
 {
-
+    ChangeImageChecked();
 
     // Draw the right button depending on state
     switch (state)
     {
     case GuiControlState::DISABLED:
-    {
-        if (checked) {
-            app->render->DrawRectangle(bounds, 100, 100, 100, 255);
-            app->render->DrawRectangle(checkBox, 180, 180, 180, 255);
-        }
-        else {
-            app->render->DrawRectangle(bounds, 100, 100, 100, 255);
-            app->render->DrawRectangle(checkBox, 130, 130, 130, 255);
-        }
-    } break;
+        button.x += 3 * button.w;
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
+
+        checkBoxImage.x += 3 * (checkBoxImage.w+marginSquare);
+        app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
+
+        break;
     case GuiControlState::NORMAL: 
-    {
-        if (checked) app->render->DrawRectangle(bounds, 0, 255, 0, 255);
-        else app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
-        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
-        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
+        app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
+
         break;
-    }
     case GuiControlState::FOCUSED: 
-    {
-        app->render->DrawRectangle(bounds, 255, 255, 0, 255);
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
-        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
-        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
+        checkBoxImage.x += 1 * (checkBoxImage.w + marginSquare);
+        app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
 
         break;
-    }
     case GuiControlState::PRESSED:
-    {
-        app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+        app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
-        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
-        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
+        checkBoxImage.x += 2 * (checkBoxImage.w + marginSquare);
+        app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
+
         break;
-    }
     case GuiControlState::SELECTED:
-    {
-        app->render->DrawRectangle(bounds, 0, 255, 0, 255);
-
-        if (checked) app->render->DrawRectangle(checkBox, 255, 0, 0, 255);
-        else app->render->DrawRectangle(checkBox, 100, 100, 0, 255);
         break;
-    }
     default:
         break;
     }
 
-
     int centradoY, centradoX;
-
-    centradoX = (bounds.w / 2) - (((text.Length() / 2) + 0.5f) * 14) - checkBox.w/2;
-
+    centradoX = (bounds.w / 2) - (((float)(text.Length() / 2) + 0.5f) * 14);
+    // 48 = height image of font, whith 2 Raws, 48/2 = half a letter's height
     centradoY = (bounds.h / 2) - (48 / 4);
-
     app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
 
     return false;
+}
+
+void GuiCheckBox::ChangeImageChecked()
+{
+    if (checked)
+    {
+        checkBoxImage.x = trueAtlasPos->x;
+        checkBoxImage.y = trueAtlasPos->y;
+    }
+    else
+    {
+        checkBoxImage.x = falseAtlasPos->x;
+        checkBoxImage.y = falseAtlasPos->y;
+    }
+    button.x = rectAtlasPos->x;
+
 }

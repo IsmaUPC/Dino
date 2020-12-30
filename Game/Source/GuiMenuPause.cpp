@@ -23,7 +23,7 @@ GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver, SDL_Te
 	btnExit = new GuiButton(4, { Position.x, Position.y + padding * 3, 88, 88 }, " ", EXIT, textureAtlas);
 	btnExit->SetObserver(moduleObserver);
 
-	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },moduleObserver);
+	menuSettings = new GuiSettings({ WINDOW_W / 2+100, 100 },moduleObserver);
 
 	observer = moduleObserver;
 
@@ -166,7 +166,6 @@ void GuiMenuPause::MovePosition()
 	btnResume->bounds.x = x + 50;
 	btnResume->bounds.y = y;
 
-	
 	btnSettings->bounds.x = x + 50;
 	btnSettings->bounds.y = y + padding * 1;
 
