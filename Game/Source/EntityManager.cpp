@@ -189,6 +189,7 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
 		{
 			entiti->data->pendingToDelete = true;
+			if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->LoadState(entityManagerNode);
 		}
 
 		entityManagerNode.next_sibling();
@@ -198,6 +199,7 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 			entitiesNode = entitiesNode.next_sibling();
 		}
 	}
+	
 	return ret;
 }
 bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
@@ -206,17 +208,21 @@ bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
 	else entityManagerNode.child("score").attribute("value").set_value(0);
 	entityManagerNode.remove_child("entities");
 	entityManagerNode.append_child("entities").set_value(0);
-
-	pugi::xml_node entitiesNode= entityManagerNode.child("entities");
-	pugi::xml_node entity_node = entitiesNode;
-
-	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+	if (!app->removeGame)
 	{
-		entitiesNode.append_child("entity").append_attribute("type").set_value(entiti->data->entityData->type);
-		entitiesNode.last_child().append_attribute("x").set_value(entiti->data->entityData->position.x);
-		entitiesNode.last_child().append_attribute("y").set_value(entiti->data->entityData->position.y);
-		entitiesNode.last_child().append_attribute("state").set_value(entiti->data->entityData->state);
+		pugi::xml_node entitiesNode = entityManagerNode.child("entities");
+		pugi::xml_node entity_node = entitiesNode;
+
+		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+		{
+			entitiesNode.append_child("entity").append_attribute("type").set_value(entiti->data->entityData->type);
+			entitiesNode.last_child().append_attribute("x").set_value(entiti->data->entityData->position.x);
+			entitiesNode.last_child().append_attribute("y").set_value(entiti->data->entityData->position.y);
+			entitiesNode.last_child().append_attribute("state").set_value(entiti->data->entityData->state);
+			if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->SaveState(entityManagerNode);
+		}
 	}
+	
 	
 	return true;
 }

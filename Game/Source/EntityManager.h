@@ -52,7 +52,7 @@ public:
 
 
 public:
-	
+	uint timeSave = 0;
 	List<EntitySpawnPoint*> spawnQueue;
 	List<Entity*> entities;
 	iPoint mapDimensions = { 0,0 };
