@@ -34,6 +34,7 @@ bool GUI::Awake(pugi::xml_node& config)
 
 bool GUI::Start()
 {
+	active = true;
 	int imgH = 0;
 	int imgW = 0;
 
@@ -151,6 +152,10 @@ bool GUI::PostUpdate()
 	sprintf_s(timeText, 10, "%d:%02d:%02d", minuts, miliseconds / 100, miliseconds2);
 	app->fonts->BlitText(point0.x, point0.y, hudFont, timeText);
 
+	//Score
+	point0.y = point0.y + 50;
+	sprintf_s(scoreText, 12, "Score: %d", app->entityManager->score);
+	app->fonts->BlitText(point0.x, point0.y, hudFont, scoreText);
 	//FireBall
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;

@@ -91,7 +91,7 @@ bool SceneIntro::Start()
 		btnContinue->state = GuiControlState::DISABLED;
 		btnRemove->state = GuiControlState::DISABLED;
 	}
-
+	app->sceneManager->SetPause(false);
 	return true;
 }
 
@@ -180,12 +180,12 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	case GuiControlType::BUTTON:
 	{
 		
-		if (control->id == 1) TransitionToScene(SceneType::LEVEL1);// PLAY
+		if (control->id == 1) TransitionToScene(SceneType::LEVEL1), app->sceneManager->lastLevel = 1;// PLAY
 		else if (control->id == 2 && lastLevel != 0)
 		{
 			LOG("CONTINUE LAST GAME");
-			if (lastLevel == 1)TransitionToScene(SceneType::LEVEL1);
-			if (lastLevel == 2)TransitionToScene(SceneType::LEVEL2);
+			if (lastLevel == 1)TransitionToScene(SceneType::LEVEL1), app->sceneManager->lastLevel = 1;
+			if (lastLevel == 2)TransitionToScene(SceneType::LEVEL2), app->sceneManager->lastLevel = 2;
 			isContinue = true;
 		}
 		else if (control->id == 3)

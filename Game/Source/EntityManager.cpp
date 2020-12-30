@@ -78,6 +78,7 @@ bool EntityManager::CleanUp()
 
 		item = item->next;
 	}
+	score = 0;
 	active = false;
 	return ret;
 	//return true;

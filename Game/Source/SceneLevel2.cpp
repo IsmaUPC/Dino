@@ -66,16 +66,12 @@ bool SceneLevel2::Start()
 	app->entityManager->AddEntity(GROUND_ENEMY, 168, 8);
 	app->entityManager->AddEntity(GROUND_ENEMY, 198, 6);
 	app->entityManager->AddEntity(GROUND_ENEMY, 77, 29);
-	app->entityManager->AddEntity(GROUND_ENEMY, 77, 29);
 	app->entityManager->AddEntity(GROUND_ENEMY, 127, 29);
 	app->entityManager->AddEntity(GROUND_ENEMY, 145, 29);
-	app->entityManager->AddEntity(GROUND_ENEMY, 163, 23);
 	app->entityManager->AddEntity(GROUND_ENEMY, 163, 23);
 	app->entityManager->AddEntity(GROUND_ENEMY, 203, 15);
 	app->entityManager->AddEntity(AIR_ENEMY, 53, 20);
 	app->entityManager->AddEntity(AIR_ENEMY, 66, 10);
-	app->entityManager->AddEntity(AIR_ENEMY, 66, 10);
-	app->entityManager->AddEntity(AIR_ENEMY, 54, 32);
 	app->entityManager->AddEntity(AIR_ENEMY, 189, 11);
 	app->entityManager->AddEntity(AIR_ENEMY, 201, 9);
 
@@ -100,7 +96,7 @@ bool SceneLevel2::Start()
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 
 	app->render->camera.y -= imgH;
-
+	app->sceneManager->lastLevel = 2;
 	return true;
 }
 
@@ -186,7 +182,6 @@ bool SceneLevel2::CleanUp()
 	app->tex->UnLoad(animationFather.texture);
 	app->player->CleanUp();
 	app->entityManager->CleanUp();
-	app->audio->UnloadFxs();
 
 	active = false;
 	return true;

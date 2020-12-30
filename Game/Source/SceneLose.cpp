@@ -4,6 +4,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "SceneLose.h"
+#include "SceneManager.h"
 
 #include <SDL_mixer\include\SDL_mixer.h>
 
@@ -76,7 +77,8 @@ bool SceneLose::PostUpdate()
 	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
-		TransitionToScene(SceneType::LEVEL1);
+		if (app->sceneManager->lastLevel == 1) TransitionToScene(SceneType::LEVEL1);
+		if (app->sceneManager->lastLevel == 2) TransitionToScene(SceneType::LEVEL2);
 		return true;
 	}
 

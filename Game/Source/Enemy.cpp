@@ -1,5 +1,7 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "GUI.H"
+#include "EntityManager.h"
 #include "Pathfinding.h"
 
 #include "Defs.h"
@@ -273,8 +275,20 @@ void Enemy::CheckCollisions()
 		CheckCollisionEnemyToPlayer();
 	}
 	CheckCollisionEnemyToFireBall();
-	if (!Radar(currentPositionPlayer) && entityData->state != DEADING)entityData->state = IDLE, entityData->currentAnimation = idleAnim, isDetected = false;
-	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())pendingToDelete = true, entityData->state = DEAD;
+	if (!Radar(currentPositionPlayer) && entityData->state != DEADING)
+	{
+		entityData->state = IDLE;
+		entityData->currentAnimation = idleAnim;
+		isDetected = false;
+	}
+	if (entityData->state == DEADING && entityData->currentAnimation->HasFinished())
+	{
+		pendingToDelete = true;
+		entityData->state = DEAD;
+		if (entityData->type == AIR_ENEMY)app->entityManager->score += 15;
+		else app->entityManager->score += 10;
+		
+	}
 
 }
 bool Enemy::PreUpdate()

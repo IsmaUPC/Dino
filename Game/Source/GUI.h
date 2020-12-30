@@ -27,7 +27,6 @@ public:
 
 	bool CleanUp();
 
-
 public:
 
 private:
@@ -69,6 +68,7 @@ private:
 	//Time
 	Timer timer;
 	char timeText[10] = { "\0" };
+	char scoreText[12] = { "\0" };
 	uint miliseconds=0;
 	int minuts;
 	int miliseconds2 = 0;

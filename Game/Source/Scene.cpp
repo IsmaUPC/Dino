@@ -65,9 +65,7 @@ bool Scene::Start()
 	app->player->positionInitial = { 432,1170 };
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
 	app->entityManager->AddEntity(GROUND_ENEMY, 30, 17);
-	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);
-	//app->entityManager->AddEntity(AIR_ENEMY, 51, 16);
-	
+	app->entityManager->AddEntity(GROUND_ENEMY, 20, 14);	
 
 	// Active calls
 	app->player->Init();

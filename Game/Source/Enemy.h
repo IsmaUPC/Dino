@@ -54,5 +54,6 @@ private:
 	iPoint positionInitial;
 	//We store the created path here
 	DynArray<iPoint>* lastPath;
+	
 };
 #endif // _ENEMY_H_

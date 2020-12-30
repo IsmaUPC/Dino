@@ -95,6 +95,7 @@ public:
 	uint btnDisabled;
 	uint btnSlider;
 
+	int lastLevel = 0;
 	int guiFont;
 };
 
