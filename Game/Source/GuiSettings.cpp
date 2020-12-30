@@ -27,7 +27,7 @@ GuiSettings::GuiSettings(iPoint Position, SceneControl* moduleObserver)
 
 	chBxVSync->state = GuiControlState::DISABLED;
 
-	btnBack = new GuiButton(10, { initialPos.x + 50, initialPos.y + separacion * 4, 150, 40 }, "BACK");
+	btnBack = new GuiButton(10, { initialPos.x + 50, initialPos.y + separacion * 4, 150, 40 }, "BACK",RECTANGLE);
 	btnBack->SetObserver(moduleObserver);
 
 	if (app->fullScreen)

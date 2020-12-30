@@ -11,16 +11,16 @@ GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver, SDL_Te
 {
 	int separacion = 50;
 
-	btnResume = new GuiButton(1, { Position.x , Position.y + separacion*0, 200, 40 }, "REMOVE", textureAtlas);
+	btnResume = new GuiButton(1, { Position.x , Position.y + separacion*0, 200, 40 }, "RESUME", RECTANGLE, textureAtlas);
 	btnResume->SetObserver(moduleObserver);
 
-	btnSettings = new GuiButton(2, { Position.x, Position.y + separacion * 1, 200, 40 }, "SETTINGS", textureAtlas);
+	btnSettings = new GuiButton(2, { Position.x, Position.y + separacion * 1, 200, 40 }, "SETTINGS",RECTANGLE, textureAtlas);
 	btnSettings->SetObserver(moduleObserver);
 
-	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "CREDITS", textureAtlas);
+	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "TITLE", RECTANGLE, textureAtlas);
 	btnBackToTitle->SetObserver(moduleObserver);
 
-	btnExit = new GuiButton(4, { Position.x, Position.y + separacion * 3, 200, 40 }, "EXIT", textureAtlas);
+	btnExit = new GuiButton(4, { Position.x, Position.y + separacion * 3, 200, 40 }, "EXIT", EXIT, textureAtlas);
 	btnExit->SetObserver(moduleObserver);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },moduleObserver);

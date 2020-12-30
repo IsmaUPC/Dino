@@ -79,6 +79,8 @@ public:
 
     uint32 id;
     GuiControlType type;
+
+   // TypeButton typeButton= RECTANGLE;
     GuiControlState state;
 
     SString text;           // Control text (if required)

@@ -6,10 +6,10 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="0" y="-600" />
+		<camera x="0" y="-677" />
 	</renderer>
 	<player>
-		<position x="432" y="1170" />
+		<position x="432" y="1247" />
 		<score points="0" />
 		<lives num_respawns="3" />
 	</player>

@@ -1,13 +1,14 @@
 #include "GuiButton.h"
 #include "SceneManager.h"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* texture ) : GuiControl(GuiControlType::BUTTON, id)
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, TypeButton typeButton, SDL_Texture* texture ) : GuiControl(GuiControlType::BUTTON, id)
 {
     this->bounds = bounds;
     this->text = text;
     this->texture = texture;
-	//SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
-	//texturH /= 4;
+	this->typeButton = typeButton;
+	//SDL_QueryTexture(texture, NULL, NULL, &rectangleTextW, &rectangleTextH);
+	//rectangleTextH /= 4;
 
 }
 
@@ -53,8 +54,9 @@ bool GuiButton::Update(float dt)
 
 bool GuiButton::Draw()
 {
-	SDL_Rect rect = { pixelImagePosX,pixelImagePosY,texturW+margin,texturH };
-	//SDL_Rect rect = { pixelImagePosX,pixelImagePosY,100,100 };
+	
+	DefinePositionAtlas();
+
 
     // Draw the right button depending on state
     switch (state)
@@ -86,4 +88,27 @@ bool GuiButton::Draw()
     }
 
     return true;
+}
+
+void GuiButton::DefinePositionAtlas()
+{
+
+	switch (typeButton)
+	{
+	case RECTANGLE:
+		rect = { rectAtlasPos->x,rectAtlasPos->y,rectTexW + margin,rectTexH };
+		break;
+	case REMOVE:
+		rect = { removeAtlasPos->x,removeAtlasPos->y,squareTexW + marginSquare,squareTexH };
+		break;
+	case CREDITS:
+		rect = { creditAtlasPos->x,creditAtlasPos->y,squareTexW + marginSquare,squareTexH };
+		break;
+	case EXIT:
+		rect = { exitAtlasPos->x,exitAtlasPos->y,squareTexW + marginSquare,squareTexH };
+		break;
+	default:
+		break;
+	}
+
 }

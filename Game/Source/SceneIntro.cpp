@@ -44,22 +44,22 @@ bool SceneIntro::Start()
 	int margin= 7;
 	int padding = 50;
 
-	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, (padding * 1)+280+(margin*1),  183, 91 }, "PLAY", btnTextureAtlas);
+	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, (padding * 1)+280+(margin*1),  183, 91 }, "PLAY", RECTANGLE, btnTextureAtlas);
 	btnPlay->SetObserver(this);
 
-	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, padding  + 365 + (margin * 2),  183, 91 }, "CONTINUE", btnTextureAtlas);
+	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, padding  + 365 + (margin * 2),  183, 91 }, "CONTINUE", RECTANGLE, btnTextureAtlas);
 	btnContinue->SetObserver(this);
 
-	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 100 , padding  + 365 + (margin * 2), 183, 91 }, "REMOVE", btnTextureAtlas);
+	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 100 , padding  + 365 + (margin * 2), 88, 88 }, "REMOVE", REMOVE, btnTextureAtlas);
 	btnRemove->SetObserver(this);
 
-	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", btnTextureAtlas);
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", RECTANGLE, btnTextureAtlas);
 	btnSettings->SetObserver(this);
 
-	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W / 5) , 535 + (margin * 4),  183, 91 }, "CREDITS", btnTextureAtlas);
+	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W / 5) , 535 + (margin * 4),  88, 88 }, "CREDITS", CREDITS, btnTextureAtlas);
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 300 ,padding  + 450 + (margin * 3),  183, 91 }, "EXIT", btnTextureAtlas);
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 300 ,padding  + 450 + (margin * 3),  88, 88 }, "EXIT", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
