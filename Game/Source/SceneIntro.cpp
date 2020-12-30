@@ -36,32 +36,33 @@ bool SceneIntro::Awake()
 
 bool SceneIntro::Start()
 {
-
+	SDL_Texture* btnTextureAtlas = app->sceneManager->btnTextureAtlas;
 	btnSettingsTex = app->tex->Load("Assets/Textures/GUI/setting_button.png");
 	btnExitTex = app->tex->Load("Assets/Textures/GUI/exit_button.png");
 
 	// GUI: Initialize required controls for the screen
+	int margin= 7;
+	int padding = 50;
 
-	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, 400, 200, 40 }, "PLAY");
+	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, (padding * 1)+280+(margin*1),  183, 91 }, "PLAY", RECTANGLE, btnTextureAtlas);
 	btnPlay->SetObserver(this);
 
-	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, 450, 200, 40 }, "CONTINUE");
+	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, padding  + 365 + (margin * 2),  183, 91 }, "CONTINUE", RECTANGLE, btnTextureAtlas);
 	btnContinue->SetObserver(this);
 
-	btnRemove = new GuiButton(3, { WINDOW_W / 2 - 200 / 2, 500, 200, 40 }, "REMOVE");
+	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 100 , padding  + 365 + (margin * 2), 88, 88 }, " ", REMOVE, btnTextureAtlas);
 	btnRemove->SetObserver(this);
 
-	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, 550, 200, 40 }, "SETTINGS", btnSettingsTex);
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", RECTANGLE, btnTextureAtlas);
 	btnSettings->SetObserver(this);
 
-	btnCredits = new GuiButton(5, { WINDOW_W / 2 - 200 / 2, 600, 200, 40 }, "CREDITS");
+	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W / 5) , 535 + (margin * 4),  88, 88 }, " ", CREDITS, btnTextureAtlas);
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 / 2, 650, 200, 40 }, "EXIT", btnExitTex);
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 300 ,padding  + 450 + (margin * 3),  88, 88 }, " ", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 }, this);
-
 
 	app->SetLastScene((Module*)this);
 	transition = false;
@@ -158,6 +159,16 @@ bool SceneIntro::CleanUp()
 	Mix_HaltMusic();
 	app->tex->UnLoad(bgIntro);
 	app->tex->UnLoad(animationIntro.texture);
+
+	delete btnPlay;
+	delete btnContinue;
+	delete btnRemove;
+	delete btnSettings;
+	delete btnCredits;
+	delete btnExit;
+	delete menuSettings;
+
+
 	bgIntro = nullptr;
 	active = false;
 	return true;

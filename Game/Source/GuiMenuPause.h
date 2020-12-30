@@ -11,7 +11,7 @@
 class GuiMenuPause
 {
 public:
-	GuiMenuPause(iPoint Position,SceneControl* moduleObserver);
+	GuiMenuPause(iPoint Position,SceneControl* moduleObserver, SDL_Texture* textureAtlas);
 	~GuiMenuPause();
 
     bool Update(float dt);
@@ -31,7 +31,7 @@ public:
     void MovePosition();
 
 private:
-    
+    int padding = 92;
     GuiButton* btnResume;
     GuiButton* btnSettings;
     GuiButton* btnBackToTitle;
