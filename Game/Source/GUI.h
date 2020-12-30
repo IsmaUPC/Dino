@@ -71,6 +71,9 @@ private:
 	char timeText[10] = { "\0" };
 	uint miliseconds=0;
 	int minuts;
+	int miliseconds2 = 0;
+	Timer auxTimePause;
+	bool stopTime = false;
 };
 
 #endif // __GUI_H__

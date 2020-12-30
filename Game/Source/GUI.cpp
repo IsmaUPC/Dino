@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "FireBall.h"
 #include "EntityManager.h"
+#include "SceneManager.h"
 #include "ModuleFonts.h"
 
 #include "Defs.h"
@@ -90,6 +91,7 @@ bool GUI::PreUpdate()
 bool GUI::Update(float dt)
 {
 	miliseconds = timer.Read();
+	Chronometer();
 	return true;
 }
 
@@ -134,7 +136,20 @@ bool GUI::PostUpdate()
 	app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
 
 	//Time
-	Chronometer();
+	if (app->sceneManager->GetIsPause() && !stopTime)
+	{
+		auxTimePause.Start();
+		stopTime = true;
+	}
+	if (!app->sceneManager->GetIsPause() && stopTime)
+	{
+		timer.startTime += auxTimePause.Read();
+		stopTime = false;
+	}
+	point0.x = point0.x - 50;
+	point0.y = point0.y + 100;
+	sprintf_s(timeText, 10, "%d:%02d:%02d", minuts, miliseconds / 100, miliseconds2);
+	app->fonts->BlitText(point0.x, point0.y, hudFont, timeText);
 
 	//FireBall
 	point0.x = -app->render->camera.x;
@@ -171,21 +186,15 @@ bool GUI::PostUpdate()
 
 void GUI::Chronometer()
 {
-	point0.x = point0.x - 50;
-	point0.y = point0.y + 100;
-	if (miliseconds >= 60000)timer.Start(), minuts++;
+	if (miliseconds >= 60000 && !stopTime) timer.Start(), minuts++;
 	miliseconds = miliseconds * 0.1;
-	int miliseconds2 = 0;
+
 	int centenas = 0;
 	if (miliseconds >= 100)
 	{
 		centenas = miliseconds / 100;
 		miliseconds2 = miliseconds - (centenas * 100);
-	}
-	int seconds = miliseconds / 100;
-
-	sprintf_s(timeText, 10, "%d:%02d:%02d", minuts, seconds, miliseconds2);
-	app->fonts->BlitText(point0.x, point0.y, hudFont, timeText);
+	}	
 }
 
 bool GUI::CleanUp()
