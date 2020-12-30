@@ -82,6 +82,8 @@ bool Coins::PreUpdate()
 bool Coins::Update(float dt)
 {
 	currentAnimation->Update();
+	currentAnimation->speed = (dt * 10);
+
 	return true;
 }
 bool Coins::PostUpdate()

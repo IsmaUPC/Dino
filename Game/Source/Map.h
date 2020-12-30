@@ -161,6 +161,7 @@ public:
 
 	// Translates x,y coordinates from  world positions to map positions 
 	iPoint WorldToMap(int x, int y) const;
+	iPoint WorldToMap(iPoint position) const;
 
 	//Get dimensions of map
 	iPoint GetDimensionsMap();
