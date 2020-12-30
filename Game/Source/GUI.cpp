@@ -54,6 +54,11 @@ bool GUI::Start()
 
 
 	imgCoin = app->tex->Load("Assets/Textures/GUI/coin.png");
+	coinHudAnim->loop = true;
+	coinHudAnim->speed = 0.20f;
+
+	for (int i = 0; i < 16; i++)
+		coinHudAnim->PushBack({ 0,(80 * i), 80, 80 });
 
 	imgH = 0;
 	imgW = 0;
@@ -92,6 +97,7 @@ bool GUI::PreUpdate()
 bool GUI::Update(float dt)
 {
 	miliseconds = timer.Read();
+	coinHudAnim->Update();
 	Chronometer();
 	return true;
 }
@@ -123,11 +129,12 @@ bool GUI::PostUpdate()
 		app->render->DrawTextureFlip(arrowTex,app->player->playerData.position.x - 45, app->player->playerData.position.y - 40, &rectGUI);
 	}
 
-	//Coins
+	//Coin HUD
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
-
-	app->render->DrawTexture(imgCoin, point0.x+22, point0.y + 90);
+	SDL_Rect rectCoins;
+	rectCoins = coinHudAnim->GetCurrentFrame();
+	app->render->DrawTexture(imgCoin, point0.x+22, point0.y + 90, &rectCoins);
 
 	point0.x = point0.x + 90;
 	point0.y = point0.y + 100;

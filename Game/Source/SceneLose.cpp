@@ -74,7 +74,7 @@ bool SceneLose::PostUpdate()
 	//if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		//ret = false;
 
-	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN
+	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
 		if (app->sceneManager->lastLevel == 1) TransitionToScene(SceneType::LEVEL1);
