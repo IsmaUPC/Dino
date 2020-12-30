@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "PugiXml\src\pugixml.hpp"
 
+
+
 class Coins : public Entity
 {
 public:
@@ -24,6 +26,7 @@ public:
 	bool PostUpdate();
 
 	bool CleanUp();
+	void CurrentCoinAnimation();
 
 
 public:
@@ -34,11 +37,13 @@ private:
 	int numPoints;
 	iPoint* pointsCollision;
 
-	Animation* currentAnimation = new Animation();
+	Animation* coinAnimation = new Animation();
+	Animation* particleAnimation = new Animation();
 
 	uint coinFx;
 
-	SDL_Texture* texture;
+	SDL_Texture* texCoin;
+	SDL_Texture* texCoinParticle;
 };
 #endif // _COINS_H_
 

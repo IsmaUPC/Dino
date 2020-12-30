@@ -204,6 +204,7 @@ bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
 {
 	if(!app->removeGame)entityManagerNode.child("score").attribute("value").set_value(score);
 	else entityManagerNode.child("score").attribute("value").set_value(0);
+
 	entityManagerNode.remove_child("entities");
 	entityManagerNode.append_child("entities").set_value(0);
 

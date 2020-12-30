@@ -50,7 +50,7 @@ bool SceneIntro::Start()
 	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, padding  + 365 + (margin * 2),  183, 91 }, "CONTINUE", RECTANGLE, btnTextureAtlas);
 	btnContinue->SetObserver(this);
 
-	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 100 , padding  + 365 + (margin * 2), 88, 88 }, " ", REMOVE, btnTextureAtlas);
+	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 90 , padding  + 365 + (margin * 2), 88, 88 }, " ", REMOVE, btnTextureAtlas);
 	btnRemove->SetObserver(this);
 
 	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", RECTANGLE, btnTextureAtlas);

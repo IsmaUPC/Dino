@@ -7,7 +7,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-#define LOGO_FADE_SPEED 1000.0f
+#define LOGO_FADE_SPEED 500.0f
 
 SceneLogo::SceneLogo()
 {
@@ -70,7 +70,7 @@ bool SceneLogo::Update(float dt)
 	{
 		// Waiting for 3 seconds
 		timeCounter += dt;
-		if (timeCounter >= 2.0f) state = 3;
+		if (timeCounter >= 3.0f) state = 3;
 	}
 	else if (state == 3)
 	{

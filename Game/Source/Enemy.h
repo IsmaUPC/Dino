@@ -37,6 +37,7 @@ private:
 	void MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, TypeEntity type);
 	void MoveEnemyNULL(iPoint mapPositionEnemy);
 	int CalculateDistance(iPoint origin, iPoint destination);
+	void SpeedAnimationCheck(float dt);
 
 
 private:
