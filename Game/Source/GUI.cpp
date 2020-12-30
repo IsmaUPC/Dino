@@ -154,7 +154,7 @@ bool GUI::PostUpdate()
 
 	//Score
 	point0.y = point0.y + 50;
-	sprintf_s(scoreText, 12, "Score: %d", app->entityManager->score);
+	sprintf_s(scoreText, 12, "Score:%d", app->entityManager->score);
 	app->fonts->BlitText(point0.x, point0.y, hudFont, scoreText);
 	//FireBall
 	point0.x = -app->render->camera.x;

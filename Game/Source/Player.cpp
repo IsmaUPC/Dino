@@ -23,12 +23,23 @@ Player::~Player()
 
 bool Player::Start() 
 {
+
+	idleAnim = new Animation();
+	walkAnim = new Animation();
+	atakAnim = new Animation();
+	damageAnim = new Animation();
+	runAnim = new Animation();
+	jumpAnim = new Animation();
+
 	iPoint pathInit =  app->map->WorldToMap(positionInitial.x ,positionInitial.y) ;
 	app->map->ResetPath(pathInit);
 
 	playerData.texture = app->tex->Load("Assets/Textures/dino_green.png");
 	playerData.position = positionInitial;
 	playerData.state = IDLE;
+	playerData.velocity = 1;
+	playerData.isJumped = false;
+	playerData.direction = WALK_R;
 
 	//FX
 	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
@@ -42,10 +53,6 @@ bool Player::Start()
 	endUpdate = true;
 	win = false;
 
-	playerData.velocity = 1;
-	playerData.isJumped = false;
-	playerData.state = IDLE;
-	playerData.direction = WALK_R;
 
 	idleAnim->loop = true;
 	idleAnim->speed = 0.05f;
@@ -62,6 +69,8 @@ bool Player::Start()
 	jumpAnim->loop = true;
 	jumpAnim->speed = 0.24f;
 
+
+
 	for (int i = 0; i < 4; i++)
 		idleAnim->PushBack({ 78 * i,0, 78, 78 });
 
@@ -77,12 +86,16 @@ bool Player::Start()
 	for (int i = 0; i < 4; i++)
 		damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
 
-	//for (int j = 0; j < 1; j++)
+	for (int j = 0; j < 1; j++)
 		for (int i = 2; i < 4; i++)
 			damageAnim->PushBack({ 1008 + (78 * i),0, 78, 78 });
 
+	deadAnim->PushBack({ 1008 + (78 * 1),0, 78, 78 });
+
 	for (int i = 0; i < 4; i++)
 		runAnim->PushBack({ 1319 + (78 * i),0, 78, 78 });
+
+
 	   
 	playerData.currentAnimation = idleAnim;
 	velX = playerData.velocity;
@@ -110,8 +123,8 @@ bool Player::LoadState(pugi::xml_node& player)
 	bool ret=true;
 		playerData.position.x = player.child("position").attribute("x").as_int(playerData.position.x);
 		playerData.position.y = player.child("position").attribute("y").as_int(playerData.position.y);
-		playerData.coins = player.child("score").attribute("points").as_int(playerData.coins);
 		playerData.respawns = player.child("lives").attribute("num_respawns").as_int(playerData.respawns);
+		playerData.coins = player.child("coins").attribute("count").as_int(playerData.coins);
 	return ret;
 }
 
@@ -119,12 +132,13 @@ bool Player::SaveState(pugi::xml_node& player) const
 {
 	pugi::xml_node positionPlayer = player.child("position");
 	pugi::xml_node scorePlayer = player.child("score");
+	pugi::xml_node coinsPlayer = player.child("coins");
 	pugi::xml_node respawnsPlayer = player.child("lives");
 
 	positionPlayer.attribute("x").set_value(playerData.position.x) ;
 	positionPlayer.attribute("y").set_value( playerData.position.y) ;
 
-	scorePlayer.attribute("points").set_value(playerData.coins);
+	coinsPlayer.attribute("count").set_value(playerData.coins);
 	respawnsPlayer.attribute("num_respawns").set_value(playerData.respawns);
 
 	return true;
@@ -182,13 +196,17 @@ void Player::MoveHit()
 			if (CollisionPlayer(playerData.position)) playerData.position = tmp;
 		}
 		else
-		{			
-			playerData.position = IPointMapToWorld(checkPoints.end->data);
-			playerData.currentAnimation->Reset();
-			playerData.state = IDLE;
+		{	
 			if(playerData.respawns <1)playerData.state = DEAD;
+			else
+			{
+				playerData.position = IPointMapToWorld(checkPoints.end->data);
+				damageAnim->Reset();
+				playerData.state = IDLE;
+			}
 		}
 	}
+	if (playerData.currentAnimation->HasFinished())damageAnim->Reset();
 }
 
 void Player::GravityDown(float dt)
@@ -204,12 +222,12 @@ void Player::GravityDown(float dt)
 void Player::SpeedAnimationCheck(float dt)
 {
 
-		idleAnim->speed = (dt * 5) ;
-		walkAnim->speed = (dt * 9) ;
-		jumpAnim->speed = (dt * 18) ;
-		atakAnim->speed = (dt * 5) ;
-		damageAnim->speed = (dt * 10) ;
-		runAnim->speed = (dt * 9) ;
+	idleAnim->speed = (dt * 5) ;
+	walkAnim->speed = (dt * 9) ;
+	jumpAnim->speed = (dt * 18) ;
+	atakAnim->speed = (dt * 5) ;
+	damageAnim->speed = (dt * 10) ;
+	runAnim->speed = (dt * 9) ;
 	
 }
 
@@ -322,6 +340,8 @@ void Player::PlayerControls(float dt)
 		velX = playerData.velocity * 2;
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)playerData.position.y -= velX;
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)playerData.position.y += velX;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)playerData.position.x -= velX;
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)playerData.position.x += velX;
 	}
 
 }
@@ -506,6 +526,7 @@ bool Player::CheckGameOver(int level)
 {
 	if (playerData.state==DEAD)
 	{
+		playerData.currentAnimation = deadAnim;
 		return true;
 	}
 	if (level == 1)
@@ -543,7 +564,7 @@ bool Player::CheckGameOver(int level)
 
 void Player::SetHit()
 {
-	if (playerData.respawns > 0 && playerData.state != HIT) {
+	if (playerData.respawns > 0 && playerData.state != HIT && !godMode) {
 		playerData.respawns--;
 		playerData.state = HIT;
 		hitDirection = playerData.direction;

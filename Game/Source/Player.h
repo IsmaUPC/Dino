@@ -119,6 +119,7 @@ private:
 	Animation* walkAnim = new Animation();
 	Animation* atakAnim = new Animation();
 	Animation* damageAnim = new Animation();
+	Animation* deadAnim = new Animation();
 	Animation* runAnim = new Animation( );
 	Animation* jumpAnim = new Animation( );
 

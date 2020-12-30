@@ -30,6 +30,7 @@ public:
 
 		currentFrame = 0;
 		loopCount = 0;
+		pingpong = false;
 	}
 	
 	bool HasFinished()

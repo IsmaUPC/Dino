@@ -72,7 +72,7 @@ bool GuiButton::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::NORMAL: 
-		//app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+		app->render->DrawRectangle(bounds, 0, 255, 0, 255);
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
         break;
     case GuiControlState::FOCUSED: 
