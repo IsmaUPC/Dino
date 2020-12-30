@@ -96,7 +96,7 @@ bool GuiButton::Draw()
 
 	centradoX = (bounds.w / 2) - (((float)(text.Length() / 2)+0.5f) * 14);
 
-	centradoY = bounds.h/4;
+	centradoY = (bounds.h/2)-(48/4);
 	
 	app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
 
