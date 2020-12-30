@@ -79,7 +79,7 @@ bool GUI::Start()
 
 	activeFPS = false;
 	timer.Start();
-
+	minuts = app->entityManager->timeSave / 60000;
 	return true;
 }
 
@@ -96,8 +96,9 @@ bool GUI::PreUpdate()
 
 bool GUI::Update(float dt)
 {
-	miliseconds = timer.Read();
+
 	coinHudAnim->speed = (dt * 9);
+	miliseconds = timer.Read()+app->entityManager->timeSave - minuts * 60000;
 	coinHudAnim->Update();
 	Chronometer();
 	return true;
@@ -144,32 +145,17 @@ bool GUI::PostUpdate()
 
 	app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
 
-	//Time
-	if (app->sceneManager->GetIsPause() && !stopTime)
-	{
-		auxTimePause.Start();
-		stopTime = true;
-	}
-	if (!app->sceneManager->GetIsPause() && stopTime)
-	{
-		timer.startTime += auxTimePause.Read();
-		stopTime = false;
-	}
+	//Score
 	point0.x = point0.x - 50;
 	point0.y = point0.y + 100;
-	sprintf_s(timeText, 10, "%d:%02d:%02d", minuts, miliseconds / 100, miliseconds2);
-	app->fonts->BlitText(point0.x, point0.y, hudFont, timeText);
-
-	//Score
-	point0.y = point0.y + 50;
 	sprintf_s(scoreText, 12, "Score:%d", app->entityManager->score);
 	app->fonts->BlitText(point0.x, point0.y, hudFont, scoreText);
 
 	//FireBall
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
-	point0.x = point0.x + (50);
-	point0.y = point0.y + (WINDOW_H - 70);
+	point0.x = point0.x + 40;
+	point0.y = point0.y + WINDOW_H - 70;
 
 	if (*fireBallState == 0)
 	{
@@ -181,26 +167,44 @@ bool GUI::PostUpdate()
 		rectGUI = fireBallOffAnim->GetCurrentFrame();
 		app->render->DrawTexture(fireBallTex, point0.x, point0.y, &rectGUI);
 	}
+	point0.x = -app->render->camera.x;
+	point0.y = -app->render->camera.y;
+	point0.x = point0.x + (WINDOW_W - 250);
+	point0.y = point0.y + 20;
+	//Time
+	if (app->sceneManager->GetIsPause() && !stopTime)
+	{
+		auxTimePause.Start();
+		stopTime = true;
+	}
+	if (!app->sceneManager->GetIsPause() && stopTime)
+	{
+		timer.startTime += auxTimePause.Read();
+		stopTime = false;
+	}
+	point0.x = point0.x - 100;
+	sprintf_s(timeText, 10, "%d:%02d:%02d", minuts, miliseconds / 100, miliseconds2);
+	app->fonts->BlitText(point0.x, point0.y, hudFont, timeText);
 
-	if (activeFPS){
-		point0.x = -app->render->camera.x;
-		point0.y = -app->render->camera.y;
-		
-		point0.x = point0.x + (WINDOW_W-150);
-		point0.y = point0.y + 10;
-
+	if (activeFPS)
+	{
+		point0.x += 170;
+		point0.y += WINDOW_H - 100;
 		sprintf_s(coinText, 10, "%3d", app->GetFramesOnLastSecond());
 
 		app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
 
 	}
-
 	return true;
 }
 
 void GUI::Chronometer()
 {
-	if (miliseconds >= 60000 && !stopTime) timer.Start(), minuts++;
+	if (miliseconds >= 60000 && !stopTime)
+	{
+		//timer.Start();
+		minuts++;
+	}
 	miliseconds = miliseconds * 0.1;
 
 	int centenas = 0;
@@ -225,6 +229,18 @@ bool GUI::CleanUp()
 	active = false;
 
 	pendingToDelete = true;
+	return true;
+}
+bool GUI::LoadState(pugi::xml_node& data)
+{
+	app->entityManager->timeSave = data.child("time").attribute("value").as_int(0);
+	
+	return true;
+}
+
+bool GUI::SaveState(pugi::xml_node& data) const
+{
+	data.child("time").attribute("value").set_value(miliseconds*10+minuts*60000);
 	return true;
 }
 

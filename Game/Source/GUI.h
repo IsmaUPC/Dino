@@ -27,6 +27,11 @@ public:
 
 	bool CleanUp();
 
+	// Load state game
+	bool LoadState(pugi::xml_node& data);
+	// Save state game
+	bool SaveState(pugi::xml_node& data)const;
+
 public:
 
 private:
@@ -71,8 +76,9 @@ private:
 	char timeText[10] = { "\0" };
 	char scoreText[12] = { "\0" };
 	uint miliseconds=0;
-	uint minuts=0;
 	uint miliseconds2 = 0;
+	uint seconds = 0;
+	uint minuts=0;
 	Timer auxTimePause;
 	bool stopTime = false;
 };
