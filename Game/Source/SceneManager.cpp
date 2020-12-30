@@ -146,7 +146,10 @@ bool SceneManager::Update(float dt)
 					current->CleanUp();	// Unload current screen
 					next->Start();	// Load next screen
 					if (current->isContinue)app->LoadGameRequest();
-					else if(current==scene || current==sceneLevel2)app->SaveGameRequest();
+					else if (next->name == "scene" || next->name == "sceneLevel2")//guardado automatico
+					{
+						app->SaveGameRequest();
+					}
 					RELEASE(current);	// Free current pointer
 					current = next;		// Assign next pointer
 					next = nullptr;

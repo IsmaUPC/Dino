@@ -131,23 +131,31 @@ bool Player::LoadState(pugi::xml_node& player)
 bool Player::SaveState(pugi::xml_node& player) const
 {
 	pugi::xml_node positionPlayer = player.child("position");
-	pugi::xml_node scorePlayer = player.child("score");
 	pugi::xml_node coinsPlayer = player.child("coins");
 	pugi::xml_node respawnsPlayer = player.child("lives");
 
 	if (app->removeGame)
 	{
-		positionPlayer.attribute("x").set_value(432);
-		positionPlayer.attribute("y").set_value(1170);
+		if (app->sceneManager->lastLevel == 1)
+		{
+			positionPlayer.attribute("x").set_value(432);
+			positionPlayer.attribute("y").set_value(1170);
+		}
+		else if (app->sceneManager->lastLevel == 2)
+		{
+			positionPlayer.attribute("x").set_value(576);
+			positionPlayer.attribute("y").set_value(1534);
+		}
+		coinsPlayer.attribute("count").set_value(0);
+		respawnsPlayer.attribute("num_respawns").set_value(3);
 	}
 	else
 	{
 		positionPlayer.attribute("x").set_value(playerData.position.x);
 		positionPlayer.attribute("y").set_value(playerData.position.y);
+		coinsPlayer.attribute("count").set_value(playerData.coins);
+		respawnsPlayer.attribute("num_respawns").set_value(playerData.respawns);
 	}
-
-	coinsPlayer.attribute("count").set_value(playerData.coins);
-	respawnsPlayer.attribute("num_respawns").set_value(playerData.respawns);
 
 	return true;
 }

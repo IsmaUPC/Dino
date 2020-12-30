@@ -465,7 +465,7 @@ bool App::SaveGame(SString filename) const
 	}
 	saveGameRequested = false;
 	saveConfigRequested = false;
-
+	app->removeGame = false;
 	return ret;
 }
 

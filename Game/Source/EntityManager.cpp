@@ -78,6 +78,9 @@ bool EntityManager::CleanUp()
 
 		item = item->next;
 	}
+	entities.Clear();
+	score = 0;
+	timeSave = 0;
 	active = false;
 	return ret;
 	//return true;
@@ -188,8 +191,8 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 	{
 		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
 		{
-			entiti->data->pendingToDelete = true;
 			if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->LoadState(entityManagerNode);
+			entiti->data->CleanUp();
 		}
 
 		entityManagerNode.next_sibling();
@@ -206,23 +209,33 @@ bool EntityManager::SaveState(pugi::xml_node& entityManagerNode) const
 {
 	if(!app->removeGame)entityManagerNode.child("score").attribute("value").set_value(score);
 	else entityManagerNode.child("score").attribute("value").set_value(0);
+
 	entityManagerNode.remove_child("entities");
 	entityManagerNode.append_child("entities").set_value(0);
+	ListItem<Entity*>* entiti= entities.start;
 	if (!app->removeGame)
 	{
 		pugi::xml_node entitiesNode = entityManagerNode.child("entities");
 		pugi::xml_node entity_node = entitiesNode;
 
-		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
+		for (entiti; entiti; entiti = entiti->next)
 		{
 			entitiesNode.append_child("entity").append_attribute("type").set_value(entiti->data->entityData->type);
 			entitiesNode.last_child().append_attribute("x").set_value(entiti->data->entityData->position.x);
 			entitiesNode.last_child().append_attribute("y").set_value(entiti->data->entityData->position.y);
 			entitiesNode.last_child().append_attribute("state").set_value(entiti->data->entityData->state);
-			if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->SaveState(entityManagerNode);
+			if (entiti->data->entityData->type == TypeEntity::HUD)
+				entiti->data->SaveState(entityManagerNode);
 		}
 	}
-	
-	
+	else
+	{
+		for (entiti; entiti; entiti = entiti->next)
+		{
+			if (entiti->data->entityData->type == TypeEntity::HUD)
+				entiti->data->SaveState(entityManagerNode);
+			break;
+		}
+	}
 	return true;
 }

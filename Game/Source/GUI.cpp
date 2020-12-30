@@ -239,7 +239,8 @@ bool GUI::LoadState(pugi::xml_node& data)
 
 bool GUI::SaveState(pugi::xml_node& data) const
 {
-	data.child("time").attribute("value").set_value(miliseconds*10+minuts*60000);
+	if(!app->removeGame)data.child("time").attribute("value").set_value(miliseconds*10+minuts*60000);
+	else data.child("time").attribute("value").set_value(0);
 	return true;
 }
 
