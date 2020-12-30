@@ -9,18 +9,18 @@
 
 GuiMenuPause::GuiMenuPause(iPoint Position, SceneControl* moduleObserver, SDL_Texture* textureAtlas)
 {
-	int separacion = 50;
+	
 
-	btnResume = new GuiButton(1, { Position.x , Position.y + separacion*0, 200, 40 }, "RESUME", RECTANGLE, textureAtlas);
+	btnResume = new GuiButton(1, { Position.x , Position.y + padding*0, 183, 91 }, "RESUME", RECTANGLE, textureAtlas);
 	btnResume->SetObserver(moduleObserver);
 
-	btnSettings = new GuiButton(2, { Position.x, Position.y + separacion * 1, 200, 40 }, "SETTINGS",RECTANGLE, textureAtlas);
+	btnSettings = new GuiButton(2, { Position.x, Position.y + padding * 1, 183, 91 }, "SETTINGS",RECTANGLE, textureAtlas);
 	btnSettings->SetObserver(moduleObserver);
 
-	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + separacion * 2, 200, 40 }, "TITLE", RECTANGLE, textureAtlas);
+	btnBackToTitle = new GuiButton(3, { Position.x, Position.y + padding * 2, 183, 91 }, "TITLE", RECTANGLE, textureAtlas);
 	btnBackToTitle->SetObserver(moduleObserver);
 
-	btnExit = new GuiButton(4, { Position.x, Position.y + separacion * 3, 200, 40 }, "EXIT", EXIT, textureAtlas);
+	btnExit = new GuiButton(4, { Position.x, Position.y + padding * 3, 88, 88 }, " ", EXIT, textureAtlas);
 	btnExit->SetObserver(moduleObserver);
 
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 300, 300 },moduleObserver);
@@ -160,8 +160,6 @@ bool GuiMenuPause::Event(GuiControl* control)
 
 void GuiMenuPause::MovePosition()
 {
-	int separacion = 50;
-
 	int x = -app->render->camera.x;
 	int y = -app->render->camera.y + 200;
 
@@ -170,12 +168,12 @@ void GuiMenuPause::MovePosition()
 
 	
 	btnSettings->bounds.x = x + 50;
-	btnSettings->bounds.y = y + separacion * 1;
+	btnSettings->bounds.y = y + padding * 1;
 
 	btnBackToTitle->bounds.x = x + 50;
-	btnBackToTitle->bounds.y = y + separacion * 2;
+	btnBackToTitle->bounds.y = y + padding * 2;
 		
 	btnExit->bounds.x = x + 50;
-	btnExit->bounds.y = y + separacion * 3;
+	btnExit->bounds.y = y + padding * 3;
 		
 }

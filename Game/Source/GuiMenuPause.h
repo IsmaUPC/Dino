@@ -31,7 +31,7 @@ public:
     void MovePosition();
 
 private:
-    
+    int padding = 92;
     GuiButton* btnResume;
     GuiButton* btnSettings;
     GuiButton* btnBackToTitle;
