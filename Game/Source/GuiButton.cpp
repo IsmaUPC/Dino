@@ -29,16 +29,16 @@ bool GuiButton::Update(float dt)
 		{
 			state = GuiControlState::FOCUSED;
 			if (!mouseIn)app->audio->PlayFx(app->sceneManager->btnSelected), mouseIn = true;
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
 				state = GuiControlState::PRESSED;
-				app->audio->PlayFx(app->sceneManager->btnPressed);
 			}
 
 			// If mouse button pressed -> Generate event!
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
 				ret = NotifyObserver();
+				app->audio->PlayFx(app->sceneManager->btnPressed);
 			}
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)

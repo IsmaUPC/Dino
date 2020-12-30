@@ -71,7 +71,7 @@ bool SceneIntro::Start()
 	app->audio->PlayMusic("Assets/Audio/Music/music_intro.ogg");
 	bgIntro = app->tex->Load("Assets/Textures/title_screen.png");
 	animationIntro.texture = app->tex->Load("Assets/Textures/dino_sprites.png");
-	animationIntro.position = { 400 , 345 };
+	animationIntro.position = { 200 , 363 };
 	idleAnim->loop = true;
 	idleAnim->speed = 0.005f;
 
@@ -90,8 +90,7 @@ bool SceneIntro::Start()
 		btnContinue->state = GuiControlState::DISABLED;
 		btnRemove->state = GuiControlState::DISABLED;
 	}
-	/*if(app->fullScreen)
-		menuSettings->chBxFullScreen->SetValue(true);*/
+
 	return true;
 }
 

@@ -23,6 +23,8 @@ public:
 
 	bool PostUpdate();
 
+	void Chronometer();
+
 	bool CleanUp();
 
 
@@ -64,6 +66,11 @@ private:
 	char coinText[10] = { "\0" };
 
 	bool activeFPS;
+	//Time
+	Timer timer;
+	char timeText[10] = { "\0" };
+	uint miliseconds=0;
+	int minuts;
 };
 
 #endif // __GUI_H__

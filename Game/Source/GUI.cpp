@@ -71,6 +71,7 @@ bool GUI::Start()
 	fireBallState = app->player->GetStateShoot();
 
 	activeFPS = false;
+	timer.Start();
 
 	return true;
 }
@@ -88,7 +89,7 @@ bool GUI::PreUpdate()
 
 bool GUI::Update(float dt)
 {
-
+	miliseconds = timer.Read();
 	return true;
 }
 
@@ -132,11 +133,15 @@ bool GUI::PostUpdate()
 
 	app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
 
+	//Time
+	Chronometer();
+
+	//FireBall
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
 	point0.x = point0.x + (50);
 	point0.y = point0.y + (WINDOW_H - 70);
-	//FireBall
+
 	if (*fireBallState == 0)
 	{
 		rectGUI = fireBallOnAnim->GetCurrentFrame();
@@ -162,6 +167,25 @@ bool GUI::PostUpdate()
 	}
 
 	return true;
+}
+
+void GUI::Chronometer()
+{
+	point0.x = point0.x - 50;
+	point0.y = point0.y + 100;
+	if (miliseconds >= 60000)timer.Start(), minuts++;
+	miliseconds = miliseconds * 0.1;
+	int miliseconds2 = 0;
+	int centenas = 0;
+	if (miliseconds >= 100)
+	{
+		centenas = miliseconds / 100;
+		miliseconds2 = miliseconds - (centenas * 100);
+	}
+	int seconds = miliseconds / 100;
+
+	sprintf_s(timeText, 10, "%d:%02d:%02d", minuts, seconds, miliseconds2);
+	app->fonts->BlitText(point0.x, point0.y, hudFont, timeText);
 }
 
 bool GUI::CleanUp()
