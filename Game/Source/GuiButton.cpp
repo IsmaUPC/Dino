@@ -57,6 +57,7 @@ bool GuiButton::Draw()
 {
 	DefinePositionAtlas();
 	bool drawRectangles = app->sceneManager->GetViewRectangle();
+	textDisable=false;
 
     // Draw the right button depending on state
     switch (state)
@@ -64,6 +65,8 @@ bool GuiButton::Draw()
     case GuiControlState::DISABLED: 
 		rect.x+= 3 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
+
+		textDisable = true;
 		if (drawRectangles)app->render->DrawRectangle(bounds, 100, 100, 100, 190);
         break;
     case GuiControlState::NORMAL: 
@@ -87,11 +90,11 @@ bool GuiButton::Draw()
         break;
     }
 
-	int centradoY,centradoX;
-	centradoX = (bounds.w / 2) - (((float)(text.Length() / 2)+0.5f) * 14);
+	int centerY,centerX;
+	centerX = (bounds.w / 2) - (((float)(text.Length() / 2)+0.5f) * 14);
 	// 48 = height image of font, whith 2 Raws, 48/2 = half a letter's height
-	centradoY = (bounds.h/2)-(48/4);
-	app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
+	centerY = (bounds.h/2)-(48/4);
+	app->fonts->BlitText(bounds.x + centerX, bounds.y + centerY, font, text.GetString(), textDisable);
 
     return true;
 }

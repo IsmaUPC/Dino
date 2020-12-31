@@ -27,7 +27,7 @@ GuiSettings::GuiSettings(iPoint Position, SceneControl* moduleObserver)
 
 	chBxVSync->state = GuiControlState::DISABLED;
 
-	btnBack = new GuiButton(10, { initialPos.x, initialPos.y + padding * 4, 88, 88 }, " ", BACK,btnTextureAtlas);
+	btnBack = new GuiButton(10, { initialPos.x, initialPos.y + padding * 4, 88, 88 }, "", BACK,btnTextureAtlas);
 	btnBack->SetObserver(moduleObserver);
 
 }

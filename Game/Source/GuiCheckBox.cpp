@@ -74,6 +74,7 @@ bool GuiCheckBox::Draw()
 {
     ChangeImageChecked();
     bool drawRectangles = app->sceneManager->GetViewRectangle();
+	textDisable = false;
 
     // Draw the right button depending on state
     switch (state)
@@ -84,6 +85,7 @@ bool GuiCheckBox::Draw()
 
         checkBoxImage.x += 3 * (checkBoxImage.w+marginSquare);
         app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
+		textDisable = true;
 
         if (drawRectangles)app->render->DrawRectangle(checkBoxInput, 100, 100, 100, 190);
         break;
@@ -122,7 +124,7 @@ bool GuiCheckBox::Draw()
     centradoX = (bounds.w / 2) - (((float)(text.Length() / 2) + 0.5f) * 14);
     // 48 = height image of font, whith 2 Raws, 48/2 = half a letter's height
     centradoY = (bounds.h / 2) - (48 / 4);
-    app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString());
+    app->fonts->BlitText(bounds.x + centradoX, bounds.y + centradoY, font, text.GetString(), textDisable);
 
 
     return false;

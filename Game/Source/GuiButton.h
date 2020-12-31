@@ -50,6 +50,8 @@ private:
 	iPoint* backAtlasPos = new iPoint( 0, 1114);
 	
 	SDL_Rect rect;
+
+	bool textDisable = false;
 	
 	int margin = 10;
 	int marginSquare = 9;
