@@ -27,6 +27,9 @@ bool EntityManager::Start()
 {
 	LOG("EntityManager start");
 	active = true;
+
+	chickenFx = app->audio->LoadFx("Assets/Audio/Fx/chicken.wav");
+	batFx = app->audio->LoadFx("Assets/Audio/Fx/bat.wav");
 	// back background
 	return true;
 }
@@ -134,13 +137,13 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		break;
 
 	case TypeEntity::GROUND_ENEMY:
-		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex));
+		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex,100,chickenFx));
 		entities.end->data->Start();
 		//entities.end->data->Awake();
 		break;
 
 	case TypeEntity::AIR_ENEMY:
-		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex));
+		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex,150,batFx));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::HUD:

@@ -5,11 +5,11 @@
 #include "Defs.h"
 #include "Log.h"
 
-Entity::Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) : Module()
+Entity::Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore, uint deadFx) : Module()
 {
 	name.Create("Entity");
 	isAlive = true;
-	entityData = new EntityData(pTypeEntity, pPosition, pVelocity, pTexture);
+	entityData = new EntityData(pTypeEntity, pPosition, pVelocity, pTexture,dropScore, deadFx);
 }
 
 Entity::Entity() : Module()

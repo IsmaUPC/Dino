@@ -12,8 +12,8 @@ Enemy::Enemy() : Entity()
 	name.Create("Enemy");
 }
 
-Enemy::Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
-	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
+Enemy::Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore, uint deadFx)
+	: Entity(pTypeEntity, pPosition, pVelocity, pTexture, dropScore, deadFx)
 {
 	positionInitial = pPosition;
 	lastPath = new DynArray<iPoint>();
@@ -30,6 +30,7 @@ bool Enemy::Start()
 	if (entityData->type == GROUND_ENEMY)
 	{
 		entityData->texture = app->tex->Load("Assets/Textures/enemy_walk.png");
+		
 
 		idleAnim->loop = true;
 		idleAnim->speed = 0.04f;
@@ -235,6 +236,17 @@ void Enemy::CheckCollisionEnemyToFireBall()
 		*app->player->playerData.stateShoot = 2;
 		entityData->state = DEADING;
 		entityData->currentAnimation = deadAnim;
+		app->audio->PlayFx(entityData->deadFx);
+		app->entityManager->score += entityData->dropScore;
+		//if (entityData->type == AIR_ENEMY)
+		//{
+		//	app->entityManager->score += 150;
+		//}
+		//else
+		//{
+		//	app->entityManager->score += 100;
+		//	app->audio->PlayFx(chickenFx);
+		//}
 	}
 
 }

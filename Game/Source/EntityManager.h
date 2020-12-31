@@ -58,6 +58,9 @@ public:
 	iPoint mapDimensions = { 0,0 };
 	int score = 0;
 	bool isAlive = false;
+
+	uint chickenFx;
+	uint batFx;
 };
 
 #endif // __MODULE_H__

@@ -3,12 +3,13 @@
 
 #include "Entity.h"
 #include "PugiXml\src\pugixml.hpp"
+#include "Audio.h"
 
 class Enemy : public Entity
 {
 public:
 	Enemy();
-	Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
+	Enemy(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore, uint deadFx);
 
 	virtual ~Enemy();
 
@@ -55,6 +56,9 @@ private:
 	iPoint positionInitial;
 	//We store the created path here
 	DynArray<iPoint>* lastPath;
+
+	uint chickenFx;
+	uint batFx;
 	
 };
 #endif // _ENEMY_H_

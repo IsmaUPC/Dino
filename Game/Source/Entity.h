@@ -64,11 +64,13 @@ struct EntityData
 	int numPoints = 0;
 	iPoint* pointsCollision;
 	int fireBallState;
+	uint deadFx;
+	int dropScore;
 
 public:
-	EntityData(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) :
+	EntityData(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore, uint deadFx) :
 		position(pPosition), state(IDLE), direction(WALK_R), velocity(pVelocity),
-		texture(pTexture), type(pTypeEntity)
+		texture(pTexture), type(pTypeEntity),deadFx(deadFx), dropScore(dropScore)
 	{};
 	EntityData::EntityData() {};
 };
@@ -78,7 +80,7 @@ class Entity : public Module
 public:
 
 
-	Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
+	Entity(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore=0, uint deadFx=0);
 	Entity();
 	~Entity();
 
