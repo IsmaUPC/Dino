@@ -90,6 +90,7 @@ bool GuiSlider::Draw()
 {
     // Draw SliderBar
     app->render->DrawTexture(texture, sliderBarInput.x, sliderBarInput.y, &sliderBarImage);
+    bool drawRectangles = app->sceneManager->GetViewRectangle();
 
     // Draw the right button depending on state
     switch (state)
@@ -101,18 +102,27 @@ bool GuiSlider::Draw()
         sliderImage.x += 3 * (sliderImage.w + marginSliders);
         app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
 
+        if (drawRectangles)app->render->DrawRectangle(sliderBarInput, 100, 100, 100, 190);
+        if (drawRectangles)app->render->DrawRectangle(slider, 100, 100, 100, 190);
+
         break;
     case GuiControlState::NORMAL:
         app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
         app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
-        break;
 
+        if (drawRectangles)app->render->DrawRectangle(sliderBarInput, 0, 255, 0, 190);
+        if (drawRectangles)app->render->DrawRectangle(slider, 0, 255, 0, 190);
+
+        break;
     case GuiControlState::FOCUSED:
         app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
         sliderImage.x += 1 * (sliderImage.w + marginSliders);
         app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
+
+        if (drawRectangles)app->render->DrawRectangle(sliderBarInput, 255, 255, 0, 190);
+        if (drawRectangles)app->render->DrawRectangle(slider, 255, 255, 0, 190);
 
         break;
     case GuiControlState::PRESSED:
@@ -121,8 +131,13 @@ bool GuiSlider::Draw()
         sliderImage.x += 2 * (sliderImage.w + marginSliders);
         app->render->DrawTexture(texture, slider.x, slider.y, &sliderImage);
 
+        if (drawRectangles)app->render->DrawRectangle(sliderBarInput, 0, 255, 255, 190);
+        if (drawRectangles)app->render->DrawRectangle(slider, 0, 255, 255, 190);
+
         break;
     case GuiControlState::SELECTED:
+        if (drawRectangles)app->render->DrawRectangle(sliderBarInput, 255, 255, 0, 190);
+        if (drawRectangles)app->render->DrawRectangle(slider, 255, 255, 0, 190);
 
         break;
     default:

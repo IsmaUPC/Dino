@@ -60,6 +60,8 @@ public:
 	// Save state game
 	bool SaveState(pugi::xml_node& data)const;
 
+	bool GetViewRectangle() { return ViewRectangles; };
+
 	GuiMenuPause* menu;
 
 private:
@@ -77,6 +79,8 @@ private:
 	float transitionAlpha;
 	bool pause = false;
 	List<SceneControl*> scenes;
+
+	bool ViewRectangles = false;
 
 public:
 	SceneLogo* sceneLogo;

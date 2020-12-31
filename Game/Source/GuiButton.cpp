@@ -55,34 +55,33 @@ bool GuiButton::Update(float dt)
 
 bool GuiButton::Draw()
 {
-	
 	DefinePositionAtlas();
-
+	bool drawRectangles = app->sceneManager->GetViewRectangle();
 
     // Draw the right button depending on state
     switch (state)
     {
     case GuiControlState::DISABLED: 
-		//app->render->DrawRectangle(bounds, 100, 100, 100, 255);
 		rect.x+= 3 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
+		if (drawRectangles)app->render->DrawRectangle(bounds, 100, 100, 100, 190);
         break;
     case GuiControlState::NORMAL: 
-		//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
+		if (drawRectangles)app->render->DrawRectangle(bounds, 0, 255, 0, 190);
         break;
     case GuiControlState::FOCUSED: 
-		// app->render->DrawRectangle(bounds, 255, 255, 0, 255);
 		rect.x+= 1*rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
+		if (drawRectangles)app->render->DrawRectangle(bounds, 255, 255, 0, 190);
         break;
     case GuiControlState::PRESSED:
-		//	app->render->DrawRectangle(bounds, 0, 255, 255, 255);
 		rect.x+= 2 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
+		if (drawRectangles)app->render->DrawRectangle(bounds, 0, 255, 255, 190);
         break;
     case GuiControlState::SELECTED:
-		//	app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+		if (drawRectangles)app->render->DrawRectangle(bounds, 255, 255, 0, 190);
         break;
     default:
         break;

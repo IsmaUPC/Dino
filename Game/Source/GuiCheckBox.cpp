@@ -73,6 +73,7 @@ bool GuiCheckBox::Update(float dt)
 bool GuiCheckBox::Draw()
 {
     ChangeImageChecked();
+    bool drawRectangles = app->sceneManager->GetViewRectangle();
 
     // Draw the right button depending on state
     switch (state)
@@ -84,12 +85,14 @@ bool GuiCheckBox::Draw()
         checkBoxImage.x += 3 * (checkBoxImage.w+marginSquare);
         app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
 
+        if (drawRectangles)app->render->DrawRectangle(checkBoxInput, 100, 100, 100, 190);
         break;
     case GuiControlState::NORMAL: 
         app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
 
         app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
 
+        if (drawRectangles)app->render->DrawRectangle(checkBoxInput, 0, 255, 0, 190);
         break;
     case GuiControlState::FOCUSED: 
         app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
@@ -97,6 +100,7 @@ bool GuiCheckBox::Draw()
         checkBoxImage.x += 1 * (checkBoxImage.w + marginSquare);
         app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
 
+        if (drawRectangles)app->render->DrawRectangle(checkBoxInput, 255, 255, 0, 190);
         break;
     case GuiControlState::PRESSED:
         app->render->DrawTexture(texture, bounds.x, bounds.y, &button);
@@ -104,8 +108,11 @@ bool GuiCheckBox::Draw()
         checkBoxImage.x += 2 * (checkBoxImage.w + marginSquare);
         app->render->DrawTexture(texture, checkBoxInput.x, checkBoxInput.y, &checkBoxImage);
 
+        if (drawRectangles)app->render->DrawRectangle(checkBoxInput, 0, 255, 255, 190);
         break;
     case GuiControlState::SELECTED:
+
+        if (drawRectangles)app->render->DrawRectangle(checkBoxInput, 255, 255, 0, 190);
         break;
     default:
         break;

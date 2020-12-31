@@ -99,11 +99,11 @@ bool Audio::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 		ChangeVolumeMusic(10);
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		app->SaveConfigRequested();
+	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		app->SaveConfigRequested();*/
 
-	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		app->LoadConfigRequested();
+	/*if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		app->LoadConfigRequested();*/
 
 	return true;
 }

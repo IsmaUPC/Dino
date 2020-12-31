@@ -217,11 +217,11 @@ void Scene::DebugKeys()
 		Mix_RewindMusic();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		app->SaveConfigRequested();
+	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		app->SaveConfigRequested();*/
 
-	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		app->LoadConfigRequested();
+	/*if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		app->LoadConfigRequested();*/
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();

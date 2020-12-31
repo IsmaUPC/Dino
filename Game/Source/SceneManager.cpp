@@ -86,6 +86,9 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
+
+	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) ViewRectangles = !ViewRectangles;
+
 	// DELETE IN RELEASE
 
 	/*
@@ -221,7 +224,6 @@ bool SceneManager::Update(float dt)
 	//MENU
 	if(pause)ret = menu->Update(dt);
 
-	//if (input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) return false;
 	return ret;
 }
 
