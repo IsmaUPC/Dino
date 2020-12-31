@@ -31,11 +31,11 @@ bool Player::Start()
 	runAnim = new Animation();
 	jumpAnim = new Animation();
 
-	iPoint pathInit =  app->map->WorldToMap(positionInitial.x ,positionInitial.y) ;
+	iPoint pathInit =  app->map->WorldToMap(positionInitial->x ,positionInitial->y) ;
 	app->map->ResetPath(pathInit);
 
 	playerData.texture = app->tex->Load("Assets/Textures/dino_green.png");
-	playerData.position = positionInitial;
+	playerData.position = *positionInitial;
 	playerData.state = IDLE;
 	playerData.velocity = 1;
 	playerData.isJumped = false;
@@ -557,7 +557,8 @@ bool Player::CheckGameOver(int level)
 			if (playerData.respawns < 1)playerData.state = DEAD;
 
 			if (playerData.state != DEAD) {
-				if (checkPoints.Count() == 0)playerData.position=positionInitial;
+				if (checkPoints.Count() == 0)
+					playerData.position= *positionInitial;
 				else
 				{
 					playerData.position = IPointMapToWorld(checkPoints.end->data);
@@ -576,9 +577,14 @@ bool Player::CheckGameOver(int level)
 			if (playerData.respawns < 1)playerData.state = DEAD;
 
 			if (playerData.state != DEAD) {
-				playerData.position = IPointMapToWorld(checkPoints.end->data);
-				app->render->camera.x = cameraPosCP.end->data.x;
-				app->render->camera.y = cameraPosCP.end->data.y;
+				if (checkPoints.Count() == 0)
+					playerData.position = *positionInitial;
+				else
+				{
+					playerData.position = IPointMapToWorld(checkPoints.end->data);
+					app->render->camera.x = cameraPosCP.end->data.x;
+					app->render->camera.y = cameraPosCP.end->data.y;
+				}
 			}
 		}
 	}

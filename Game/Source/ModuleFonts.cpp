@@ -140,6 +140,7 @@ void ModuleFonts::BlitText(int x, int y, int font_id, const char* text, bool gre
 			spriteRect.y *= 3;
 			if (spriteRect.y == 0) spriteRect.y = font->char_h * 2;
 		}
+
 		app->render->DrawTexture(font->texture, x, y, &spriteRect);
 		// 4 - Advance the position where we blit the next character
 		x += spriteRect.w + 2; 

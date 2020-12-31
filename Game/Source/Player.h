@@ -104,7 +104,7 @@ public:
 
 	PlayerData playerData;
 	bool godMode = false;
-	iPoint positionInitial;	
+	iPoint* positionInitial= new iPoint(0,0);	
 	bool win= false;
 
 private:

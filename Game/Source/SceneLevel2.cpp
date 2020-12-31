@@ -54,8 +54,8 @@ bool SceneLevel2::Start()
 	}
 	app->map->active = true;
 	//Positions initials
+	app->player->positionInitial = new iPoint(576,1534);
 	app->entityManager->Start();
-	app->player->positionInitial = {576,1534};
 	app->entityManager->AddEntity(GROUND_ENEMY, 34, 31);
 	app->entityManager->AddEntity(GROUND_ENEMY, 57, 25);
 	app->entityManager->AddEntity(GROUND_ENEMY, 77, 8);
@@ -201,7 +201,7 @@ void SceneLevel2::DebugKeys()
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
 		app->render->camera.x = 0;
-		app->player->playerData.position = app->player->positionInitial;
+		app->player->playerData.position = *app->player->positionInitial;
 		app->player->playerData.direction = WALK_R;
 		Mix_RewindMusic();
 	}
