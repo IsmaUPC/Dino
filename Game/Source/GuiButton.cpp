@@ -3,9 +3,9 @@
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, TypeButton typeButton, SDL_Texture* texture ) : GuiControl(GuiControlType::BUTTON, id)
 {
-    this->bounds = bounds;
-    this->text = text;
-    this->texture = texture;
+	this->bounds = bounds;
+	this->text = text;
+	this->texture = texture;
 	this->typeButton = typeButton;
 	this->font = app->sceneManager->GetGuiFont();
 
@@ -59,36 +59,36 @@ bool GuiButton::Draw()
 	bool drawRectangles = app->sceneManager->GetViewRectangle();
 	textDisable=false;
 
-    // Draw the right button depending on state
-    switch (state)
-    {
-    case GuiControlState::DISABLED: 
+	// Draw the right button depending on state
+	switch (state)
+	{
+	case GuiControlState::DISABLED: 
 		rect.x+= 3 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
 
 		textDisable = true;
 		if (drawRectangles)app->render->DrawRectangle(bounds, 100, 100, 100, 190);
-        break;
-    case GuiControlState::NORMAL: 
+		break;
+	case GuiControlState::NORMAL: 
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
 		if (drawRectangles)app->render->DrawRectangle(bounds, 0, 255, 0, 190);
-        break;
-    case GuiControlState::FOCUSED: 
+		break;
+	case GuiControlState::FOCUSED: 
 		rect.x+= 1*rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
 		if (drawRectangles)app->render->DrawRectangle(bounds, 255, 255, 0, 190);
-        break;
-    case GuiControlState::PRESSED:
+		break;
+	case GuiControlState::PRESSED:
 		rect.x+= 2 * rect.w;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &rect);
 		if (drawRectangles)app->render->DrawRectangle(bounds, 0, 255, 255, 190);
-        break;
-    case GuiControlState::SELECTED:
+		break;
+	case GuiControlState::SELECTED:
 		if (drawRectangles)app->render->DrawRectangle(bounds, 255, 255, 0, 190);
-        break;
-    default:
-        break;
-    }
+		break;
+	default:
+		break;
+	}
 
 	int centerY,centerX;
 	centerX = (bounds.w / 2) - (((float)(text.Length() / 2)+0.5f) * 14);
@@ -96,7 +96,7 @@ bool GuiButton::Draw()
 	centerY = (bounds.h/2)-(48/4);
 	app->fonts->BlitText(bounds.x + centerX, bounds.y + centerY, font, text.GetString(), textDisable);
 
-    return true;
+	return true;
 }
 
 void GuiButton::DefinePositionAtlas()

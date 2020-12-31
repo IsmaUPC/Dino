@@ -13,35 +13,35 @@ class GuiSettings
 {
 public:
 
-    GuiSettings(iPoint Position, SceneControl* moduleObserver);
+	GuiSettings(iPoint Position, SceneControl* moduleObserver);
+	
+	~GuiSettings();
 
-    ~GuiSettings();
+	bool Update(float dt);
+	bool Draw();
 
-    bool Update(float dt);
-    bool Draw();
+	bool CleanUp();
 
-    bool CleanUp();
+	void AbleDisableSetting() {
+		active = !active;
+	}
 
-    void AbleDisableSetting() {
-        active = !active;
-    }
-
-    void MovePosition();
+	void MovePosition();
 
 
-    GuiSlider* sldMusic;
-    GuiSlider* sldFx;
-    GuiCheckBox* chBxFullScreen;
-    GuiCheckBox* chBxVSync;
+	GuiSlider* sldMusic;
+	GuiSlider* sldFx;
+	GuiCheckBox* chBxFullScreen;
+	GuiCheckBox* chBxVSync;
 
-    GuiButton* btnBack;
+	GuiButton* btnBack;
 
 private:
 	int padding = 98;
 
-    iPoint initialPos;
+	iPoint initialPos;
 
-    bool active;
+	bool active;
 
 };
 #endif // __GUISETTINGS_H__

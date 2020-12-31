@@ -14,7 +14,7 @@
 
 Map::Map() : Module(), mapLoaded(false)
 {
-    name.Create("map");
+	name.Create("map");
 }
 
 // Destructor
@@ -253,17 +253,17 @@ int Properties::GetProperty(const char* value, int defaultValue) const
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
-    LOG("Loading Map Parser");
-    bool ret = true;
+	LOG("Loading Map Parser");
+	bool ret = true;
 
-    folder.Create(config.child("folder").child_value());
+	folder.Create(config.child("folder").child_value());
 
 	drawColl = app->sceneManager->scene->GetDebugCollaider();
 	drawColl2 = app->sceneManager->sceneLevel2->GetDebugCollaider();
 
 
 
-    return ret;
+	return ret;
 }
 
 // Draw the map (all requried layers)
@@ -280,7 +280,7 @@ void Map::Draw()
 			{
 				int tileId = layer->data->Get(x, y);
 				if (tileId > 0)
-				{    
+				{	
 					iPoint vec = MapToWorld(x, y);
 					for (int i = 0; i < data.tilesets.Count(); i++)
 					{
@@ -430,7 +430,7 @@ bool Map::CleanUp()
 {
 	if (!active)
 		return true;
-    LOG("Unloading map");
+	LOG("Unloading map");
 
 	ListItem<TileSet*>* item;
 	item = data.tilesets.start;
@@ -463,30 +463,30 @@ bool Map::CleanUp()
 	// Clean up the pugui tree
 	mapFile.reset();
 	active = false;
-    return true;
+	return true;
 }
 
 // Load new map
 bool Map::Load(const char* filenameGame)
 {
-    bool ret = true;
-    SString tmp("%s%s", folder.GetString(), filenameGame);
+	bool ret = true;
+	SString tmp("%s%s", folder.GetString(), filenameGame);
 
-    pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
+	pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
-    if(result == NULL)
-    {
-        LOG("Could not load map xml file %s. pugi error: %s", filenameGame, result.description());
-        ret = false;
-    }
+	if(result == NULL)
+	{
+		LOG("Could not load map xml file %s. pugi error: %s", filenameGame, result.description());
+		ret = false;
+	}
 
 	// Load general info
-    if(ret == true)
-    {
+	if(ret == true)
+	{
 		ret = LoadMap();
 	}
 
-    // remember to support more any number of tilesets!
+	// remember to support more any number of tilesets!
 	pugi::xml_node tileset;
 	for (tileset = mapFile.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
@@ -524,8 +524,8 @@ bool Map::Load(const char* filenameGame)
 
 	LoadCollectable();
 
-    if(ret == true)
-    {
+	if(ret == true)
+	{
 		LOG("Successfully parsed map XML file: %s", filenameGame);
 		//LOG("Width: %d	Hight: %d", data.width, data.height);
 		//LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
@@ -548,11 +548,11 @@ bool Map::Load(const char* filenameGame)
 			//LOG("Tile width: %d", data.layers.At(i)->data->width);
 			//LOG("Tile Height: %d", data.layers.At(i)->data->height);
 		}
-    }
+	}
 
-    mapLoaded = ret;
+	mapLoaded = ret;
 
-    return ret;
+	return ret;
 }
 
 // Load map general properties

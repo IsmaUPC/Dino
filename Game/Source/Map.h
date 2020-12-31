@@ -143,22 +143,22 @@ class Map : public Module
 {
 public:
 
-    Map();
+	Map();
 
-    // Destructor
-    virtual ~Map();
+	// Destructor
+	virtual ~Map();
 
-    // Called before render is available
-    bool Awake(pugi::xml_node& conf);
+	// Called before render is available
+	bool Awake(pugi::xml_node& conf);
 
-    // Called each loop iteration
-    void Draw();
+	// Called each loop iteration
+	void Draw();
 
-    // Called before quitting
-    bool CleanUp();
+	// Called before quitting
+	bool CleanUp();
 
-    // Load new map
-    bool Load(const char* path);
+	// Load new map
+	bool Load(const char* path);
 
 	// Translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
@@ -216,9 +216,9 @@ public:
 	CheckPoints checKpointsMap;
 private:
 
-    pugi::xml_document mapFile;
-    SString folder;
-    bool mapLoaded;
+	pugi::xml_document mapFile;
+	SString folder;
+	bool mapLoaded;
 
 	bool* drawColl;
 	bool* drawColl2;

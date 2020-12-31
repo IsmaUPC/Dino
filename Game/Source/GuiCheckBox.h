@@ -11,41 +11,41 @@ class GuiCheckBox : public GuiControl
 {
 public:
 
-    GuiCheckBox(uint32 id, SDL_Rect bounds, const char *text, bool initState = false, SDL_Texture* texture = NULL);
-    virtual ~GuiCheckBox();
+	GuiCheckBox(uint32 id, SDL_Rect bounds, const char *text, bool initState = false, SDL_Texture* texture = NULL);
+	virtual ~GuiCheckBox();
 
-    bool Update(float dt);
-    bool Draw();
+	bool Update(float dt);
+	bool Draw();
 
-    bool GetValue() { return checked; };
-    void SetValue(bool state) { checked = state; };
+	bool GetValue() { return checked; };
+	void SetValue(bool state) { checked = state; };
 
 private:
 
-    void ChangeImageChecked();
-    // GuiCheckBox specific properties
-    // Maybe some animation properties for state change?
+	void ChangeImageChecked();
+	// GuiCheckBox specific properties
+	// Maybe some animation properties for state change?
 
-    iPoint* rectAtlasPos = new iPoint(87, 99);
-    int margin = 10;
+	iPoint* rectAtlasPos = new iPoint(87, 99);
+	int margin = 10;
 
-    SDL_Rect button;
-    int rectTexW = 183;
-    int rectTexH = 91;
+	SDL_Rect button;
+	int rectTexW = 183;
+	int rectTexH = 91;
 
-    SDL_Rect checkBoxInput;
-    SDL_Rect checkBoxImage;
+	SDL_Rect checkBoxInput;
+	SDL_Rect checkBoxImage;
 
-    iPoint* falseAtlasPos = new iPoint(227, 201);
-    iPoint* trueAtlasPos = new iPoint(552, 1407);
-    int squareTexW = 88;
-    int squareTexH = 88;
-    int marginSquare = 9;
+	iPoint* falseAtlasPos = new iPoint(227, 201);
+	iPoint* trueAtlasPos = new iPoint(552, 1407);
+	int squareTexW = 88;
+	int squareTexH = 88;
+	int marginSquare = 9;
 
 	bool textDisable = false;
 
 	bool mouseIn = false;
-    bool checked;
+	bool checked;
 };
 
 #endif // __GUICHECKBOX_H__

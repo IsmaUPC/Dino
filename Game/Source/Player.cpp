@@ -7,14 +7,14 @@
 
 Player::Player() : Entity()
 {
-    name.Create("player");
+	name.Create("player");
 }
 
 Player::Player(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture) 
 	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
 {
 	playerData.state = IDLE;
-    name.Create("player");
+	name.Create("player");
 
 }
 

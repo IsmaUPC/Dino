@@ -56,7 +56,7 @@ public:
 		return true;
 	}
 
-    // Virtual methods to Load state
+	// Virtual methods to Load state
 	virtual bool LoadState(pugi::xml_node&)
 	{
 		return true;

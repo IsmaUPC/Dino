@@ -10,7 +10,7 @@
 
 #define CONFIG_FILENAME		"config.xml"
 #define SAVE_STATE_FILENAME "save_game.xml"
-
+	
 // Modules
 class Window;
 class Input;
@@ -64,7 +64,7 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-    // Methods to request Load / Save
+	// Methods to request Load / Save
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 	void LoadConfigRequested();

@@ -14,39 +14,39 @@ public:
 	GuiMenuPause(iPoint Position,SceneControl* moduleObserver, SDL_Texture* textureAtlas);
 	~GuiMenuPause();
 
-    bool Update(float dt);
-    bool Draw();
+	bool Update(float dt);
+	bool Draw();
 
-    bool CleanUp();
+	bool CleanUp();
 
-    bool Event(GuiControl* control);
+	bool Event(GuiControl* control);
 
-    void AbleDisableSetting() {
-        active = !active;
-    }
-    void AbleDisableMenu() {
-        activeMenu = !activeMenu;
-    }
+	void AbleDisableSetting() {
+		active = !active;
+	}
+	void AbleDisableMenu() {
+		activeMenu = !activeMenu;
+	}
 
-    void MovePosition();
+	void MovePosition();
 
 private:
-    int padding = 98;
-    GuiButton* btnResume;
-    GuiButton* btnSettings;
-    GuiButton* btnBackToTitle;
-    GuiButton* btnExit;
+	int padding = 98;
+	GuiButton* btnResume;
+	GuiButton* btnSettings;
+	GuiButton* btnBackToTitle;
+	GuiButton* btnExit;
 
-    GuiSettings* menuSettings;
+	GuiSettings* menuSettings;
 
-    iPoint initialPos;
+	iPoint initialPos;
 
-    SceneControl* observer;
+	SceneControl* observer;
 
-    SDL_Rect screenRect = { NULL };
+	SDL_Rect screenRect = { NULL };
 
-    bool active;
-    bool activeMenu;
+	bool active;
+	bool activeMenu;
 
 };
 

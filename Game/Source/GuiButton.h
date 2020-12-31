@@ -22,18 +22,18 @@ class GuiButton : public GuiControl
 {
 public:
 
-    GuiButton(uint32 id, SDL_Rect bounds, const char *text, TypeButton typeButton, SDL_Texture* texture = NULL);
-    virtual ~GuiButton();
+	GuiButton(uint32 id, SDL_Rect bounds, const char *text, TypeButton typeButton, SDL_Texture* texture = NULL);
+	virtual ~GuiButton();
 
-    bool Update(float dt);
-    bool Draw();
+	bool Update(float dt);
+	bool Draw();
 
 	void DefinePositionAtlas();
 
 private:
 	bool mouseIn = false;
-    // Gui Button specific properties
-    // Maybe some animation properties for state change?
+	// Gui Button specific properties
+	// Maybe some animation properties for state change?
 	
 
 	int rectTexW= 183;
