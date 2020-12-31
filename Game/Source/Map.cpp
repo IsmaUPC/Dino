@@ -627,6 +627,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string("");
 	layer->width = node.attribute("width").as_int(0);
 	layer->height = node.attribute("height").as_int(0);
+	layer->mapHeight = data.height* data.tileWidth;
+	layer->mapWidth = data.width * data.tileWidth;
 	int size = layer->width * layer->height;
 	layer->data = new uint[size];
 	pugi::xml_node tile = node.child("data").child("tile");

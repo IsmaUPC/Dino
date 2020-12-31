@@ -128,6 +128,7 @@ private:
 	iPoint tmp;
 
 	uint bonfireFx;
+	uint damageFx;
 
 	//CheckPoint's vars
 	bool inCheckPoint;

@@ -72,7 +72,9 @@ struct MapLayer
 {
 	SString	name = "";
 	int width = 0;
-	int height = 0;
+	int height = 0;	
+	int mapWidth = 0;
+	int mapHeight = 0;
 	uint* data;
 
 	Properties properties;
@@ -88,7 +90,9 @@ struct MapLayer
 	// Get the value of x,y
 	inline uint Get(int x, int y) const
 	{
-		return data[(y * width) + x];
+		if ((x <= mapWidth && x >= 0) && (y <= mapHeight && y >= 0))
+			return data[(y * width) + x];
+		else return 0;
 	}
 };
 

@@ -43,6 +43,7 @@ bool Player::Start()
 
 	//FX
 	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
+	damageFx = app->audio->LoadFx("Assets/Audio/Fx/damage.wav");
 
 	playerData.respawns = 3;
 	playerData.coins = 0;
@@ -554,9 +555,13 @@ bool Player::CheckGameOver(int level)
 			if (playerData.respawns < 1)playerData.state = DEAD;
 
 			if (playerData.state != DEAD) {
-				playerData.position = IPointMapToWorld(checkPoints.end->data);
-				app->render->camera.x = cameraPosCP.end->data.x;
-				app->render->camera.y = cameraPosCP.end->data.y;
+				if (checkPoints.Count() == 0)playerData.position=positionInitial;
+				else
+				{
+					playerData.position = IPointMapToWorld(checkPoints.end->data);
+					app->render->camera.x = cameraPosCP.end->data.x;
+					app->render->camera.y = cameraPosCP.end->data.y;
+				}
 			}
 			//return true;
 		}
@@ -584,6 +589,7 @@ void Player::SetHit()
 		playerData.respawns--;
 		playerData.state = HIT;
 		hitDirection = playerData.direction;
+		app->audio->PlayFx(damageFx);
 	}
 	
 }
