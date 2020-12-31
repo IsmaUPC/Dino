@@ -30,6 +30,8 @@ bool FireBall::Start()
 	active = true;
 
 	entityData->velocity = 12;
+	entityData->dropScore = 15;
+
 	startPos = { -100,-100 };
 	entityData->position = startPos;
 	entityData->texture = app->tex->Load("Assets/Textures/fire_ball.png");

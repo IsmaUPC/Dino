@@ -238,15 +238,7 @@ void Enemy::CheckCollisionEnemyToFireBall()
 		entityData->currentAnimation = deadAnim;
 		app->audio->PlayFx(entityData->deadFx);
 		app->entityManager->score += entityData->dropScore;
-		//if (entityData->type == AIR_ENEMY)
-		//{
-		//	app->entityManager->score += 150;
-		//}
-		//else
-		//{
-		//	app->entityManager->score += 100;
-		//	app->audio->PlayFx(chickenFx);
-		//}
+
 	}
 
 }
@@ -297,9 +289,6 @@ void Enemy::CheckCollisions()
 	{
 		pendingToDelete = true;
 		entityData->state = DEAD;
-		if (entityData->type == AIR_ENEMY)app->entityManager->score += 150;
-		else app->entityManager->score += 100;
-		
 	}
 
 }
