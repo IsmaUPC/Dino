@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Coins.h"
 #include "Lives.h"
+#include "EntityManager.h"
 
 struct EntitySpawnPoint
 {
@@ -61,6 +62,7 @@ public:
 
 	uint chickenFx;
 	uint batFx;
+	uint liveFx;
 };
 
 #endif // __MODULE_H__

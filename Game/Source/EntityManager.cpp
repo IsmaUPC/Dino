@@ -30,6 +30,7 @@ bool EntityManager::Start()
 
 	chickenFx = app->audio->LoadFx("Assets/Audio/Fx/chicken.wav");
 	batFx = app->audio->LoadFx("Assets/Audio/Fx/bat.wav");
+	liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
 	// back background
 	return true;
 }
@@ -159,7 +160,7 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		entities.end->data->Start();
 		break;
 	case TypeEntity::LIVE:
-		entities.Add(new Lives(info.type, { info.x,info.y }, 1, tex));
+		entities.Add(new Lives(info.type, { info.x,info.y }, 1, tex,(int)50,liveFx));
 		entities.end->data->Start();
 	break;
 	}

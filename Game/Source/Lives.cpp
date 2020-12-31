@@ -2,6 +2,7 @@
 #include "Lives.h"
 #include "Audio.h"
 #include "Player.h"
+#include "EntityManager.h"
 
 
 
@@ -11,8 +12,8 @@ Lives::Lives(iPoint pos) : Entity()
 
 	position = pos;
 }
-Lives::Lives(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture)
-	: Entity(pTypeEntity, pPosition, pVelocity, pTexture)
+Lives::Lives(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore, uint deadFx)
+	: Entity(pTypeEntity, pPosition, pVelocity, pTexture, dropScore, deadFx)
 {
 	name.Create("lives");
 	position = pPosition;
@@ -31,7 +32,8 @@ bool Lives::Start()
 	texLive = app->tex->Load("Assets/Textures/lives.png");
 	texLiveParticle = app->tex->Load("Assets/Textures/particle_lives.png");
 
-	liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
+	//liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
+	liveFx = entityData->deadFx;
 
 	numPoints = 4;
 	pointsCollision = new iPoint[4]{ { 4, 0 }, { 40 ,0 }, { 32,-26 }, { 4 ,-26 } };
@@ -89,6 +91,7 @@ bool Lives::PreUpdate()
 			&& collision.IsInsidePolygons(auxPositionLive, numPoints, auxPositionPlayer, app->player->playerData.numPoints) && entityData->state == IDLE)
 		{
 			entityData->state = DEADING;
+			app->entityManager->score += entityData->dropScore;
 			//entityData->currentAnimation->Reset();
 			app->audio->PlayFx(liveFx);
 			app->player->LivePlus();

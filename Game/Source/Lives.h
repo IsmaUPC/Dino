@@ -9,7 +9,7 @@ class Lives : public Entity
 public:
 
 	Lives(iPoint pos);
-	Lives(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture);
+	Lives(TypeEntity pTypeEntity, iPoint pPosition, float pVelocity, SDL_Texture* pTexture, int dropScore, uint deadFx);
 
 	virtual ~Lives();
 
