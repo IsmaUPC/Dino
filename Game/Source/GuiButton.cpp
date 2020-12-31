@@ -9,9 +9,6 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, TypeButton ty
 	this->typeButton = typeButton;
 	this->font = app->sceneManager->GetGuiFont();
 
-	//SDL_QueryTexture(texture, NULL, NULL, &texturW, &texturH);
-	//texturH /= 4;
-
 }
 
 GuiButton::~GuiButton()

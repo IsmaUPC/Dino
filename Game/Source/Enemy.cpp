@@ -285,8 +285,8 @@ void Enemy::CheckCollisions()
 	{
 		pendingToDelete = true;
 		entityData->state = DEAD;
-		if (entityData->type == AIR_ENEMY)app->entityManager->score += 15;
-		else app->entityManager->score += 10;
+		if (entityData->type == AIR_ENEMY)app->entityManager->score += 150;
+		else app->entityManager->score += 100;
 		
 	}
 

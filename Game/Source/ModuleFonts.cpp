@@ -125,7 +125,6 @@ void ModuleFonts::BlitText(int x, int y, int font_id, const char* text) const
 		uint charIndex = 0;
 
 		// TODO 2: Find the character in the table, its position in the texture and then Blit
-		// 1 - Find the location of the current character in the lookup table
 		for (uint j = 0; j < font->totalLength; j++) {
 			if (font->table[j] == text[i]) {
 				charIndex = j;
@@ -141,22 +140,6 @@ void ModuleFonts::BlitText(int x, int y, int font_id, const char* text) const
 		x += spriteRect.w + 2; 
 
 	}
-	/*
-			// TODO 2: Find the character in the table, its position in the texture and then Blit
-		for (int j = 0; j < font->totalLength; j++) {
-			// 1 - Find the location of the current character in the lookup table
-			if (font->table[j] == text[i]) {
-				columna = SDL_floor(j / font->columns);
-				spriteRect.y = spriteRect.h * columna;
-				// 2 - Retrieve the position of the current character in the sprite
-				spriteRect.x = spriteRect.w * (j-(font->columns * columna));
-				// 3 - Blit the character at its proper position
-				App->render->Blit(font->texture, x, y, &spriteRect, 0, false);
-			}
-		}
-		// 4 - Advance the position where we blit the next character
-		x += spriteRect.w + 2;  
-	 */
 
 }
 

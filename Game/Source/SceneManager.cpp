@@ -86,6 +86,8 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
+	// DELETE IN RELEASE
+
 	/*
 	// L12b: Debug pathfing
 	static iPoint origin;
@@ -192,6 +194,8 @@ bool SceneManager::Update(float dt)
 
 			current->transitionRequired = false;
 		}
+
+		// DELETE IN RELEASE
 	//}
 	
 	//if(app->input->GetKey(SDL_SCANCODE_F1)==KEY_DOWN)sceneControl->TransitionToScene(SceneType::LEVEL1);

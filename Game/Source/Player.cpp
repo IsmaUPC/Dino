@@ -197,7 +197,9 @@ bool Player::Update(float dt)
 
 void Player::MoveHit()
 {
+	// DELETE IN RELEASE
 	if (app->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)SetHit();
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->entityManager->score += 50;
 
 	if (playerData.currentAnimation == damageAnim) {
 		if (!playerData.currentAnimation->HasFinished())

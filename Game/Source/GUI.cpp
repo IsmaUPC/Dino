@@ -131,25 +131,26 @@ bool GUI::PostUpdate()
 		app->render->DrawTextureFlip(arrowTex,app->player->playerData.position.x - 45, app->player->playerData.position.y - 40, &rectGUI);
 	}
 
-	//Coin HUD
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
-	SDL_Rect rectCoins;
-	rectCoins = coinHudAnim->GetCurrentFrame();
-	app->render->DrawTexture(imgCoin, point0.x+22, point0.y + 90, &rectCoins);
-
-	point0.x = point0.x + 90;
-	point0.y = point0.y + 100;
-
-	sprintf_s(coinText,7," x%3d",*coins);
-
-	app->fonts->BlitText(point0.x, point0.y, hudFont, coinText);
 
 	//Score
-	point0.x = point0.x - 50;
+	point0.x = point0.x + 50;
 	point0.y = point0.y + 100;
-	sprintf_s(scoreText, 12, "Score:%d", app->entityManager->score);
+	
+	sprintf_s(scoreText, 12, "%.06d", app->entityManager->score);
 	app->fonts->BlitText(point0.x, point0.y, hudFont, scoreText);
+
+	//Coin HUD
+	point0.x = point0.x - 20;
+	point0.y = point0.y + 70;
+
+	SDL_Rect rectCoins;
+	rectCoins = coinHudAnim->GetCurrentFrame();
+	app->render->DrawTexture(imgCoin, point0.x, point0.y, &rectCoins);
+
+	sprintf_s(coinText, 9, "x%d", *coins);
+	app->fonts->BlitText(point0.x + rectCoins.w, point0.y + 12, hudFont, coinText);
 
 	//FireBall
 	point0.x = -app->render->camera.x;
