@@ -42,6 +42,8 @@ private:
     int squareTexH = 88;
     int marginSquare = 9;
 
+	bool textDisable = false;
+
 	bool mouseIn = false;
     bool checked;
 };

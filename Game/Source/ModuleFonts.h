@@ -49,7 +49,7 @@ public:
 	void UnLoad(int fontIndex);
 
 	// Create a surface from text
-	void BlitText(int x, int y, int fontIndex, const char* text) const;
+	void BlitText(int x, int y, int fontIndex, const char* text, bool greyText=false) const;
 
 
 private:
