@@ -37,7 +37,7 @@ public:
     GuiButton* btnBack;
 
 private:
-	int padding = 95;
+	int padding = 98;
 
     iPoint initialPos;
 

@@ -42,28 +42,29 @@ bool SceneIntro::Start()
 
 	// GUI: Initialize required controls for the screen
 	int margin= 7;
-	int padding = 50;
+	int padding = 98;
+	int yPosition = 330 + (margin * 1);
 
-	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2, (padding * 1)+280+(margin*1),  183, 91 }, "PLAY", RECTANGLE, btnTextureAtlas);
+	btnPlay = new GuiButton(1, { WINDOW_W / 2 - 200 / 2,yPosition + (padding * 0),  183, 91 }, "PLAY", RECTANGLE, btnTextureAtlas);
 	btnPlay->SetObserver(this);
 
-	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, padding  + 365 + (margin * 2),  183, 91 }, "CONTINUE", RECTANGLE, btnTextureAtlas);
+	btnContinue = new GuiButton(2, { WINDOW_W / 2 - 200 / 2, yPosition + (padding * 1),  183, 91 }, "CONTINUE", RECTANGLE, btnTextureAtlas);
 	btnContinue->SetObserver(this);
 
-	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 90 , padding  + 365 + (margin * 2), 88, 88 }, " ", REMOVE, btnTextureAtlas);
+	btnRemove = new GuiButton(3, { WINDOW_W / 2 + 90 ,yPosition + (padding * 1), 88, 88 }, " ", REMOVE, btnTextureAtlas);
 	btnRemove->SetObserver(this);
 
-	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, padding  + 450 + (margin * 3), 183, 91 }, "SETTINGS", RECTANGLE, btnTextureAtlas);
+	btnSettings = new GuiButton(4, { WINDOW_W / 2 - 200 / 2, yPosition + (padding * 2), 183, 91 }, "SETTINGS", RECTANGLE, btnTextureAtlas);
 	btnSettings->SetObserver(this);
 
-	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W /9) , 0 + (margin * 4),  88, 88 }, " ", CREDITS, btnTextureAtlas);
+	btnCredits = new GuiButton(5, { WINDOW_W-( WINDOW_W /9) , (margin * 4),  88, 88 }, " ", CREDITS, btnTextureAtlas);
 	btnCredits->SetObserver(this);
 
-	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 ,padding  + 450 + (margin * 3),  88, 88 }, " ", EXIT, btnTextureAtlas);
+	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 ,yPosition + (padding * 2),  88, 88 }, " ", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
 	
 	//menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, 238 }, this);
-	menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, 143 }, this);
+	menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, yPosition - (padding * 2) }, this);
 
 	app->SetLastScene((Module*)this);
 	transition = false;
