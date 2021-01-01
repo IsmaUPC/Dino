@@ -274,7 +274,7 @@ void Player::CameraPlayer()
 {
 	//Camera follow the player
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
-	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 200;
+	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 125;
 
 	if (playerData.position.x < (WINDOW_W/2)) {
 		if (app->render->camera.x < 48) followPositionPalyerX = 0;
@@ -299,6 +299,8 @@ void Player::CameraPlayer()
 	else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
 		app->render->camera.y = followPositionPalyerY;
 
+
+	//if(playerData.position.y > )
 
 }
 
@@ -623,7 +625,8 @@ void Player::ActiveCheckpoint(iPoint positionMapPlayer)
 		{
 			if (checkPoints.At(i)->data == positionMapPlayer) {
 				lastCP = i;
-				if (checkPoints.Count() > 1){
+				if (checkPoints.Count() > 1)
+				{
 					inCheckPoint = true;
 					if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
 						endUpdate = false;

@@ -50,6 +50,7 @@ enum TypeCollision {
 	VICTORY=0,
 	COLLISION=1,
 	CHECK_POINT=2,
+	AIR,
 };
 
 struct EntityData
