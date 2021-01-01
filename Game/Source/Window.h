@@ -32,7 +32,7 @@ public:
 
 	void FullScreen(bool mode);
 
-	//Save FullScreenState
+	// Save FullScreenState
 	bool SaveState(pugi::xml_node& data)const;
 
 public:

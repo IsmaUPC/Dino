@@ -13,7 +13,7 @@ public:
 
 	ModuleFadeToBlack();
 
-	//Destructor
+	// Destructor
 	virtual ~ModuleFadeToBlack();
 
 	bool Start();

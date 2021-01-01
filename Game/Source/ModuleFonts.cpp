@@ -13,16 +13,20 @@ ModuleFonts::ModuleFonts() : Module()
 
 }
 
-ModuleFonts::~ModuleFonts(){
+ModuleFonts::~ModuleFonts()
+{
 	
 }
 
-bool ModuleFonts::CleanUp(){
+bool ModuleFonts::CleanUp()
+{
 
 	LOG("Freeing all fonts\n");
 
-	for (uint i = 0; i < MAX_FONTS; ++i){
-		if (fonts[i].texture != nullptr){
+	for (uint i = 0; i < MAX_FONTS; ++i)
+	{
+		if (fonts[i].texture != nullptr)
+		{
 			app->tex->UnLoad(fonts[i].texture);
 			fonts[i].texture = nullptr;
 		}
@@ -66,8 +70,6 @@ int ModuleFonts::Load(const char* texture_path, const char* characters, uint row
 	font.texture = tex;
 	font.rows = rows;
 
-	// TODO 1: Finish storing font data
-
 	// totalLength ---	length of the lookup table
 	// table ---------  All characters displayed in the same order as the texture
 	// columns -------  Amount of chars per row of the texture
@@ -78,10 +80,8 @@ int ModuleFonts::Load(const char* texture_path, const char* characters, uint row
 	font.columns = font.totalLength / font.rows;
 
 	font.char_h = (image_h / font.rows);
-	//font.char_h = 15;
 
 	font.char_w = (image_w / font.columns);
-	//font.char_w = 13;
 
 	LOG("Successfully loaded BMP font from %s", texture_path);
 
@@ -124,9 +124,11 @@ void ModuleFonts::BlitText(int x, int y, int font_id, const char* text, bool gre
 	{
 		uint charIndex = 0;
 
-		// TODO 2: Find the character in the table, its position in the texture and then Blit
-		for (uint j = 0; j < font->totalLength; j++) {
-			if (font->table[j] == text[i]) {
+		// Find the character in the table, its position in the texture and then Blit
+		for (uint j = 0; j < font->totalLength; j++) 
+		{
+			if (font->table[j] == text[i]) 
+			{
 				charIndex = j;
 				break;
 			}
@@ -142,7 +144,7 @@ void ModuleFonts::BlitText(int x, int y, int font_id, const char* text, bool gre
 		}
 
 		app->render->DrawTexture(font->texture, x, y, &spriteRect);
-		// 4 - Advance the position where we blit the next character
+		// Advance the position where we blit the next character
 		x += spriteRect.w + 2; 
 
 	}

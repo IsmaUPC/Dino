@@ -102,7 +102,6 @@ int Map::MovementCost(int x, int y) const
 			if (id == fisrtGid) ret = 1;
 			else if (id == fisrtGid + 1) ret =0;
 			else if (id == fisrtGid + 2) ret = 3;
-			//else ret = 1;
 		}
 		else ret = 1;
 	}
@@ -226,14 +225,13 @@ void Map::CheckPointActive(iPoint position)
 {
 	for (int i = 0; i < checKpointsMap.list.Count(); i++)
 	{	
-		if (checKpointsMap.list.At(i)->data->pos == position){
+		if (checKpointsMap.list.At(i)->data->pos == position)
+		{
 			checKpointsMap.list.At(i)->data->active = true;
 		}
 
 	}
 }
-
-
 
 // Ask for the value of a custom property
 int Properties::GetProperty(const char* value, int defaultValue) const
@@ -294,8 +292,7 @@ void Map::Draw()
 		}
 	}
 	
-	//CheckPoints
-	
+	// CheckPoints
 	for (int i = 0; i < checKpointsMap.list.Count(); i++)
 	{
 		iPoint pos = checKpointsMap.list.At(i)->data->pos;
@@ -456,7 +453,6 @@ bool Map::CleanUp()
 
 	for (int i = 0; i < checKpointsMap.list.Count(); i++)
 	{
-		//checKpointsMap.list.At(i)->data->active = false;
 		checKpointsMap.~CheckPoints();
 	}
 	
@@ -526,27 +522,31 @@ bool Map::Load(const char* filenameGame)
 
 	if(ret == true)
 	{
+		/*
 		LOG("Successfully parsed map XML file: %s", filenameGame);
-		//LOG("Width: %d	Hight: %d", data.width, data.height);
-		//LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
+		LOG("Width: %d	Hight: %d", data.width, data.height);
+		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);*/
 		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
-			//LOG("TileSet ----");
-			//LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
-			//LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
-			//LOG("Tile Height: %d", data.tilesets.At(i)->data->tileHeight);
-			//LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
-			//LOG("Margin: %d", data.tilesets.At(i)->data->margin);
-			//LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
-			//LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
+			/*
+			LOG("TileSet ----");
+			LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
+			LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
+			LOG("Tile Height: %d", data.tilesets.At(i)->data->tileHeight);
+			LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
+			LOG("Margin: %d", data.tilesets.At(i)->data->margin);
+			LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
+			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);*/
 		}
-		LOG("CheckPoint count: %d", LoadCheckPoint());
+		// LOG("CheckPoint count: %d", LoadCheckPoint());
+		LoadCheckPoint();
 		for (int i = 0; i < data.layers.Count(); i++)
 		{
-			//LOG("Layer ----");
-			//LOG("Name: %s", data.layers.At(i)->data->name.GetString());
-			//LOG("Tile width: %d", data.layers.At(i)->data->width);
-			//LOG("Tile Height: %d", data.layers.At(i)->data->height);
+			/*
+			LOG("Layer ----");
+			LOG("Name: %s", data.layers.At(i)->data->name.GetString());
+			LOG("Tile width: %d", data.layers.At(i)->data->width);
+			LOG("Tile Height: %d", data.layers.At(i)->data->height);*/
 		}
 	}
 

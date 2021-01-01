@@ -40,7 +40,8 @@ bool Render::Awake(pugi::xml_node& config)
 	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
 
-	if (app->fullScreen == 1) {
+	if (app->fullScreen == 1) 
+	{
 		SDL_RenderSetLogicalSize(renderer, WINDOW_W, WINDOW_H);
 	}
 	if(renderer == NULL)

@@ -95,29 +95,13 @@ bool ModuleFadeToBlack::CleanUp()
 
 bool ModuleFadeToBlack::FadeToBlack(Module* toDisable, Module* toEnable, float frames)
 {
-
-	//if (toDisable != (Module*)app->sceneWin && toDisable != (Module*)app->sceneLose && toDisable != (Module*)app->sceneIntro)
-	//{
-	//	lastLevel = toDisable;
-	//}
-
-	//if (lastLevel == (Module*)app->sceneLevel2 && toDisable == (Module*)app->sceneLose )
-	//{
-	//	toEnable = lastLevel;
-	//}
-
-	//if (lastLevel == (Module*)app->sceneLevel2 && toDisable == (Module*)app->sceneWin)
-	//{
-	//	toEnable = (Module*)app->sceneIntro;
-	//}
-
 	bool ret = true;
 	moduleToDisable = toDisable;
 	moduleToEnable = toEnable;
 
 	frameCount = 0;
-	if (currentStep == FadeStep::NONE) {
-
+	if (currentStep == FadeStep::NONE) 
+	{
 		currentStep = FadeStep::TO_BLACK;
 		maxFadeFrames = frames;	
 		ret = true;

@@ -86,35 +86,7 @@ bool SceneManager::Start()
 // Called each loop iteration
 bool SceneManager::PreUpdate()
 {
-
 	if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) ViewRectangles = !ViewRectangles;
-
-	// DELETE IN RELEASE
-
-	/*
-	// L12b: Debug pathfing
-	static iPoint origin;
-	static bool originSelected = false;
-
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if(originSelected == true)
-		{
-			app->pathFinding->CreatePath(origin, p);
-			originSelected = false;
-		}
-		else
-		{
-			origin = p;
-			originSelected = true;
-		}
-	}
-	*/
 
 	return true;
 }
@@ -128,10 +100,6 @@ bool SceneManager::Update(float dt)
 
 	if (!onTransition)
 	{
-		//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
-		//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
-		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
-		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
 		ret = current->Update(dt);
 	}
@@ -150,7 +118,7 @@ bool SceneManager::Update(float dt)
 				current->CleanUp();	// Unload current screen
 				next->Start();	// Load next screen
 				if (current->isContinue)app->LoadGameRequest();
-				else if (next->name == "scene" || next->name == "sceneLevel2")//guardado automatico
+				else if (next->name == "scene" || next->name == "sceneLevel2")// Save
 				{
 					app->SaveGameRequest();
 				}
@@ -199,7 +167,8 @@ bool SceneManager::Update(float dt)
 	
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)current->TransitionToScene(SceneType::LEVEL1);
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)current->TransitionToScene(SceneType::LEVEL2);
-	//MENU
+	
+	// MENU
 	if(pause)ret = menu->Update(dt);
 
 	return ret;

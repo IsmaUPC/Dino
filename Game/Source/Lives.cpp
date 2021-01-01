@@ -32,7 +32,6 @@ bool Lives::Start()
 	texLive = app->tex->Load("Assets/Textures/lives.png");
 	texLiveParticle = app->tex->Load("Assets/Textures/particle_lives.png");
 
-	//liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
 	liveFx = entityData->deadFx;
 
 	numPoints = 4;
@@ -92,7 +91,6 @@ bool Lives::PreUpdate()
 		{
 			entityData->state = DEADING;
 			app->entityManager->score += entityData->dropScore;
-			//entityData->currentAnimation->Reset();
 			app->audio->PlayFx(liveFx);
 			app->player->LivePlus();
 		}
@@ -110,8 +108,6 @@ bool Lives::Update(float dt)
 }
 bool Lives::PostUpdate()
 {
-
-
 	SDL_Rect rectLives;
 	rectLives = entityData->currentAnimation->GetCurrentFrame();
 	if (entityData->state == IDLE)

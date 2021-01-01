@@ -82,20 +82,7 @@ uchar PathFinding::GetTileAt(const iPoint& pos) const
 
 	return INVALID_WALK_CODE;
 }
-//int PathFinding::MovementCost(iPoint pos) const
-//{
-//	int ret = -1;
-//
-//	if (CheckBoundaries(pos))
-//	{
-//		int id = app->map->data.layers.start->next->data->Get(pos.x, pos.y);
-//
-//		if (id == 0) ret = 3;
-//		else ret = 0;
-//	}
-//
-//	return ret;
-//}
+
 bool PathFinding::PropagateAStar(const iPoint& destination)
 {
 	// L12a: TODO 2: Implement AStar algorythm
@@ -119,7 +106,6 @@ bool PathFinding::PropagateAStar(const iPoint& destination)
 			{
 				if (visited.Find(neighbors[i]) == -1)
 				{
-					//visited.Add(neighbors[i]);
 					newCost[i] = neighbors[i].DistanceManhattan(visited.start->data) + neighbors[i].DistanceManhattan(destination);
 					if (newCost[i] >= 0 && init == false)j = i, init = true;
 				}
@@ -131,7 +117,6 @@ bool PathFinding::PropagateAStar(const iPoint& destination)
 			if (visited.Find(neighbors[i]) == -1)
 			{
 				if (GetTileAt(neighbors[i]) > 0 && newCost[i + 1] >= 0 && newCost[j] >= newCost[i + 1])j = i + 1;
-				//if (!(MovementCost(neighbors[i].x, neighbors[i].y) > 0) && i == 0)j++;
 			}
 		}
 		for (int i = 0; i < 4; i++)
@@ -152,7 +137,6 @@ bool PathFinding::PropagateAStar(const iPoint& destination)
 }
 void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destination)
 {
-	//ResetPath(origin);
 	bool wasFind = true;
 	int count = 0;
 	while (destinationIsFind == false)
@@ -171,7 +155,6 @@ void PathFinding::ComputePathAStar(const iPoint& origin, const iPoint& destinati
 		else destinationIsFind = true, wasFind = false;
 	}
 	destinationIsFind = false;
-	//PropagateAStar(destination);
 	if (wasFind == true)
 	{
 		lastPath.Clear();

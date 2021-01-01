@@ -41,9 +41,8 @@ bool FireBall::Start()
 	texW = texW / 5;
 
 	fireBallAnim->speed = 0.3;
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++)
 		fireBallAnim->PushBack({ texW * i, 0, texW, texH });
-	}
 
 	explsionTex = app->tex->Load("Assets/Textures/fire_ball_explosion.png");
 	int imgW, imgH;
@@ -52,9 +51,9 @@ bool FireBall::Start()
 
 	explosionAnim->loop = false;
 	explosionAnim->speed = 0.65;
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++) 
 		explosionAnim->PushBack({ imgW * i, 0, imgW, imgH });
-	}
+
 	explosionAnim->PushBack({ 0, 0, 0, 0 });
 
 	entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { texW , 0 }, { texW,-texH }, { 0 ,-texH } };
@@ -79,11 +78,13 @@ bool FireBall::PreUpdate()
 bool FireBall::Update(float dt)
 {
 	
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) 
+	{
 		Shoot();
 	}
 
-	if (lastState == SHOOT && stateShoot == WAIT){
+	if (lastState == SHOOT && stateShoot == WAIT)
+	{
 		explosionAnim->Reset();
 		explosionPos = entityData->position;
 		app->audio->PlayFx(hitFx);
@@ -127,7 +128,8 @@ bool FireBall::Update(float dt)
 	if (CheckCollision(app->map->WorldToMap(entityData->position.x+13, entityData->position.y)) == COLLISION)*app->player->playerData.stateShoot = 2;
 	if (startexplosion)
 	{
-		if (explosionAnim->HasFinished()) {
+		if (explosionAnim->HasFinished()) 
+		{
 			startexplosion = false;
 		}
 	}
@@ -167,9 +169,9 @@ bool FireBall::PostUpdate()
 
 bool FireBall::CleanUp()
 {
-	if (!active) {
+	if (!active)
 		return true;
-	}
+
 	app->tex->UnLoad(entityData->texture);
 
 	active = false;
@@ -194,7 +196,8 @@ void FireBall::BackToPos0()
 
 void FireBall::Shoot()
 {
-	if (stateShoot == CAN_SHOOT){
+	if (stateShoot == CAN_SHOOT)
+	{
 		stateShoot = SHOOT;
 		entityData->fireBallState = stateShoot;
 		frameTime.Start();
@@ -204,5 +207,3 @@ void FireBall::Shoot()
 		direc = app->player->playerData.direction;
 	}
 }
-
-//TODO: llamar a Shoot desde el player a ver si hace algo

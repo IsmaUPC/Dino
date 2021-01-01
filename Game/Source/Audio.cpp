@@ -86,8 +86,6 @@ bool Audio::CleanUp()
 	Mix_CloseAudio();
 	Mix_Quit();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-	////
-	//active = false;
 	return true;
 }
 
@@ -128,7 +126,7 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 			Mix_HaltMusic();
 		}
 
-		// this call blocks until fade out is done
+		// This call blocks until fade out is done
 		Mix_FreeMusic(music);
 	}
 
@@ -238,13 +236,15 @@ void Audio::ChangeVolumeMusic(int num)
 	Mix_VolumeMusic(volumeMusic);
 }
 
-bool Audio::LoadState(pugi::xml_node& node) {
+bool Audio::LoadState(pugi::xml_node& node) 
+{
 	volumeMusic = node.child("music").attribute("volume").as_int(volumeMusic);
 	volumeFx = node.child("fx").attribute("volume").as_int(volumeFx);
 	Mix_VolumeMusic(volumeMusic);
 	return true;
 }
-bool Audio::SaveState(pugi::xml_node& node) const {
+bool Audio::SaveState(pugi::xml_node& node) const 
+{
 	node.child("music").attribute("volume").set_value(volumeMusic);
 	node.child("fx").attribute("volume").set_value(volumeFx);
 	return true;
@@ -255,11 +255,3 @@ void Audio::SetVolumeMusic(int volume)
 	volumeMusic = volume;
 	Mix_VolumeMusic(volumeMusic);
 }
-
-/*
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		app->SaveConfigRequested();
-
-	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		app->LoadConfigRequested();
-*/

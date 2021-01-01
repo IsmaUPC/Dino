@@ -50,11 +50,11 @@ private:
 	int range = 500;
 	bool isDetected = false;
 	bool returning;
-	//Timer
+	// Timer
 	Timer* checkDestination = new Timer();
 	iPoint destination;
 	iPoint positionInitial;
-	//We store the created path here
+	// We store the created path here
 	DynArray<iPoint>* lastPath;
 
 	uint chickenFx;

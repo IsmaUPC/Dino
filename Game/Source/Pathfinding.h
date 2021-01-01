@@ -29,7 +29,7 @@ public:
 	PQueue<iPoint>* GetFrontier();
 	List<iPoint>* GetVisited();
 	List<iPoint>* GetBreadcrumbs();
-	//int MovementCost(iPoint) const;
+
 	void ResetPath(iPoint start);
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;

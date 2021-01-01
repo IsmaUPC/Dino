@@ -87,11 +87,7 @@ bool EntityManager::CleanUp()
 	timeSave = 0;
 	active = false;
 	return ret;
-	//return true;
 }
-
-
-// Load Game State
 
 
 bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY)
@@ -112,14 +108,10 @@ void EntityManager::HandleEntitiesSpawn()
 	{
 		if (spawnEntiti->data->type != TypeEntity::UNKNOWN)
 		{
-			// Spawn a new enemy if the screen has reached a spawn position
-			//if (spawnEntiti->data->x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
-			//{
-				LOG("Spawning enemy at %d", spawnEntiti->data->x * SCREEN_SIZE);
+			LOG("Spawning enemy at %d", spawnEntiti->data->x * SCREEN_SIZE);
 
-				SpawnEnemy(*spawnEntiti->data);
-				spawnEntiti->data->type = TypeEntity::UNKNOWN; // Removing the newly spawned enemy from the queue
-			//}
+			SpawnEnemy(*spawnEntiti->data);
+			spawnEntiti->data->type = TypeEntity::UNKNOWN; // Removing the newly spawned enemy from the queue
 		}
 	}
 }
@@ -140,7 +132,6 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 	case TypeEntity::GROUND_ENEMY:
 		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex,100,chickenFx));
 		entities.end->data->Start();
-		//entities.end->data->Awake();
 		break;
 
 	case TypeEntity::AIR_ENEMY:
@@ -165,24 +156,10 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 	break;
 	}
 }
-	
-
-
 
 void EntityManager::HandleEntitiesDespawn()
 {
-	/*fPoint positionEntity;
-	int cameraX= app->render->camera.x;
-	for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
-	{
-		positionEntity = entiti->data->entityData->position;
-		if ((positionEntity.x * SCREEN_SIZE < (cameraX - SPAWN_MARGIN)- SPAWN_MARGIN)
-			|| (positionEntity.x * SCREEN_SIZE > (cameraX + WINDOW_W) + SPAWN_MARGIN))
-		{
-			LOG("DeSpawning enemy at %d", positionEntity.x * SCREEN_SIZE);
-			entities.Del(entiti);
-		}
-	}*/
+
 }
 
 bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)

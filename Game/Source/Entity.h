@@ -103,7 +103,7 @@ public:
 	bool LoadState(pugi::xml_node&);
 	// Virtual methods to Save state
 	bool SaveState(pugi::xml_node&) const;
-	//Transform fPoint to iPoint
+	// Transform fPoint to iPoint
 	iPoint TransformFPoint(fPoint fpoint);
 	iPoint MapToWorld(iPoint position);
 	int CheckCollision(iPoint positionMap);

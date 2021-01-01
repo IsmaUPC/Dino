@@ -4,7 +4,6 @@
 #include "SceneControl.h"
 #include "Animation.h"
 #include "Point.h"
-//#include "GuiMenuPause.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -73,7 +72,6 @@ private:
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	float speedImg=0;
 
-	//GuiMenuPause* menu;
 };
 
 #endif // __SCENE_H__

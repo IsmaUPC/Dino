@@ -31,7 +31,6 @@ bool Enemy::Start()
 	{
 		entityData->texture = app->tex->Load("Assets/Textures/enemy_walk.png");
 		
-
 		idleAnim->loop = true;
 		idleAnim->speed = 0.04f;
 
@@ -126,14 +125,14 @@ void Enemy::CreatePathEnemy(iPoint mapPositionEnemy, iPoint mapPositionDestinati
 {
 	if (checkDestination->check(1000))
 	{
-		//destination != mapPositionDestination
-		if (CheckCollision(mapPositionDestination)==-1 && (entityData->state==WALK || entityData->state==IDLE))//player if move
+		// destination != mapPositionDestination
+		if (CheckCollision(mapPositionDestination)==-1 && (entityData->state==WALK || entityData->state==IDLE))
 		{
 			app->pathfinding->ResetPath(mapPositionEnemy);
 			checkDestination->Start();
 			app->pathfinding->ComputePathAStar(mapPositionEnemy, mapPositionDestination);
 			lastPath = app->pathfinding->GetLastPath();
-			//destination = mapPositionDestination;
+			// destination = mapPositionDestination;
 		}
 	}
 }
@@ -161,10 +160,6 @@ void Enemy::MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, Typ
 		{
 			entityData->position.x += velocity;
 		}
-		//if (nextAuxPositionEenemy.y > positionEnemyY && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
-		//{
-			//entityData->position.y += velocity + 1;
-		//}
 	}
 	else if (type == AIR_ENEMY)
 	{
@@ -216,19 +211,14 @@ void Enemy::CheckCollisionEnemyToFireBall()
 		auxPositionEnemey[i] = { entityData->position.x + entityData->pointsCollision[i].x,
 			entityData->position.y + entityData->pointsCollision[i].y };
 	}
+
 	iPoint collisionFireBall[4];
 	for (int i = 0; i < 4; i++)
 	{
 		collisionFireBall[i] = { app->player->playerData.shootPosition->x + app->player->playerData.shootPointsCollision[i].x,
 			-48 + app->player->playerData.shootPosition->y + app->player->playerData.shootPointsCollision[i].y };
 	}
-	//if (collision.IsInsidePolygons(collisionFireBall, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
-	//	&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionFireBall, app->player->playerData.numPoints))
-	//{
-		//*app->player->playerData.stateShoot = 2;
-		//entityData->state = DEADING;
-		//entityData->currentAnimation = deadAnim;
-	//}
+
 	iPoint collisionBullet = app->map->WorldToMap(app->player->playerData.shootPosition->x, app->player->playerData.shootPosition->y);
 	iPoint collisionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 	if (collisionBullet == collisionEnemy)
@@ -244,7 +234,8 @@ void Enemy::CheckCollisionEnemyToFireBall()
 }
 void Enemy::MoveEnemyNULL(iPoint mapPositionEnemy)
 {
-	if (entityData->type == GROUND_ENEMY) //if the next position is destination continue with current direction
+	// if the next position is destination continue with current direction
+	if (entityData->type == GROUND_ENEMY) 
 	{
 		if (entityData->direction == WALK_L && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
 			entityData->position.x -= entityData->velocity;
@@ -302,25 +293,22 @@ bool Enemy::Update(float dt)
 	SpeedAnimationCheck(dt);
 	entityData->velocity = floor(1000 * dt) / 8;
 	CheckCollisions();
-	//entityData->type == AIR_ENEMY && !Radar(app->player->playerData.position)
-	//if (Radar(app->player->playerData.position)) returning = false;
-	//entityData->state == WALK && Radar(app->player->playerData.position)
-	//CalculateDistance(app->player->playerData.position, positionInitial) < range
+
 	if (entityData->state == WALK && Radar(app->player->playerData.position))
 	{
-		//Direction
+		// Direction
 		if (entityData->position.x < app->player->playerData.position.x)entityData->direction = WALK_R;
 		else entityData->direction = WALK_L;
-		//If player move
+		// If player move
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 		iPoint worldPositionPalyer = app->player->playerData.position;
 		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
 
-		//Cerate Path
+		// Cerate Path
 		if(app->player->playerData.state!=HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionPalyer);
 		int i = GetCurrentPositionInPath(mapPositionEnemy);
 
-		//Move Enemy
+		// Move Enemy
 		if (lastPath->At(i + 1) != NULL)
 		{
 			iPoint nextPositionEnemy = *lastPath->At(i + 1);
@@ -330,21 +318,18 @@ bool Enemy::Update(float dt)
 	}
 	else if (entityData->type == AIR_ENEMY && (CalculateDistance(app->player->playerData.position, positionInitial) > range || !Radar(app->player->playerData.position))) // if position enemy is diferent of init position, return to position initial
 	{
-		//Direction
+		// Direction
 		if (entityData->position.x < positionInitial.x)entityData->direction = WALK_R;
 		else entityData->direction = WALK_L;
 
-		//if(entityData->state != RETURN)entityData->state = RETURNING;
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 		if (entityData->position != positionInitial && entityData->state!=DEADING)
 		{
 			entityData->currentAnimation = walkAnim;
-			//if (returning == false)
-			//{
+
 			if (app->player->playerData.state != HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionInitial);
-			//returning = true;
-		//}
+
 			int i = GetCurrentPositionInPath(mapPositionEnemy);
 			if (lastPath->At(i + 1) != NULL)
 			{

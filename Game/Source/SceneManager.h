@@ -43,10 +43,10 @@ public:
 	// Called before all Updates
 	bool PostUpdate();
 
-	//Add Scenes
+	// Add Scenes
 	void AddScene(SceneControl* scene, bool active);
 
-	//Return Pause
+	// Return Pause
 	bool GetIsPause() { return pause; };
 	void SetPause(bool statePause) { pause = statePause; };
 

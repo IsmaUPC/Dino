@@ -101,24 +101,24 @@ int Entity::CheckCollision(iPoint positionMap)
 	uint firstgidLayerCollisions = app->map->data.tilesets.At(2)->data->firstgid;
 	typeTilePlayer -= firstgidLayerCollisions;
 
-	if (app->player->godMode == false) {
+	if (app->player->godMode == false) 
+	{
 		switch (typeTilePlayer)
 		{
 		case VICTORY:
-			//victory
+			// Victory
 			if(positionMap== app->map->WorldToMap( app->player->playerData.position))
 			app->player->win = true;
 			return VICTORY;
 			break;
 
 		case COLLISION:
-			//collision
+			// Collision
 			return COLLISION;
 			break;
 
 		case CHECK_POINT:
-			//checkpoint
-			//app->SaveGameRequest();
+			// Checkpoint
 			if (positionMap == app->map->WorldToMap(app->player->playerData.position)|| this->entityData->type== FIREBALL)
 			app->player->ActiveCheckpoint(positionMap);
 			return CHECK_POINT;

@@ -10,7 +10,7 @@
 #endif 
 #define NULL  0
 
-//Size Window
+// Size Window
 #define WINDOW_W 1315
 #define WINDOW_H 740
 #define SCREEN_SIZE 1

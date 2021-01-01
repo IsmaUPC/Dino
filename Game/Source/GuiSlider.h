@@ -20,6 +20,8 @@ public:
 	 void SliderControl(int mouseX, int mouseY);
 
 	 int GetValue() { return value; };
+
+	 // Put the slider in the correct position respected the value && change the value
 	 void SetValue(int newValue);
 
 private:

@@ -76,11 +76,10 @@ public:
 public:
 
 	bool active = true;
-	SString name;		 // Scene name identifier?
+	SString name;
 
 	// Possible properties
 	bool loaded = false;
-	// TODO: Transition animation properties
 
 	bool transitionRequired;
 	SceneType nextScene;

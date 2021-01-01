@@ -57,8 +57,9 @@ bool Window::Awake(pugi::xml_node& config)
 			LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
-		else {
-			//Create window
+		else 
+		{
+			// Create window
 			Uint32 flags = SDL_WINDOW_SHOWN;
 
 			if (fullscreen_window == true)
@@ -66,7 +67,6 @@ bool Window::Awake(pugi::xml_node& config)
 				flags |= SDL_WINDOW_FULLSCREEN;
 			}
 				
-
 			if (WIN_BORDERLESS == true)
 				flags |= SDL_WINDOW_BORDERLESS;
 
@@ -115,7 +115,6 @@ bool Window::CleanUp()
 // Set new window title
 void Window::SetTitle(const char* new_title)
 {
-	//title.create(new_title);
 	SDL_SetWindowTitle(window, new_title);
 }
 

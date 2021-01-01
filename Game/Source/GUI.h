@@ -36,7 +36,7 @@ public:
 
 private:
 
-	// positions vars
+	// Positions vars
 	int headSeparation = 10;
 	int headPositionX = 20;
 	int headPositionY = 20;
@@ -61,17 +61,17 @@ private:
 
 	bool inCheckPoint;
 
-	//Coin
+	// Coin
 	SDL_Texture* imgCoin;
 	Animation* coinHudAnim = new Animation();
 
-	//Text
+	// Text
 	uint* coins = 0;
 	int hudFont = 0;
 	char coinText[10] = { "\0" };
 
 	bool activeFPS;
-	//Time
+	// Time
 	Timer timer;
 	char timeText[10] = { "\0" };
 	char scoreText[12] = { "\0" };
