@@ -125,102 +125,80 @@ bool SceneManager::Update(float dt)
 	bool ret = true;
 	if (!pause && (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) && (current->name == "scene" || current->name == "sceneLevel2"))
 		pause = !pause;
-	//if (!pause)
-	//{
-		if (!onTransition)
-		{
-			//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
-			//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
-			//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
-			//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
-			ret = current->Update(dt);
-		}
-		else
-		{
-			if (!fadeOutCompleted)
-			{
-				transitionAlpha += (FADEOUT_TRANSITION_SPEED * dt);
-
-				// NOTE: Due to float internal representation, condition jumps on 1.0f instead of 1.05f
-				// For that reason we compare against 1.01f, to avoid last frame loading stop
-				if (transitionAlpha > 1.01f)
-				{
-					transitionAlpha = 1.0f;
-
-					current->CleanUp();	// Unload current screen
-					next->Start();	// Load next screen
-					if (current->isContinue)app->LoadGameRequest();
-					else if (next->name == "scene" || next->name == "sceneLevel2")//guardado automatico
-					{
-						app->SaveGameRequest();
-					}
-					RELEASE(current);	// Free current pointer
-					current = next;		// Assign next pointer
-					next = nullptr;
-
-					// Menu pause
-					menu = new GuiMenuPause({ 40, WINDOW_H / 2 - 120 }, current, btnTextureAtlas);
-					// Activate fade out effect to next loaded screen
-					fadeOutCompleted = true;
-				}
-			}
-			else  // Transition fade out logic
-			{
-				transitionAlpha -= (FADEIN_TRANSITION_SPEED * dt);
-
-				if (transitionAlpha < -0.01f)
-				{
-					transitionAlpha = 0.0f;
-					fadeOutCompleted = false;
-					onTransition = false;
-				}
-			}
-		}
-
-		if (current->transitionRequired)
-		{
-			onTransition = true;
-			fadeOutCompleted = false;
-			transitionAlpha = 0.0f;
-
-			switch (current->nextScene)
-			{
-			case SceneType::LOGO: next = new SceneLogo(); break;
-			case SceneType::INTRO: next = new SceneIntro(); break;
-			case SceneType::LEVEL1: next = new Scene(); break;
-			case SceneType::LEVEL2: next = new SceneLevel2(); break;
-			case SceneType::WIN: next = new SceneWin(); break;
-			case SceneType::LOSE: next = new SceneLose(); break;
-			default: break;
-			}
-
-			current->transitionRequired = false;
-		}
-
-		// DELETE IN RELEASE
-	//}
-	
-	//if(app->input->GetKey(SDL_SCANCODE_F1)==KEY_DOWN)sceneControl->TransitionToScene(SceneType::LEVEL1);
-	//if(app->input->GetKey(SDL_SCANCODE_F2)==KEY_DOWN)sceneControl->TransitionToScene(SceneType::LEVEL2);
-
-
-	// L12b: Debug pathfinding
-	/*
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-	p = app->map->MapToWorld(p.x, p.y);
-
-	const DynArray<iPoint>* path = app->pathFinding->GetLastPath();
-
-	for(uint i = 0; i < path->Count(); ++i)
+	if (!onTransition)
 	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(debugTex, pos.x, pos.y);
-	}
-	*/
+		//if (input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) render->camera.y -= 1;
+		//if (input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) render->camera.y += 1;
+		//if (input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) render->camera.x -= 1;
+		//if (input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) render->camera.x += 1;
 
+		ret = current->Update(dt);
+	}
+	else
+	{
+		if (!fadeOutCompleted)
+		{
+			transitionAlpha += (FADEOUT_TRANSITION_SPEED * dt);
+
+			// NOTE: Due to float internal representation, condition jumps on 1.0f instead of 1.05f
+			// For that reason we compare against 1.01f, to avoid last frame loading stop
+			if (transitionAlpha > 1.01f)
+			{
+				transitionAlpha = 1.0f;
+
+				current->CleanUp();	// Unload current screen
+				next->Start();	// Load next screen
+				if (current->isContinue)app->LoadGameRequest();
+				else if (next->name == "scene" || next->name == "sceneLevel2")//guardado automatico
+				{
+					app->SaveGameRequest();
+				}
+				RELEASE(current);	// Free current pointer
+				current = next;		// Assign next pointer
+				next = nullptr;
+
+				// Menu pause
+				menu = new GuiMenuPause({ 40, WINDOW_H / 2 - 120 }, current, btnTextureAtlas);
+				// Activate fade out effect to next loaded screen
+				fadeOutCompleted = true;
+			}
+		}
+		else  // Transition fade out logic
+		{
+			transitionAlpha -= (FADEIN_TRANSITION_SPEED * dt);
+
+			if (transitionAlpha < -0.01f)
+			{
+				transitionAlpha = 0.0f;
+				fadeOutCompleted = false;
+				onTransition = false;
+			}
+		}
+	}
+
+	if (current->transitionRequired)
+	{
+		onTransition = true;
+		fadeOutCompleted = false;
+		transitionAlpha = 0.0f;
+
+		switch (current->nextScene)
+		{
+		case SceneType::LOGO: next = new SceneLogo(); break;
+		case SceneType::INTRO: next = new SceneIntro(); break;
+		case SceneType::LEVEL1: next = new Scene(); break;
+		case SceneType::LEVEL2: next = new SceneLevel2(); break;
+		case SceneType::WIN: next = new SceneWin(); break;
+		case SceneType::LOSE: next = new SceneLose(); break;
+		default: break;
+		}
+
+		current->transitionRequired = false;
+	}
+	
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)current->TransitionToScene(SceneType::LEVEL1);
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)current->TransitionToScene(SceneType::LEVEL2);
 	//MENU
 	if(pause)ret = menu->Update(dt);
 
