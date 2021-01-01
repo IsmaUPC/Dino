@@ -57,6 +57,7 @@ private:
 	bool startexplosion;
 
 	uint hitFx;
+	uint shootFx;
 
 	Timer frameTime;
 	Timer auxTimePause;

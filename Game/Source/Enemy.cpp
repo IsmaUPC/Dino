@@ -125,14 +125,11 @@ void Enemy::CreatePathEnemy(iPoint mapPositionEnemy, iPoint mapPositionDestinati
 {
 	bool collision = false;
 
-	
-
 
 	if (checkDestination->check(1000))
 	{
-
 		// Destination != mapPositionDestination
-		if (!CheckAllPoints(mapPositionDestination, COLLISION) && (entityData->state==WALK || entityData->state==IDLE))//player if move
+		if (CheckCollision(mapPositionDestination)==-1 && (entityData->state==WALK || entityData->state==IDLE))//player if move
 		{
 			app->pathfinding->ResetPath(mapPositionEnemy);
 			checkDestination->Start();
