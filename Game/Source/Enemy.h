@@ -34,6 +34,7 @@ private:
 
 	bool Radar(iPoint origin);
 	void CreatePathEnemy(iPoint origin, iPoint destination);
+	bool CheckAllPoints(iPoint& mapPositionDestination, TypeCollision typeCollision);
 	int GetCurrentPositionInPath(iPoint mapPositionEnemy);
 	void MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, TypeEntity type);
 	void MoveEnemyNULL(iPoint mapPositionEnemy);

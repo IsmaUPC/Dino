@@ -86,19 +86,11 @@ bool SceneWin::PostUpdate()
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN )== KEY_DOWN|| (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN )
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN) && !transition && timer.ReadSec() > CCOOLDOWNSCENE)
+	if (!transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
-		if (app->sceneManager->lastLevel == 1)
-		{
-			TransitionToScene(SceneType::LEVEL2);
-		}
-		if (app->sceneManager->lastLevel == 2)
-		{
-			TransitionToScene(SceneType::INTRO);
-		}
-		app->removeGame = true;
-		app->SaveGameRequest();
+		transition = true;
+		if (app->sceneManager->lastLevel == 1) TransitionToScene(SceneType::LEVEL2);
+		if (app->sceneManager->lastLevel == 2) TransitionToScene(SceneType::INTRO);
 		return true;
 	}
 

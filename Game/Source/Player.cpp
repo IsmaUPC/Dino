@@ -272,7 +272,7 @@ void Player::CameraPlayer()
 {
 	// Camera follow the player
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
-	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 200;
+	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 125;
 
 	if (playerData.position.x < (WINDOW_W/2))
 		if (app->render->camera.x < 48) followPositionPalyerX = 0;

@@ -123,10 +123,16 @@ int Enemy::CalculateDistance(iPoint origin, iPoint destination)
 }
 void Enemy::CreatePathEnemy(iPoint mapPositionEnemy, iPoint mapPositionDestination)
 {
+	bool collision = false;
+
+	
+
+
 	if (checkDestination->check(1000))
 	{
-		// destination != mapPositionDestination
-		if (CheckCollision(mapPositionDestination)==-1 && (entityData->state==WALK || entityData->state==IDLE))
+
+		// Destination != mapPositionDestination
+		if (!CheckAllPoints(mapPositionDestination, COLLISION) && (entityData->state==WALK || entityData->state==IDLE))//player if move
 		{
 			app->pathfinding->ResetPath(mapPositionEnemy);
 			checkDestination->Start();
@@ -135,6 +141,21 @@ void Enemy::CreatePathEnemy(iPoint mapPositionEnemy, iPoint mapPositionDestinati
 			// destination = mapPositionDestination;
 		}
 	}
+}
+bool Enemy::CheckAllPoints(iPoint& mapPositionDestination, TypeCollision typeCollision)
+{
+	
+	int y = mapPositionDestination.y;
+	int x = mapPositionDestination.x;
+	iPoint positionMapEntity;
+
+	for (int i = 0; i < entityData->numPoints; i++)
+	{
+		// Concvert position player WorldToMap 
+		positionMapEntity = app->map->WorldToMap(x + entityData->pointsCollision[i].x, y + entityData->pointsCollision[i].y);
+		if (CheckCollision(positionMapEntity) == typeCollision) return true;
+	}
+	return false;
 }
 int Enemy::GetCurrentPositionInPath(iPoint mapPositionEnemy)
 {
@@ -147,12 +168,14 @@ int Enemy::GetCurrentPositionInPath(iPoint mapPositionEnemy)
 }
 void Enemy::MoveEnemy(iPoint nextAuxPositionEenemy, iPoint mapPositionEnemy, TypeEntity type)
 {
+
+
 	int positionEnemyX = entityData->position.x;
 	int positionEnemyY = entityData->position.y;
 	int velocity = entityData->velocity;;
 	if (type == GROUND_ENEMY)
 	{
-		if (nextAuxPositionEenemy.x < positionEnemyX && (CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
+		if (nextAuxPositionEenemy.x < positionEnemyX && (CheckCollision({ mapPositionEnemy.x , mapPositionEnemy.y + 1 }) == 1 || CheckCollision({ mapPositionEnemy.x, mapPositionEnemy.y + 2 }) == 1))
 		{
 			entityData->position.x -= velocity;
 		}
