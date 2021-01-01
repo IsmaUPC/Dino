@@ -165,9 +165,16 @@ bool SceneManager::Update(float dt)
 		current->transitionRequired = false;
 	}
 	
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)current->TransitionToScene(SceneType::LEVEL1);
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)current->TransitionToScene(SceneType::LEVEL2);
-	
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		current->TransitionToScene(SceneType::LEVEL1);
+		lastLevel = 1;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		current->TransitionToScene(SceneType::LEVEL2);
+		lastLevel =2;
+	}
 	// MENU
 	if(pause)ret = menu->Update(dt);
 

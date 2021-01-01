@@ -37,7 +37,6 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-
 	app->SaveConfigRequested();
 	app->SetLastScene((Module*)this);
 

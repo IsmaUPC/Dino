@@ -86,7 +86,7 @@ bool SceneWin::PostUpdate()
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	if (!transition && timer.ReadSec() > CCOOLDOWNSCENE)
+	if (!transition && timer.ReadSec() >= CCOOLDOWNSCENE)
 	{
 		transition = true;
 		if (app->sceneManager->lastLevel == 1) TransitionToScene(SceneType::LEVEL2);
