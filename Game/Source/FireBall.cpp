@@ -36,6 +36,7 @@ bool FireBall::Start()
 	entityData->position = startPos;
 	entityData->texture = app->tex->Load("Assets/Textures/fire_ball.png");
 
+
 	SDL_QueryTexture(entityData->texture, NULL, NULL, &texW, &texH);
 
 	texW = texW / 5;
@@ -59,6 +60,7 @@ bool FireBall::Start()
 	entityData->pointsCollision = new iPoint[4]{ { 0, 0 }, { texW , 0 }, { texW,-texH }, { 0 ,-texH } };
 
 	hitFx = app->audio->LoadFx("Assets/Audio/Fx/hit.wav");
+	shootFx = app->audio->LoadFx("Assets/Audio/Fx/fireball.wav");
 
 	cooldown = 2;
 	startexplosion = false;
@@ -78,7 +80,7 @@ bool FireBall::PreUpdate()
 bool FireBall::Update(float dt)
 {
 	
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
 		Shoot();
 	}
@@ -97,6 +99,7 @@ bool FireBall::Update(float dt)
 		return true;
 		break;
 	case SHOOT:
+
 		fireBallAnim->Update();
 		if (direc == MoveDirection::WALK_R)
 			entityData->position.x += entityData->velocity;
@@ -113,6 +116,7 @@ bool FireBall::Update(float dt)
 		{
 			BackToPos0();
 			stateShoot = CAN_SHOOT;
+			
 			entityData->fireBallState = stateShoot;
 		}
 		break;
@@ -198,6 +202,8 @@ void FireBall::Shoot()
 {
 	if (stateShoot == CAN_SHOOT)
 	{
+		app->audio->PlayFx(shootFx);
+		app->player->playerData.state = ATTACK;
 		stateShoot = SHOOT;
 		entityData->fireBallState = stateShoot;
 		frameTime.Start();

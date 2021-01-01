@@ -357,9 +357,6 @@ void Player::PlayerControls(float dt)
 	}	// Any key is pressed or A and D pressed in same time, set player in IDLE state
 	else if(playerData.state != JUMP) playerData.state = State::IDLE;
 
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) playerData.state= ATTACK;
-
-
 	// Player Jump
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) Jump();
 
