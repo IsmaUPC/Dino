@@ -23,7 +23,7 @@
 #define WIN_BORDERLESS 0
 #define WIN_RESIZABLE 1
 
-#define CCOOLDOWNSCENE 1.5f
+#define CCOOLDOWNSCENE 2.0f
 //
 
 

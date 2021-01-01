@@ -276,18 +276,30 @@ void Player::CameraPlayer()
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 200;
 
+	if (playerData.position.x < (WINDOW_W/2)) {
+		if (app->render->camera.x < 48) followPositionPalyerX = 0;
+	}
 
 	// Camera delimitation x
-	if (app->render->camera.x <= -1 && app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
+	if (app->render->camera.x <= (playerData.position.x * -1)&& app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
 		app->render->camera.x = followPositionPalyerX;
-	else if (followPositionPalyerX<-1 && followPositionPalyerX>-((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
+	else if (followPositionPalyerX<-1&& followPositionPalyerX>-((app->map->data.width * app->map->data.tileWidth) - WINDOW_W+32))
 		app->render->camera.x = followPositionPalyerX;
 
-	// Camera delimitation x
+	// Reposition right in limit camera in X
+	if ((playerData.position.x *-1)< -((app->map->data.width * app->map->data.tileWidth) - (WINDOW_W/2) + 32))
+		app->render->camera.x = -((app->map->data.width * app->map->data.tileWidth) - WINDOW_W + 32);
+
+	if ((playerData.position.x *-1)> -(WINDOW_W/2) + 32)
+		app->render->camera.x = 0;
+
+	// Camera delimitation y
 	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
 		app->render->camera.y = followPositionPalyerY;
 	else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
 		app->render->camera.y = followPositionPalyerY;
+
+
 }
 
 
