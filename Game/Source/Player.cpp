@@ -41,7 +41,6 @@ bool Player::Start()
 	playerData.isJumped = false;
 	playerData.direction = WALK_R;
 
-	//FX
 	bonfireFx = app->audio->LoadFx("Assets/Audio/Fx/bonfire.wav");
 	damageFx = app->audio->LoadFx("Assets/Audio/Fx/damage.wav");
 
@@ -57,10 +56,13 @@ bool Player::Start()
 
 	idleAnim->loop = true;
 	idleAnim->speed = 0.05f;
+
 	walkAnim->loop = true;
 	walkAnim->speed = 0.08f;
+
 	damageAnim->loop = false;
 	damageAnim->speed = 0.005f;
+
 	runAnim->loop = true;
 	runAnim->speed = 0.10f;
 	
@@ -69,8 +71,6 @@ bool Player::Start()
 
 	jumpAnim->loop = true;
 	jumpAnim->speed = 0.24f;
-
-
 
 	for (int i = 0; i < 4; i++)
 		idleAnim->PushBack({ 78 * i,0, 78, 78 });
@@ -103,9 +103,6 @@ bool Player::Start()
 
 	app->entityManager->AddEntity(FIREBALL, 0, 0);
 	app->entityManager->AddEntity(HUD, 0, 0);
-
-	//levelScene = app->fade->GetLastLevel()->GetNumThisScene();
-
 
 	return true;
 }
@@ -201,7 +198,8 @@ void Player::MoveHit()
 	if (app->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)SetHit();
 	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->entityManager->score += 50;
 
-	if (playerData.currentAnimation == damageAnim) {
+	if (playerData.currentAnimation == damageAnim) 
+	{
 		if (!playerData.currentAnimation->HasFinished())
 		{
 			tmp = playerData.position;
@@ -272,13 +270,12 @@ void Player::MoveBetweenCheckPoints()
 
 void Player::CameraPlayer()
 {
-	//Camera follow the player
+	// Camera follow the player
 	int followPositionPalyerX = (WINDOW_W / 2) + (playerData.position.x * -1);
 	int followPositionPalyerY = (WINDOW_H / 2) + (playerData.position.y * -1) + 125;
 
-	if (playerData.position.x < (WINDOW_W/2)) {
+	if (playerData.position.x < (WINDOW_W/2))
 		if (app->render->camera.x < 48) followPositionPalyerX = 0;
-	}
 
 	// Camera delimitation x
 	if (app->render->camera.x <= (playerData.position.x * -1)&& app->render->camera.x >= -((app->map->data.width * app->map->data.tileWidth) - WINDOW_W))
@@ -298,9 +295,6 @@ void Player::CameraPlayer()
 		app->render->camera.y = followPositionPalyerY;
 	else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
 		app->render->camera.y = followPositionPalyerY;
-
-
-	//if(playerData.position.y > )
 
 }
 
@@ -341,7 +335,7 @@ void Player::PlayerMoveAnimation()
 
 void Player::PlayerControls(float dt)
 {
-		// Player Run
+	// Player Run
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT
 		&& (playerData.state == State::WALK || playerData.state == State::RUN))
 	{
@@ -352,7 +346,8 @@ void Player::PlayerControls(float dt)
 	if (!(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		&& (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
 	{
-		if (playerData.state == State::IDLE || playerData.state == State::WALK) {
+		if (playerData.state == State::IDLE || playerData.state == State::WALK) 
+		{
 			playerData.state = State::WALK;
 			velX = playerData.velocity;
 		}
@@ -459,7 +454,6 @@ bool Player::PostUpdate()
 // Implements to gravity fall down
 void Player::GravityDownCollision(float dt)
 {
-	//velY += gravity/10;
 
 	tmp = playerData.position;	
 	lastState = playerData.state;
@@ -566,11 +560,11 @@ bool Player::CheckGameOver(int level)
 	{
 		if (playerData.position.y > 1720)
 		{
-			//isDead = true;
 			playerData.respawns--;
 			if (playerData.respawns < 1)playerData.state = DEAD;
 
-			if (playerData.state != DEAD) {
+			if (playerData.state != DEAD)
+			{
 				if (checkPoints.Count() == 0)
 					playerData.position= *positionInitial;
 				else
@@ -580,7 +574,6 @@ bool Player::CheckGameOver(int level)
 					app->render->camera.y = cameraPosCP.end->data.y;
 				}
 			}
-			//return true;
 		}
 	}
 	if (level == 2)
@@ -590,7 +583,8 @@ bool Player::CheckGameOver(int level)
 			playerData.respawns--;
 			if (playerData.respawns < 1)playerData.state = DEAD;
 
-			if (playerData.state != DEAD) {
+			if (playerData.state != DEAD)
+			{
 				if (checkPoints.Count() == 0)
 					playerData.position = *positionInitial;
 				else
@@ -607,7 +601,8 @@ bool Player::CheckGameOver(int level)
 
 void Player::SetHit()
 {
-	if (playerData.respawns > 0 && playerData.state != HIT && !godMode) {
+	if (playerData.respawns > 0 && playerData.state != HIT && !godMode) 
+	{
 		playerData.respawns--;
 		playerData.state = HIT;
 		hitDirection = playerData.direction;
@@ -623,12 +618,14 @@ void Player::ActiveCheckpoint(iPoint positionMapPlayer)
 	{
 		for (int i = 0; i < checkPoints.Count(); i++)
 		{
-			if (checkPoints.At(i)->data == positionMapPlayer) {
+			if (checkPoints.At(i)->data == positionMapPlayer)
+			{
 				lastCP = i;
 				if (checkPoints.Count() > 1)
 				{
 					inCheckPoint = true;
-					if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate) {
+					if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate)
+					{
 						endUpdate = false;
 						checkpointMove = !checkpointMove;
 					}
@@ -636,13 +633,12 @@ void Player::ActiveCheckpoint(iPoint positionMapPlayer)
 				return;
 			}
 		}
-		//app->SaveGameRequest();
 		checkPoints.Add(positionMapPlayer);
 		iPoint cam(app->render->camera.x, app->render->camera.y);
 		cameraPosCP.Add(cam);
 		LOG("CHECKPOINT pos:%d,%d", positionMapPlayer.x, positionMapPlayer.y);
 		app->map->CheckPointActive(positionMapPlayer);
-		//FX
+		// FX
 		app->audio->PlayFx(bonfireFx);
 	}
 }

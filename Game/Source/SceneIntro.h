@@ -47,9 +47,7 @@ public:
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data)const;
 
-	//void SaveFullScreen(pugi::xml_node& data)const;
 	void ComprobeState(int id);
-	//void FullScreenMode(SString filename);
 
 private:
 	AnimationIntro animationIntro;
@@ -62,7 +60,6 @@ private:
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	bool transition;
 
-	//Timer timer;
 	pugi::xml_document sceneFile;
 	pugi::xml_node sceneStateFile;
 

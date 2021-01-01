@@ -22,9 +22,7 @@ public:
 
 	bool CleanUp();
 
-	void AbleDisableSetting() {
-		active = !active;
-	}
+	void AbleDisableSetting() { active = !active; };
 
 	void MovePosition();
 

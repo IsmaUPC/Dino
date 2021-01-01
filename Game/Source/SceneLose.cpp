@@ -71,9 +71,6 @@ bool SceneLose::PostUpdate()
 	SDL_Rect rectIntro;
 	rectIntro = animationEnd.currentAnimation->GetCurrentFrame();
 
-	//if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		//ret = false;
-
 	if (!transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
 		transition = true;
@@ -81,7 +78,6 @@ bool SceneLose::PostUpdate()
 		if (app->sceneManager->lastLevel == 2) TransitionToScene(SceneType::LEVEL2);
 		return true;
 	}
-
 
 	app->render->DrawTexture(img, app->render->camera.x, app->render->camera.y);
 	app->render->DrawTexture(animationEnd.texture, animationEnd.position.x, animationEnd.position.y, &rectIntro);

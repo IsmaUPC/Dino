@@ -44,11 +44,6 @@ bool Scene::Start()
 	victory=false;
 	app->player->win = false;
 
-	//MENU
-	//menu = new GuiMenuPause({ 100,30 },this);
-
-	// Load map
-	//app->map->Load("Mapa_PixelArt.tmx");
 	if (app->map->Load("map_1.tmx") == true)
 	{
 		int w, h;
@@ -59,7 +54,8 @@ bool Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 	app->map->active = true;
-	//Positions Initials
+
+	// Positions Initials
 	app->entityManager->Start();
 	app->player->positionInitial = new iPoint(432,1170 );
 	app->entityManager->AddEntity(GROUND_ENEMY, 43, 27);
@@ -70,6 +66,7 @@ bool Scene::Start()
 	app->player->Init();
 	app->player->Start();
 	app->audio->active = true;
+
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/hades_8bits.ogg");
 	img = app->tex->Load("Assets/Textures/sky.png");
@@ -109,10 +106,8 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	bool ret = true;
-	//MENU
-	//ret = menu->Update(dt);
 
-	//DEBUG KEYS
+	// DEBUG KEYS
 	DebugKeys();
 	app->map->checKpointsMap.checkPointOnAnim->Update();
 	if (app->input->GetKey(SDL_SCANCODE_M)==KEY_UP)
@@ -120,8 +115,6 @@ bool Scene::Update(float dt)
 		app->input->GetMousePosition(app->map->tileDestiny.x, app->map->tileDestiny.y);
 		app->map->tileDestiny = app->map->WorldToMap( (app->render->camera.x*-1+  app->map->tileDestiny.x),
 			(app->render->camera.y -app->map->tileDestiny.y)*-1);
-		//app->map->tileDestiny = { 19, 25 };
-		//app->map->ResetPath(app->map->tileDestiny);
 	}
 
 	iPoint vec;
@@ -145,19 +138,15 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
-	//Draw Background
+	// Draw Background
 	Parallax();
 	// Draw map
 	app->map->Draw();
-
-	
 
 	bool ret = true;
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	//if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		//ret = false;
 	if (victory == true)
 	{
 		victory = false;
@@ -189,7 +178,6 @@ bool Scene::CleanUp()
 	app->tex->UnLoad(animationFather.texture);
 	app->player->CleanUp();
 	app->entityManager->CleanUp();
-	//app->audio->UnloadFxs();
 
 	app->sceneManager->SetPause(false);
 
@@ -210,18 +198,13 @@ void Scene::Parallax()
 
 void Scene::DebugKeys()
 {
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
 		app->render->camera.x = 0;
 		app->player->playerData.position = *app->player->positionInitial;
 		app->player->playerData.direction = WALK_R;
 		Mix_RewindMusic();
 	}
-
-	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		app->SaveConfigRequested();*/
-
-	/*if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		app->LoadConfigRequested();*/
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
@@ -229,11 +212,13 @@ void Scene::DebugKeys()
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
 		SetDebugCollaider();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
 		if (app->player->godMode == false)app->player->godMode = true;
 		else app->player->godMode = false;
 	}
@@ -246,7 +231,6 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 bool Scene::LoadState(pugi::xml_node& data)
 {
-	//TransitionToScene(SceneType::LEVEL1);
 	return true;
 }
 

@@ -89,7 +89,8 @@ bool GuiMenuPause::Event(GuiControl* control)
 	{
 	case GuiControlType::BUTTON:
 	{
-		if (control->id == 1) {
+		if (control->id == 1) 
+		{
 			app->sceneManager->SetPause(false);
 			active = false;
 			activeMenu = false;

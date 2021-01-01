@@ -67,9 +67,7 @@ bool GuiSettings::Draw()
 
 bool GuiSettings::CleanUp()
 {
-
 	active = false;
-
 	return true;
 }
 

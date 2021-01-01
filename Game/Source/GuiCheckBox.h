@@ -23,9 +23,8 @@ public:
 private:
 
 	void ChangeImageChecked();
-	// GuiCheckBox specific properties
-	// Maybe some animation properties for state change?
 
+	// GuiCheckBox specific properties
 	iPoint* rectAtlasPos = new iPoint(87, 99);
 	int margin = 10;
 

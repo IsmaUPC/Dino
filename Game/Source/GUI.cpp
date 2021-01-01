@@ -72,7 +72,7 @@ bool GUI::Start()
 	respawn = &app->player->playerData.respawns;
 	coins = &app->player->playerData.coins;
 
-	//Text
+	// Text
 	hudFont = app->fonts->Load("Assets/Textures/GUI/hud_font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,0123456789им?!*$%&()+-/:;<=>@_      ", 5, 705, 225);
 
 	fireBallState = app->player->GetStateShoot();
@@ -113,13 +113,13 @@ bool GUI::PostUpdate()
 	point0.y = point0.y + headPositionY;
 
 
-	//Respawns
+	// Respawns
 	SDL_Rect rectGUI;
 	rectGUI = headAnim->GetCurrentFrame();
 	for (int i = 0; i < *respawn; i++)
 		app->render->DrawTexture(headTex,point0.x +((headW + headSeparation)*i),point0.y,&rectGUI);
 	
-	//ChecKPoints HUD
+	// ChecKPoints HUD
 	rectGUI = buttonEAnim->GetCurrentFrame();
 	if (app->player->GetInCheckPoint())
 		app->render->DrawTexture(arrowTex, app->player->playerData.position.x+10, app->player->playerData.position.y - 90, &rectGUI);
@@ -134,14 +134,14 @@ bool GUI::PostUpdate()
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
 
-	//Score
+	// Score
 	point0.x = point0.x + 50;
 	point0.y = point0.y + 100;
 	
 	sprintf_s(scoreText, 12, "%.06d", app->entityManager->score);
 	app->fonts->BlitText(point0.x, point0.y, hudFont, scoreText);
 
-	//Coin HUD
+	// Coin HUD
 	point0.x = point0.x - 20;
 	point0.y = point0.y + 70;
 
@@ -152,7 +152,7 @@ bool GUI::PostUpdate()
 	sprintf_s(coinText, 9, "x%d", *coins);
 	app->fonts->BlitText(point0.x + rectCoins.w, point0.y + 12, hudFont, coinText);
 
-	//FireBall
+	// FireBall
 	point0.x = -app->render->camera.x;
 	point0.y = -app->render->camera.y;
 	point0.x = point0.x + 40;
@@ -172,7 +172,7 @@ bool GUI::PostUpdate()
 	point0.y = -app->render->camera.y;
 	point0.x = point0.x + (WINDOW_W - 250);
 	point0.y = point0.y + 20;
-	//Time
+	// Time
 	if (app->sceneManager->GetIsPause() && !stopTime)
 	{
 		auxTimePause.Start();
@@ -203,7 +203,6 @@ void GUI::Chronometer()
 {
 	if (miliseconds >= 60000 && !stopTime)
 	{
-		//timer.Start();
 		minuts++;
 	}
 	miliseconds = miliseconds * 0.1;
@@ -218,7 +217,8 @@ void GUI::Chronometer()
 
 bool GUI::CleanUp()
 {
-	if (!active){
+	if (!active)
+	{
 		return true;
 	}
 	app->tex->UnLoad(headTex);

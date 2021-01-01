@@ -252,11 +252,9 @@ public:
 
 	void Trim()
 	{
-		// cut right --
 		char* end = str + size;
 		while(*--end == ' ') *end = '\0';
 
-		// cut left --
 		char* start = str;
 		while(*++start == ' ');
 

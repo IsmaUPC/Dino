@@ -63,7 +63,6 @@ bool SceneIntro::Start()
 	btnExit = new GuiButton(6, { WINDOW_W / 2 - 200 ,yPosition + (padding * 2),  88, 88 }, "", EXIT, btnTextureAtlas);
 	btnExit->SetObserver(this);
 	
-	//menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, 238 }, this);
 	menuSettings = new GuiSettings({ WINDOW_W / 2 + 240, yPosition - (padding * 2) }, this);
 
 	app->SetLastScene((Module*)this);
@@ -127,11 +126,8 @@ bool SceneIntro::PostUpdate()
 	SDL_Rect rectIntro;
 	rectIntro = animationIntro.currentAnimation->GetCurrentFrame();
 
-	//if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		//ret = false;
-
 	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN))//has quitado un timer 
+		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN))
 	{
 		transition = true;
 		TransitionToScene(SceneType::LEVEL1);
@@ -187,19 +183,17 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			app->removeGame = false;
 			TransitionToScene(SceneType::LEVEL1);
-			app->sceneManager->lastLevel = 1;// PLAY
+			app->sceneManager->lastLevel = 1;
 			isContinue = false;
 		}
 		else if (control->id == 2 && lastLevel != 0)
 		{
-			LOG("CONTINUE LAST GAME");
 			if (lastLevel == 1)TransitionToScene(SceneType::LEVEL1), app->sceneManager->lastLevel = 1;
 			if (lastLevel == 2)TransitionToScene(SceneType::LEVEL2), app->sceneManager->lastLevel = 2;
 			isContinue = true;
 		}
 		else if (control->id == 3)
 		{
-			LOG("REMOVE GAME");
 			app->removeGame = true;
 			app->SaveGameRequest();
 			lastLevel = 0;
@@ -208,7 +202,6 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		}
 		else if (control->id == 4)
 		{
-			LOG("SETTINGS");
 			btnPlay->state = GuiControlState::DISABLED;
 			btnContinue->state = GuiControlState::DISABLED;
 			btnSettings->state = GuiControlState::DISABLED;
@@ -222,15 +215,16 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 			menuSettings->AbleDisableSetting();
 
 		}
-		else if (control->id == 5) LOG("CREDITS"), TransitionToScene(SceneType::LOGO);
+		else if (control->id == 5)
+		{
+			TransitionToScene(SceneType::LOGO);
+		}
 		else if (control->id == 6)
 		{
-			LOG("EXIT"); 
 			return false;
 		}
 		else if (control->id == 10)
 		{
-			LOG("RETURN");
 			btnPlay->state = GuiControlState::NORMAL;
 			btnSettings->state = GuiControlState::NORMAL;
 			btnCredits->state = GuiControlState::NORMAL;
@@ -296,11 +290,6 @@ bool SceneIntro::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
-//void SceneIntro::SaveFullScreen(pugi::xml_node& data)const
-//{
-//	data.attribute("value").set_value(app->fullScreen);
-//}
-
 void SceneIntro::ComprobeState(int id)
 {
 	bool ret = true;
@@ -317,27 +306,8 @@ void SceneIntro::ComprobeState(int id)
 		sceneStateFile = sceneFile.first_child();
 		sceneStateFile = sceneStateFile.child("scene_manager");
 		if(id==2)LoadState(sceneStateFile);
-		//else if (id == 3)SaveState(sceneStateFile), lastLevel=0;
 	}
 	sceneFile.reset();
 }
-//void SceneIntro::FullScreenMode(SString filename)
-//{
-//	bool ret = true;
-//	pugi::xml_parse_result result = sceneFile.load_file("config.xml");
-//
-//	// Check result for loading errors
-//	if (result == NULL)
-//	{
-//		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-//		ret = false;
-//	}
-//	else
-//	{
-//		sceneStateFile = sceneFile.first_child();
-//		sceneStateFile = sceneStateFile.child("window").child("fullscreen_window");
-//		SaveFullScreen(sceneStateFile);
-//	}
-//	sceneFile.reset();
-//}
+
 

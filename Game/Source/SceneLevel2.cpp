@@ -53,7 +53,7 @@ bool SceneLevel2::Start()
 		RELEASE_ARRAY(data);
 	}
 	app->map->active = true;
-	//Positions initials
+	// Positions initials
 	app->player->positionInitial = new iPoint(576,1534);
 	app->entityManager->Start();
 	app->entityManager->AddEntity(GROUND_ENEMY, 34, 31);
@@ -116,7 +116,7 @@ bool SceneLevel2::PreUpdate()
 // Called each loop iteration
 bool SceneLevel2::Update(float dt)
 {
-	//DEBUG KEYS
+	// DEBUG KEYS
 	DebugKeys();
 	app->map->checKpointsMap.checkPointOnAnim->Update();
 	iPoint vec;
@@ -140,7 +140,7 @@ bool SceneLevel2::Update(float dt)
 // Called each loop iteration
 bool SceneLevel2::PostUpdate()
 {
-	//Draw Background
+	// Draw Background
 	Parallax();
 	// Draw map
 	app->map->Draw();
@@ -149,8 +149,6 @@ bool SceneLevel2::PostUpdate()
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	//if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		//ret = false;
 	if (victory == true)
 	{
 		victory = false;
@@ -199,18 +197,13 @@ void SceneLevel2::Parallax()
 
 void SceneLevel2::DebugKeys()
 {
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) 
+	{
 		app->render->camera.x = 0;
 		app->player->playerData.position = *app->player->positionInitial;
 		app->player->playerData.direction = WALK_R;
 		Mix_RewindMusic();
 	}
-
-	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		app->SaveConfigRequested();*/
-
-	/*if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		app->LoadConfigRequested();*/
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
@@ -218,11 +211,12 @@ void SceneLevel2::DebugKeys()
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) 
 		SetDebugCollaider();
-	}
+	
 
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
+	{
 		if (app->player->godMode == false)app->player->godMode = true;
 		else app->player->godMode = false;
 	}
@@ -234,7 +228,6 @@ bool SceneLevel2::OnGuiMouseClickEvent(GuiControl* control)
 
 bool SceneLevel2::LoadState(pugi::xml_node& data)
 {
-	//TransitionToScene(SceneType::LEVEL2);
 	return true;
 }
 

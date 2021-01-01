@@ -113,7 +113,8 @@ struct CheckPoints{
 	
 	struct CP
 	{
-		CP(iPoint pos) : pos(pos){
+		CP(iPoint pos) : pos(pos)
+		{
 			active = false;
 		}
 
@@ -167,23 +168,23 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 	iPoint WorldToMap(iPoint position) const;
 
-	//Get dimensions of map
+	// Get dimensions of map
 	iPoint GetDimensionsMap();
 
-	// L10: BFS Pathfinding methods
+	// BFS Pathfinding methods
 	void ResetPath(iPoint start);
 	void DrawPath();
 
-	// L11: More pathfinding methods
+	// More pathfinding methods
 	int MovementCost(int x, int y) const;
 	void ComputePath(int x, int y);
 
 	// Propagation methods
 	void PropagateDijkstra();
 
-	// L12a: AStar pathfinding
+	// AStar pathfinding
 	void ComputePathAStar(int x, int y);
-	// L12a: AStar propagation
+	// AStar propagation
 	void PropagateAStar(int heuristic);
 
 	int CalculateDistanceToDestiny(iPoint node);
@@ -222,17 +223,18 @@ private:
 
 	bool* drawColl;
 	bool* drawColl2;
-	// L10: BFS Pathfinding variables
+
+	// BFS Pathfinding variables
 	PQueue<iPoint> frontier;
 	List<iPoint> visited;
 
-	// L11: Additional variables
+	// Additional variables
 	List<iPoint> breadcrumbs;
 	uint costSoFar[COST_MAP_SIZE][COST_MAP_SIZE];
 	DynArray<iPoint> path;
 
 
-	// L12: AStar (A*) variables
+	// AStar (A*) variables
 	iPoint goalAStar;			// Store goal target tile
 	bool finishAStar = false;	// Detect when reached goal
 

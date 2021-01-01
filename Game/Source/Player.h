@@ -67,7 +67,6 @@ public:
 
 	bool CollisionPlayer(iPoint nextPosition);
 	bool CollisionJumping(iPoint positionMapPlayer);
-	//bool CheckVictory(iPoint positionMapPlayer);
 	bool CheckGameOver(int level);
 
 	void SetHit();
@@ -77,7 +76,6 @@ public:
 
 	void ActiveCheckpoint(iPoint positionMapPlayer);
 
-	//iPoint TransformFPoint(fPoint fpoint);
 	iPoint IPointMapToWorld(iPoint ipoint);
 
 
@@ -91,7 +89,6 @@ public:
 
 private:
 
-	//bool DownY(iPoint Position);
 	// Load state game
 	bool LoadState(pugi::xml_node& data);
 	// Save state game
@@ -130,7 +127,7 @@ private:
 	uint bonfireFx;
 	uint damageFx;
 
-	//CheckPoint's vars
+	// CheckPoint's vars
 	bool inCheckPoint;
 	List<iPoint> checkPoints;
 	List<iPoint> cameraPosCP;

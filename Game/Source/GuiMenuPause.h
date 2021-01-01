@@ -4,8 +4,6 @@
 #include "Point.h"
 #include "SString.h"
 
-//#include "GuiButton.h"
-//#include "GuiControl.h"
 #include "GuiSettings.h"
 
 class GuiMenuPause
@@ -21,12 +19,8 @@ public:
 
 	bool Event(GuiControl* control);
 
-	void AbleDisableSetting() {
-		active = !active;
-	}
-	void AbleDisableMenu() {
-		activeMenu = !activeMenu;
-	}
+	void AbleDisableSetting() { active = !active; };
+	void AbleDisableMenu() { activeMenu = !activeMenu; };
 
 	void MovePosition();
 

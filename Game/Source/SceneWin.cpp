@@ -86,9 +86,6 @@ bool SceneWin::PostUpdate()
 	SDL_Rect rectFather;
 	rectFather = animationFather.currentAnimation->GetCurrentFrame();
 
-	//if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		//ret = false;
-
 	if (!transition && timer.ReadSec() > CCOOLDOWNSCENE)
 	{
 		transition = true;

@@ -15,7 +15,6 @@ public:
 	float ReadSec() const;
 	bool check(int interval);
 
-//private:
 	uint32 startTime;
 };
 

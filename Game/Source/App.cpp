@@ -49,8 +49,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fonts);
 	AddModule(pathfinding);
 
-
-	//actives
 	audio->active = true;
 	player->active = false;
 	map->active = false;
@@ -101,7 +99,6 @@ bool App::Awake()
 		
 		// Obtenemos el Frame Rate
 		framerate = configApp.attribute("framerate_cap").as_int(0);
-		//if (framerate > 0)	cappedMs = framerate *0.001 ;
 		if (framerate > 0)	cappedMs = 1000/framerate  ;
 		
 	}
@@ -152,7 +149,8 @@ bool App::Update()
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) changeFPS = !changeFPS;
 	
-	if(changeFPS){
+	if(changeFPS)
+	{
 		cappedMs = 1000 / 30;
 		framerate = 30;
 	}
@@ -237,8 +235,7 @@ void App::FinishUpdate()
 
 	if (cappedMs > tmpFPS )
 	{	
-		//Use SDL_Delay to make sure you get your capped framerate
-
+		// Use SDL_Delay to make sure you get your capped framerate
 			SDL_Delay(cappedMs- tmpFPS);
 	}
 
@@ -264,9 +261,8 @@ bool App::PreUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false) 
 			continue;
-		}
 
 		ret = item->data->PreUpdate();
 	}
@@ -286,9 +282,8 @@ bool App::DoUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false) 
 			continue;
-		}
 
 		ret = item->data->Update(dt);
 	}
@@ -307,18 +302,12 @@ bool App::PostUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
 			continue;
-		}
 
 		ret = item->data->PostUpdate();
 	}
 	
-	//if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	//	app->fade->FadeToBlack(lastScene,(Module*)app->scene,0.f);
-	//if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	//	app->fade->FadeToBlack(lastScene, (Module*)app->sceneLevel2, 0.f);
-
 	return ret;
 }
 
@@ -468,10 +457,12 @@ bool App::SaveGame(SString filename) const
 }
 
 
-int App::GetFramerate() {
+int App::GetFramerate() 
+{
 	return framerate;
 }
 
-float App::GetCapMs() {
+float App::GetCapMs() 
+{
 	return cappedMs;
 }
