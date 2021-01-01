@@ -81,7 +81,7 @@ bool Player::Start()
 	for (int i = 0; i < 6; i++)
 		walkAnim->PushBack({ 312 + (78 * i),0, 78, 78 });
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 		atakAnim->PushBack({ 858 + (78 * i),0, 78, 78 });
 
 	for (int i = 0; i < 4; i++)

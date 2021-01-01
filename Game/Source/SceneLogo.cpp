@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Render.h"
 #include "SceneLogo.h"
+#include "Audio.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -32,6 +33,10 @@ bool SceneLogo::Start()
 	//transition = false;
 
 	img = app->tex->Load("Assets/Textures/scene_logo.png");
+	uint introFx = app->audio->LoadFx("Assets/Audio/Fx/intro.wav");
+	app->audio->PlayFx(introFx);
+	app->audio->SetVolumeFx(100);
+	app->audio->SetVolumeMusic(70);
 
 	SDL_QueryTexture(img, NULL, NULL, &imgW, &imgH);
 	app->render->camera.x = app->render->camera.y = 0;
@@ -70,7 +75,7 @@ bool SceneLogo::Update(float dt)
 	{
 		// Waiting for 3 seconds
 		timeCounter += dt;
-		if (timeCounter >= 2.0f) state = 3;
+		if (timeCounter >= 4.5f) state = 3;
 	}
 	else if (state == 3)
 	{
