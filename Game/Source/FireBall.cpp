@@ -80,7 +80,7 @@ bool FireBall::PreUpdate()
 bool FireBall::Update(float dt)
 {
 	
-	if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) && !app->player->godMode)
+	if ((app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) && !app->player->godMode || app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 	{
 		Shoot();
 	}

@@ -19,7 +19,7 @@
 	<entities />
 	<entity_manager>
 		<score value="0" />
-		<time value="0" />
+		<time value="2700" />
 		<entities>
 			<entity type="6" x="2112" y="384" state="0" />
 			<entity type="6" x="1728" y="528" state="0" />
