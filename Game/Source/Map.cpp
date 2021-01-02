@@ -256,11 +256,6 @@ bool Map::Awake(pugi::xml_node& config)
 
 	folder.Create(config.child("folder").child_value());
 
-	drawColl = app->sceneManager->scene->GetDebugCollaider();
-	drawColl2 = app->sceneManager->sceneLevel2->GetDebugCollaider();
-
-
-
 	return ret;
 }
 
@@ -282,9 +277,9 @@ void Map::Draw()
 					iPoint vec = MapToWorld(x, y);
 					for (int i = 0; i < data.tilesets.Count(); i++)
 					{
-						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0 || *drawColl)
+						if(data.layers.At(i)->data->properties.GetProperty("Nodraw",0)==0 || drawColl)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
-						else if (data.layers.At(i)->data->properties.GetProperty("Nodraw", 0) == 0 || *drawColl2)
+						else if (data.layers.At(i)->data->properties.GetProperty("Nodraw", 0) == 0 || drawColl2)
 							app->render->DrawTexture(GetTilesetFromTileId(tileId)->texture, vec.x, vec.y, &data.tilesets.At(i)->data->GetTileRect(tileId));
 					}
 				}
@@ -310,8 +305,8 @@ void Map::Draw()
 	}
 
 
-	if(*drawColl)app->map->DrawPath();
-	if(*drawColl2)app->map->DrawPath();
+	if(drawColl)app->map->DrawPath();
+	if(drawColl2)app->map->DrawPath();
 }
 
 // Translates x,y coordinates from map positions to world positions

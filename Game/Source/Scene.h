@@ -31,7 +31,7 @@ public:
 	// Called before the first frame
 	bool Start();
 
-	void SetDebugCollaider(bool value=NULL);
+	void SetDebugCollaider();
 	bool* GetDebugCollaider() { return &debugCollisions; }
 	// Called before all Updates
 	bool PreUpdate();

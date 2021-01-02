@@ -592,7 +592,7 @@ bool Player::CheckGameOver(int level)
 		playerData.currentAnimation = deadAnim;
 		return true;
 	}
-	if (level == 1)
+	if (level == 1 && !godMode)
 	{
 		if (playerData.position.y > 1720)
 		{
@@ -608,7 +608,7 @@ bool Player::CheckGameOver(int level)
 			}
 		}
 	}
-	if (level == 2)
+	if (level == 2 && !godMode)
 	{
 		if (playerData.position.y > 1968)
 		{

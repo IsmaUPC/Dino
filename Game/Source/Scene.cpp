@@ -87,12 +87,9 @@ bool Scene::Start()
 	return true;
 }
 
-void Scene::SetDebugCollaider(bool value)
+void Scene::SetDebugCollaider()
 {
-	if (value == NULL)
-		debugCollisions = !debugCollisions;
-	else
-		debugCollisions = value;
+	app->map->SetDrawColl();
 }
 
 // Called each loop iteration
