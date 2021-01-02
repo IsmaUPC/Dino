@@ -135,6 +135,7 @@ bool Lives::CleanUp()
 
 	return true;
 }
+
 void Lives::CurrentLiveAnimation()
 {
 	switch (entityData->state)

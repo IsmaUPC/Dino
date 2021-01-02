@@ -52,7 +52,7 @@ bool Player::Start()
 	checkpointMove = false;
 	endUpdate = true;
 	win = false;
-
+	debugCheckPoints = false;
 
 	idleAnim->loop = true;
 	idleAnim->speed = 0.05f;
@@ -167,6 +167,14 @@ bool Player::Update(float dt)
 {
 	if (!app->sceneManager->GetIsPause())
 	{
+		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+			DebugCP();
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && endUpdate && debugCheckPoints){
+			endUpdate = false;
+			DebugCP();
+		}
+
+
 		PlayerMoveAnimation();
 		SpeedAnimationCheck(dt);
 		playerData.velocity = floor(1000 * dt) / 4;
@@ -184,7 +192,7 @@ bool Player::Update(float dt)
 		{
 			// Move player inputs control
 			if (!checkpointMove)PlayerControls(dt);
-			//Move Between CheckPoints
+			// Move Between CheckPoints
 			else MoveBetweenCheckPoints();
 		}
 	}
@@ -238,7 +246,6 @@ void Player::GravityDown(float dt)
 
 void Player::SpeedAnimationCheck(float dt)
 {
-
 	idleAnim->speed = (dt * 5) ;
 	walkAnim->speed = (dt * 9) ;
 	jumpAnim->speed = (dt * 18) ;
@@ -255,16 +262,12 @@ void Player::MoveBetweenCheckPoints()
 		if ((lastCP + 1) >= checkPoints.Count()) lastCP = 0;
 		else lastCP++;
 		playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
-		app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
-		app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 	{
 		if (lastCP == 0) lastCP = checkPoints.Count() - 1;
 		else lastCP--;
 		playerData.position = IPointMapToWorld(checkPoints.At(lastCP)->data);
-		app->render->camera.x = cameraPosCP.At(lastCP)->data.x;
-		app->render->camera.y = cameraPosCP.At(lastCP)->data.y;
 	}
 }
 
@@ -291,14 +294,13 @@ void Player::CameraPlayer()
 		app->render->camera.x = 0;
 
 	// Camera delimitation y
-	if (app->render->camera.y <= -48 && app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
+	if ((app->render->camera.y <= -48) && (app->render->camera.y >= -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight)))))
 		app->render->camera.y = followPositionPalyerY;
-	else if (followPositionPalyerY<-48 && followPositionPalyerY>-((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight))))
+	else if ((followPositionPalyerY < -48) && (followPositionPalyerY > -((app->map->data.height * app->map->data.tileHeight) - (WINDOW_H + (4 * app->map->data.tileHeight)))))
 		app->render->camera.y = followPositionPalyerY;
-
+	if (app->render->camera.y >= -39)
+		app->render->camera.y = -39;
 }
-
-
 
 void Player::PlayerMoveAnimation()
 {
@@ -371,7 +373,6 @@ void Player::PlayerControls(float dt)
 
 }
 
-
 void Player::MovePlayer(MoveDirection playerDirection, float dt)
 {
 	tmp = playerData.position;
@@ -424,6 +425,42 @@ void Player::MoveToDirection(int velocity)
 
 	default:
 		break;
+	}
+}
+
+void Player::DebugCP()
+{
+	if (!checkpointMove) 
+	{
+		debugCheckPoints = true;
+		checkpointMove = true;
+		inCheckPoint = true;
+		if (app->map->checKpointsMap.list.Count() != checkPoints.Count())
+		{
+			for (int i = 0; i < app->map->checKpointsMap.list.Count(); i++)
+			{
+				bool find = false;
+				for (int j = 0; j < checkPoints.Count(); j++)
+				{
+					if (app->map->checKpointsMap.list.At(i)->data->pos == checkPoints.At(j)->data)
+					{
+						find = true;
+					}
+				}
+				if (!find)
+				{
+					checkPoints.Add(app->map->checKpointsMap.list.At(i)->data->pos);
+					app->map->checKpointsMap.list.At(i)->data->active = true;
+				}
+				
+			}
+		}
+	}
+	else 
+	{
+		debugCheckPoints = false;
+		checkpointMove = false;
+		inCheckPoint = false;
 	}
 }
 
@@ -499,7 +536,6 @@ bool Player::CleanUp()
 	pendingToDelete = true;
 
 	checkPoints.Clear();
-	cameraPosCP.Clear();
 	return true;
 }
 
@@ -566,13 +602,9 @@ bool Player::CheckGameOver(int level)
 			if (playerData.state != DEAD)
 			{
 				if (checkPoints.Count() == 0)
-					playerData.position= *positionInitial;
+					playerData.position = *positionInitial;
 				else
-				{
 					playerData.position = IPointMapToWorld(checkPoints.end->data);
-					app->render->camera.x = cameraPosCP.end->data.x;
-					app->render->camera.y = cameraPosCP.end->data.y;
-				}
 			}
 		}
 	}
@@ -588,11 +620,7 @@ bool Player::CheckGameOver(int level)
 				if (checkPoints.Count() == 0)
 					playerData.position = *positionInitial;
 				else
-				{
 					playerData.position = IPointMapToWorld(checkPoints.end->data);
-					app->render->camera.x = cameraPosCP.end->data.x;
-					app->render->camera.y = cameraPosCP.end->data.y;
-				}
 			}
 		}
 	}
@@ -612,7 +640,6 @@ void Player::SetHit()
 }
 
 void Player::ActiveCheckpoint(iPoint positionMapPlayer)
-
 {
 	if (app->map->data.layers.At(2)->data->Get(positionMapPlayer.x, positionMapPlayer.y) == app->map->data.tilesets.At(2)->data->firstgid + 2)
 	{
@@ -634,8 +661,7 @@ void Player::ActiveCheckpoint(iPoint positionMapPlayer)
 			}
 		}
 		checkPoints.Add(positionMapPlayer);
-		iPoint cam(app->render->camera.x, app->render->camera.y);
-		cameraPosCP.Add(cam);
+
 		LOG("CHECKPOINT pos:%d,%d", positionMapPlayer.x, positionMapPlayer.y);
 		app->map->CheckPointActive(positionMapPlayer);
 		// FX
