@@ -32,7 +32,7 @@ bool SceneLogo::Start()
 	app->SetLastScene((Module*)this);
 
 	img = app->tex->Load("Assets/Textures/scene_logo.png");
-	uint introFx = app->audio->LoadFx("Assets/Audio/Fx/intro.wav");
+	introFx = app->audio->LoadFx("Assets/Audio/Fx/intro.wav");
 	app->audio->PlayFx(introFx);
 	app->audio->SetVolumeFx(100);
 	app->audio->SetVolumeMusic(70);

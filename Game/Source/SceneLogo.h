@@ -37,6 +37,7 @@ private:
 	SDL_Rect logo;
 	SDL_Texture* img;
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
+	uint introFx;
 
 	int state;
 	float timeCounter;
