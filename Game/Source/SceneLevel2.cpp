@@ -99,12 +99,9 @@ bool SceneLevel2::Start()
 	return true;
 }
 
-void SceneLevel2::SetDebugCollaider(bool value)
+void SceneLevel2::SetDebugCollaider()
 {
-	if (value == NULL)
-		debugCollisions = !debugCollisions;
-	else
-		debugCollisions = value;
+	app->map->SetDrawColl();
 }
 
 // Called each loop iteration

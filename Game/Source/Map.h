@@ -194,6 +194,11 @@ public:
 
 	void CheckPointActive(iPoint position);
 
+	void SetDrawColl() 
+	{ 
+		drawColl = !drawColl; 
+		drawColl2 = !drawColl2;
+	};
 private:
 
 	// L03: Methods to load all required map data
@@ -210,6 +215,7 @@ private:
 	// Pick the right Tileset based on a tile id
 	TileSet* GetTilesetFromTileId(int id) const;
 
+
 public:
 
 	MapData data;
@@ -221,8 +227,8 @@ private:
 	SString folder;
 	bool mapLoaded;
 
-	bool* drawColl;
-	bool* drawColl2;
+	bool drawColl=false;
+	bool drawColl2=false;
 
 	// BFS Pathfinding variables
 	PQueue<iPoint> frontier;
