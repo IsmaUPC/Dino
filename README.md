@@ -13,9 +13,9 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - Map navigation: player movement and jumping
 
 - Logo screen with fade-in fade-out
-- Title screen (press ENTER to start)
+- Title screen
 - Win/Lose Scenes
-- Player walk/jump/die animations
+- Player walk/jump/die/attack animations
 - Ending screen (on dying)
 - Music in all scenes 
 - Background with parallax
@@ -24,11 +24,23 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - Walking and flying enemies with pathfind
 - Game capped to 60 frames
 - Fx in Game
-- Colectors
+- Collectibles
 - 3 lives before dying
 - Projectile with cooldown
 - Dynamic GUI
 - A second Level
+
+- Entity System and EntityManager
+- Scene System and SceneManager
+- GUI: Title Screen Main Menu with PLAY, CONTINUED, REMOVE GAME, SETTINGS, CREDITS, EXIT
+- Settings contain Music Volume, Fx Volume, FullScreen Mode eneble/disble, and VSync Off
+- All buttons responsive and include diferent states: NORMAL, FOCUSED, PRESSED, DISABLE
+- The buttons generate an OnMouseClick event to be processed
+- All buttons have Audio Feedback when is focused, pressed and disable
+- GUI: Gameplay Screen HUD: Player lives, Collectibles, Timer and Score
+- GUI: Gameplay Screen Pause Menu : RESUME, SETTINGS, BACK TO TITLE, EXIT
+
+- You can light bonfires with the fireball
 
 ## Controls
 
@@ -37,22 +49,21 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - Shift for run
 - SPACE for jump
 - SPACE in the middle of the jump for double jump
-- K for Shoot
-- ENTER for pass Scene
-
+- K or F for Shoot
+- ESC for open and close Menu Pause
 - +/- modify volume
 
 ## DEBUG keys
 
 - F1 Start from the first level
+- F2 Start from the second level
 - F3 Start from the beginning of the current level
 - F4 Enable / Disable FPS counter
 - F5 Save the current game state
 - F6 Load the previous state
-- F7 Save the current config
-- F8 Load the previous config
+- F8 View GUI bounds rectangles and state in different colors
 - F9 View colliders / logic
-- F10 God Mode (fly around, cannot be killed)
+- F10 God Mode (fly around, can not be killed)
 - F11 Enable/Disable FPS cap to 30
 
 ## Developers
@@ -65,5 +76,5 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
-AdditionalLicenses:
+Additional Licenses:
 - Tileset: https://craftpix.net/file-licenses/
