@@ -82,6 +82,10 @@ bool EntityManager::CleanUp()
 
 		item = item->next;
 	}
+
+	app->audio->Unload1Fx(chickenFx);
+	app->audio->Unload1Fx(batFx);
+	app->audio->Unload1Fx(liveFx);
 	entities.Clear();
 	score = 0;
 	timeSave = 0;
@@ -98,7 +102,6 @@ bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY)
 }
 bool EntityManager::AddEntity(TypeEntity pType, int pX, int pY,int num)
 {
-	
 	if (spawnQueue.Add(new EntitySpawnPoint(pType, pX, pY))) return true;
 	else return false;
 }

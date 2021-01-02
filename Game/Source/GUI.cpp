@@ -225,8 +225,8 @@ bool GUI::CleanUp()
 	app->tex->UnLoad(arrowTex);
 	app->tex->UnLoad(imgCoin);
 	app->tex->UnLoad(fireBallTex);
-	app->tex->UnLoad(imgCoin);
 	app->fonts->UnLoad(hudFont);
+
 	active = false;
 
 	pendingToDelete = true;

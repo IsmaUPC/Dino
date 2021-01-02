@@ -22,6 +22,8 @@ public:
 	void AbleDisableSetting() { active = !active; };
 	void AbleDisableMenu() { activeMenu = !activeMenu; };
 
+	void CloaseMenuSettings();
+
 	void MovePosition();
 
 private:

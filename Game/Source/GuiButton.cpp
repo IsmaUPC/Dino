@@ -41,7 +41,6 @@ bool GuiButton::Update(float dt)
 			{
 				app->audio->PlayFx(app->sceneManager->btnPressed);
 				ret = NotifyObserver();
-				app->audio->PlayFx(app->sceneManager->btnPressed);
 			}
 		}
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
@@ -123,4 +122,9 @@ void GuiButton::DefinePositionAtlas()
 		break;
 	}
 
+}
+
+void GuiButton::PressButtonSound()
+{
+	app->audio->PlayFx(app->sceneManager->btnPressed);
 }

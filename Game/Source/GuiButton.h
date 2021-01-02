@@ -29,6 +29,7 @@ public:
 	bool Draw();
 
 	void DefinePositionAtlas();
+	void PressButtonSound();
 
 private:
 	bool mouseIn = false;

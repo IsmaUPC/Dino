@@ -77,11 +77,7 @@ bool Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	ListItem<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
-
-	fx.Clear();
+	UnloadFxs();
 
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -178,8 +174,14 @@ unsigned int Audio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.Add(chunk);
-		ret = fx.Count();
+		for (ret = 0; ret < MAX_FX; ++ret)
+		{
+			if (fx[ret] == nullptr)
+			{
+				fx[ret] = chunk;
+				break;
+			}
+		}
 	}
 
 	return ret;
@@ -188,19 +190,32 @@ unsigned int Audio::LoadFx(const char* path)
 // UnloadFx
 bool Audio::UnloadFxs()
 {
-	ListItem<Mix_Chunk*>* item;
-	for (item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
-
-	fx.Clear();
+	for (uint i = 0; i < MAX_FX; ++i) 
+	{
+		if (fx[i] != nullptr)
+			Mix_FreeChunk(fx[i]);
+	}
 
 	return true;
 }
 
-// Play WAV
-bool Audio::PlayFx(unsigned int id, int repeat)
-{
+bool Audio::Unload1Fx(int index)
+{	
 	bool ret = false;
+
+	if (fx[index] != nullptr) {
+		Mix_FreeChunk(fx[index]);
+		fx[index] = nullptr;
+		ret = true;
+	}
+
+	return ret;
+}
+
+// Play WAV
+bool Audio::PlayFx(unsigned int id, int volume)
+{
+	/*bool ret = false;
 	Mix_Volume(-1, volumeFx);
 	if(!active)
 		return false;
@@ -209,6 +224,23 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	{
 		Mix_VolumeChunk(fx[id - 1], volumeFx);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
+	}
+
+	return ret;*/
+	bool ret = false;
+
+	if (volume > 100) volume = 100;
+	else if (volume < 0) volume = 0;
+
+	if (fx[id] != nullptr)
+	{
+		if (volume == 0)
+			Mix_VolumeChunk(fx[id], volumeFx);
+		else
+			Mix_VolumeChunk(fx[id], volume);
+
+		Mix_PlayChannel(-1, fx[id], 0);
+		ret = true;
 	}
 
 	return ret;

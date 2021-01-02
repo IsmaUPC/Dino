@@ -106,6 +106,7 @@ bool Lives::Update(float dt)
 	entityData->currentAnimation->speed = (dt * 13);
 	return true;
 }
+
 bool Lives::PostUpdate()
 {
 	SDL_Rect rectLives;
@@ -124,8 +125,12 @@ bool Lives::CleanUp()
 	if (!active)
 		return true;
 
+	app->tex->UnLoad(texLive);
+	app->tex->UnLoad(texLiveParticle);
+
 	app->tex->UnLoad(entityData->texture);
 	pendingToDelete = true;
+
 	active = false;
 
 	return true;

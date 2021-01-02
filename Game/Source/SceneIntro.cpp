@@ -109,6 +109,13 @@ bool SceneIntro::Update(float dt)
 	
 	idleAnim->speed = (dt * 100) * 0.05f;
 
+	if ((app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) && (menuSettings->GetActiveSettings()))
+	{
+		menuSettings->btnBack->PressButtonSound();
+		CloaseMenuSettings();
+	}
+
+
 	btnPlay->Update(dt);
 	btnContinue->Update(dt);
 	btnRemove->Update(dt);
@@ -125,14 +132,6 @@ bool SceneIntro::PostUpdate()
 	bool ret = true;
 	SDL_Rect rectIntro;
 	rectIntro = animationIntro.currentAnimation->GetCurrentFrame();
-
-	if ((app->input->GetKey(SDL_SCANCODE_KP_ENTER) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		|| app->input->GetKey(SDL_SCANCODE_RETURN2) == KEY_DOWN))
-	{
-		transition = true;
-		TransitionToScene(SceneType::LEVEL1);
-		return true;
-	}
 
 	app->render->DrawTexture(bgIntro, app->render->camera.x, app->render->camera.y);
 	app->render->DrawTexture(animationIntro.texture, animationIntro.position.x, animationIntro.position.y, &rectIntro);
@@ -156,22 +155,24 @@ bool SceneIntro::CleanUp()
 
 	LOG("Freeing scene");
 	Mix_HaltMusic();
+	app->tex->UnLoad(btnSettingsTex);
+	app->tex->UnLoad(btnExitTex);
 	app->tex->UnLoad(bgIntro);
 	app->tex->UnLoad(animationIntro.texture);
 
-	delete btnPlay;
+	/*delete btnPlay;
 	delete btnContinue;
 	delete btnRemove;
 	delete btnSettings;
 	delete btnCredits;
 	delete btnExit;
-	delete menuSettings;
-
+	delete menuSettings;*/
 
 	bgIntro = nullptr;
 	active = false;
 	return true;
 }
+
 bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 {
 	switch (control->type)
@@ -225,17 +226,7 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 		}
 		else if (control->id == 10)
 		{
-			btnPlay->state = GuiControlState::NORMAL;
-			btnSettings->state = GuiControlState::NORMAL;
-			btnCredits->state = GuiControlState::NORMAL;
-			btnExit->state = GuiControlState::NORMAL;
-			if (lastLevel != 0)
-			{
-				btnContinue->state = GuiControlState::NORMAL;
-				btnRemove->state = GuiControlState::NORMAL;
-			}
-			menuSettings->AbleDisableSetting();
-			app->SaveConfigRequested();
+			CloaseMenuSettings();
 		}
 	}
 	case GuiControlType::SLIDER:
@@ -274,6 +265,21 @@ bool SceneIntro::OnGuiMouseClickEvent(GuiControl* control)
 	default: break;
 	}
 	return true;
+}
+
+void SceneIntro::CloaseMenuSettings()
+{
+	btnPlay->state = GuiControlState::NORMAL;
+	btnSettings->state = GuiControlState::NORMAL;
+	btnCredits->state = GuiControlState::NORMAL;
+	btnExit->state = GuiControlState::NORMAL;
+	if (lastLevel != 0)
+	{
+		btnContinue->state = GuiControlState::NORMAL;
+		btnRemove->state = GuiControlState::NORMAL;
+	}
+	menuSettings->AbleDisableSetting();
+	app->SaveConfigRequested();
 }
 
 bool SceneIntro::LoadState(pugi::xml_node& data)

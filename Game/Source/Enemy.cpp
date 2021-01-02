@@ -390,6 +390,7 @@ bool Enemy::CleanUp()
 	if (!active)
 		return true;
 	pendingToDelete = true;
+
 	app->tex->UnLoad(entityData->texture);
 	active = false;
 

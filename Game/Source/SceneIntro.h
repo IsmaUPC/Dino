@@ -44,6 +44,8 @@ public:
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
+	void CloaseMenuSettings();
+
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data)const;
 

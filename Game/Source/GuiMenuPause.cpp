@@ -40,11 +40,6 @@ GuiMenuPause::~GuiMenuPause()
 bool GuiMenuPause::Update(float dt)
 {
 	bool ret = true;
-	if (app->sceneManager->GetIsPause())
-	{
-		active = true;
-		MovePosition();
-	}
 
 	if (active)
 	{
@@ -52,7 +47,32 @@ bool GuiMenuPause::Update(float dt)
 		btnSettings->Update(dt);
 		btnBackToTitle->Update(dt);
 		ret = btnExit->Update(dt);
-		if (activeMenu) menuSettings->Update(dt);
+		if (activeMenu) {
+			menuSettings->Update(dt);
+			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			{
+				CloaseMenuSettings();
+				btnResume->PressButtonSound();
+			}
+		}
+		else
+		{
+			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			{
+				btnResume->PressButtonSound();
+				app->sceneManager->SetPause(false);
+				active = false;
+				activeMenu = false;
+			}
+		}
+	}
+
+	if (app->sceneManager->GetIsPause())
+	{
+		if (active) return ret;
+		btnResume->PressButtonSound();
+		MovePosition();
+		active = true;
 	}
 	return ret;
 }
@@ -76,8 +96,14 @@ bool GuiMenuPause::Draw()
 
 bool GuiMenuPause::CleanUp()
 {
-
 	active = false;
+
+	delete btnResume;
+	delete btnSettings;
+	delete btnBackToTitle;
+	delete btnExit;
+	delete menuSettings;
+
 	activeMenu = false;
 	return true;
 }
@@ -117,13 +143,7 @@ bool GuiMenuPause::Event(GuiControl* control)
 		}
 		else if (control->id == 10)
 		{
-			activeMenu = false;
-			btnResume->state = GuiControlState::NORMAL;
-			btnSettings->state = GuiControlState::NORMAL;
-			btnBackToTitle->state = GuiControlState::NORMAL;
-			btnExit->state = GuiControlState::NORMAL;
-			menuSettings->AbleDisableSetting();
-			app->SaveConfigRequested();
+			CloaseMenuSettings();
 		}
 
 	}
@@ -163,6 +183,17 @@ bool GuiMenuPause::Event(GuiControl* control)
 	default: break;
 	}
 	return true;
+}
+
+void GuiMenuPause::CloaseMenuSettings()
+{
+	activeMenu = false;
+	btnResume->state = GuiControlState::NORMAL;
+	btnSettings->state = GuiControlState::NORMAL;
+	btnBackToTitle->state = GuiControlState::NORMAL;
+	btnExit->state = GuiControlState::NORMAL;
+	menuSettings->AbleDisableSetting();
+	app->SaveConfigRequested();
 }
 
 void GuiMenuPause::MovePosition()

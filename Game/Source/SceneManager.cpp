@@ -207,8 +207,6 @@ bool SceneManager::CleanUp()
 	LOG("Freeing scene");
 	app->tex->UnLoad(btnTextureAtlas);
 	app->fonts->UnLoad(guiFont);
-
-
 	if (current != nullptr) current->CleanUp();
 
 	return true;

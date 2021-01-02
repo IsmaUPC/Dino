@@ -295,6 +295,7 @@ public:
 				start = pNewItem;
 
 			pMyList = pNewItem;
+			delete pNewItem;
 			pOtherList = pOtherList->next;
 		}
 	}

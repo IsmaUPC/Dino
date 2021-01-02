@@ -23,6 +23,7 @@ public:
 	bool CleanUp();
 
 	void AbleDisableSetting() { active = !active; };
+	bool GetActiveSettings() { return active; };
 
 	void MovePosition();
 

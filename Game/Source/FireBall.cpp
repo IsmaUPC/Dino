@@ -176,6 +176,8 @@ bool FireBall::CleanUp()
 	if (!active)
 		return true;
 
+	app->audio->Unload1Fx(hitFx);
+	app->audio->Unload1Fx(shootFx);
 	app->tex->UnLoad(entityData->texture);
 
 	active = false;

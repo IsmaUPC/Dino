@@ -52,10 +52,8 @@ private:
 	SDL_Texture* fireBallTex;
 
 	Animation* headAnim = new Animation();
-
 	Animation* arrowAnim = new Animation();
 	Animation* buttonEAnim = new Animation();
-
 	Animation* fireBallOnAnim = new Animation();
 	Animation* fireBallOffAnim = new Animation();
 

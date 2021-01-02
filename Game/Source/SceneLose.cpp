@@ -91,6 +91,7 @@ bool SceneLose::CleanUp()
 		return true;
 
 	LOG("Freeing scene");
+
 	Mix_HaltMusic();
 	app->tex->UnLoad(img);
 	app->tex->UnLoad(animationEnd.texture);

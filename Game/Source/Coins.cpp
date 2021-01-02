@@ -128,9 +128,15 @@ bool Coins::CleanUp()
 	if (!active)
 		return true;
 
+	app->audio->Unload1Fx(coinFx);
 	app->tex->UnLoad(entityData->texture);
 	app->tex->UnLoad(texCoin);
 	app->tex->UnLoad(texCoinParticle);
+
+	delete coinAnimation;
+	delete particleAnimation;
+	delete pointsCollision;
+
 	pendingToDelete = true;
 	active = false;
 

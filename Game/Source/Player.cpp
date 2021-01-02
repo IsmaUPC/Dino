@@ -491,6 +491,9 @@ bool Player::CleanUp()
 	if (!active)
 		return true;
 
+	app->audio->Unload1Fx(bonfireFx);
+	app->audio->Unload1Fx(damageFx);
+
 	app->tex->UnLoad(playerData.texture);
 	active = false;
 	pendingToDelete = true;
