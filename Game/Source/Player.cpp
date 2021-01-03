@@ -177,7 +177,7 @@ bool Player::Update(float dt)
 
 		PlayerMoveAnimation();
 		SpeedAnimationCheck(dt);
-		playerData.velocity = floor(1000 * dt) / 4;
+		playerData.velocity = floor(1000 * dt/ 4) ;
 		gravity = ceil(600 * dt);
 
 		MoveHit();
