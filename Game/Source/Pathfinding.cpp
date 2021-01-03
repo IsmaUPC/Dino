@@ -112,11 +112,11 @@ bool PathFinding::PropagateAStar(const iPoint& destination)
 			}
 		}
 
-		for (int i = 0; i < 3; i++)
+		for (int i = j+1; i <= 3-j; i++)
 		{
 			if (visited.Find(neighbors[i]) == -1)
 			{
-				if (GetTileAt(neighbors[i]) > 0 && newCost[i + 1] >= 0 && newCost[j] >= newCost[i + 1])j = i + 1;
+				if (newCost[i] >= 0 && newCost[j] > newCost[i]) j = i;
 			}
 		}
 		for (int i = 0; i < 4; i++)

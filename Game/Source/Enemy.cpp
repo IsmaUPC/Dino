@@ -319,7 +319,7 @@ bool Enemy::Update(float dt)
 		// If player move
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
 		iPoint worldPositionPalyer = app->player->playerData.position;
-		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y);
+		iPoint mapPositionPalyer = app->map->WorldToMap(worldPositionPalyer.x, worldPositionPalyer.y-8);
 
 		// Cerate Path
 		if(app->player->playerData.state!=HIT && app->player->playerData.state != DEAD)CreatePathEnemy(mapPositionEnemy, mapPositionPalyer);
@@ -340,7 +340,7 @@ bool Enemy::Update(float dt)
 		else entityData->direction = WALK_L;
 
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
-		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y);
+		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y-8);
 		if (entityData->position != positionInitial && entityData->state!=DEADING)
 		{
 			entityData->currentAnimation = walkAnim;
