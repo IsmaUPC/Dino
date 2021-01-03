@@ -30,9 +30,8 @@ bool Coins::Start()
 	entityData->currentAnimation= new Animation();
 	entityData->state = IDLE;
 	active = true;
-	texCoin = app->tex->Load("Assets/Textures/coin_square.png");
-	texCoinParticle = app->tex->Load("Assets/Textures/coin_particle.png");
 
+	texCoin = entityData->texture;
 	coinFx= app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
 	
 	numPoints = 4;
@@ -49,7 +48,7 @@ bool Coins::Start()
 	particleAnimation->speed = 0.20f;
 	
 	for (int i = 0; i < 7; i++)
-		particleAnimation->PushBack({ 0,(60 * i), 60, 60 });
+		particleAnimation->PushBack({ 40,(60 * i), 60, 60 });
 
 	return true;
 }
@@ -114,11 +113,8 @@ bool Coins::PostUpdate()
 
 	SDL_Rect rectCoins;
 	rectCoins = entityData->currentAnimation->GetCurrentFrame();
-	if(entityData->state ==IDLE)
 	app->render->DrawTexture(texCoin, position.x, position.y, &rectCoins);
 
-	if(entityData->state ==DEADING)
- 	app->render->DrawTexture(texCoinParticle, position.x-10, position.y-10, &rectCoins);
 	return true;
 
 }
@@ -129,9 +125,7 @@ bool Coins::CleanUp()
 		return true;
 
 	app->audio->Unload1Fx(coinFx);
-	app->tex->UnLoad(entityData->texture);
-	app->tex->UnLoad(texCoin);
-	app->tex->UnLoad(texCoinParticle);
+
 
 	delete coinAnimation;
 	delete particleAnimation;

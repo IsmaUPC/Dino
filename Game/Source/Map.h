@@ -201,7 +201,7 @@ public:
 	};
 private:
 
-	// L03: Methods to load all required map data
+	// Methods to load all required map data
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set);

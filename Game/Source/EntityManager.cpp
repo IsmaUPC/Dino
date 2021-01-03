@@ -31,6 +31,13 @@ bool EntityManager::Start()
 	chickenFx = app->audio->LoadFx("Assets/Audio/Fx/chicken.wav");
 	batFx = app->audio->LoadFx("Assets/Audio/Fx/bat.wav");
 	liveFx = app->audio->LoadFx("Assets/Audio/Fx/lives.wav");
+	texCoin = app->tex->Load("Assets/Textures/coin_square.png");
+	texLive = app->tex->Load("Assets/Textures/lives.png");
+	texChicken = app->tex->Load("Assets/Textures/enemy_walk.png");
+	texBat  =app->tex->Load("Assets/Textures/enemy_fly.png");
+	texHead = app->tex->Load("Assets/Textures/GUI/dino_head.png");
+
+
 	// back background
 	return true;
 }
@@ -86,6 +93,12 @@ bool EntityManager::CleanUp()
 	app->audio->Unload1Fx(chickenFx);
 	app->audio->Unload1Fx(batFx);
 	app->audio->Unload1Fx(liveFx);
+	app->tex->UnLoad(texCoin);
+	app->tex->UnLoad(texLive);
+	app->tex->UnLoad(texChicken);
+	app->tex->UnLoad(texBat);
+	app->tex->UnLoad(texHead);
+
 	entities.Clear();
 	score = 0;
 	timeSave = 0;
@@ -111,7 +124,7 @@ void EntityManager::HandleEntitiesSpawn()
 	{
 		if (spawnEntiti->data->type != TypeEntity::UNKNOWN)
 		{
-			LOG("Spawning enemy at %d", spawnEntiti->data->x * SCREEN_SIZE);
+			LOG("Spawning enemy at x:%d  y: %d", spawnEntiti->data->x * SCREEN_SIZE, spawnEntiti->data->x * SCREEN_SIZE);
 
 			SpawnEnemy(*spawnEntiti->data);
 			spawnEntiti->data->type = TypeEntity::UNKNOWN; // Removing the newly spawned enemy from the queue
@@ -133,16 +146,16 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		break;
 
 	case TypeEntity::GROUND_ENEMY:
-		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex,100,chickenFx));
+		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, texChicken,100,chickenFx));
 		entities.end->data->Start();
 		break;
 
 	case TypeEntity::AIR_ENEMY:
-		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, tex,150,batFx));
+		entities.Add(new Enemy(info.type, { info.x,info.y }, 1, texBat,150,batFx));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::HUD:
-		entities.Add(new GUI(info.type, { info.x,info.y }, 1, tex));
+		entities.Add(new GUI(info.type, { info.x,info.y }, 1, texHead));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::FIREBALL:
@@ -150,11 +163,11 @@ void EntityManager::SpawnEnemy(const EntitySpawnPoint& info)
 		entities.end->data->Start();
 		break;
 	case TypeEntity::COIN:
-		entities.Add(new Coins(info.type, { info.x,info.y }, 1, tex));
+		entities.Add(new Coins(info.type, { info.x,info.y }, 1, texCoin));
 		entities.end->data->Start();
 		break;
 	case TypeEntity::LIVE:
-		entities.Add(new Lives(info.type, { info.x,info.y }, 1, tex,(int)50,liveFx));
+		entities.Add(new Lives(info.type, { info.x,info.y }, 1, texLive,(int)50,liveFx));
 		entities.end->data->Start();
 	break;
 	}
@@ -175,13 +188,14 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 	{
 		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
 		{
-			if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->LoadState(entityManagerNode);
 			entiti->data->CleanUp();
+			entities.Clear();
 		}
 
 		entityManagerNode.next_sibling();
 		while (entitiesNode)
 		{
+			//if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->LoadState(entityManagerNode);
 			AddEntity((TypeEntity)entitiesNode.attribute("type").as_int(), entitiesNode.attribute("x").as_int(), entitiesNode.attribute("y").as_int(), 0);
 			entitiesNode = entitiesNode.next_sibling();
 		}

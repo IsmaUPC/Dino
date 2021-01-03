@@ -440,16 +440,12 @@ bool Map::CleanUp()
 
 	while (item2 != NULL)
 	{
-		
 		RELEASE(item2->data);
 		item2 = item2->next;
 	}
 	data.layers.Clear();
 
-	for (int i = 0; i < checKpointsMap.list.Count(); i++)
-	{
-		checKpointsMap.~CheckPoints();
-	}
+	checKpointsMap.~CheckPoints();
 	
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -517,13 +513,12 @@ bool Map::Load(const char* filenameGame)
 
 	if(ret == true)
 	{
-		/*
+		
 		LOG("Successfully parsed map XML file: %s", filenameGame);
 		LOG("Width: %d	Hight: %d", data.width, data.height);
-		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);*/
+		LOG("TileWidth: %d	TileHight: %d", data.tileWidth, data.tileHeight);
 		for (int i = 0; i < data.tilesets.Count(); i++)
 		{
-			/*
 			LOG("TileSet ----");
 			LOG("Name: %s	FirstGid: %d", data.tilesets.At(i)->data->name.GetString(), data.tilesets.At(i)->data->firstgid);
 			LOG("Tile width: %d", data.tilesets.At(i)->data->tileWidth);
@@ -531,7 +526,7 @@ bool Map::Load(const char* filenameGame)
 			LOG("Spacing: %d", data.tilesets.At(i)->data->spacing);
 			LOG("Margin: %d", data.tilesets.At(i)->data->margin);
 			LOG("NumTilesWidth: %d", data.tilesets.At(i)->data->numTilesWidth);
-			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);*/
+			LOG("NumTilesHeight: %d", data.tilesets.At(i)->data->numTilesHeight);
 		}
 		// LOG("CheckPoint count: %d", LoadCheckPoint());
 		LoadCheckPoint();
@@ -638,8 +633,9 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 int Map::LoadCheckPoint()
 {
-	{
+	if (checKpointsMap.texture != nullptr) app->tex->UnLoad(checKpointsMap.texture);
 	checKpointsMap.texture = app->tex->Load("Assets/Textures/checkpoint.png");
+
 	int texW, texH;
 	SDL_QueryTexture(checKpointsMap.texture, NULL, NULL, &texW, &texH);
 	texW = texW / 9;
@@ -650,7 +646,7 @@ int Map::LoadCheckPoint()
 	checKpointsMap.checkPointOffAnim->PushBack({ 0,0, texW, texH });
 	for (int i = 1; i < 8; i++)
 		checKpointsMap.checkPointOnAnim->PushBack({ texW * i,0, texW, texH });
-	}
+	
 
 	int checkPointCount = 0;
 	for (ListItem<MapLayer*>* layer = data.layers.start; layer; layer = layer->next)

@@ -71,15 +71,12 @@ bool Entity::CleanUp()
 // Load Game State
 bool Entity::LoadState(pugi::xml_node& data)
 {
-
 	return true;
 }
 
 // Save Game State
 bool Entity::SaveState(pugi::xml_node& data) const
 {
-	pugi::xml_node cam = data.child(" ");
-
 	return true;
 }
 iPoint Entity::TransformFPoint(fPoint fpoint)

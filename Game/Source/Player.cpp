@@ -481,8 +481,8 @@ void Player::GravityDownCollision(float dt)
 		fallingCollision = false;
 	}
 	else{
-		if(app->GetFramerate()==60)velY += 0.6f;
-		else if(app->GetFramerate()==30) velY += 2.2f;
+		if(app->GetFramerate()==60)velY += 0.55f;
+		else if(app->GetFramerate()==30) velY += 2.1f;
 	}
 }
 
@@ -493,10 +493,19 @@ bool Player::CleanUp()
 
 	app->audio->Unload1Fx(bonfireFx);
 	app->audio->Unload1Fx(damageFx);
-
+	
 	app->tex->UnLoad(playerData.texture);
 	active = false;
 	pendingToDelete = true;
+
+
+
+	idleAnim = new Animation();
+	walkAnim = new Animation();
+	atakAnim = new Animation();
+	damageAnim = new Animation();
+	runAnim = new Animation();
+	
 
 	checkPoints.Clear();
 	cameraPosCP.Clear();
