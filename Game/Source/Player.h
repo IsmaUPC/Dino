@@ -20,9 +20,9 @@ struct PlayerData
 	iPoint* shootPointsCollision;
 
 	SDL_Texture* texture;
-	static const int numPoints = 7;
+	static const int numPoints = 6;
 
-	iPoint pointsCollision[numPoints] = { { 0,0 },{45 , 0},{ 45,-26 },{45 ,-54 }, {0, -54},{0, -26},{23, -24} };
+	iPoint pointsCollision[numPoints] = { { 0,0 },{45 , 0},{ 45,-26 },{45 ,-54 }, {0, -54},{0, -26} };
 
 };
 

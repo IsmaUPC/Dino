@@ -214,8 +214,8 @@ void Enemy::CheckCollisionEnemyToPlayer()
 			-48 + app->player->playerData.position.y + app->player->playerData.pointsCollision[i].y };
 		
 	}
-	if (collision.IsInsidePolygons(collisionPlayer, app->player->playerData.numPoints-1, auxPositionEnemey, entityData->numPoints)
-		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionPlayer, app->player->playerData.numPoints-1))
+	if (collision.IsInsidePolygons(collisionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
+		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionPlayer, app->player->playerData.numPoints))
 	{
 		if (!app->player->godMode)app->player->SetHit();
 	}
