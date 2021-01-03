@@ -188,6 +188,7 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 	{
 		for (ListItem<Entity*>* entiti = entities.start; entiti; entiti = entiti->next)
 		{
+			if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->LoadState(entityManagerNode);
 			entiti->data->CleanUp();
 			entities.Clear();
 		}
@@ -195,7 +196,6 @@ bool EntityManager::LoadState(pugi::xml_node& entityManagerNode)
 		entityManagerNode.next_sibling();
 		while (entitiesNode)
 		{
-			//if (entiti->data->entityData->type == TypeEntity::HUD)entiti->data->LoadState(entityManagerNode);
 			AddEntity((TypeEntity)entitiesNode.attribute("type").as_int(), entitiesNode.attribute("x").as_int(), entitiesNode.attribute("y").as_int(), 0);
 			entitiesNode = entitiesNode.next_sibling();
 		}
