@@ -52,7 +52,7 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - SPACE in the middle of the jump for double jump
 - K / F / Click Left for Shoot
 - ESC for open and close Menu Pause
-- + / - modify volume
+- +/- modify volume
 
 ## DEBUG keys
 
