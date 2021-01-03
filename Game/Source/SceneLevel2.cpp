@@ -80,7 +80,7 @@ bool SceneLevel2::Start()
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/loki_8bits.ogg");
-	img = app->tex->Load("Assets/Textures/sky_3.png");
+	img = app->tex->Load("Assets/Textures/sky_2.png");
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 
 	animationFather.position = { 10500, 639 };

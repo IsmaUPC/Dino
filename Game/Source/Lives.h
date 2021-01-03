@@ -41,7 +41,6 @@ private:
 	uint liveFx;
 
 	SDL_Texture* texLive;
-	SDL_Texture* texLiveParticle;
 
 };
 #endif // _LIVES_H_

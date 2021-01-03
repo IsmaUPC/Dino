@@ -43,7 +43,7 @@ private:
 	uint coinFx;
 
 	SDL_Texture* texCoin;
-	SDL_Texture* texCoinParticle;
+	//SDL_Texture* texCoinParticle;
 };
 #endif // _COINS_H_
 

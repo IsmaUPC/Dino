@@ -46,7 +46,7 @@ bool GUI::Start()
 	int imgH = 0;
 	int imgW = 0;
 
-	headTex = app->tex->Load("Assets/Textures/GUI/dino_head.png");
+	headTex = entityData->texture;
 	SDL_QueryTexture(headTex, NULL, NULL, &headW, &imgH);
 
 	headAnim->PushBack({0,0,headW,imgH });
@@ -229,7 +229,7 @@ bool GUI::CleanUp()
 	{
 		return true;
 	}
-	app->tex->UnLoad(headTex);
+
 	app->tex->UnLoad(arrowTex);
 	app->tex->UnLoad(imgCoin);
 	app->tex->UnLoad(fireBallTex);

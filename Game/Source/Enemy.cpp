@@ -28,9 +28,7 @@ bool Enemy::Start()
 {
 	active = true;
 	if (entityData->type == GROUND_ENEMY)
-	{
-		entityData->texture = app->tex->Load("Assets/Textures/enemy_walk.png");
-		
+	{		
 		idleAnim->loop = true;
 		idleAnim->speed = 0.04f;
 
@@ -54,7 +52,6 @@ bool Enemy::Start()
 	}
 	else if (entityData->type == AIR_ENEMY)
 	{
-		entityData->texture = app->tex->Load("Assets/Textures/enemy_fly.png");
 
 		idleAnim->loop = true;
 		idleAnim->speed = 0.04f;
@@ -217,8 +214,8 @@ void Enemy::CheckCollisionEnemyToPlayer()
 			-48 + app->player->playerData.position.y + app->player->playerData.pointsCollision[i].y };
 		
 	}
-	if (collision.IsInsidePolygons(collisionPlayer, app->player->playerData.numPoints, auxPositionEnemey, entityData->numPoints)
-		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionPlayer, app->player->playerData.numPoints))
+	if (collision.IsInsidePolygons(collisionPlayer, app->player->playerData.numPoints-1, auxPositionEnemey, entityData->numPoints)
+		&& collision.IsInsidePolygons(auxPositionEnemey, entityData->numPoints, collisionPlayer, app->player->playerData.numPoints-1))
 	{
 		if (!app->player->godMode)app->player->SetHit();
 	}
@@ -390,8 +387,6 @@ bool Enemy::CleanUp()
 	if (!active)
 		return true;
 	pendingToDelete = true;
-
-	app->tex->UnLoad(entityData->texture);
 	active = false;
 
 	return true;

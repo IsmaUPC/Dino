@@ -63,6 +63,12 @@ public:
 	uint chickenFx;
 	uint batFx;
 	uint liveFx;
+
+	SDL_Texture* texCoin;
+	SDL_Texture* texLive;
+	SDL_Texture* texChicken;
+	SDL_Texture* texBat;
+	SDL_Texture* texHead;
 };
 
 #endif // __MODULE_H__

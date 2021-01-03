@@ -29,9 +29,8 @@ bool Lives::Start()
 	entityData->currentAnimation = new Animation();
 	entityData->state = IDLE;
 	active = true;
-	texLive = app->tex->Load("Assets/Textures/lives.png");
-	texLiveParticle = app->tex->Load("Assets/Textures/particle_lives.png");
 
+	texLive = entityData->texture;
 	liveFx = entityData->deadFx;
 
 	numPoints = 4;
@@ -48,7 +47,7 @@ bool Lives::Start()
 	particleAnimation->speed = 0.06f;
 
 	for (int i = 0; i < 6; i++)
-		particleAnimation->PushBack({ (64 * i),0, 64, 64 });
+		particleAnimation->PushBack({ (64 * i),32, 64, 64 });
 
 	return true;
 }
@@ -111,24 +110,15 @@ bool Lives::PostUpdate()
 {
 	SDL_Rect rectLives;
 	rectLives = entityData->currentAnimation->GetCurrentFrame();
-	if (entityData->state == IDLE)
-		app->render->DrawTexture(texLive, position.x, position.y, &rectLives);
+	app->render->DrawTexture(texLive, position.x, position.y, &rectLives);
 
-	if (entityData->state == DEADING)
-		app->render->DrawTexture(texLiveParticle, position.x- 10 , position.y-10 , &rectLives);
 	return true;
-
 }
 
 bool Lives::CleanUp()
 {
 	if (!active)
 		return true;
-
-	app->tex->UnLoad(texLive);
-	app->tex->UnLoad(texLiveParticle);
-
-	app->tex->UnLoad(entityData->texture);
 	pendingToDelete = true;
 
 	active = false;
