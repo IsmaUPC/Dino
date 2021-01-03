@@ -41,6 +41,7 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - GUI: Gameplay Screen Pause Menu : RESUME, SETTINGS, BACK TO TITLE, EXIT
 
 - You can light bonfires with the fireball
+- When you get out of reach, the bats return to their initial position. 
 
 ## Controls
 
