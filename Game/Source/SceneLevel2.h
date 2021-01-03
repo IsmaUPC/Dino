@@ -67,6 +67,16 @@ private:
 	AnimationFather2 animationFather;
 	Animation idleAnim;
 	SDL_Texture* img;
+	int moveBG0;
+	int moveBG1;
+	int moveBG2;
+	int withBG;
+	int posX0;
+	int posX1;
+	int posX2;
+	int xW;
+	int xSpeed;
+
 	int imgX = 0, imgY = 0, imgW = 0, imgH = 0;
 	float speedImg = 0;
 };

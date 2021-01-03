@@ -15,6 +15,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+#define PARALLAX_SPEED -1.3f
+
 SceneLevel2::SceneLevel2()
 {
 	active = true;
@@ -80,7 +82,18 @@ bool SceneLevel2::Start()
 
 	// Load music
 	app->audio->PlayMusic("Assets/Audio/Music/loki_8bits.ogg");
+
+	//Parallax
 	img = app->tex->Load("Assets/Textures/sky_2.png");
+	SDL_QueryTexture(img, NULL, NULL, &withBG, &moveBG1);
+	moveBG0 = -1;
+	moveBG1 = 0;
+	moveBG2 = 1;
+	posX0 = 0;
+	posX1 = 0;
+	posX2 = 0;
+	xW = 0;
+	xSpeed = 0;
 	animationFather.texture = app->tex->Load("Assets/Textures/dino_orange.png");
 
 	animationFather.position = { 10500, 639 };
@@ -96,6 +109,8 @@ bool SceneLevel2::Start()
 
 	app->render->camera.y -= imgH;
 	app->sceneManager->lastLevel = 2;
+
+	speedImg = PARALLAX_SPEED;
 	return true;
 }
 
@@ -185,13 +200,35 @@ bool SceneLevel2::CleanUp()
 
 void SceneLevel2::Parallax()
 {
-	speedImg = -0.9f;
-	imgX = (int)(app->render->camera.x / 6);
-	imgX *= speedImg;
-
 	imgY = (int)((app->render->camera.y / 6)) * 0.2f;
+	
+	int x = -app->render->camera.x;
+	imgX = (int)(app->render->camera.x / 6) - 10;
+	imgX *= PARALLAX_SPEED;
+	
+	xW = x + withBG;
+	xSpeed = x + imgX;
 
-	app->render->DrawTexture(img, imgX, imgY);
+	posX0 = (moveBG0 * withBG);
+	posX1 = (moveBG1 * withBG);
+	posX2 = (moveBG2 * withBG);
+
+	////Back to front
+	if (xW + imgX > (posX0 + (withBG * 0.5f)) + imgX && xSpeed > (withBG * (moveBG0 + 2)) + imgX) moveBG0 += 3;
+	if (xW + imgX > (posX1 + (withBG * 0.5f)) + imgX && xSpeed > (withBG * (moveBG1 + 2)) + imgX) moveBG1 += 3;
+	if (xW + imgX > (posX2 + (withBG * 0.5f)) + imgX && xSpeed > (withBG * (moveBG2 + 2)) + imgX) moveBG2 += 3;
+	//front to back
+	if (xSpeed < (posX0 + (withBG * 0.5f)) + imgX && (moveBG2 > moveBG0)) moveBG2 -= 3;
+	if (xSpeed < (posX1 + (withBG * 0.5f)) + imgX && (moveBG0 > moveBG1)) moveBG0 -= 3;
+	if (xSpeed < (posX2 + (withBG * 0.5f)) + imgX && (moveBG1 > moveBG2)) moveBG1 -= 3;
+
+	posX0 = (moveBG0 * withBG) + imgX;
+	posX1 = (moveBG1 * withBG) + imgX;
+	posX2 = (moveBG2 * withBG) + imgX;
+
+	app->render->DrawTexture(img, posX0, imgY);
+	app->render->DrawTexture(img, posX1, imgY);
+	app->render->DrawTexture(img, posX2, imgY);
 }
 
 void SceneLevel2::DebugKeys()
