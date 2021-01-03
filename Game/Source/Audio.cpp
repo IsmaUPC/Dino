@@ -93,12 +93,6 @@ bool Audio::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 		ChangeVolumeMusic(10);
 
-	/*if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		app->SaveConfigRequested();*/
-
-	/*if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		app->LoadConfigRequested();*/
-
 	return true;
 }
 
@@ -203,7 +197,8 @@ bool Audio::Unload1Fx(int index)
 {	
 	bool ret = false;
 
-	if (fx[index] != nullptr) {
+	if (fx[index] != nullptr) 
+	{
 		Mix_FreeChunk(fx[index]);
 		fx[index] = nullptr;
 		ret = true;
@@ -215,18 +210,6 @@ bool Audio::Unload1Fx(int index)
 // Play WAV
 bool Audio::PlayFx(unsigned int id, int volume)
 {
-	/*bool ret = false;
-	Mix_Volume(-1, volumeFx);
-	if(!active)
-		return false;
-
-	if(id > 0 && id <= fx.Count())
-	{
-		Mix_VolumeChunk(fx[id - 1], volumeFx);
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
-	}
-
-	return ret;*/
 	bool ret = false;
 
 	if (volume > 100) volume = 100;

@@ -47,7 +47,8 @@ bool GuiMenuPause::Update(float dt)
 		btnSettings->Update(dt);
 		btnBackToTitle->Update(dt);
 		ret = btnExit->Update(dt);
-		if (activeMenu) {
+		if (activeMenu) 
+		{
 			menuSettings->Update(dt);
 			if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 			{

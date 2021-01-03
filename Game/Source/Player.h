@@ -97,6 +97,8 @@ private:
 	void GravityDownCollision(float dt);
 	void MoveToDirection(int velocity);
 
+	void DebugCP();
+
 public:
 
 	PlayerData playerData;
@@ -130,7 +132,8 @@ private:
 	// CheckPoint's vars
 	bool inCheckPoint;
 	List<iPoint> checkPoints;
-	List<iPoint> cameraPosCP;
+	bool debugCheckPoints;
+
 	int lastCP;
 	bool checkpointMove;
 	bool endUpdate;
