@@ -34,6 +34,14 @@ bool GUI::Awake(pugi::xml_node& config)
 
 bool GUI::Start()
 {
+
+	headAnim = new Animation();
+	arrowAnim = new Animation();
+	buttonEAnim = new Animation();
+	fireBallOnAnim = new Animation();
+	fireBallOffAnim = new Animation();
+	coinHudAnim = new Animation();
+
 	active = true;
 	int imgH = 0;
 	int imgW = 0;
@@ -226,6 +234,13 @@ bool GUI::CleanUp()
 	app->tex->UnLoad(imgCoin);
 	app->tex->UnLoad(fireBallTex);
 	app->fonts->UnLoad(hudFont);
+
+	delete headAnim;
+	delete arrowAnim;
+	delete buttonEAnim;
+	delete fireBallOnAnim;
+	delete fireBallOffAnim;
+	delete coinHudAnim;
 
 	active = false;
 

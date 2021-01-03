@@ -177,6 +177,8 @@ bool SceneLevel2::CleanUp()
 	app->player->CleanUp();
 	app->entityManager->CleanUp();
 
+	app->sceneManager->SetPause(false);
+
 	active = false;
 	return true;
 }

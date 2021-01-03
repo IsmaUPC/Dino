@@ -75,6 +75,12 @@ bool GuiSettings::CleanUp()
 	delete chBxVSync;
 	delete btnBack;
 
+	sldMusic = NULL;
+	sldFx = NULL;
+	chBxFullScreen = NULL;
+	chBxVSync = NULL;
+	btnBack = NULL;
+
 	return true;
 }
 

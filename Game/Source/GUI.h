@@ -51,17 +51,17 @@ private:
 	SDL_Texture* arrowTex;
 	SDL_Texture* fireBallTex;
 
-	Animation* headAnim = new Animation();
-	Animation* arrowAnim = new Animation();
-	Animation* buttonEAnim = new Animation();
-	Animation* fireBallOnAnim = new Animation();
-	Animation* fireBallOffAnim = new Animation();
+	Animation* headAnim;
+	Animation* arrowAnim;
+	Animation* buttonEAnim;
+	Animation* fireBallOnAnim;
+	Animation* fireBallOffAnim;
 
 	bool inCheckPoint;
 
 	// Coin
 	SDL_Texture* imgCoin;
-	Animation* coinHudAnim = new Animation();
+	Animation* coinHudAnim;
 
 	// Text
 	uint* coins = 0;

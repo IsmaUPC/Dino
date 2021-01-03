@@ -160,13 +160,21 @@ bool SceneIntro::CleanUp()
 	app->tex->UnLoad(bgIntro);
 	app->tex->UnLoad(animationIntro.texture);
 
-	/*delete btnPlay;
+	menuSettings->CleanUp();
+
+	delete btnPlay;
 	delete btnContinue;
 	delete btnRemove;
 	delete btnSettings;
 	delete btnCredits;
 	delete btnExit;
-	delete menuSettings;*/
+	
+	btnPlay = NULL;
+	btnContinue = NULL;
+	btnRemove = NULL;
+	btnSettings = NULL;
+	btnCredits = NULL;
+	btnExit = NULL;
 
 	bgIntro = nullptr;
 	active = false;

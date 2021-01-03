@@ -535,6 +535,13 @@ bool Player::CleanUp()
 	active = false;
 	pendingToDelete = true;
 
+	delete idleAnim;
+	delete walkAnim;
+	delete atakAnim;
+	delete damageAnim;
+	delete runAnim;
+	delete jumpAnim;
+
 	checkPoints.Clear();
 	return true;
 }
