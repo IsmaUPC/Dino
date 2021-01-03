@@ -200,7 +200,7 @@ bool SceneLevel2::CleanUp()
 
 void SceneLevel2::Parallax()
 {
-	imgY = (int)((app->render->camera.y / 6)) * 0.2f;
+	imgY = (int)((app->render->camera.y / 6)) * -0.2f;
 	
 	int x = -app->render->camera.x;
 	imgX = (int)(app->render->camera.x / 6) - 10;
