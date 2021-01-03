@@ -14,8 +14,8 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 
 - Logo screen with fade-in fade-out
 - Title screen
-- Win/Lose Scenes
-- Player walk/jump/die/attack animations
+- Win / Lose Scenes
+- Player Walk / Jump / Die / Attack animations
 - Ending screen (on dying)
 - Music in all scenes 
 - Background with parallax
@@ -50,9 +50,9 @@ Dino is a 2D Platformer where our main character is a dinosaur. He has to jump c
 - Shift for run
 - SPACE for jump
 - SPACE in the middle of the jump for double jump
-- K or F for Shoot
+- K / F / Click Left for Shoot
 - ESC for open and close Menu Pause
-- +/- modify volume
+- + / - modify volume
 
 ## DEBUG keys
 
