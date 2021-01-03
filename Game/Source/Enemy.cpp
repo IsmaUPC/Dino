@@ -333,14 +333,14 @@ bool Enemy::Update(float dt)
 			MoveEnemy(nextAuxPositionEenemy, mapPositionEnemy, entityData->type);
 		}
 	}
-	else if (entityData->type == AIR_ENEMY && (CalculateDistance(app->player->playerData.position, positionInitial) > range || !Radar(app->player->playerData.position))) // if position enemy is diferent of init position, return to position initial
+	else if (entityData->type == AIR_ENEMY && !Radar(app->player->playerData.position)) // if position enemy is diferent of init position, return to position initial
 	{
 		// Direction
 		if (entityData->position.x < positionInitial.x)entityData->direction = WALK_R;
 		else entityData->direction = WALK_L;
 
 		iPoint mapPositionEnemy = app->map->WorldToMap(entityData->position.x, entityData->position.y);
-		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y-8);
+		iPoint mapPositionInitial = app->map->WorldToMap(positionInitial.x, positionInitial.y);
 		if (entityData->position != positionInitial && entityData->state!=DEADING)
 		{
 			entityData->currentAnimation = walkAnim;
