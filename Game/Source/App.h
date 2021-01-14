@@ -110,6 +110,7 @@ public:
 	SceneManager* sceneManager;
 	Entity* entity;
 	PathFinding* pathfinding;
+	
 	ModuleFonts* fonts;
 
 	bool fullScreen=0;

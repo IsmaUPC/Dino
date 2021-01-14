@@ -20,7 +20,7 @@ struct Font
 	// Font setup data
 	uint totalLength = 0;
 	uint rows, columns = 0;
-	float char_w, char_h = 0;
+	float charW, charH = 0;
 };
 
 class ModuleFonts : public Module
@@ -42,7 +42,7 @@ public:
 	// Param rows			- The amount of character rows in the texture
 	// Param image_w		- width of the texture
 	// Param image_h		- height of the texture
-	int Load(const char* texturePath, const char* characters, uint rows, int image_w, int image_h);
+	int Load(const char* texturePath, const char* characters, uint rows, int imageW, int imageH);
 	
 	// Removes a font by its index
 	// Unloads the texture and removes it from the fonts array
