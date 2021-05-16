@@ -68,3 +68,20 @@ jobs:
           asset_name: ${{ env.RELEASE_NAME }}
           asset_content_type: application/zip
       if: github.event_name == 'release' && github.event.action == 'published'
+
+
+   #   # We are generating the zip excluding the gitignore (or any other file specified in the exclusions)
+   # - uses: actions/checkout@v2
+   # - name: Zip Generator
+   #   uses: thedoctor0/zip-release@master
+   #   with:
+   #    filename: 'Dino.zip'
+   #    exclusions: '*.gitignore*'
+
+     # Creates a release uploading the release.zip file. The github token is usually under secrets.GITHUB_TOKEN, however in the future this may be different.
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+       tag: v1.5
+       artifacts: ./Build/${{ env.RELEASE_NAME }}.zip
+       token: ${{ secrets.GITHUB_TOKEN }}
