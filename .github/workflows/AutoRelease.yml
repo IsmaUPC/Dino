@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       RELEASE_NAME: 7HD-Dino-v1.5
       GNUTARGET: default
@@ -40,6 +40,7 @@ jobs:
       run: |
         msbuild.exe Development.sln  /property:Configuration=Release
         copy /Y Build\Release\Dino.exe Build\${{ env.RELEASE_NAME }}\Dino.exe
+      shell: cmd
       
     - name: Generate Artifacts
       run: |
@@ -49,8 +50,8 @@ jobs:
         copy /Y .\LICENSE .\Build\${{ env.RELEASE_NAME }}\LICENSE
         cd Build
         dir
+      shell: cmd
       
-       # 7z a ./${{ env.RELEASE_NAME }}.zip ./${{ env.RELEASE_NAME }}   
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -79,8 +80,7 @@ jobs:
 
      # Creates a release uploading the release.zip file. The github token is usually under secrets.GITHUB_TOKEN, however in the future this may be different.
     - name: Create Release
-      uses: ncipollo/release-action@v1
+      uses: actions/upload-release-asset@v1
       with:
        tag: v1.5
-       artifacts: ./Build/${{ env.RELEASE_NAME }}.zip
-       token: ${{ secrets.GITHUB_TOKEN }}
+       upload_url: ./Build/${{ env.RELEASE_NAME }}.zip
